@@ -1,0 +1,80 @@
+$ python3 gen-plants.py (family census)
+plants=200 families=24
+akia           10
+awssts         10
+azuresas       10
+bearer         3
+cfcookie       10
+cfsig          10
+cred           3
+gcssig         10
+ghother36      10
+ghp36          10
+ghr36          10
+ghr75          5
+ghr76          10
+ghr77          5
+ghsappjwt      10
+glcbtBad       5
+glcbtJWT       10
+glcbtJWTpfx    5
+gldt           10
+gliamatJWT     10
+glpat          10
+glrtr          10
+glsatJWT       10
+privkey        4
+
+$ base scanner --files r95-receipts/*.txt
+CAPTURE-SECRET-SCAN mode=files scanned=200 hits=150 files=140 allowed=0 unused_allow=23 rc=1
+$ landed scanner --files r95-receipts/*.txt
+CAPTURE-SECRET-SCAN mode=files scanned=200 hits=195 files=185 allowed=0 unused_allow=24 rc=1
+
+$ diff of (path, shape) HIT sets: base-only / tip-only counts
+base_pairs=150 tip_pairs=195
+base_only=0 tip_only=45
+
+$ tip-only pairs grouped by shape
+     10 github-refresh-token
+     35 gitlab-jwt-token
+
+$ tip-only pairs grouped by plant family
+     10 ghr76
+     10 glcbtJWT
+      5 glcbtJWTpfx
+     10 gliamatJWT
+     10 glsatJWT
+
+$ per-shape totals base -> tip
+base:
+      3 authorization
+     10 aws-access-key-id
+     10 aws-sts-session-token
+     10 azure-sas-signature
+      3 bearer
+     10 cloudfront-signed-cookie-signature
+     10 cloudfront-signed-url-signature
+     10 credential
+     10 gcs-signed-url-signature
+     40 github-token
+     10 gitlab-deploy-token
+     10 gitlab-pat
+     10 gitlab-runner-auth-token
+      4 private-key
+tip:
+      3 authorization
+     10 aws-access-key-id
+     10 aws-sts-session-token
+     10 azure-sas-signature
+      3 bearer
+     10 cloudfront-signed-cookie-signature
+     10 cloudfront-signed-url-signature
+     10 credential
+     10 gcs-signed-url-signature
+     10 github-refresh-token
+     40 github-token
+     10 gitlab-deploy-token
+     35 gitlab-jwt-token
+     10 gitlab-pat
+     10 gitlab-runner-auth-token
+      4 private-key

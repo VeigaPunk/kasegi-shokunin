@@ -1,0 +1,24 @@
+# lesson evidence lines
+## round-94 rerun receipt 60,117
+CONTROL m5-cell-repair-before-r93 rc=1 want=0 FAIL
+C1-CONTROLS-RESULT fail controls=12
+## round-94 pinned receipt 60,117
+CONTROL m5-cell-repair-before-r93 rc=0 want=0 PASS
+C1-CONTROLS-RESULT pass controls=12
+## round-95 controls 139-149
+CONTROL two-cells-one-line rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=17 labels=16 after_rev=b1bb1a1264ed8d85c30760483a959167e97f1bbb mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/1998
+  LIMB M1 pass after=1008/1994
+  LIMB M3 FAIL same_files=True bad_lines=1 old_not_once=0 dup_rows=1
+  LIMB M4 FAIL bad=triage-thresholds.md:88
+  LIMB M5 FAIL out_of_range=none
+  LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:88,triage-thresholds.md:88
+  LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=5,part=4,range=7 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=3cd321bbbbed1286b072460aa53213323a1e00965f2670d1694b7bbe5f8fd3c1
+  KNOWLEDGE-METER-RESULT fail rc=1
+## round-95 postlanding result
+150:C1-CONTROLS-RESULT pass controls=15
+## spotcheck C2 P4 lines
+63:**P4 does not hold as written.** The frozen P4 names "the S140-allowlist-removed control", but the receipt's tenth control is `tampered-instrument` (`.ufo/waves/round-94/controls/c2-controls-r94.txt:110`; `C2-CONTROLS-RESULT pass controls=10`), and the frozen `controls` field names the absent `s140-allow-rows-removed`. The redaction made such a control vacuous; the receipt replaced it with `tampered-instrument`. Two independent seats read the same mismatch (CriticClaimsC2, ReviewC2Scanner). Under the claim's own wording C2 is **NOT VERIFIED on P4 as written**; P1–P3 stand.
+99:2. **C2 P4 / frozen wording (high).** The claim names a tenth control (`S140-allowlist-removed` / `s140-allow-rows-removed`) that the receipt does not contain; the receipt's tenth is `tampered-instrument`. Correct the frozen P4 text next round (or add the control with a reason it is non-vacuous). Do not re-word this round's filed claim.

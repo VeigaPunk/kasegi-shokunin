@@ -1,0 +1,39 @@
+$ S142 line 169 (provenance for ghr_ prefix)
+refresh_tokenstringThe refresh token. If the access token doesn't expire, this parameter will be omitted. The token starts with ghr_.
+
+$ S140 rules: gitlab_ci_build_token_jwt (429), gitlab_stateless_access_token (446), gitlab_iam_access_token (463)
+[[rules]]
+id = "gitlab_ci_build_token_jwt"
+keywords = ["glcbt-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+[[rules]]
+id = "gitlab_stateless_access_token"
+keywords = ["glsat-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+[[rules]]
+id = "gitlab_iam_access_token"
+keywords = ["gliamat-"]
+regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+
+$ landed regexes (C2) for the two new shapes
+_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"
+GITHUB_PATTERNS = (
+    ("github-token", re.compile(
+        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+        + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+    ("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),
+)
+_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"
+_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"
+_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"
+_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG
+GITLAB_PATTERNS = (
+    ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-jwt-token", re.compile(
+        _GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),
+)
+ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})

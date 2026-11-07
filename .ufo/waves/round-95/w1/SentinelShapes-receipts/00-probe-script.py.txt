@@ -1,0 +1,45 @@
+import importlib.util, sys, hashlib
+spec = importlib.util.spec_from_file_location("scan", "corpus/instruments/capture-secret-scan.py")
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+pats = m.patterns()
+GH = b"ghr_" + b"aB3"*25 + b"a"   # 76
+def probe(name, data):
+    found, allowed = m.scan_bytes(data, pats)
+    got = ",".join(sorted({s for s,_ in found})) or "none"
+    spans = []
+    for s, rx in pats:
+        for mm in rx.finditer(data):
+            spans.append((s, mm.start(), mm.end()))
+    print("%-42s -> %-24s spans=%s" % (name, got, spans if len(spans)<4 else len(spans)))
+    return got
+
+# --- FP probes ---
+probe("FP1 word-before ghr_76", b"x"+GH+b" end")
+probe("FP2 ghr_76 X-placeholder doc", b"ghr_" + b"X"*76)
+probe("FP3 ghr_76 hex-looking", b"ghr_" + b"0123456789abcdef"*4 + b"0123456789ab")
+probe("FP4 ghr_76 + hyphen suffix", GH + b"-tail")
+probe("FP5 ghr_76 inside base64ish blob", b"QUJD"+GH+b"REVG")
+probe("FP6 glcbt prose <header>", b"glcbt-eyJ<header>.eyJ<payload>.<signature>")
+probe("FP7 S140 regex source line", b"regex = '''\\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\\-]{10,1000}\\.eyJ[0-9a-zA-Z_\\-]{10,1000}\\.[0-9a-zA-Z_\\-]{20,1000}'''")
+probe("FP8 S140 redacted-line text", b"[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]")
+probe("FP9 glcbt + generic eyJ jwt prose", b"the token looks like glcbt-eyJ<redacted> x")
+probe("FP10 ghr_76 uppercase hex", b"ghr_" + b"DEADBEEF"*9 + b"DEAD")
+probe("FP11 glsat inside longer hyphen chain", b"instance-1-glsat-eyJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30)
+probe("FP12 generic 3seg JWT no prefix", b"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0In0.abcdefghijklmnopqrst")
+
+# --- FN probes ---
+probe("FN1 ghr_76 in URL query", b"https://x/?access_token="+GH+b"&page=1")
+probe("FN2 ghr_76 json value", b'{"token":"'+GH+b'"}')
+probe("FN3 ghr_76 after \\u0026 escape", b'"q":"a\\u0026'+GH+b'"')
+probe("FN4 ghr_76 percent-encoded sep", b"q=a%26"+GH)
+probe("FN5 ghr_76 base64-wrapped", __import__("base64").b64encode(GH))
+probe("FN6 ghr_76 split by JSON escape inside", b"ghr_" + b"aB3"*25 + b"\\u0041")
+probe("FN7 _glcbt underscore prefix", b"_glcbt-eyJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30)
+probe("FN8 GLCBT uppercase prefix", b"GLCBT-eyJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30)
+probe("FN9 glcbt-EYJ uppercase mid", b"glcbt-EYJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30)
+probe("FN10 4-segment jwt", b"glcbt-eyJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30+b".eyJ"+b"w"*20)
+probe("FN11 21-char alnum instance prefix", b"abcdefghijklmnopqrstuv-glcbt-eyJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30)
+probe("FN12 ghr_77 (longer token)", b"ghr_" + b"aB3"*25 + b"ab")
+probe("FN13 gliamat with 20-char instance prefix", b"acme12345678901234-gliamat-eyJ"+b"x"*20+b".eyJ"+b"y"*20+b"."+b"z"*30)
+probe("FN14 ghr_76 at EOF no newline", GH)
+probe("FN15 glcbt head seg 1001 chars", b"glcbt-eyJ"+b"x"*1001+b".eyJ"+b"y"*20+b"."+b"z"*30)

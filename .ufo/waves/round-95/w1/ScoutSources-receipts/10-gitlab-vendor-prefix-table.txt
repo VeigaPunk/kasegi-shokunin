@@ -1,0 +1,64 @@
+# R10 GitLab's OWN docs prefix table (tier A vendor page) -- the tier-A corroboration for the round-96 leads
+# url: https://docs.gitlab.com/security/tokens/
+$ curl -sSL -A <UA> -o gitlab-tokens.html -w 'gitlab-tokens http=%{http_code} size=%{size_download}' <url>
+gitlab-tokens http=200 size=67805
+$ sha256sum gitlab-tokens.html
+765becf33995fd344ae5939ac6f6e35715b7c2a348b32f708a0a32472b17f4b6  gitlab-tokens.html
+
+# the prefix table as extracted from the live page:
+Token prefixes
+The following table shows the prefixes for each type of token.
+With the exception of Personal Access tokens, these prefixes cannot be configured,
+as they are designed to be standard identifications.
+Token name
+Prefix
+Personal access token
+glpat-
+OAuth Application Secret
+gloas-
+Impersonation token
+glpat-
+Project access token
+glpat-
+Group access token
+glpat-
+Deploy token
+gldt-
+Runner authentication token
+glrt-
+ or 
+glrtr-
+ if created via registration token
+CI/CD Job token
+glcbt-
+Trigger token
+glptt-
+Feed token
+glft-
+Incoming mail token
+glimt-
+GitLab agent for Kubernetes token
+glagent-
+Workspace token
+glwt-
+ (Added in GitLab 18.2)
+GitLab session cookies
+_gitlab_session=
+SCIM Toke
+
+# prefix counts on the live page (glrct- is ABSENT from the vendor table; it exists only in S140):
+glpat-     4
+gloas-     1
+gldt-      1
+glrt-      1
+glrtr-     1
+glcbt-     1
+glptt-     1
+glft-      1
+glimt-     1
+glagent-   6
+glwt-      1
+glsoat-    1
+glffct-    1
+glrct-     0
+ghr_       0

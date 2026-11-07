@@ -1,0 +1,27 @@
+# R03 S141 (GitLab rules, rules/mit/github/github.toml at 59ada1f4) re-fetch + located anchor
+# url: https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgithub%2Fgithub.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+$ curl -sSL -A <UA> -o S141.live.toml -w 'S141 http=%{http_code} size=%{size_download} url=%{url_effective}' <url>
+S141 http=200 size=3955 url=https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgithub%2Fgithub.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+$ sha256sum S141.live.toml ; wc -lc S141.live.toml
+02c67cebbf24803552c5696b65f9f9885569580ec38480bc29ee56957c2a83e0  S141.live.toml
+ 130 3955 S141.live.toml
+
+# byte-identical to the digest the round-94 wave recorded for the same fetch:
+#   round-94 receipt .ufo/waves/round-94/w1/ScoutGitLabRules-receipts/08-github-rules-file.txt:
+#   02c67cebbf24803552c5696b65f9f9885569580ec38480bc29ee56957c2a83e0  github.toml.raw  (130 lines, 3955 bytes)
+4:$ sha256sum github.toml.raw; wc -c -l github.toml.raw
+6: 130 3955 github.toml.raw
+
+# located anchor, live bytes lines 69-72:
+69: [[rules]]
+70: id = "Github Refresh Token"
+71: keywords = ["ghr_"]
+72: regex = "ghr_[0-9a-zA-Z]{76}"
+
+# located quote (<=25 words): regex = "ghr_[0-9a-zA-Z]{76}"   (id = "Github Refresh Token", keywords = ["ghr_"])
+# NOTE: S141 is a tier-B THIRD-PARTY file (GitLab's copy of GitHub's shapes); S143 supersedes it as the registry row.
+# The file is NOT committed as a capture (it lists published example values): the lane instrument refuses it:
+$ TMPDIR=$S python3 -B corpus/instruments/capture-source.py --id S141LIVE --url <url> --out $S/S141.recapture.txt --kind text
+INTAKE-REFUSED S141LIVE shape=github-token line=6 out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/S141.recapture.txt written=no
+INTAKE-REFUSED S141LIVE shape=github-refresh-token line=71 out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/S141.recapture.txt written=no
+  (the two refusal lines are the NEW shapes this round added firing on the file's own published examples)

@@ -1,0 +1,44 @@
+# scanner shape definitions 186-210
+   186	        _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
+   187	)
+   188	_ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+   189	_GH_LB = _ESC_LB
+   190	_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+   191	_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"
+   192	GITHUB_PATTERNS = (
+   193	    ("github-token", re.compile(
+   194	        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+   195	        + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+   196	    ("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),
+   197	)
+   198	_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+   199	_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"
+   200	_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"
+   201	_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"
+   202	_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG
+   203	GITLAB_PATTERNS = (
+   204	    ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+   205	    ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+   206	    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+   207	    ("gitlab-jwt-token", re.compile(
+   208	        _GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),
+   209	)
+   210	ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+# selftest cases 437-453
+   437	        # round 95: GitHub refresh token (ghr_ 76, S142) and the GitLab JWT
+   438	        # family (glcbt-/glsat-/gliamat-, S140 lines 429, 446, 463)
+   439	        ("gh-refresh-76", b"ghr_" + b"aB3"*25 + b"a", {"github-refresh-token"}),
+   440	        ("gh-refresh-75", b"ghr_" + b"aB3"*25, set()),
+   441	        ("gh-refresh-77", b"ghr_" + b"aB3"*25 + b"aa", set()),
+   442	        ("gh-refresh-36-classic", b"ghr_" + ghtail, {"github-token"}),
+   443	        ("gh-refresh-escape-u0020", b'"v":"\\u0020ghr_' + b"aB3"*25 + b"a" + b'"', {"github-refresh-token"}),
+   444	        ("gl-jwt-clcbt", b"glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+   445	        ("gl-jwt-clcbt-custom", b"acme-glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+   446	        ("gl-jwt-glsat", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+   447	        ("gl-jwt-gliamat", b"gliamat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+   448	        ("gl-jwt-not-eyj", b"glcbt-abcdefghij.eyJyyyyyyyyyy.zzzzzzzzzzzzzzzzzzzz", set()),
+   449	        ("gl-jwt-short-head", b"glcbt-eyJabc.eyJyyyyyyyyyy." + b"z"*30, set()),
+   450	        ("gl-jwt-third-19-chars", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*19 + b" ", set()),
+   451	        ("gl-jwt-letter-before", b"xglcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, set()),
+   452	        ("gl-jwt-doc-placeholder", b"glcbt-eyJ<header>.<payload>.<signature>", set()),
+   453	    ]

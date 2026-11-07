@@ -1,0 +1,14 @@
+$ selftest, round-94 (base 9ef0126) instrument
+SELFTEST-RESULT pass cases=101
+$ selftest, landed (C2 38e7319) instrument
+SELFTEST-RESULT pass cases=115
+$ sha256 of landed instrument + gate (frozen pins: 66edd661..., 8b6f8493...)
+66edd66143ec62f6e40c864817a97383916d7ff67e5ab384e130b65c44516707  /fast/scratch/hyaku/kasegi-r95/CriticHarm/c2/corpus/instruments/capture-secret-scan.py
+8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  /fast/scratch/hyaku/kasegi-r95/CriticHarm/c2/corpus/instruments/claim-package-check.py
+$ git diff --numstat C1->C2 instrument paths (0 deletions = every earlier regex byte preserved)
+1	1	SCORECARD.md
+1	0	corpus/instruments/capture-secret-allow.tsv
+23	0	corpus/instruments/capture-secret-scan.py
+$ base scanner new-shape token count (expect 0) / landed (expect 8)
+0
+8

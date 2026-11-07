@@ -1,0 +1,28 @@
+# git diff HEAD vs working tree: entry
+diff --git i/corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md w/corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md
+index 3e9c9de..5ab6438 100644
+--- i/corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md
++++ w/corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md
+@@ -12,10 +12,10 @@ first-party or vendor rule file and each bounded by an explicit length floor.
+ ## GitHub refresh token — `ghr_` plus 76 characters
+ 
+ GitHub states the prefix in its own documentation: the token exchange returns a
+-`refresh_token` and "The token starts with `ghr_`" (S142, capture line 169; the
++`refresh_token` and "The token starts with `ghr_`" (S142, `corpus/source-snapshots/round-95/S142.txt:169`; the
+ sentence is 5 words and sits in the response-field table). The *length* is not
+ on that page; GitLab's machine-readable GitHub rule file gives it as
+-`ghr_[0-9a-zA-Z]{76}` (S143, line 72; superseding S141), and the same file's measurement table
++`ghr_[0-9a-zA-Z]{76}` (S143, line 72 of the file the row records at commit 59ada1f4; superseding S141), and the same file's measurement table
+ records `ghr total= 80 tail= 76` (a round-94 wave receipt derived the same 76
+ from that file). This lane therefore implements `ghr_` + exactly 76
+ alphanumerics, right-bounded by `(?![A-Za-z0-9_])`.
+@@ -40,7 +40,7 @@ Boundary facts, all mutation-tested in round 95:
+ ## GitLab JWT family — `glcbt-`, `glsat-`, `gliamat-`
+ 
+ GitLab's rules file publishes three JWT-shaped tokens as one grammar
+-(S140 lines 429, 446, 463):
++(S140, `corpus/source-snapshots/round-94/S140.txt:429`, `:446`, `:463`):
+ 
+ ```
+ (?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_-]{10,1000}\.eyJ[0-9a-zA-Z_-]{10,1000}\.[0-9a-zA-Z_-]{20,1000}
+# git diff HEAD vs working tree: lesson

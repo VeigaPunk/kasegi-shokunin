@@ -1,0 +1,23 @@
+=== SKILL.md 182-186 (repr lengths) ===
+182 (75)	Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+183 (69)	`priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+184 (72)	ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+185 (74)	text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+186 (71)	1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+
+=== SKILL.md 254-257 ===
+254 (66)	titles on restart. Queue score = priority(9e12) > continue(2e12) >
+255 (71)	curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+256 (67)	terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+257 (54)	magnitude) — EV orders, never gates (AR12). Dispatcher
+
+=== mission-control.md 19-27 ===
+19	- **Queue score** (`buildQueue`): `priority` set +9e12 (`fleets/priority.json`),
+20	  `continue` verdicts +2e12, `curated` EV inputs +1e12, `reward.min*1000`,
+21	  `freshness.live` +1. `DONE` never redispatches; live leases and
+22	  mission-file presence filter the candidate set. EV is ordering, never a
+23	  gate (AR12). Round-13 correction: the "negative-EV dispatches carry an
+24	  `ev_note`" claim is dead code — `ev_note` (fleet-dispatch.mjs:204) fires
+25	  only when `ev_inputs.adjusted_ev` is a negative number, which can never
+26	  exist (schema `additionalProperties:false`, 0/1088 records); every
+27	  `mission_dispatched` line logs `adjusted_ev:"unknown"`.

@@ -1,0 +1,11 @@
+# cmd: python3 -B - <<'PY' (capture-source.intake_gate inherits the new shapes)
+GATE refresh  refused=True shapes=['github-refresh-token']
+GATE jwt      refused=True shapes=['gitlab-jwt-token']
+GATE clean    refused=False shapes=[]
+rc=0
+# cmd: python3 -B corpus/instruments/capture-source.py --selftest
+selftest normalize=ok deterministic=ok
+INTAKE-REFUSED SELFTEST shape=credential line=1 out=/fast/scratch/hyaku/kasegi-r95/ReviewC2Scanner/capture-source-selftest-b7jhxovm/out.txt written=no
+INTAKE-REFUSED SELFTEST shape=aws-sts-session-token line=1 out=/fast/scratch/hyaku/kasegi-r95/ReviewC2Scanner/capture-source-selftest-b7jhxovm/out.txt written=no
+selftest intake-refuse=ok existing-kept=ok
+rc=0

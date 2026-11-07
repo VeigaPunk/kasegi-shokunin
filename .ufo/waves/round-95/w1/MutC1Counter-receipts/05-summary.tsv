@@ -1,0 +1,19 @@
+mutant	sha256_16	killed	failing_controls	mutation	expected_killer_manifest	observed_residual_detector
+m01_part_old_from_key	28bdd9f3324fdbf2	true	candidate,union-applied	expected_edit: part old taken from key token	candidate (M9 unbound on the 5 part rows)	
+m02_lane_no_range_check	7c3e56ee4990b531	true	m5-out-of-range	M5 lane-root range check deleted	m5-out-of-range (M5 only FAIL -> rc 0)	
+m03_map_sha_inverted	b1e5b7d1788ff41e	true	wrong-map-sha	M6 runs only when --map-sha256 absent	wrong-map-sha (M6 only FAIL -> rc 0)	
+m04_labels_read_swallowed	c69291e2ec9d7232	true	missing-labels	missing labels file tolerated as {} (rc 2 -> rc 1)	missing-labels (rc 1 vs want 2)	
+m05_snapshot_key_dropped	8a31742b815e7531	true	candidate,union-applied	M4 snap-key (SNAPKEY) acceptance deleted	candidate (M4 FAIL on 5 snapshot rows)	
+m06_cell_multi_value_forbidden	ed009d16cd0119f0	false	none	M4 one-value rule applied to cell rows	candidate (M4 FAIL on cell rows writing two values)	cell-repair-lane-root still rc1 via M5 (M4/M5 attribution not isolated)
+m07_m1_target_swapped	fbba142c196754d4	true	candidate,union-applied	M1 compares after to base_target	candidate (M1 FAIL)	
+m08_m0_target_swapped	a4a9d60b6ae99972	true	candidate,union-applied	M0 compares base to target	candidate (M0 FAIL)	
+m09_part_kind_removed	6d2e1d299050fbd4	true	candidate,union-applied	expected_edit part-kind branch deleted (unknown)	candidate (M10 unknown=5 / M9 FAIL)	
+s01_old_absent_accepted	7c610366cfbcfb4a	false	none	M3 old-not-on-line (old_not_once) check deleted	unlabelled-row (predicted survivor: M9+M10 remain)	unlabelled-row still rc1 via M9 unbound + M10 unlabelled
+s02_m9_ignores_new	5a0d01f1c3b7c65c	false	none	M9 new-value comparison deleted	wrong-new (predicted survivor: M3 remains)	wrong-new still rc1 via M3 bad_lines=1
+s03_missing_label_no_edit	cdfe4e27e4e17a3a	false	none	M9 redundant `lab is None` clause deleted	unlabelled-row (predicted survivor: M3+M10 remain)	equivalent mutant: zero limb deltas (lab is None => exp is None)
+s04_snapshot_existence_dropped	e1dd3eb8769a06ab	false	none	M4 snapshot existence+range loop deleted	snapshot-missing (predicted survivor: M1+M9 remain)	snapshot-missing still rc1 via M1 after=1007/1994 + M9 unbound
+s05_unknown_kind_allowed	fa51a266274251a6	false	none	M10 unknown-kind rejection deleted	none shipped (predicted survivor)	no fixture yields unknown kind (kinds tally unknown=none everywhere)
+s06_unlabelled_ignored	ed035e811a2099e0	false	none	M10 unlabelled rejection deleted	unlabelled-row (predicted survivor: M3+M9 remain)	unlabelled-row still rc1 via M3 old_not_once=1 + M9 unbound
+s07_unapplied_ignored	40290e05f089a02b	false	none	M10 unapplied rejection deleted	partial-row-dropped (predicted survivor: M3 remains)	partial-row-dropped still rc1 via M3 bad_lines=1
+s08_part_any_old	6513e36c70c370cd	false	none	M9 skips (old,new) compare for part kind	none shipped (predicted survivor)	no fixture perturbs a part row's old; zero limb deltas
+s09_skip_absent_label	103161932bf0a511	false	none	M9 skips rows whose label is absent	unlabelled-row (predicted survivor: M3 old_not_once + M10 unlabelled remain)	unlabelled-row still rc1 via M3 old_not_once=1 + M10 unlabelled

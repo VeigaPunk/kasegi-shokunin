@@ -1,0 +1,46 @@
+### anchor reads at landing 53ec479
+--- SKILL.md 182-186
+Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+`priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+--- SKILL.md 255-257
+curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+magnitude) — EV orders, never gates (AR12). Dispatcher
+--- SKILL.md 335-338
+`ledger/<kind>.jsonl` (`[lost-base] ops/shared.mjs:39`). `gitMutationBlocker`
+(fail-closed on rebase/merge/cherry-pick or non-main HEAD) is **absent from
+the mirror** — 0 hits repo-wide; it existed only in the lost tree
+(`[lost-tree] ops/shared.mjs:55`, `corpus/knowledge/ops-invariants.md:24`).
+--- SKILL.md 999
+- `~/Projects/bounties/bounty-map/schema.json` — program record schema (draft-07, fail-closed `additionalProperties:false`)
+--- mission-control 21-27
+  `freshness.live` +1. `DONE` never redispatches; live leases and
+  mission-file presence filter the candidate set. EV is ordering, never a
+  gate (AR12). Round-13 correction: the "negative-EV dispatches carry an
+  `ev_note`" claim is dead code — `ev_note` (fleet-dispatch.mjs:204) fires
+  only when `ev_inputs.adjusted_ev` is a negative number, which can never
+  exist (schema `additionalProperties:false`, 0/1088 records); every
+  `mission_dispatched` line logs `adjusted_ev:"unknown"`.
+--- crosswalk 13,34,43,54,64
+JPCERT/CC's 2026-10 P-guideline (情報セキュリティ早期警戒パートナーシップガイドライン) states its own account of where its early-warning framework differs from ISO/IEC 29147:2014. The divergence is one sentence, and it is a difference in **obligation**, not in practice: the guideline does not require a vendor to adopt a vulnerability disclosure policy, while ISO/IEC 29147:2014 does require the policy and the publication of part of it (`corpus/source-snapshots/round-30/S041.txt:1868-1870`). Everything else in 付録6 §4 is the operational list that follows from that difference: what a vendor that chooses ISO conformance must add on top of guideline-aligned handling. The guideline is explicit that the two frameworks have no major contradiction (§3, `S041.txt:1680-1681`), so the difference is a gap in what is **required**, not a conflict in what is recommended.
+付録6 §4(2) reproduces ISO/IEC 29147:2014 clause 6 in English with a Japanese rendering (`corpus/source-snapshots/round-30/S041.txt:1792-1867`):
+参考1 (`corpus/source-snapshots/round-30/S041.txt:1996-2079`, print pages 53-54) maps ISO/IEC 29147:2014's whole clause structure onto the P-guideline's sections: clause 1 適用範囲 → Ⅲ (L2001-2002), clause 3 用語および定義 → Ⅱ (L2005-2006), clause 5 概念 → Ⅰ/Ⅳ (L2009-2026), clause 7 脆弱性情報の受理 → Ⅳ 5 (L2032-2051), clause 9 アドバイザリの配布 → Ⅳ 5 (L2060-2073). Clause 6 (脆弱性公開ポリシーにおける考慮事項) and clause 8 (ベンダ間における脆弱性の報告) have **no counterpart** — the guideline's 対応箇所 column reads "－" for both (L2027-2028, L2054-2059). The table is therefore itself evidence of the divergence: the two clauses the guideline does not answer are clause 6 (the disclosure policy, exactly the obligation it does not impose) and clause 8 (inter-vendor reporting).
+- **Rejected: "The P-guideline requires vendors to adopt a vulnerability disclosure policy."** The guideline states the opposite in its own words (`corpus/source-snapshots/round-30/S041.txt:1868`). The guideline's difference from 29147:2014 is precisely the absence of that obligation; requiring it would erase the divergence this entry documents.
+- `corpus/source-snapshots/round-30/S041.txt` is a pdftotext capture fetched 2026-10-25T12:34:17Z (capture log in `.ufo/waves/round-26/`); sha256 `e18acbf9…` binds the bytes. Availability is proven on that date only.
+--- S041 sha256 and lines
+e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47  corpus/source-snapshots/round-30/S041.txt
+e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47  corpus/source-snapshots/round-26/S041.txt
+round26==round30 cmp_rc=0
+2354 corpus/source-snapshots/round-30/S041.txt
+P ガイドラインでは、ベンダに脆弱性公開ポリシーの策定を求めていません
+が、ISO/IEC 29147:2014 では、脆弱性公開ポリシーを策定することや、その一
+部を公開することを求めています。
+--- SKILL enum checks
+0
+EV_ordering_rc=1
+0
+curated_EV_rc=1
+keylist_grep_rc=1

@@ -1,0 +1,128 @@
+[
+ {
+  "name": "m01_part_old_from_key",
+  "desc": "expected_edit derives the part kind's old from the key token instead of the label's Replace part: text",
+  "killer": "candidate (M9 unbound on the 5 part rows)",
+  "sha256": "28bdd9f3324fdbf2c93528afe326ea573ff56b795bccd563a77711b78fb83b0d",
+  "diff": "--- pristine.py\n+++ m01_part_old_from_key.py\n@@ -233,5 +233,5 @@\n             return \"unknown\", None, None\n         old, new = rest.split(\" => \", 1)\n-        return \"part\", old, new\n+        return \"part\", \"`%s`\" % key, new\n     if label.startswith(\"corpus/source-snapshots/\"):\n         return \"range\", \"`%s`\" % key, \"`%s`\" % label\n"
+ },
+ {
+  "name": "m02_lane_no_range_check",
+  "desc": "M5 binds a lane-root token but never range-checks it (accepts SKILL.md:9999)",
+  "killer": "m5-out-of-range (M5 only FAIL -> rc 0)",
+  "sha256": "7c3e56ee4990b5316d98a43bd2dbbd73aade7718dfec21a22e22a10397d54551",
+  "diff": "--- pristine.py\n+++ m02_lane_no_range_check.py\n@@ -415,6 +415,5 @@\n                 text = file_at(A[\"tree\"], \"SKILL.md\")\n                 for lo, hi in lane:\n-                    if text is None or not (1 <= lo <= hi <= len(text.splitlines())):\n-                        m5bad.append(tag)\n+                    pass\n         limbs.append((\"M4\", not m4bad and bool(rows), \"bad=%s\" % (\",\".join(sorted(set(m4bad))) or \"none\")))\n         limbs.append((\"M5\", not m5bad and not m4bad, \"out_of_range=%s\" % (\",\".join(sorted(set(m5bad))) or \"none\")))\n"
+ },
+ {
+  "name": "m03_map_sha_inverted",
+  "desc": "M6 runs only when no --map-sha256 is supplied (the sha check is skipped when given)",
+  "killer": "wrong-map-sha (M6 only FAIL -> rc 0)",
+  "sha256": "b1e5b7d1788ff41e2696c85b25fdb18ed7f5c92a2bc85fdb66caff75a1c7fa08",
+  "diff": "--- pristine.py\n+++ m03_map_sha_inverted.py\n@@ -448,5 +448,5 @@\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n-        if a.map_sha256:\n+        if not a.map_sha256:\n             got = hashlib.sha256(mb).hexdigest()\n             limbs.append((\"M6\", got == a.map_sha256.lower(), \"sha256=%s\" % got))\n"
+ },
+ {
+  "name": "m04_labels_read_swallowed",
+  "desc": "a missing labels file at the pinned path is tolerated as an empty label set instead of rc 2",
+  "killer": "missing-labels (rc 1 vs want 2)",
+  "sha256": "c69291e2ec9d723298676f4b0bc2a5e8ecc87add0b156aef62e8d667816384bb",
+  "diff": "--- pristine.py\n+++ m04_labels_read_swallowed.py\n@@ -308,5 +308,8 @@\n             tn, tm = parse_target(a.target)\n             bn0, bm0 = parse_target(a.base_target)\n-            labels = load_labels(git(lane, \"show\", \"%s:%s\" % (a.labels_rev, LABELS_PATH)))\n+            try:\n+                labels = load_labels(git(lane, \"show\", \"%s:%s\" % (a.labels_rev, LABELS_PATH)))\n+            except subprocess.CalledProcessError:\n+                labels = {}\n             B = reading(lane, a.base_rev, a.work)\n             trees.append(B[\"tree\"])\n"
+ },
+ {
+  "name": "m05_snapshot_key_dropped",
+  "desc": "M4 no longer accepts a bare `S041.txt` key even when the new value is a snapshot path",
+  "killer": "candidate (M4 FAIL on 5 snapshot rows)",
+  "sha256": "8a31742b815e75317b8a98b06d1c09577df41218c6d9217c0d27cdd8c2e303f3",
+  "diff": "--- pristine.py\n+++ m05_snapshot_key_dropped.py\n@@ -374,5 +374,5 @@\n             lane = lane_specs(new)\n             snaps = SNAPANY.findall(new)\n-            km = KEYFILE.match(\"`%s`\" % key) or (SNAPKEY.match(\"`%s`\" % key) if snaps else None)\n+            km = KEYFILE.match(\"`%s`\" % key)\n             if not km or (\"`%s`\" % key) not in old:\n                 m4bad.append(tag)\n"
+ },
+ {
+  "name": "m06_cell_multi_value_forbidden",
+  "desc": "M4 applies the one-value rule to cell rows too (drops the round-93 is_cell allowance)",
+  "killer": "candidate (M4 FAIL on cell rows writing two values)",
+  "sha256": "ed009d16cd0119f07bac816dfabd97e2c1a1341d556196e95216626ebd238aaa",
+  "diff": "--- pristine.py\n+++ m06_cell_multi_value_forbidden.py\n@@ -384,5 +384,5 @@\n                 continue\n             if lane is None or (not vals and not lane and not snaps) or (\n-                    len(vals) + (1 if lane else 0) + len(snaps) > 1 and not is_cell and not snaps):\n+                    len(vals) + (1 if lane else 0) + len(snaps) > 1 and not snaps):\n                 m4bad.append(tag)\n                 continue\n"
+ },
+ {
+  "name": "m07_m1_target_swapped",
+  "desc": "M1 compares the after rate against the base target",
+  "killer": "candidate (M1 FAIL)",
+  "sha256": "fbba142c196754d4e219cf0665955b8343197a2f2f049b26edfb297c97255982",
+  "diff": "--- pristine.py\n+++ m07_m1_target_swapped.py\n@@ -329,5 +329,5 @@\n         print(host_line(\"after\", acls))\n         limbs = [(\"M0\", (bn, bm) == (bn0, bm0), \"base=%d/%d\" % (bn, bm)),\n-                 (\"M1\", (an, am) == (tn, tm), \"after=%d/%d\" % (an, am))]\n+                 (\"M1\", (an, am) == (bn0, bm0), \"after=%d/%d\" % (an, am))]\n         # M3 per-site line diff\n         sites = {}\n"
+ },
+ {
+  "name": "m08_m0_target_swapped",
+  "desc": "M0 compares the base rate against the after target",
+  "killer": "candidate (M0 FAIL)",
+  "sha256": "a4a9d60b6ae999725095a3715eb2cb79556c0a718707ec1572c621f4c7a71613",
+  "diff": "--- pristine.py\n+++ m08_m0_target_swapped.py\n@@ -328,5 +328,5 @@\n         print(host_line(\"base\", bcls))\n         print(host_line(\"after\", acls))\n-        limbs = [(\"M0\", (bn, bm) == (bn0, bm0), \"base=%d/%d\" % (bn, bm)),\n+        limbs = [(\"M0\", (bn, bm) == (tn, tm), \"base=%d/%d\" % (bn, bm)),\n                  (\"M1\", (an, am) == (tn, tm), \"after=%d/%d\" % (an, am))]\n         # M3 per-site line diff\n"
+ },
+ {
+  "name": "m09_part_kind_removed",
+  "desc": "expected_edit never learned the part kind: Replace part: labels fall through to unknown",
+  "killer": "candidate (M10 unknown=5 / M9 FAIL)",
+  "sha256": "6d2e1d299050fbd491b7e08974607cee65202491392a71eac8ea2701a0f90eb8",
+  "diff": "--- pristine.py\n+++ m09_part_kind_removed.py\n@@ -228,10 +228,4 @@\n def expected_edit(key, label, fix, line):\n     \"\"\"Return (kind, old, new) the label names for its base line; None for no edit.\"\"\"\n-    if fix.startswith(\"Replace part: \"):\n-        rest = fix[len(\"Replace part: \"):]\n-        if \" => \" not in rest:\n-            return \"unknown\", None, None\n-        old, new = rest.split(\" => \", 1)\n-        return \"part\", old, new\n     if label.startswith(\"corpus/source-snapshots/\"):\n         return \"range\", \"`%s`\" % key, \"`%s`\" % label\n"
+ },
+ {
+  "name": "s01_old_absent_accepted",
+  "desc": "M3 accepts a map row whose old string does not occur on the base line",
+  "killer": "unlabelled-row (predicted survivor: M9+M10 remain)",
+  "sha256": "7c610366cfbcfb4a9b75cd65a907d495f2c0dd8ea96fa942fc1ceaa7f8d4dc82",
+  "diff": "--- pristine.py\n+++ s01_old_absent_accepted.py\n@@ -350,8 +350,5 @@\n                     fwd = b\n                     for old, new in sites.get((rel, i), []):\n-                        if b.count(old) < 1:\n-                            missing += 1\n-                        else:\n-                            fwd = fwd.replace(old, new)\n+                        fwd = fwd.replace(old, new)\n                     if fwd != x:\n                         bad += 1\n"
+ },
+ {
+  "name": "s02_m9_ignores_new",
+  "desc": "M9 binds a row to its label by (site,key) but never compares the map's new value",
+  "killer": "wrong-new (predicted survivor: M3 remains)",
+  "sha256": "5a0d01f1c3b7c65c20e1b26dec3cbf3e18ab091cdf3b625f5418c8440ee02ece",
+  "diff": "--- pristine.py\n+++ s02_m9_ignores_new.py\n@@ -427,5 +427,5 @@\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if lab is None or (site, key) in EXCLUDED or exp is None:\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n"
+ },
+ {
+  "name": "s03_missing_label_no_edit",
+  "desc": "M9 treats an absent label row as no-edit rather than unbound",
+  "killer": "unlabelled-row (predicted survivor: M3+M10 remain)",
+  "sha256": "cdfe4e27e4e17a3a1ea0b078d1c93c10081ece6eaa04a66030e435d697b7e0a3",
+  "diff": "--- pristine.py\n+++ s03_missing_label_no_edit.py\n@@ -427,5 +427,5 @@\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n"
+ },
+ {
+  "name": "s04_snapshot_existence_dropped",
+  "desc": "M4 no longer checks that a written snapshot path exists (and the snapshot range check goes with it)",
+  "killer": "snapshot-missing (predicted survivor: M1+M9 remain)",
+  "sha256": "e1dd3eb8769a06ab51c809be353daecf052f2e07ebf9e0ed0dba686658894fd6",
+  "diff": "--- pristine.py\n+++ s04_snapshot_existence_dropped.py\n@@ -388,12 +388,4 @@\n                 continue\n             snap_bad = False\n-            for sp, lo, hi in snaps:\n-                text = file_at(A[\"tree\"], sp)\n-                if text is None:\n-                    snap_bad = True\n-                    break\n-                nlines = len(text.splitlines())\n-                if lo and not (1 <= int(lo) <= (int(hi) if hi else int(lo)) <= nlines):\n-                    m5bad.append(tag)\n             if snap_bad:\n                 m4bad.append(tag)\n"
+ },
+ {
+  "name": "s05_unknown_kind_allowed",
+  "desc": "M10 stops rejecting a label kind the counter cannot derive (unknown)",
+  "killer": "none shipped (predicted survivor)",
+  "sha256": "fa51a266274251a68dc9f4e9dd6bce09cc38e2e25c17f1615f9f76677322a507",
+  "diff": "--- pristine.py\n+++ s05_unknown_kind_allowed.py\n@@ -445,5 +445,5 @@\n         tally = \",\".join(\"%s=%d\" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))\n         short = lambda ps: \",\".join(\"%s/%s\" % (s.rsplit(\"/\", 1)[-1], k) for s, k in ps) or \"none\"\n-        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n+        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and set(EXCLUDED) <= set(kinds),\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n"
+ },
+ {
+  "name": "s06_unlabelled_ignored",
+  "desc": "M10 stops rejecting a map row whose (site,key) has no label",
+  "killer": "unlabelled-row (predicted survivor: M3+M9 remain)",
+  "sha256": "ed035e811a2099e0eb65a6856d50c3144adc5bce5cada27ca6ba55c4fd06d8e1",
+  "diff": "--- pristine.py\n+++ s06_unlabelled_ignored.py\n@@ -445,5 +445,5 @@\n         tally = \",\".join(\"%s=%d\" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))\n         short = lambda ps: \",\".join(\"%s/%s\" % (s.rsplit(\"/\", 1)[-1], k) for s, k in ps) or \"none\"\n-        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n+        limbs.append((\"M10\", bool(want) and not unapplied and not unknown and set(EXCLUDED) <= set(kinds),\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n"
+ },
+ {
+  "name": "s07_unapplied_ignored",
+  "desc": "M10 stops rejecting a labelled pair the map leaves unapplied",
+  "killer": "partial-row-dropped (predicted survivor: M3 remains)",
+  "sha256": "40290e05f089a02bae27762322f8d2d539c957b9a50dbfe32a689e402e13853d",
+  "diff": "--- pristine.py\n+++ s07_unapplied_ignored.py\n@@ -445,5 +445,5 @@\n         tally = \",\".join(\"%s=%d\" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))\n         short = lambda ps: \",\".join(\"%s/%s\" % (s.rsplit(\"/\", 1)[-1], k) for s, k in ps) or \"none\"\n-        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n+        limbs.append((\"M10\", bool(want) and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n"
+ },
+ {
+  "name": "s08_part_any_old",
+  "desc": "M9 skips the (old,new) comparison for the part kind (any old accepted)",
+  "killer": "none shipped (predicted survivor)",
+  "sha256": "6513e36c70c370cd9ba018f0db236c6c6454a661cdb7b58baf13628a5e22fc37",
+  "diff": "--- pristine.py\n+++ s08_part_any_old.py\n@@ -427,5 +427,5 @@\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if lab is None or (site, key) in EXCLUDED or exp is None or (exp[0] != \"part\" and exp[1:] != (old, new)):\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n"
+ },
+ {
+  "name": "s09_skip_absent_label",
+  "desc": "M9 skips any map row whose (site,key) has no label row (absent label treated as no-edit)",
+  "killer": "unlabelled-row (predicted survivor: M3 old_not_once + M10 unlabelled remain)",
+  "sha256": "103161932bf0a5116ed8c35a61de6e8501de0c980ed2b1afd4cca3ce78803073",
+  "diff": "--- pristine.py\n+++ s09_skip_absent_label.py\n@@ -427,5 +427,5 @@\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if lab is not None and ((site, key) in EXCLUDED or exp is None or exp[1:] != (old, new)):\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n"
+ }
+]

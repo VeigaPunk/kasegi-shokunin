@@ -1,0 +1,29 @@
+# R11 the S141 / S143 citation: what the frozen claim says vs. what the registry row says
+
+# the frozen C2 statement's wording (claims.json):
+S141 line 72 gives the 76-character length
+S142, S140, S141
+  (claims.json mentions: S141 x3, S142 x3, S140 x3)
+
+# registry row status at the FREEZE and at HEAD:
+freeze 347519f  S140 status=mined     used-by=corpus/instruments/capture-secret-scan.py
+freeze 347519f  S141 status=rejected  used-by=—
+   S142 rows present at freeze: 0
+   S143 rows present at freeze: 0
+HEAD   43cc15e  S140 status=mined     used-by=corpus/instruments/capture-secret-scan.py
+HEAD   43cc15e  S141 status=rejected  used-by=—
+HEAD   43cc15e  S142 status=mined     used-by=corpus/instruments/capture-secret-scan.py, corpus/knowledge/
+HEAD   43cc15e  S143 status=mined     used-by=corpus/instruments/capture-secret-scan.py, corpus/knowledge/
+   S142 rows present at HEAD: 1
+   S143 rows present at HEAD: 1
+
+# the landed knowledge entry's own citation (correctly names S143) and its checklist wording:
+1:source: S142 — GitHub Docs, Refreshing user access tokens, https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens (capture `corpus/sour
+15:sits in the response-field table). The *length* is not on that page; the S143
+35:vendor rule at S143 line 72 has none.
+136:  states only the prefix. The length comes from the S143 correction row (the
+137:  same file as S141, which S143 supersedes); an entry that attributes 76 to the
+--- checklist line still says '<S141 capture>' ---
+
+# the scanner's own docstring/known-limits lines (landed) for reference:
+124:`glsat-eyJ…`, `gliamat-eyJ…`; S140 lines 430, 447, 464), the remaining GitLab

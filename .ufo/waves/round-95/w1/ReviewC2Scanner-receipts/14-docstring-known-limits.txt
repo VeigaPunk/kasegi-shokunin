@@ -1,0 +1,30 @@
+# cmd: sed -n '110,134p' corpus/instruments/capture-secret-scan.py
+                         `_` prefix separator is a named limit.
+  gitlab-runner-auth-token (round 94) a GitLab runner authentication token:
+                         `glrt-` or `glrtr-`, an optional partition prefix
+                         `t1_`/`t2_`/`t3_`, then 20 characters of
+                         `A-Za-z0-9_-` (S140 line 114), with the same
+                         boundaries and optional custom instance prefix as
+                         `gitlab-pat`.
+  gitlab-deploy-token    (round 94) a GitLab deploy token: `gldt-` then 20
+                         characters of `A-Za-z0-9_-` (S140 line 255), with the
+                         same boundaries and optional custom instance prefix.
+Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
+source states their length or alphabet), the routable and versioned-routable
+token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
+tail; S140 lines 30, 51, 136, 324), the JWT-form GitLab tokens (`glcbt-eyJ…`,
+`glsat-eyJ…`, `gliamat-eyJ…`; S140 lines 430, 447, 464), the remaining GitLab
+prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
+`glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
+174, 412), an encoded prefix
+separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
+percent-encoded parameter names or `=` (a whole URL percent-encoded inside
+another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
+`sig`, more than 20 other parameters between the two matched ones, values
+soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not
+detected.
+rc=0
+# cmd: grep -n 'github-refresh-token|gitlab-jwt-token|JWT-form GitLab tokens' (docstring region only, lines 1-135)
+123: tail; S140 lines 30, 51, 136, 324), the JWT-form GitLab tokens (`glcbt-eyJ…`,
+rc=0

@@ -1,0 +1,17 @@
+### M10 limb + detail string (lines 445-450)
+        tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+        short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
+                      "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                          len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+        if a.map_sha256:
+### committed control receipt candidate object
+$ git cat-file -t 4ef12a2fc6797ab7fe9a9163a916e82800495142
+rc=128
+### bare S041.txt lines in crosswalk at landing (no corpus/source-snapshots prefix)
+23:| q-policy-not-required | Q3 | "P ガイドラインでは、ベンダに脆弱性公�
+24:| q-policy-required | — | "ISO/IEC 29147:2014 では、脆弱性公開ポリシーを
+25:| q-seven-day-receipt | Q4 | "受信した旨を 7 日以内に返信することが必
+26:| q-min-policy-aspects | Q5 | "6.2 Minimum policy aspects" | S041.txt:1813 |
+27:| q-optional-policy-aspects | — | "6.3 Optional policy aspects" | S041.txt:1856 |
+28:| q-secure-comm-option | Q2b | "b）セキュアな通信オプション" | S041.txt:18

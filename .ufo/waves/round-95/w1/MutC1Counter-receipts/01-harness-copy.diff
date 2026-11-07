@@ -1,0 +1,11 @@
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-95/controls/c1-controls-r95.py	2026-11-07 14:04:08.375363151 -0300
++++ /fast/scratch/hyaku/kasegi-r95/MutC1Counter/harness.py	2026-11-07 14:12:26.163582234 -0300
+@@ -126,7 +126,7 @@
+                 print("  " + ln)
+                 log.append("  " + ln)
+ 
+-    meter = C1 + "/knowledge-meter.py"
++    meter = os.environ.get("METER_PATH", C1 + "/knowledge-meter.py")
+     real_sha = sh(["sha256sum", MAP]).stdout.split()[0]
+     cand_rev = sh(["git", "-C", cand, "rev-parse", "HEAD"]).stdout.strip()
+     print("C1-CONTROLS candidate=%s base=%s" % (cand_rev, BASE))

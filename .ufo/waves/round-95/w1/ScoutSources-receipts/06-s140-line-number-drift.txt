@@ -1,0 +1,46 @@
+# R06 S140 committed-snapshot line numbers vs LIVE raw-file line numbers (line-number drift)
+# The committed snapshot (corpus/source-snapshots/round-94/S140.txt) dropped the raw file's 30 blank
+# lines and replaced 82 example/negativeExamples element lines with one fixed marker each, so every
+# anchor below the first blank line sits LOWER in the snapshot than in the live raw bytes.
+# C2's frozen statement cites the SNAPSHOT numbers (429/446/463) -- those are correct against the
+# committed capture. Re-fetching the raw file gives DIFFERENT numbers; a reader who re-fetches and
+# jumps to 429/446/463 lands on the wrong lines.
+
+$ python3 (compare id= lines of snapshot vs live)
+snapshot lines=563  live lines=592  (live has 30 blank lines; snapshot has 1)
+snap  live  delta rule id
+2     2     0    gitlab_personal_access_token
+28    29    1    gitlab_personal_access_token_routable
+49    51    2    gitlab_personal_access_token_routable_versioned
+71    74    3    gitlab_pipeline_trigger_token
+99    103   4    gitlab_runner_registration_token
+112   117   5    gitlab_runner_auth_token
+134   140   6    gitlab_runner_auth_token_routable
+158   165   7    gitlab_feed_token
+172   180   8    gitlab_oauth_app_secret
+188   197   9    gitlab_feed_token_v2
+211   221   10   gitlab_kubernetes_agent_token
+227   238   11   gitlab_incoming_email_token
+253   265   12   gitlab_deploy_token
+276   289   13   gitlab_scim_oauth_token
+291   305   14   gitlab_ci_build_token
+306   321   15   gitlab_runner_auth_token_legacy_partition
+322   338   16   gitlab_deploy_token_routable
+339   356   17   gitlab_deploy_token_in_url
+356   374   18   gitlab_kubernetes_agent_token_routable
+373   392   19   gitlab_workspace_token
+390   410   20   gitlab_feature_flags_client_token
+410   431   21   gitlab_runner_controller_token
+428   450   22   gitlab_ci_build_token_jwt
+445   468   23   gitlab_stateless_access_token
+462   486   24   gitlab_iam_access_token
+478   503   25   gitlab_iam_refresh_token
+495   521   26   gitlab_iam_authorization_code
+512   539   27   gitlab_feed_token_path_dependent
+530   558   28   gitlab_pipeline_trigger_token_in_url
+547   576   29   gitlab_session_cookie
+
+# the three C2 anchors, snapshot vs live:
+  snapshot 429 keywords glcbt-   <-> live 451
+  snapshot 446 keywords glsat-   <-> live 469
+  snapshot 463 keywords gliamat- <-> live 487

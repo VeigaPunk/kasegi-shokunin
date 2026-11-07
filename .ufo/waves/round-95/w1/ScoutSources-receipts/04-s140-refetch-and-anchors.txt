@@ -1,0 +1,36 @@
+# R04 S140 (GitLab rules, rules/mit/gitlab/gitlab.toml at 59ada1f4) re-fetch + the three located anchors
+# url: https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+$ curl -sSL -A <UA> -o S140.live.toml -w 'S140 http=%{http_code} size=%{size_download} url=%{url_effective}' <url>
+S140 http=200 size=20228 url=https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+$ sha256sum S140.live.toml ; wc -lc S140.live.toml
+14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5  S140.live.toml
+  592 20228 S140.live.toml
+
+# digest the round-94 manifest recorded for the same fetch (raw bytes):
+#   raw 20228 bytes, sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+raw 20228 bytes, sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+
+# committed snapshot (redacted, line numbering preserved):
+$ sha256sum corpus/source-snapshots/round-94/S140.txt ; wc -c -l corpus/source-snapshots/round-94/S140.txt
+f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c  corpus/source-snapshots/round-94/S140.txt
+  563 25537 corpus/source-snapshots/round-94/S140.txt
+
+# LOCATED ANCHORS in the committed snapshot (the lines C2's statement cites):
+428: id = "gitlab_ci_build_token_jwt"
+429: keywords = ["glcbt-"]
+430: regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+445: id = "gitlab_stateless_access_token"
+446: keywords = ["glsat-"]
+447: regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+462: id = "gitlab_iam_access_token"
+463: keywords = ["gliamat-"]
+464: regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+
+# located quotes (<=25 words each):
+#   L429 keywords = ["glcbt-"]     L446 keywords = ["glsat-"]     L463 keywords = ["gliamat-"]
+#   L430 regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+#   L447 same shape with glsat-      L464 regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+
+# NOTE (line-number drift): the SAME rules sit at DIFFERENT line numbers in the live raw file
+# (the committed snapshot dropped the 30 blank lines and replaced 82 example lines with one marker each,
+#  so the live raw file's numbers run up to +29 higher). See R05.

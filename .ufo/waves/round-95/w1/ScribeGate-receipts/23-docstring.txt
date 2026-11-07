@@ -1,0 +1,33 @@
+# scanner docstring: classic ghr_ line and the known-limits paragraph
+    80	                         hits.
+    81	  github-token           (round 92) a GitHub token in the prefixed format:
+    82	                         `ghp_`, `gho_`, `ghu_`, `ghs_` or `ghr_` (the five
+    83	                         three-letter prefixes, case-sensitive, S137 lines
+    84	                         156-162; S136 lines 158, 162-167) followed by exactly 36
+   120	Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
+   121	source states their length or alphabet), the routable and versioned-routable
+   122	token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
+   123	tail; S140 lines 30, 51, 136, 324), the JWT-form GitLab tokens (`glcbt-eyJ…`,
+   124	`glsat-eyJ…`, `gliamat-eyJ…`; S140 lines 430, 447, 464), the remaining GitLab
+   125	prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
+   126	`glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
+   127	174, 412), an encoded prefix
+   128	separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+   129	cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
+   130	percent-encoded parameter names or `=` (a whole URL percent-encoded inside
+   131	another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
+   132	`sig`, more than 20 other parameters between the two matched ones, values
+   133	soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not
+   134	detected.
+   135	The documented example key id AKIAIOSFODNN7EXAMPLE (S124 line 409) is allowed.
+   136	
+# occurrences of the new row name in the file
+196:    ("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),
+439:        ("gh-refresh-76", b"ghr_" + b"aB3"*25 + b"a", {"github-refresh-token"}),
+443:        ("gh-refresh-escape-u0020", b'"v":"\\u0020ghr_' + b"aB3"*25 + b"a" + b'"', {"github-refresh-token"}),
+# occurrences of gitlab-jwt-token in the file
+207:    ("gitlab-jwt-token", re.compile(
+444:        ("gl-jwt-clcbt", b"glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+445:        ("gl-jwt-clcbt-custom", b"acme-glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+446:        ("gl-jwt-glsat", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+447:        ("gl-jwt-gliamat", b"gliamat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),

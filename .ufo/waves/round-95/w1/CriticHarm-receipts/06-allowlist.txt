@@ -1,0 +1,19 @@
+$ added allow row (shape/path/digest/reason; value not printed)
++.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt	github-refresh-token	c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d	synthetic sequential placeholder (ghr_ + <digits> repeated) in a round-94 wave receipt that measured token tail lengths; not a credential
+
+$ row count base vs landing
+base_rows=23
+landing_rows=24
+
+$ independent sha256 of the 2 matched byte-strings in the round-94 receipt
+matches=2 distinct_digests=1
+c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d
+
+$ (a) same path, mutated value -> must HIT
+HIT shape=github-refresh-token path=.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt line=10
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=24 rc=1
+$ (b) same value, other receipt path -> must HIT
+HIT shape=github-refresh-token path=.ufo/waves/round-94/w1/Other-receipts/06.jpg.txt line=10
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=24 rc=1
+$ (c) exact path, exact value -> allowed, rc 0
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=2 unused_allow=23 rc=0

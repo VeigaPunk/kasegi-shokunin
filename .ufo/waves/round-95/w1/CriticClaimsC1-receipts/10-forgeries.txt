@@ -1,0 +1,109 @@
+### forgery fixtures: four independent attacks on the frozen counter
+### driver: fx.py (copied as 11-fx-driver.py); each fixture = git clone --shared of the landing clone at 53ec479, one row altered, committed
+
+### f1-false-cell rc=0 rev=e7ff52ab470e7ed2a8ed92442b8f141f9a0e7b28
+  KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=e7ff52ab470e7ed2a8ed92442b8f141f9a0e7b28 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/1998
+  LIMB M1 pass after=1008/1994
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=16 unbound=none
+  LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=a7d6dc1daf72c3dea2d44ae0ed5330960437537f495d07352e24ab5c9ca3478b
+  KNOWLEDGE-METER-RESULT pass rc=0
+### f2-premise-standing rc=0 rev=bacc5cb803a85a09fdcba0c7aa786777de04fb82
+  KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=bacc5cb803a85a09fdcba0c7aa786777de04fb82 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/1998
+  LIMB M1 pass after=1008/1994
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=16 unbound=none
+  LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=d6e3d30b426ad923eafb8aaf8bb4f3f72f59ec18e510706dd058ece4b4230744
+  KNOWLEDGE-METER-RESULT pass rc=0
+### f3-bare-s041 rc=1 rev=ce2b764bfa69835236a2690b0df4260f4a7a69c0
+  KNOWLEDGE-METER base=1007/1998 after=1008/1995 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=ce2b764bfa69835236a2690b0df4260f4a7a69c0 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/1998
+  LIMB M1 FAIL after=1008/1995
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=16 unbound=none
+  LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=0d1ed960802d323c5afac1de5601774ea792461c93598f4e5ada8abef3e96857
+  KNOWLEDGE-METER-RESULT fail rc=1
+### f4-old-elsewhere rc=0 rev=97ea8ef73785ac7b4c6e4929151803286cc9b47e
+  KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=17 labels=17 after_rev=97ea8ef73785ac7b4c6e4929151803286cc9b47e mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/1998
+  LIMB M1 pass after=1008/1994
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=17 unbound=none
+  LIMB M10 pass labelled=17 want=17 mapped=17 kinds=cell-repair=4,part=5,range=8 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=5435594dd3679a4fcca40a265450cdf79f9ad8ad36b1d22b398874e33fb633ea
+  KNOWLEDGE-METER-RESULT pass rc=0
+
+### per-fixture full logs
+
+----- fx-f1-false-cell.txt -----
+### fixture f1-false-cell rev=e7ff52ab470e7ed2a8ed92442b8f141f9a0e7b28 rc=0
+KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=e7ff52ab470e7ed2a8ed92442b8f141f9a0e7b28 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1007/1998
+LIMB M1 pass after=1008/1994
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=16 unbound=none
+LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=a7d6dc1daf72c3dea2d44ae0ed5330960437537f495d07352e24ab5c9ca3478b
+KNOWLEDGE-METER-RESULT pass rc=0
+
+----- fx-f2-premise-standing.txt -----
+### fixture f2-premise-standing rev=bacc5cb803a85a09fdcba0c7aa786777de04fb82 rc=0
+KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=bacc5cb803a85a09fdcba0c7aa786777de04fb82 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1007/1998
+LIMB M1 pass after=1008/1994
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=16 unbound=none
+LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=d6e3d30b426ad923eafb8aaf8bb4f3f72f59ec18e510706dd058ece4b4230744
+KNOWLEDGE-METER-RESULT pass rc=0
+
+----- fx-f3-bare-s041.txt -----
+### fixture f3-bare-s041 rev=ce2b764bfa69835236a2690b0df4260f4a7a69c0 rc=1
+KNOWLEDGE-METER base=1007/1998 after=1008/1995 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=ce2b764bfa69835236a2690b0df4260f4a7a69c0 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1007/1998
+LIMB M1 FAIL after=1008/1995
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=16 unbound=none
+LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=0d1ed960802d323c5afac1de5601774ea792461c93598f4e5ada8abef3e96857
+KNOWLEDGE-METER-RESULT fail rc=1
+
+----- fx-f4-old-elsewhere.txt -----
+### fixture f4-old-elsewhere rev=97ea8ef73785ac7b4c6e4929151803286cc9b47e rc=0
+KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=17 labels=17 after_rev=97ea8ef73785ac7b4c6e4929151803286cc9b47e mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1007/1998
+LIMB M1 pass after=1008/1994
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=17 unbound=none
+LIMB M10 pass labelled=17 want=17 mapped=17 kinds=cell-repair=4,part=5,range=8 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=5435594dd3679a4fcca40a265450cdf79f9ad8ad36b1d22b398874e33fb633ea
+KNOWLEDGE-METER-RESULT pass rc=0

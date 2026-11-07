@@ -1,0 +1,77 @@
+# NOTE: one bearer-shaped documentation example quoted in the S139 allowlist row (a context line of this diff) was redacted to keep this receipt capture-clean; the file itself is unchanged.
+# cmd: git diff -U3 9ef0126cc60b7f62baafd04f3e52c45e2a8e2f10 38e7319f44a9fab2978b59ffd43faf207cf62b32 -- corpus/instruments/capture-secret-scan.py corpus/instruments/capture-secret-allow.tsv SCORECARD.md
+diff --git a/SCORECARD.md b/SCORECARD.md
+index 9b2cd60..b1de69c 100644
+--- a/SCORECARD.md
++++ b/SCORECARD.md
+@@ -304,7 +304,7 @@ new-entry corrections: `corpus/lessons/round-21-routing-blocked.md`.
+ |---|---|---|---|
+ | sources-registry | Curates where kasegi learns: `corpus/SOURCES.md` (contract v1) — opened, scope-tiered rows with anchors, rejected rows with flips, study paths and a search log; all seven contract census commands run clean | `corpus/SOURCES.md`; seven contract census outputs recorded in `corpus/lessons/round-22.md` § Gate (Census block); 27 rows (A=25 C=2; mined=15 queued=10 rejected=2), malformed 0, dup/enum/missing-used-by empty | 22 |
+ | priced-claim-package | Builds a six-file claim package for one public disclosed report and prices it from the platform record, the vendor advisory, the vendor's current policy and the KEV capture, keeping conflicting reward records as separate fields | `python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane . --pkg corpus/practice/curl-h1-1913733` (E1–E5 pass) and `python3 corpus/instruments/claim-package-check.py corpus/practice/curl-h1-1913733` (WELL-FORMED); limits: the frozen counter does not bind the subject (lesson M85-2) | 85 |
+-| capture-secret-scan | Scans captured evidence (source snapshots, practice-package evidence under `corpus/practice/*/evidence/`, seat receipts, `live-*` captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns, AWS STS session tokens and AWS key ids (round 87), and cloud signed-URL signatures `gcs-signed-url-signature` (Cloud Storage V4, S126) and `azure-sas-signature` (Azure Storage SAS, S127) (round 88), and `cloudfront-signed-url-signature` (Amazon CloudFront signed URLs, canned and custom policy, S128, S130) plus Azure SAS matches that start after a JSON-escaped `\u0026` separator in any parameter position (round 89), and `cloudfront-signed-cookie-signature` (Amazon CloudFront signed cookies, a `CloudFront-Signature=` value of 40+ URL-safe base64 characters, S134) plus Azure SAS parameter windows holding the 7-letter user-delegation field `skdutid` (S133) (round 91), and `github-token` (GitHub's prefixed token format: `ghp_`/`gho_`/`ghu_`/`ghs_`/`ghr_` plus 36 base62 characters, and the stateless installation form `ghs_<APPID>_<JWT>`; S136, S137) (round 92), and `gitlab-pat` (a `glpat-` prefix plus a 20-character string, S139) plus tokens preceded by a JSON, percent or HTML-entity escape terminator whose last byte is alphanumeric (the `github-token` left boundary, round 93), with a digest-bound allowlist ; round 94 adds the GitLab custom-instance prefix (`acme-glpat-...`, S140 line 4) together with `gitlab-runner-auth-token` (`glrt-`/`glrtr-`, optional `t1_`/`t2_`/`t3_`, S140 line 114) and `gitlab-deploy-token` (`gldt-`, S140 line 255), retires the round-93 `glrt-` known limit, and relocates every planted path and basename at run time so a path-shape-keyed detector cannot know the plants | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5, round 87); `python3 -B .ufo/waves/round-88/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K6, round 88); `python3 -B .ufo/waves/round-89/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 89); `python3 -B .ufo/waves/round-91/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7 --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 91); `python3 -B .ufo/waves/round-92/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 92); `python3 -B .ufo/waves/round-93/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 <landed sha256> --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 93; plant paths are drawn under a run-time nonce); `python3 -B .ufo/waves/round-94/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 <landed sha256> --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K9, round 94; plants and basenames relocated per run; S140) | 87 |
++| capture-secret-scan | Scans captured evidence (source snapshots, practice-package evidence under `corpus/practice/*/evidence/`, seat receipts, `live-*` captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns, AWS STS session tokens and AWS key ids (round 87), and cloud signed-URL signatures `gcs-signed-url-signature` (Cloud Storage V4, S126) and `azure-sas-signature` (Azure Storage SAS, S127) (round 88), and `cloudfront-signed-url-signature` (Amazon CloudFront signed URLs, canned and custom policy, S128, S130) plus Azure SAS matches that start after a JSON-escaped `\u0026` separator in any parameter position (round 89), and `cloudfront-signed-cookie-signature` (Amazon CloudFront signed cookies, a `CloudFront-Signature=` value of 40+ URL-safe base64 characters, S134) plus Azure SAS parameter windows holding the 7-letter user-delegation field `skdutid` (S133) (round 91), and `github-token` (GitHub's prefixed token format: `ghp_`/`gho_`/`ghu_`/`ghs_`/`ghr_` plus 36 base62 characters, and the stateless installation form `ghs_<APPID>_<JWT>`; S136, S137) (round 92), and `gitlab-pat` (a `glpat-` prefix plus a 20-character string, S139) plus tokens preceded by a JSON, percent or HTML-entity escape terminator whose last byte is alphanumeric (the `github-token` left boundary, round 93), with a digest-bound allowlist ; round 94 adds the GitLab custom-instance prefix (`acme-glpat-...`, S140 line 4) together with `gitlab-runner-auth-token` (`glrt-`/`glrtr-`, optional `t1_`/`t2_`/`t3_`, S140 line 114) and `gitlab-deploy-token` (`gldt-`, S140 line 255), retires the round-93 `glrt-` known limit, and relocates every planted path and basename at run time so a path-shape-keyed detector cannot know the plants (round 95) adds `github-refresh-token` (`ghr_` plus 76 alphanumerics, S142 line 169 and S141 line 72) and `gitlab-jwt-token` (the `glcbt-`/`glsat-`/`gliamat-` three-segment `eyJ` forms, S140 lines 429/446/463) | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5, round 87); `python3 -B .ufo/waves/round-88/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K6, round 88); `python3 -B .ufo/waves/round-89/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 89); `python3 -B .ufo/waves/round-91/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7 --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 91); `python3 -B .ufo/waves/round-92/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 92); `python3 -B .ufo/waves/round-93/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 <landed sha256> --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K8, round 93; plant paths are drawn under a run-time nonce); `python3 -B .ufo/waves/round-94/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 <landed sha256> --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K9, round 94; plants and basenames relocated per run; S140); `python3 -B .ufo/waves/round-95/c2/capability-check.py --lane . --rev master --work <scratch> --instrument-sha256 <landed sha256> --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` (K1-K6, round 95; plant paths and basenames nonce-derived) | 87 |
+ | capture-intake-gate | `capture-source.py` refuses a capture whose converted bytes carry credential material before the snapshot file is opened: every `capture-secret-scan` shape (imported, so the two never drift), shape and line reported but never the value, nothing written and an existing file kept byte-identical, exit 3; fail-closed when the scanner or allowlist cannot load; digest-bound allowlist per path (design source S131, GitHub push protection; considerthese/2026-10-24.md:49-52) | `python3 -B .ufo/waves/round-90/c2/capability-check.py --lane <lane> --rev <landing> --base-rev 6088c3eb0c29040415c69e7b5fb91e110480ab26 --work <scratch> --instrument-sha256 0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf` (G0–G6, P); controls `.ufo/waves/round-90/controls/c2-controls-r90.txt` | 90 |
+ 
+ The `sources-registry` capability entered in round 22; the preceding row replaces the rollout's empty repertoire placeholder. New rows require an exercised round demonstration (`AXES.md` §Capabilities).
+diff --git a/corpus/instruments/capture-secret-allow.tsv b/corpus/instruments/capture-secret-allow.tsv
+index daa5ca7..7d14ed7 100644
+--- a/corpus/instruments/capture-secret-allow.tsv
++++ b/corpus/instruments/capture-secret-allow.tsv
+@@ -24,3 +24,4 @@ corpus/source-snapshots/round-93/S139.txt	bearer	[documentation-example-redacted-31-bytes]
+ corpus/source-snapshots/round-93/S139.txt	credential	41d722d8e25112ee41a6bad1ed0b51d1ae1b47208bffb4576c79eea235c8d7ea	GitLab Secret Detection documentation example: the api_key teaching sample Of3Pg5Qh7Ri9Sj1Tk, not a credential (read in context at S139 line 116)
+ corpus/source-snapshots/round-93/S139.txt	credential	2b651dfaddc5b6a628928a2cc1b8a564988790588f2e019089b003a2f7530ddb	GitLab Secret Detection documentation example: the --api-token teaching sample 7bN2vLpQ9wXzKfM4, not a credential (read in context at S139 line 126)
+ corpus/source-snapshots/round-93/S139.txt	credential	2e568d85c816467d7ca2025d8d8bd2281649de0f178051f21b159c02e2d52aa1	GitLab Secret Detection documentation prose: the finding-type list sentence, not a value (read in context at S139 line 139)
++.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt	github-refresh-token	c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d	synthetic sequential placeholder (ghr_ + 1234567890abcdef repeated) in a round-94 wave receipt that measured token tail lengths; not a credential
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index 0f4653e..aa43b4e 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -188,17 +188,24 @@ CLOUD_PATTERNS = (
+ _ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ _GH_LB = _ESC_LB
+ _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
++_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
++    ("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),
+ )
+ _GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ _GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"
++_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"
++_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"
++_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG
+ GITLAB_PATTERNS = (
+     ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+     ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+     ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
++    ("gitlab-jwt-token", re.compile(
++        _GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
+@@ -427,6 +434,22 @@ def selftest(pats):
+         ("gl-deploy", b"gldt-" + b"0123456789abcdefghij", {"gitlab-deploy-token"}),
+         ("gl-deploy-19-chars", b"gldt-" + b"0123456789abcdefghi ", set()),
+         ("gl-deploy-21-chars", b"gldt-" + b"0123456789abcdefghijk", set()),
++        # round 95: GitHub refresh token (ghr_ 76, S142) and the GitLab JWT
++        # family (glcbt-/glsat-/gliamat-, S140 lines 429, 446, 463)
++        ("gh-refresh-76", b"ghr_" + b"aB3"*25 + b"a", {"github-refresh-token"}),
++        ("gh-refresh-75", b"ghr_" + b"aB3"*25, set()),
++        ("gh-refresh-77", b"ghr_" + b"aB3"*25 + b"aa", set()),
++        ("gh-refresh-36-classic", b"ghr_" + ghtail, {"github-token"}),
++        ("gh-refresh-escape-u0020", b'"v":"\\u0020ghr_' + b"aB3"*25 + b"a" + b'"', {"github-refresh-token"}),
++        ("gl-jwt-clcbt", b"glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
++        ("gl-jwt-clcbt-custom", b"acme-glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
++        ("gl-jwt-glsat", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
++        ("gl-jwt-gliamat", b"gliamat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
++        ("gl-jwt-not-eyj", b"glcbt-abcdefghij.eyJyyyyyyyyyy.zzzzzzzzzzzzzzzzzzzz", set()),
++        ("gl-jwt-short-head", b"glcbt-eyJabc.eyJyyyyyyyyyy." + b"z"*30, set()),
++        ("gl-jwt-third-19-chars", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*19 + b" ", set()),
++        ("gl-jwt-letter-before", b"xglcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, set()),
++        ("gl-jwt-doc-placeholder", b"glcbt-eyJ<header>.<payload>.<signature>", set()),
+     ]
+     bad = 0
+     for name, data, want in cases:
+rc=0

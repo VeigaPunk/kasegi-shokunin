@@ -1,8 +1,6 @@
----
-source: S142 — GitHub Docs, Refreshing user access tokens, https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens (capture corpus/source-snapshots/round-95/S142.txt, line 169); S143 (supersedes S141) — GitLab secret-detection rules, rules/mit/github/github.toml at commit 59ada1f4, line 72 (the 76-character length); S140 — GitLab secret-detection rules, rules/mit/gitlab/gitlab.toml at commit 59ada1f4, lines 429, 446, 463 (the `eyJ` three-segment forms)
+source: S142 — GitHub Docs, Refreshing user access tokens, https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens (capture `corpus/source-snapshots/round-95/S142.txt:169`; 182 lines / 7,944 bytes / sha256 `727ba6a0294318324e43ddd266832c49b3895303667b9419336d3265f8a42864`); S143 (supersedes S141) — GitLab secret-detection rules, `rules/mit/github/github.toml` at commit 59ada1f4, line 72 (the 76-character length; raw file 130 lines / 3,955 bytes / sha256 `02c67cebbf24803552c5696b65f9f9885569580ec38480bc29ee56957c2a83e0`, quoted at `.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/08-github-rules-file.txt:16`); S140 — GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, `corpus/source-snapshots/round-94/S140.txt:429`, `corpus/source-snapshots/round-94/S140.txt:446`, `corpus/source-snapshots/round-94/S140.txt:463` (the three prefix keywords) and `corpus/source-snapshots/round-94/S140.txt:430`, `corpus/source-snapshots/round-94/S140.txt:447`, `corpus/source-snapshots/round-94/S140.txt:464` (the three regexes; 563 lines / 25,537 bytes / sha256 `f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c`)
 verified-at: 38e7319f44a9fab2978b59ffd43faf207cf62b32
-recheck: python3 -B corpus/instruments/capture-secret-scan.py --selftest | grep -E 'gh-refresh|gl-jwt' (14 cases) and `python3 -B corpus/instruments/capture-secret-scan.py --rev master`
----
+recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 -B corpus/instruments/anchorcheck.py corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md && sed -n '169p' corpus/source-snapshots/round-95/S142.txt | grep -q 'The token starts with ghr_\.$' && sed -n '429p' corpus/source-snapshots/round-94/S140.txt | grep -qxF 'keywords = ["glcbt-"]' && sed -n '446p' corpus/source-snapshots/round-94/S140.txt | grep -qxF 'keywords = ["glsat-"]' && sed -n '463p' corpus/source-snapshots/round-94/S140.txt | grep -qxF 'keywords = ["gliamat-"]' && python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-95/S142.txt corpus/source-snapshots/round-94/S140.txt
 
 # GitHub refresh tokens and the GitLab JWT token family
 
@@ -12,21 +10,41 @@ first-party or vendor rule file and each bounded by an explicit length floor.
 ## GitHub refresh token — `ghr_` plus 76 characters
 
 GitHub states the prefix in its own documentation: the token exchange returns a
-`refresh_token` and "The token starts with `ghr_`" (S142, capture line 169; the
-sentence is 5 words and sits in the response-field table). The *length* is not
-on that page; GitLab's machine-readable GitHub rule file gives it as
-`ghr_[0-9a-zA-Z]{76}` (S143, line 72; superseding S141), and the same file's measurement table
-records `ghr total= 80 tail= 76` (a round-94 wave receipt derived the same 76
-from that file). This lane therefore implements `ghr_` + exactly 76
-alphanumerics, right-bounded by `(?![A-Za-z0-9_])`.
+`refresh_token` and "The token starts with `ghr_`"
+(`corpus/source-snapshots/round-95/S142.txt:169`; the sentence is 5 words and
+sits in the response-field table). The *length* is not on that page; the S143
+correction row (GitLab's machine-readable copy of GitHub's shapes, superseding
+S141) gives it at line 72 as `regex = "ghr_[0-9a-zA-Z]{76}"`, quoted from the
+committed fetch receipt
+(`.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/08-github-rules-file.txt:16`;
+the raw file is 130 lines / 3,955 bytes / sha256 `02c67ceb…` and is not
+committed because it lists published example values). A round-94 wave receipt's
+measurement of that file prints `ghr total= 80 tail= 76`
+(`.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt:10`;
+the example value there is not reproduced here).
+
+The lane's exact matcher is (`corpus/instruments/capture-secret-scan.py:191`,
+`corpus/instruments/capture-secret-scan.py:196`):
+
+- `_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"`
+- `("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),`
+
+`_GH_LB` is `_ESC_LB` (`corpus/instruments/capture-secret-scan.py:188-189`): not
+preceded by a letter, digit or `_`, or preceded by a `\t`/`\r`/`\n`, `\uXXXX`,
+`%XX`, `&#NN;` or `&#xNN;` escape. The right boundary is the lane's own; the
+vendor rule at S143 line 72 has none.
 
 The 36-character classic family is unchanged: `gh[pousr]_` + 36 alphanumerics
 still fires as `github-token`, and a `ghr_` token of 36 characters keeps that
-hit (S136/S137, rounds 92). The 76-character rule is a *separate* shape
-(`github-refresh-token`) precisely because a 36-character matcher with a right
-boundary cannot match a 76-character value: its lookahead fails at character 37.
+hit (S136/S137 at `corpus/source-snapshots/round-92/S136.txt:161-167` and
+`corpus/source-snapshots/round-92/S137.txt:156-162`, round 92). The 76-character
+rule is a *separate* shape (`github-refresh-token`) precisely because a
+36-character matcher with a right boundary cannot match a 76-character value:
+its lookahead fails at character 37.
 
-Boundary facts, all mutation-tested in round 95:
+Boundary facts, pinned by the selftest cases at
+`corpus/instruments/capture-secret-scan.py:439-443` and by the lookbehind at
+`corpus/instruments/capture-secret-scan.py:188`:
 
 - 75 characters is not a hit; 77 characters is not a hit (a 76-character
   matcher with a right boundary cannot consume a longer value).
@@ -34,30 +52,48 @@ Boundary facts, all mutation-tested in round 95:
   `&#NN;`, `&#xNN;` and non-identifier characters), so a JSON-joined
   `"log":"line\nghr_…"` is a hit and a letter immediately before the prefix
   (`xghr_…`) is not.
-- A word ending in the letters is not a hit; the prefix must be preceded by a
-  boundary and followed by exactly 76 token characters.
+- A longer identifier that merely ends in the prefix letters (`xghr_…`) is not
+  a hit: the lookbehind refuses a preceding `[A-Za-z0-9_]`, and the prefix must
+  be followed by exactly 76 token characters.
 
 ## GitLab JWT family — `glcbt-`, `glsat-`, `gliamat-`
 
-GitLab's rules file publishes three JWT-shaped tokens as one grammar
-(S140 lines 429, 446, 463):
+GitLab's rules file publishes three JWT-shaped tokens as one grammar. The
+`keywords` lines are at `corpus/source-snapshots/round-94/S140.txt:429`,
+`corpus/source-snapshots/round-94/S140.txt:446` and
+`corpus/source-snapshots/round-94/S140.txt:463`; the regexes are the next line
+of each rule (`corpus/source-snapshots/round-94/S140.txt:430`,
+`corpus/source-snapshots/round-94/S140.txt:447`,
+`corpus/source-snapshots/round-94/S140.txt:464`):
 
 ```
-(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_-]{10,1000}\.eyJ[0-9a-zA-Z_-]{10,1000}\.[0-9a-zA-Z_-]{20,1000}
-(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ…  (same grammar)
-gliamat-eyJ…                       (same grammar, no instance prefix)
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
 ```
+
+The lane's exact matcher (`corpus/instruments/capture-secret-scan.py:198-208`):
+
+- `_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"` (`corpus/instruments/capture-secret-scan.py:198`)
+- `_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"` (`corpus/instruments/capture-secret-scan.py:199`)
+- `_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"` (`corpus/instruments/capture-secret-scan.py:200`)
+- `_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"` (`corpus/instruments/capture-secret-scan.py:201`)
+- `_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG` (`corpus/instruments/capture-secret-scan.py:202`)
+- `("gitlab-jwt-token", re.compile(` and `_GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),` (`corpus/instruments/capture-secret-scan.py:207-208`)
 
 Facts a reader can act on:
 
-- The head is `eyJ` (base64 of `{"`), so a `glcbt-` string whose first segment
-  does not start with `eyJ` is not a hit.
+- The head is `eyJ`, the first three base64url characters of a JWT header whose
+  JSON opens `{"` (a decoding fact, not a vendor sentence: base64 of `{"` alone
+  is `eyI=`; `{"a` is `eyJh`). A `glcbt-` string whose first segment does not
+  start with `eyJ` is not a hit.
 - The first two segments carry a 10-character floor; the signature segment
   carries a **20**-character floor. A 19-character third segment is not a hit.
 - `glcbt-` and `glsat-` accept a 1–20-character instance prefix (`acme-glcbt-…`);
-  `gliamat-` carries no prefix in the vendor rule, and this lane's matcher
-  reaches a prefixed `gliamat-` only through its left boundary, which is a
-  documented superset, not a vendor claim.
+  the vendor's `gliamat-` rule has no optional prefix. A string such as
+  `acme-gliamat-…` is matched on the `gliamat-…` span, which the vendor's `\b`
+  also matches after the hyphen; the lane's left boundary is a superset only
+  for escape-joined contexts (`\u0020gliamat-…`), which the vendor `\b` refuses.
 - The left boundary is the same escape family as the other GitLab shapes, so
   `\u0020`-prefixed and HTML-entity-separated contexts are hits.
 
@@ -65,34 +101,47 @@ Facts a reader can act on:
 
 Credential detectors that key on the prefix alone under-detect: a 76-character
 refresh token defeats a 36-character matcher, and a JWT segment floor is what
-distinguishes a token from a placeholder such as `glcbt-eyJ<header>.<payload>.
-<signature>`. Both new shapes are therefore tested against the vendor's own
-published examples and against documentation placeholders in the instrument's
-selftest (cases `gh-refresh-*`, `gl-jwt-*`), which grew 101 → 115 cases in
-round 95.
+distinguishes a token from a placeholder such as
+`glcbt-eyJ<header>.<payload>.<signature>`. Both new shapes are pinned by the
+instrument's selftest at `corpus/instruments/capture-secret-scan.py:439-452`
+(cases `gh-refresh-*`, `gl-jwt-*`), which grew 101 → 115 cases in round 95; the
+cases use synthetic values and a placeholder-shaped string, not the vendor's
+redacted example values.
 
 ## Falsification checklist
 
-- `grep -c 'The token starts with ghr_' corpus/source-snapshots/round-95/S142.txt` → 1.
-- `sed -n '72p' <S141 capture>` must print `regex = "ghr_[0-9a-zA-Z]{76}"` (the
-  row records the file at commit 59ada1f4; the capture is not committed because
-  the file lists published example values).
+- `sed -n '169p' corpus/source-snapshots/round-95/S142.txt` must print the
+  sentence `The token starts with ghr_.` (the whole line is the response-field
+  row; the capture is 182 lines / 7,944 bytes / sha256 `727ba6a0…`).
+- `sed -n '16p' .ufo/waves/round-94/w1/ScoutGitLabRules-receipts/08-github-rules-file.txt`
+  must print `72:regex = "ghr_[0-9a-zA-Z]{76}"` (the raw file is 130 lines /
+  3,955 bytes / sha256 `02c67ceb…` and is not committed because it lists
+  published example values).
 - `sed -n '429p;446p;463p' corpus/source-snapshots/round-94/S140.txt` must print
-  the three `glcbt-`/`glsat-`/`gliamat-` rules.
+  the three `keywords` lines; `sed -n '430p;447p;464p'` must print the three
+  regexes (all six lines are quoted in the section above).
 - `python3 -B corpus/instruments/capture-secret-scan.py --selftest` prints
-  `SELFTEST-RESULT pass cases=115`; the 14 new cases cover both families'
-  positive, boundary and placeholder negatives.
-- `python3 -B .ufo/waves/round-95/c2/capability-check.py --lane . --rev master
-  --work <scratch> --instrument-sha256 <sha> --gate-sha256 <sha>` prints K1–K6 ok.
+  `SELFTEST-RESULT pass cases=115`; the 14 new cases at
+  `corpus/instruments/capture-secret-scan.py:439-452` cover the 76/75/77
+  boundary and the classic-36 fallback for GitHub, and the three prefixes, the
+  10/10/20 floors, the non-`eyJ` head and a placeholder for GitLab.
+- `python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-95/S142.txt corpus/source-snapshots/round-94/S140.txt`
+  prints `CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=24 rc=0`.
+- `python3 -B corpus/instruments/anchorcheck.py corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md`
+  prints `0 bad` and exits 0.
 
 ## Rejected claims
 
 - **"The S142 page states the refresh token's length."** It does not: line 169
-  states only the prefix. The length comes from S141's rule file; an entry that
-  attributes 76 to the GitHub page would be false about its own source.
+  states only the prefix. The length comes from the S143 correction row (the
+  same file as S141, which S143 supersedes); an entry that attributes 76 to the
+  GitHub page would be false about its own source.
 - **"`ghr_` is a 36-character shape like the other GitHub prefixes."** The
   classic family is 36; the refresh family is 76. Treating 76 as 36 would miss
   every real refresh token because the right boundary fails at character 37.
 - **"The JWT family is one flat prefix rule."** The three-segment grammar with
   its 10/10/20 floors is what separates a token from a placeholder; a flat
   `glcbt-` prefix rule false-greens documentation prose.
+- **"`eyJ` is the base64 of `{"` alone."** It is not: base64 of `{"` is `eyI=`;
+  `eyJ` is the first three characters when the JSON continues with a byte in
+  0x40–0x7F (e.g. `{"a` → `eyJh`). A decoding fact, not a vendor claim.

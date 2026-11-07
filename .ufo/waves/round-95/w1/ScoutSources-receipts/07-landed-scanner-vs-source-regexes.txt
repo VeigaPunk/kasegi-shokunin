@@ -1,0 +1,59 @@
+# R07 the landed scanner vs. the two source regexes, side by side (probe on the landed instrument)
+# instrument under test: corpus/instruments/capture-secret-scan.py at HEAD (sha256 66edd66143ec62f6e40c864817a97383916d7ff67e5ab384e130b65c44516707
+#   == the frozen candidate .ufo/waves/round-95/c2/candidate-scanner.py, byte-identical)
+case                                             lane_scanner           source_regex
+glcbt plain                                      gitlab-jwt-token       S140 L430 glcbt
+glcbt custom prefix                              gitlab-jwt-token       S140 L430 glcbt
+glsat plain                                      gitlab-jwt-token       S140 L447 glsat
+glsat custom prefix                              gitlab-jwt-token       S140 L447 glsat
+gliamat plain                                    gitlab-jwt-token       S140 L464 gliamat
+gliamat after a dash (S140 \b matches here too)  gitlab-jwt-token       S140 L464 gliamat
+glcbt tail 1001 chars                            NO HIT                 S140 L430 glcbt
+ghr_ 76 + 77th alnum                             NO HIT                 S141 L72 ghr_
+ghr_ 76 exact                                    github-refresh-token   S141 L72 ghr_
+
+# and the family sweep (every S140 rule, at its snapshot line):
+S140 L430 glcbt jwt                                      -> ['gitlab-jwt-token']
+S140 L430 glcbt jwt +instance prefix                     -> ['gitlab-jwt-token']
+S140 L447 glsat jwt                                      -> ['gitlab-jwt-token']
+S140 L447 glsat jwt +instance prefix                     -> ['gitlab-jwt-token']
+S140 L464 gliamat jwt                                    -> ['gitlab-jwt-token']
+S140 L464 gliamat jwt WITH prefix (S140 has none)        -> ['gitlab-jwt-token']
+S140 L292 legacy glcbt (glcbt-<5alnum>_<20+>)            -> NO HIT
+S140 L480 gliamrt 2-seg                                  -> NO HIT
+S140 L497 gliamac 2-seg                                  -> NO HIT
+S140 L73 glptt 20                                        -> NO HIT
+S140 L73 glptt 40                                        -> NO HIT
+S140 L174 gloas 64                                       -> NO HIT
+S140 L190 glft 20                                        -> NO HIT
+S140 L213 glagent 50                                     -> NO HIT
+S140 L229 glimt 22                                       -> NO HIT
+S140 L278 glsoat 20                                      -> NO HIT
+S140 L392 glwt routable                                  -> NO HIT
+S140 L376 glagent routable                               -> NO HIT
+S141 L72 ghr_ 76                                         -> ['github-refresh-token']
+S141 L72 ghr_ 75                                         -> NO HIT
+S141 L72 ghr_ 77                                         -> NO HIT
+S141 L72 ghr_ 76 + underscore tail                       -> NO HIT
+S140 L100 GR1348941 runner reg                           -> NO HIT
+S140 L308 t1_ partition                                  -> NO HIT
+S140 L514 glft path-dep                                  -> NO HIT
+S140 L160 feed_token=                                    -> NO HIT
+
+# and the routable / floor / placeholder probes:
+glpat routable (S140 L30)                            -> NO HIT
+gldt routable (S140 L324)                            -> NO HIT
+glrt routable (S140 L136)                            -> NO HIT
+glagent routable (S140 L358)                         -> NO HIT
+glwt routable (S140 L375)                            -> NO HIT
+ghr_ 76 in quotes/JSON                               -> ['github-refresh-token']
+glcbt jwt 9-char first segment (below 10 floor)      -> NO HIT
+glcbt jwt 19-char third segment (below 20 floor)     -> NO HIT
+glcbt doc placeholder                                -> NO HIT
+ghr_ doc placeholder prose                           -> NO HIT
+
+# and the tail-overflow / ghr_ right-bound divergence:
+glcbt tail 1000 chars          lane_scanner=['gitlab-jwt-token']   s140_s141_source_regex=MATCH
+glcbt tail 1001 chars          lane_scanner=NO HIT                 s140_s141_source_regex=MATCH
+ghr_ 76 then a 77th alnum      lane_scanner=NO HIT                 s140_s141_source_regex=MATCH
+ghr_ 76 then a dash            lane_scanner=['github-refresh-token'] s140_s141_source_regex=MATCH

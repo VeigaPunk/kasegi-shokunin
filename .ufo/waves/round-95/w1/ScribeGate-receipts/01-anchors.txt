@@ -1,0 +1,49 @@
+ANCHOR S142:169 ghr_ sentence             OK contains=b'The token starts with ghr_.'
+ANCHOR S142:169 field name                OK contains=b'refresh_tokenstring'
+ANCHOR S140:429 glcbt keyword             OK b'keywords = ["glcbt-"]'
+ANCHOR S140:446 glsat keyword             OK b'keywords = ["glsat-"]'
+ANCHOR S140:463 gliamat keyword           OK b'keywords = ["gliamat-"]'
+ANCHOR S140:428 glcbt id                  OK b'id = "gitlab_ci_build_token_jwt"'
+ANCHOR S140:445 glsat id                  OK b'id = "gitlab_stateless_access_token"'
+ANCHOR S140:462 gliamat id                OK b'id = "gitlab_iam_access_token"'
+ANCHOR S140:430 glcbt regex               OK b"regex = '''\\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\\-]{10,1000}\\.eyJ[0-9a-zA-Z_\\-]{10,1000}\\.[0-9a-zA-Z_\\-]{20,1000"
+ANCHOR S140:447 glsat regex               OK b"regex = '''\\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\\-]{10,1000}\\.eyJ[0-9a-zA-Z_\\-]{10,1000}\\.[0-9a-zA-Z_\\-]{20,1000"
+ANCHOR S140:464 gliamat regex             OK b"regex = '''\\bgliamat-eyJ[0-9a-zA-Z_\\-]{10,1000}\\.eyJ[0-9a-zA-Z_\\-]{10,1000}\\.[0-9a-zA-Z_\\-]{20,1000}'''"
+ANCHOR S141-receipt:16 line 72            OK b'72:regex = "ghr_[0-9a-zA-Z]{76}"'
+ANCHOR S141-receipt:06 measurement        OK contains=b'ghr          total= 80 tail= 76'
+ANCHOR scanner:188 _ESC_LB                OK b'_ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\\\[ntr])|(?<=\\\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0'
+ANCHOR scanner:189 _GH_LB                 OK b'_GH_LB = _ESC_LB'
+ANCHOR scanner:191 _GH_REFRESH            OK b'_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"'
+ANCHOR scanner:193 github-token           OK b'("github-token", re.compile('
+ANCHOR scanner:196 github-refresh row     OK b'    ("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),'
+ANCHOR scanner:198 _GL_LB                 OK b'_GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\\\[ntr])|(?<=\\\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-'
+ANCHOR scanner:199 _GL_PREFIX             OK b'_GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"'
+ANCHOR scanner:200 _GJ_SEG                OK b'_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"'
+ANCHOR scanner:201 _GJ_TAIL               OK b'_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"'
+ANCHOR scanner:202 _GJ_HEAD               OK b'_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG'
+ANCHOR scanner:207 gitlab-jwt row         OK b'    ("gitlab-jwt-token", re.compile('
+ANCHOR scanner:208 gitlab-jwt tail        OK b'        _GJ_HEAD + rb"\\.eyJ" + _GJ_SEG + rb"\\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),'
+ANCHOR scanner:439 case                   OK contains=b'gh-refresh-76'
+ANCHOR scanner:440 case                   OK contains=b'gh-refresh-75'
+ANCHOR scanner:441 case                   OK contains=b'gh-refresh-77'
+ANCHOR scanner:442 case                   OK contains=b'gh-refresh-36-classic'
+ANCHOR scanner:443 case                   OK contains=b'gh-refresh-escape-u0020'
+ANCHOR scanner:444 case                   OK contains=b'gl-jwt-clcbt'
+ANCHOR scanner:445 case                   OK contains=b'gl-jwt-clcbt-custom'
+ANCHOR scanner:446 case                   OK contains=b'gl-jwt-glsat'
+ANCHOR scanner:447 case                   OK contains=b'gl-jwt-gliamat'
+ANCHOR scanner:448 case                   OK contains=b'gl-jwt-not-eyj'
+ANCHOR scanner:449 case                   OK contains=b'gl-jwt-short-head'
+ANCHOR scanner:450 case                   OK contains=b'gl-jwt-third-19-chars'
+ANCHOR scanner:451 case                   OK contains=b'gl-jwt-letter-before'
+ANCHOR scanner:452 case                   OK contains=b'gl-jwt-doc-placeholder'
+REQUIRED GitHub refresh regex         MISSING
+REQUIRED GitHub refresh row           MISSING
+REQUIRED GitLab prefix                MISSING
+REQUIRED JWT segment                  MISSING
+REQUIRED JWT tail                     MISSING
+REQUIRED GitLab JWT row               MISSING
+REQUIRED JWT tail expr                MISSING
+RECHECK-PARSE rc=2 NOT-A-COMMAND
+ANCHOR-CHECK total=39 bad=0
+ENTRY-REQUIRED missing=7

@@ -1,0 +1,217 @@
+=== /home/vgpnk/Projects/shokunin/kaidoku-shokunin/tools/round-93/craft-citation-semantic.py ===
+#!/usr/bin/env python3
+"""craft-citation-semantic.py - round-93 counter (R93-C2, depth).
+
+A craft row's criterion citation must name a criterion whose text states the
+rule the row asserts. Round 91 landed craft block 31 whose row 3 cited
+`corpus/QUALITY.md` row 169 (guard inheritance) for the intact-input rule —
+a citation that resolves but mis-states, invisible to every citation-resolves
+counter until the round-92 non-author spot-check named it (D-91-3). This
+checker freezes, per row, the keyword atoms the cited criterion must contain.
+
+Input: a frozen JSON manifest (`--manifest`):
+
+    {"block": 32,
+     "marker": "stop-boundary-supersedes-citation v1",
+     "rows": [{"row_snippet": "intact input refused by mistake",
+               "keywords": ["exactly one candidate", "packer's own verdict"]},
+              ...]}
+
+For every manifest row the checker:
+1. reads the `## Queue-drain craft` section of `SKILL.md` (at `--rev` via
+   `git show`, or `--worktree` from the tree) and takes rule block `<block>`;
+2. requires the block to carry its marker comment and a decision-table shape
+   (header + separator + >= 3 body rows of >= 4 cells);
+3. finds exactly one body row whose first cell contains `row_snippet`;
+4. parses the criterion cell's `QUALITY <N>` citation (exactly one);
+
+=== /home/vgpnk/Projects/shokunin/kaidoku-shokunin/tools/round-97/craft-citation-v2.py ===
+#!/usr/bin/env python3
+"""craft-citation-v2.py - round-97 counter (R97-C2, depth).
+
+Supersedes `tools/round-93/craft-citation-semantic.py` on three counts, routed by the
+round-96 CriticC2 attacks (a)-(d) and frozen before data:
+
+1. **Criterion-cell restatement (kills attacks a and b).** At least one of the
+   manifest row's keywords must occur verbatim in the matched craft row's own cells.
+   A rule-free criterion (`see (QUALITY 193)`) or a criterion carrying the opposite
+   rule with none of its row's vocabulary is refused (`criterion-not-restated`).
+2. **Citation-number validation (kills attack c).** A manifest row may declare
+   `expected_quality`; the single `QUALITY <N>` citation parsed from the criterion
+   cell must equal it (`criterion-citation-mismatch:<num>!=<expected>`), so citing an
+   overlapping neighbor row no longer passes.
+3. **The snippet-carrying table is the shape oracle (kills attack d's padding).** The
+   block's shape (header + separator + >= 3 body rows of >= 4 cells) is evaluated on
+   the contiguous table that contains the matched row - a padded decoy table elsewhere
+   in the block no longer rescues a junk table (`matched-table-shape:*`).
+
+Everything else is unchanged from v1 (block + marker, one row per snippet, exactly one
+`QUALITY <N>` citation, verbatim keywords in the cited QUALITY row, exit 0/1/2).
+`--selftest` runs 14 fixture cases under `--work`.
+"""
+
+from __future__ import annotations
+
+=== /home/vgpnk/Projects/shokunin/kake-shokunin/scripts/citation_lint.py ===
+#!/usr/bin/env python3
+"""Commit-citation hygiene gate (round 46, C2).
+
+Resolves every lane-commit citation over the frozen population
+{SCORECARD.md, LOG.md} and reports each violation with file, line and token.
+A violation is a hex token in a commit-citation context that does not resolve
+to a git object in the lane repository. Contexts and exclusions are named
+classes (each exercised by the selftest); tokens named in the committed
+adjudication ledger (corpus/quality/citation-adjudications.md) are reported as
+adjudicated, not violations.
+
+Citation context: the token's line names a commit-bearing relation
+(commit/base/revision/tip/HEAD/landed/hash/ancestor/parent). Excluded classes:
+content digests (sha256/sha/digest on the line), beat/marker pins, external
+repositories named on the same line (ufo-fsd-alpha, ds4cc-marketplace,
+webzites, charter, lucario, marketplace upstream, fleet repo, sandbox runs),
+and tokens glued to alphanumerics/UUID dashes or without a-f letters.
+
+Exit map: 0 clean (no unadjudicated violations), 1 violations found,
+2 could-not-evaluate, 64 usage.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+
+=== /home/vgpnk/Projects/shokunin/kama-shokunin/tools/citation-provenance.py ===
+#!/usr/bin/env python3
+"""citation-provenance.py — machine-checkable revision-qualified citations.
+
+Round-18 routed defects (S055/Gate/SCORECARD) were pointer drift: prose cited a
+path at a revision where the described bytes did not exist, or the tip's
+artifacts replaced the cited ones. This tool makes each material citation a
+token the documents must carry:
+
+    cite(<rev>, <path>, sha256=<64 lowercase hex>)
+
+and verifies, for every required row in the registry, that (a) some document
+carries the exact token, and (b) `git cat-file` at `<rev>:<path>` yields a blob
+whose SHA-256 equals the token's digest. Missing or mismatching rows are
+counted; exit 0 only when both counts are zero.
+
+    citation-provenance.py [--registry PATH] [--docs PATH ...] [--lane PATH]
+                           [--json] [--selftest]
+
+Exit: 0 all required citations found and verified; 1 missing/mismatch;
+      2 unusable registry/docs/git.
+"""
+import argparse
+import hashlib
+import json
+import os
+
+=== /home/vgpnk/Projects/shokunin/kama-shokunin/tools/round77-citation-baseline.py ===
+#!/usr/bin/env python3
+"""Round-77 C1: frozen receipt scope plus reproducible baseline receipts.
+
+Only measured/before receipts use introduction ancestry and byte stability.
+All other citations retain the imported round-76 classification rules.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import importlib.util
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+sys.dont_write_bytecode = True
+HERE = os.path.dirname(os.path.abspath(__file__))
+PREDICATE = (
+    "`python3 tools/round77-citation-baseline.py --repo <lane> --round 75` prints one "
+    "`CITATION_BASELINE round=75 fenced_quoted=1 live_citations=11 bound=9 unbound=2 shifted=0 "
+    "nonreceipt=0 unclassified=0` line and exits 0 only when the round-75 self-record's citation "
+
+=== /home/vgpnk/Projects/shokunin/tsukuroi-shokunin/tools/check-section-citations.py ===
+#!/usr/bin/env python3
+"""Narrow, read-only round-16 section-citation errata gate.
+
+Bounded named-defect conformance, never host truth and never an
+update-safety or host-health verdict: the two records of
+corpus/knowledge/section-citation-errata-r16.json (schema
+tsukuroi-section-citation-errata-v1, source_id S050) must exactly match
+the pinned contract values; each record's heading must exist exactly
+once outside fenced code in its pinned target file, its row_key must
+resolve to exactly one row line under that heading, and its quote must
+be a substring of that row. The actual historical wrong locators
+"§1 verdict-board row 5" (true §0) and "§7 rank 1" (true §5) are
+defects tolerated only inside the preserved ## R15-UPDATE-STATE section
+or inside their resolving ## R16-*-SECTION — citation-only erratum
+notice; any other occurrence is SECTION-CITATION-WRONG. Every byte
+before the appended notice must equal the baseline db68e62… prefix;
+the R15 current-use supersession and the no-package/service
+authorization must stand untouched. --revision <rev> reads immutable
+git objects only (record path fields are compared, never dereferenced)
+and admits only an explicit 7-64 hex commit: HEAD, @, @- and ref names
+are rejected because under jj colocation HEAD is @- (the parent of the
+working copy), not the branch tip. The revision and the db68e62…
+baseline must each be an ancestor of refs/heads/<--branch> (default
+master) and, when refs/remotes/origin/<branch> exists, of it too.
+`tools/_revision.py` owns the shared binding; branch validation precedes
+
+=== /home/vgpnk/Projects/shokunin/souji-shokunin/tools/souji-citation-reconcile.py ===
+#!/usr/bin/env python3
+"""souji-citation-reconcile.py — r37 C1 self-assessment citation reconciler.
+
+The r36 non-author spot-check routed one calibration defect class: cells in the
+lane's own self-assessment quote after-values that never lived in any committed
+receipt (`cases=11`/`cases=9`/`cases=8`/`cases=20` against receipts reading
+21/12/9), and their measured-commit cells name a commit where the cited receipt
+does not exist.
+
+This counter re-derives one register row per routed cell over committed bytes
+only. A row binds when, at the audit revision:
+
+  citation  exactly one line of the named file contains the row's `anchor`;
+            that line contains `expected` (as a whole token), names the row's
+            `receipt`, and does not contain `stale` (whole token);
+  receipt   a line of the receipt blob at `receipt_rev` starts with `SUMMARY`
+            and carries `expected` (whole token); the receipt path must differ
+            from the citation file.
+
+Register schema (TSV, header line required, ids unique, `stale` mandatory):
+
+  id<TAB>file<TAB>anchor<TAB>expected<TAB>stale<TAB>receipt<TAB>receipt_rev
+      [<TAB>commit]
+
+The optional eighth `commit` cell is the r38 commit arm (the r37 named limit:
+
+=== /home/vgpnk/Projects/shokunin/mado-shokunin/corpus/knowledge/replace-ref-citation-boundaries-r67.md ===
+source: S436 — git v2.56.0 `Documentation/git-replace.adoc` (tag v2.56.0, fetched 2026-11-03, sha256 3f61be3f0ea0426cf1e075929819b9a6bce240c6955cfd25d99fb2c974640631) — the `refs/replace/` namespace, the replace-by-default rule, its two escape hatches, and the BUGS/CAVEATS limits
+verified-at: 2026-11-03
+recheck: on-release — when the host git leaves 2.56.0 or the tag's `git-replace.adoc` changes (re-fetch, re-hash, re-run the §2 fixture receipt), and when the standing instrument's child set changes (re-run the §4 census at the then-current revision)
+
+# Replacement refs on git 2.56.0: what `refs/replace` rewrites, which lane object reads need `GIT_NO_REPLACE_OBJECTS=1`, and what the round's R control proves (MADO-R67-1)
+
+## Scope
+
+Lane-tooling scope only. This entry answers three questions about the
+round-67 C2 replacement-ref control (`claims-declaration-r67.md:65-104`;
+baseline `.ufo/waves/round-67/control-baseline-r67.txt`): what a replacement
+ref does to a git child's object reads on this host's git 2.56.0, which
+lane instruments read objects through git and therefore need
+`GIT_NO_REPLACE_OBJECTS=1`, and what the round's R control can and cannot
+prove. It is not a desktop claim, not a truth claim about PROVINCE state
+cells, and not an authenticity claim about repository objects. Every host
+row below was measured on this host in scratch fixtures under
+`/fast/scratch/hyaku/mado-r67/R67ScribeKnowledge/` (deleted with the seat);
+the receipt is `.ufo/waves/round-67/w1/R67ScribeKnowledge/receipts/host-replace-fixtures.txt`,
+and each row is re-derivable from the command shown in it.
+
+The C2 baseline already measured the defect this entry explains: at the
+pre-r67 tip `usedby_guard=0`, `ledger_guard=0`, and a child env built from
+scratch read `forged` where a guarded read returned `real`
+(`control-baseline-r67.txt`, lines beginning `BASELINE_C2`).
+
+rc=0

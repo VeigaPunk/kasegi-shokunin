@@ -1,0 +1,24 @@
+# fixtures rebuilt under $S/allowtest; scanner run with cwd=$S/allowtest; value built in code as b'ghr_' + (b'1234567890abcdef'*5)[:76]
+# A: exact committed bytes of the receipt at its own relative path
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=2 unused_allow=23 rc=0
+A rc=0
+# B: a different 76-char value at the same path (expect HIT github-refresh-token, rc=1)
+B rc=1
+HIT shape=github-refresh-token path=.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt line=10
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=24 rc=1
+# B leak check: count of the planted value's repeating fragment in that output (0 = no value printed)
+0
+# C: the exact placeholder at a different path (expect HIT, rc=1)
+HIT shape=github-refresh-token path=.ufo/waves/x-receipts/06.txt line=10
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=24 rc=1
+C rc=1
+# D: last byte of the matched value changed at the same path (expect HIT, rc=1)
+HIT shape=github-refresh-token path=.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt line=10
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=24 rc=1
+D rc=1
+# E: malformed allow row whose reason cell carries a 76-char value (expect rc=2, type only)
+CAPTURE-SECRET-SCAN error reason=OSError rc=2
+E rc=2
+# F: refused row for aws-sts-session-token (expect rc=2)
+CAPTURE-SECRET-SCAN error reason=OSError rc=2
+F rc=2

@@ -1,0 +1,29 @@
+$ C1 landing (347519f -> 53ec479) path set
+ .../iso-29147-divergence-and-clause-crosswalk.md       | 10 +++++-----
+ corpus/knowledge/triage-thresholds.md                  | 18 +++++++++---------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
+
+$ C2 landing own diff (53ec479 -> 38e7319) path set
+ SCORECARD.md                                |  2 +-
+ corpus/instruments/capture-secret-allow.tsv |  1 +
+ corpus/instruments/capture-secret-scan.py   | 23 +++++++++++++++++++++++
+ 3 files changed, 25 insertions(+), 1 deletion(-)
+
+$ whole round base -> d050e28, non-.ufo paths
+SCORECARD.md
+corpus/instruments/capture-secret-allow.tsv
+corpus/instruments/capture-secret-scan.py
+corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+corpus/knowledge/triage-thresholds.md
+corpus/source-snapshots/round-95/S142.txt
+
+$ post-C2 integration commit (43cc15e) non-.ufo paths — outside the audited rev pins
+LOG.md
+SCORECARD.md
+corpus/QUALITY.md
+corpus/SOURCES.md
+corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md
+corpus/lessons/round-95.md
+
+$ resolve.py CLI stall evidence: one token classifies >5s
+token ~/Projects/** : recursive glob over the whole ~/Projects tree; CLI runs at base and C1 were still running after 6m16s / 8m and were stopped; counts reported instead come from resolve.py collect()/classify() with a 5s per-token bound (1 timeout token at each rev, the same one)

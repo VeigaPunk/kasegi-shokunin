@@ -1,0 +1,67 @@
+=== S142 lines 160-176 ===
+Query parameterTypeDescription
+client_idstringRequired. The client ID for your GitHub App. The client ID is different from the app ID. You can find the client ID on the settings page for your app.
+client_secretstringRequired unless the user access token was generated using the device flow. The client secret for your GitHub App.
+grant_typestringRequired. The value must be "refresh_token".
+refresh_tokenstringRequired. The refresh token that you received when you generated a user access token.
+GitHub will give a response that includes the following parameters:
+Response parameterTypeDescription
+access_tokenstringThe user access token. The token starts with ghu_.
+expires_inintegerThe number of seconds until access_token expires. If the token doesn't expire, this parameter will be omitted. The value will always be 28800 (8 hours).
+refresh_tokenstringThe refresh token. If the access token doesn't expire, this parameter will be omitted. The token starts with ghr_.
+refresh_token_expires_inintegerThe number of seconds until refresh_token expires. If the access token doesn't expire, this parameter will be omitted. The value will always be 15897600 (6 months).
+scopestringThe scopes that the token has. This value will always be an empty string. Unlike a traditional OAuth token, the user access token is limited to the permissions that both your app and the user have.
+token_typestringThe type of token. The value will always be bearer.
+Back to top
+Help and support
+Was this Doc helpful?
+YesNo
+=== S141 lines 66-78 ===
+sed: error opening input file 'corpus/source-snapshots/round-95/S141.txt': No such file or directory (os error 2)
+=== S140 lines 425-470 numbered ===
+425: pipeline = true
+426: pushProtection = true
+427: [[rules]]
+428: id = "gitlab_ci_build_token_jwt"
+429: keywords = ["glcbt-"]
+430: regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+431: examples = [
+432: [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+433: [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+434: ]
+435: tags = ["gitlab", "gitlab_blocking"]
+436: type = "token"
+437: maturity = "stable"
+438: [rules.vendor]
+439: name = "GitLab"
+440: category = ["source_control"]
+441: [rules.scanningCapabilities]
+442: pipeline = true
+443: pushProtection = true
+444: [[rules]]
+445: id = "gitlab_stateless_access_token"
+446: keywords = ["glsat-"]
+447: regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+448: examples = [
+449: [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+450: [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+451: ]
+452: tags = ["gitlab", "gitlab_blocking"]
+453: type = "token"
+454: maturity = "stable"
+455: [rules.vendor]
+456: name = "GitLab"
+457: category = ["source_control"]
+458: [rules.scanningCapabilities]
+459: pipeline = true
+460: pushProtection = true
+461: [[rules]]
+462: id = "gitlab_iam_access_token"
+463: keywords = ["gliamat-"]
+464: regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+465: examples = [
+466: [line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+467: ]
+468: tags = ["gitlab", "gitlab_blocking"]
+469: type = "token"
+470: maturity = "stable"

@@ -1,0 +1,10 @@
+# entry recheck line
+4:recheck: python3 -B corpus/instruments/capture-secret-scan.py --selftest | grep -E 'gh-refresh|gl-jwt' (14 cases) and `python3 -B corpus/instruments/capture-secret-scan.py --rev master`
+# bash -n old line
+bash: -c: line 1: syntax error near unexpected token `('
+bash: -c: line 1: `python3 -B corpus/instruments/capture-secret-scan.py --selftest | grep -E 'gh-refresh|gl-jwt' (14 cases) and `python3 -B corpus/instruments/capture-secret-scan.py --rev master`'
+bash-n rc=2
+# proposed recheck command
+cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 -B corpus/instruments/anchorcheck.py corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md && sed -n '169p' corpus/source-snapshots/round-95/S142.txt | grep -q 'The token starts with ghr_\.$' && sed -n '429p' corpus/source-snapshots/round-94/S140.txt | grep -qxF 'keywords = ["glcbt-"]' && sed -n '446p' corpus/source-snapshots/round-94/S140.txt | grep -qxF 'keywords = ["glsat-"]' && sed -n '463p' corpus/source-snapshots/round-94/S140.txt | grep -qxF 'keywords = ["gliamat-"]' && python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-95/S142.txt corpus/source-snapshots/round-94/S140.txt
+prop-bash-n rc=0
+prop-run rc=0

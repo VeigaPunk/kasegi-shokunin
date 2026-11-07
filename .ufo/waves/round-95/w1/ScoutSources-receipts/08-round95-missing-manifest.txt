@@ -1,0 +1,42 @@
+# R08 capture-binding-check: the round-95 snapshot dir has NO manifest.json -> FAIL rule=missing-manifest dir=round-95
+# Introduced by the round-95 FREEZE commit and still open at HEAD (the integration commit did not add one).
+
+=== 9ef0126cc60b7f62baafd04f3e52c45e2a8e2f10 ===
+AUDIT records=117 with_url=117 with_fetched_utc=79 with_archival=38 snapshot_dirs=67 manifest_dirs=67 missing_manifest=0 multi_row_url=8 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+FAIL rule=rejected-row-anchor record=S138 row=S138 dir=round-92
+rc=1
+=== 347519f21524d2bc13eb6c91cf3550930a4265b3 ===
+AUDIT records=117 with_url=117 with_fetched_utc=79 with_archival=38 snapshot_dirs=68 manifest_dirs=67 missing_manifest=1 multi_row_url=8 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+FAIL rule=missing-manifest dir=round-95
+FAIL rule=rejected-row-anchor record=S138 row=S138 dir=round-92
+rc=1
+=== 38e7319f44a9fab2978b59ffd43faf207cf62b32 ===
+AUDIT records=117 with_url=117 with_fetched_utc=79 with_archival=38 snapshot_dirs=68 manifest_dirs=67 missing_manifest=1 multi_row_url=8 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+FAIL rule=missing-manifest dir=round-95
+FAIL rule=rejected-row-anchor record=S138 row=S138 dir=round-92
+rc=1
+=== 43cc15e8d807a06baf9d2dd789bb121364944169 ===
+AUDIT records=117 with_url=117 with_fetched_utc=79 with_archival=38 snapshot_dirs=68 manifest_dirs=67 missing_manifest=1 multi_row_url=8 digest_unpinned=0 orphans=1 orphan=S040-live.txt
+FAIL rule=missing-manifest dir=round-95
+FAIL rule=rejected-row-anchor record=S138 row=S138 dir=round-92
+rc=1
+
+# HEAD (43cc15e) round-95 snapshot dir contents (no manifest.json):
+total 8
+drwxr-xr-x 1 vgpnk vgpnk   16 Nov  7 13:51 .
+drwxr-xr-x 1 vgpnk vgpnk 1094 Nov  7 13:51 ..
+-rw-r--r-- 1 vgpnk vgpnk 7944 Nov  7 13:51 S142.txt
+
+# every OTHER snapshot dir has a manifest.json:
+MISSING manifest: /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-95/
+
+# consequence 1: source-recheck cannot re-check the round-95 capture (no manifest to pin quotes):
+manifest UNAVAILABLE reason=missing
+rc=2
+
+# vs. the round-94 capture, which has a manifest with pinned quotes and passes:
+S140:sha256 OK
+S140:Q01-pat-regex OK occurrences=1 anchor=4-ok
+S140:Q02-runner-regex OK occurrences=1 anchor=114-ok
+S140:Q03-deploy-regex OK occurrences=1 anchor=255-ok
+rc=0

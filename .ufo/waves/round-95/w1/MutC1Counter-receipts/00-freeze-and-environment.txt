@@ -1,0 +1,52 @@
+# MutC1Counter freeze/environment receipt — 2026-11-07T14:16:38-03:00
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+base=9ef0126cc60b7f62baafd04f3e52c45e2a8e2f10
+freeze=347519f21524d2bc13eb6c91cf3550930a4265b3
+c1_landing=53ec479d71d25cf5be052db794a548a5904564b8
+c2_landing=38e7319f44a9fab2978b59ffd43faf207cf62b32
+python=Python 3.14.8 git=git version 2.56.0
+nproc=32 load_at_start=122.20 108.37 93.98
+
+## working-tree shas
+c0799f4c52441671b722ccdaa51b579a71c1e3f3c51074d062c7952606878db8  .ufo/waves/round-95/c1/knowledge-meter.py
+8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6  .ufo/waves/round-95/c1/repair-map.tsv
+cf73949702a569385e0c68390177f454f050f101659edc5ad89410973f0379d0  .ufo/waves/round-95/c1/labels.tsv
+090deb24099fb39a5725e4cb5942117f5671e5c7ef1a6150faa29d9f26835ed2  .ufo/waves/round-95/controls/c1-controls-r95.py
+bebac965e2e5bff375c59331b10e27c9ebc1a6d5397466900b1511e3033935e2  .ufo/waves/round-95/controls/c1-controls-r95.txt
+
+## shas at base / freeze / c1 landing (fatal = file absent at that rev)
+rev 9ef0126cc60b7f62baafd04f3e52c45e2a8e2f10
+ABSENT-AT-REV  .ufo/waves/round-95/c1/knowledge-meter.py
+ABSENT-AT-REV  .ufo/waves/round-95/c1/repair-map.tsv
+ABSENT-AT-REV  .ufo/waves/round-95/c1/labels.tsv
+rev 347519f21524d2bc13eb6c91cf3550930a4265b3
+c0799f4c52441671b722ccdaa51b579a71c1e3f3c51074d062c7952606878db8  .ufo/waves/round-95/c1/knowledge-meter.py
+8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6  .ufo/waves/round-95/c1/repair-map.tsv
+cf73949702a569385e0c68390177f454f050f101659edc5ad89410973f0379d0  .ufo/waves/round-95/c1/labels.tsv
+rev 53ec479d71d25cf5be052db794a548a5904564b8
+c0799f4c52441671b722ccdaa51b579a71c1e3f3c51074d062c7952606878db8  .ufo/waves/round-95/c1/knowledge-meter.py
+8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6  .ufo/waves/round-95/c1/repair-map.tsv
+cf73949702a569385e0c68390177f454f050f101659edc5ad89410973f0379d0  .ufo/waves/round-95/c1/labels.tsv
+
+## candidate clone (pinned)
+cand53 HEAD=53ec479d71d25cf5be052db794a548a5904564b8 toplevel=/fast/scratch/hyaku/kasegi-r95/MutC1Counter/cand53
+c0799f4c52441671b722ccdaa51b579a71c1e3f3c51074d062c7952606878db8  /fast/scratch/hyaku/kasegi-r95/MutC1Counter/cand53/.ufo/waves/round-95/c1/knowledge-meter.py
+8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6  /fast/scratch/hyaku/kasegi-r95/MutC1Counter/cand53/.ufo/waves/round-95/c1/repair-map.tsv
+cf73949702a569385e0c68390177f454f050f101659edc5ad89410973f0379d0  /fast/scratch/hyaku/kasegi-r95/MutC1Counter/cand53/.ufo/waves/round-95/c1/labels.tsv
+
+## harness copy diff vs shipped harness
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-95/controls/c1-controls-r95.py	2026-11-07 14:04:08.375363151 -0300
++++ /fast/scratch/hyaku/kasegi-r95/MutC1Counter/harness.py	2026-11-07 14:12:26.163582234 -0300
+@@ -126,7 +126,7 @@
+                 print("  " + ln)
+                 log.append("  " + ln)
+ 
+-    meter = C1 + "/knowledge-meter.py"
++    meter = os.environ.get("METER_PATH", C1 + "/knowledge-meter.py")
+     real_sha = sh(["sha256sum", MAP]).stdout.split()[0]
+     cand_rev = sh(["git", "-C", cand, "rev-parse", "HEAD"]).stdout.strip()
+     print("C1-CONTROLS candidate=%s base=%s" % (cand_rev, BASE))
+harness_copy_sha256=809173c1e09e7abf7106e80be71581547972a9ebfa3302ee09b470a0be7e0cb7
+
+## tool installs
+none (python3 and git already present; no pacman/uv/npm transaction run)

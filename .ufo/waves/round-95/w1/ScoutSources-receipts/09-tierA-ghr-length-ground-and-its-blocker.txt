@@ -1,0 +1,26 @@
+# R09 the tier-A ground for the 76-character length: docs.github.com/en/rest/credentials/revoke
+# The BASE instrument captures that page; the HEAD instrument REFUSES it (the new shape fires on
+# GitHub's own published example at converted line 311). Round-96 lead, and its blocker.
+
+# BASE (round-94 instrument, rev 9ef0126) -- capture SUCCEEDS:
+GHREVOKE_BASE status=200 fetched_bytes=277713 snapshot_bytes=6560 sha256=8582eca5a56807d41bad7f220d1e7531080f0b0a072d7723e6ae14344d8011f0 utc=2026-11-07T17:24:41Z out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/revoke.base.txt
+
+# HEAD (landed round-95 instrument, rev 43cc15e) -- capture REFUSED:
+INTAKE-REFUSED GHREVOKE shape=github-refresh-token line=311 out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/revoke.snap.txt written=no
+
+# the tier-A example the base capture carries (converted line 311):
+311: -d '{"credentials":["ghp_1234567890abcdef1234567890abcdef12345678","github_pat_0A1B2C3D4E5F6G7H8I9J0K_ABCDEFGH...
+
+# the matched ghr_ bytes in it: total 80, tail 76, digest c7ad99a1... -- the SAME digest the C2
+# allowlist row is bound to (so the row covers this value too):
+tier-A revoke page (base capture)                          len=80 tail=76 sha256=c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d
+round-94 receipt placeholder (C2 allowlist row target)     len=80 tail=76 sha256=c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d
+round-94 receipt placeholder (C2 allowlist row target)     len=80 tail=76 sha256=c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d
+
+# GitHub's own OpenAPI (also tier A) publishes the same example -- refused at HEAD too:
+INTAKE-REFUSED GHOPENAPI shape=azure-sas-signature line=338396 out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/openapi.txt written=no
+INTAKE-REFUSED GHOPENAPI shape=github-token line=332183 out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/openapi.txt written=no
+INTAKE-REFUSED GHOPENAPI shape=github-refresh-token line=22396 out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/openapi.txt written=no
+
+# and the C2 allowlist row as landed (path/shape/digest/reason):
+.ufo/waves/round-94/w1/ScoutGitLabRules-receipts/06-github-firstparty-examples.txt	github-refresh-token	c7ad99a1ba7ef9a9eb954d3b93e3dea3d109ac298fc2c580cacf35c959ef060d

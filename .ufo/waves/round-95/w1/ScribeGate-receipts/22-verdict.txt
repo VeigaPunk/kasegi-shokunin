@@ -1,0 +1,30 @@
+ROUND-95 ScribeGate-2 VERDICT SUMMARY
+
+ANCHORS (entry quotes vs committed bytes)
+  anchor-quote-check total=39 bad=0
+  proposed-entry anchor-quote-check total=39 bad=0 required_missing=0 recheck_parse=ok
+  anchorcheck current entry: in-range=2 distinct=2 bad=0
+  anchorcheck proposed entry: in-range=33 distinct=24 bad=0
+
+INSTRUMENT
+  selftest: SELFTEST-RESULT pass cases=115
+  round-95 selftest cases: 14 (lines 439-452)
+  files scan S142+S140: scanned=2 hits=0 files=0 allowed=0 unused_allow=24 rc=0
+  synthetic boundary probes: 24 rows (13-probes.txt)
+  vendor \b vs lane boundary: hyphen-prefixed vendor match at 5; escaped-u0020 vendor none (13c-regex-diff.txt)
+  base64: {" -> eyI=; {"a -> eyJh; {"alg" -> eyJhbGci (13b-base64.txt)
+
+RECHECK LINE
+  current entry line 4: bash -n rc=2 (syntax error near "(")
+  current entry second command: capture-secret-scan.py --rev master rc=2 usage
+  proposed recheck: bash -n rc=0, run rc=0
+
+REGISTRY
+  base 9ef0126: 141 rows; working tree: 143 rows
+  census: kasegi ok rc=0; W04=7 (six inherited + S143)
+
+DEFECTS
+  entry: 14 (3 high, 7 medium, 4 low) D1-D14
+  lesson: 5 (1 high, 2 medium, 2 low) L1-L5
+
+NO C1/C2 CLAIM VERDICT ISSUED.

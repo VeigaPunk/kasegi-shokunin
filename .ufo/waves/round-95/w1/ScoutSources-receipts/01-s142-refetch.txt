@@ -1,0 +1,20 @@
+# R01 S142 re-fetch (GitHub Docs, Refreshing user access tokens)
+# url: https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens
+# UA: Mozilla/5.0 (X11; Linux x86_64) shokunin-capture/1.0
+$ curl -sSL -A <UA> -o S142.live.html -w 'S142 http=%{http_code} size=%{size_download} url=%{url_effective}' <url>
+S142 http=200 size=196832 url=https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens
+$ sha256sum S142.live.html ; wc -c S142.live.html
+f57ab983e8bf1dd61d1dae18cc874327485e0c8c76213c01d8c43d803d779804  S142.live.html
+196832 S142.live.html
+
+# lane instrument re-capture of the same URL into scratch (TMPDIR=scratch):
+$ TMPDIR=$S python3 -B corpus/instruments/capture-source.py --id S142 --url <url> --out $S/S142.recapture.txt --kind html
+S142 status=200 fetched_bytes=196832 snapshot_bytes=7944 sha256=727ba6a0294318324e43ddd266832c49b3895303667b9419336d3265f8a42864 utc=2026-11-07T17:12:04Z out=/fast/scratch/hyaku/kasegi-r95/ScoutSources/S142.recapture.txt
+$ diff -u corpus/source-snapshots/round-95/S142.txt $S/S142.recapture.txt   # rc=0, 0 lines
+0 /fast/scratch/hyaku/kasegi-r95/ScoutSources/s142.diff.txt
+
+# committed snapshot digest / size:
+$ sha256sum corpus/source-snapshots/round-95/S142.txt ; wc -c corpus/source-snapshots/round-95/S142.txt
+727ba6a0294318324e43ddd266832c49b3895303667b9419336d3265f8a42864  corpus/source-snapshots/round-95/S142.txt
+7944 corpus/source-snapshots/round-95/S142.txt
+182 corpus/source-snapshots/round-95/S142.txt

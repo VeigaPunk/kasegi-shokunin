@@ -1,0 +1,42 @@
+# R12 the full S140 rule inventory: id line, regex line (committed capture) and id line (raw fetch)
+# snapID/snapRX are lines in corpus/source-snapshots/round-94/S140.txt (563 lines, sha256 f3fd09e4...);
+# liveID is the id= line in the raw 592-line fetch (sha256 14854f71...).
+# The regex text is copied verbatim from the committed capture's regex line.
+
+rule id                                        snapID snapRX  liveID regex
+gitlab_pipeline_trigger_token                  71     73      74     \b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)
+gitlab_oauth_app_secret                        172    174     180    \\b(gloas-[0-9a-zA-Z_\\-]{64})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+gitlab_feed_token_v2                           188    190     197    \\b(glft-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+gitlab_kubernetes_agent_token                  211    213     221    \b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)
+gitlab_incoming_email_token                    227    229     238    \b((?:[a-zA-Z0-9]{1,20}-)?glimt-[0-9a-z]{20,25})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_scim_oauth_token                        276    278     289    \\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+gitlab_feature_flags_client_token              390    392     410    \b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_kubernetes_agent_token_routable         356    358     374    \b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b
+gitlab_workspace_token                         373    375     392    \b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b
+gitlab_runner_controller_token                 410    412     431    \b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_iam_refresh_token                       478    480     503    \b(gliamrt-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_iam_authorization_code                  495    497     521    \b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_ci_build_token                          291    293     305    \\b(glcbt-[0-9a-zA-Z]{1,5}_[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+gitlab_feed_token_path_dependent               512    514     539    \b(?:[a-zA-Z0-9]{1,20}-)?glft-[0-9a-f]{64}-[0-9]{1,20}\b
+gitlab_feed_token                              158    160     165    \\b(feed_token=[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+gitlab_runner_registration_token               99     101     103    \\b(GR1348941[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+gitlab_runner_auth_token_legacy_partition      306    308     321    (?:(?m:^)|[^0-9a-zA-Z_\-\r\n])(t[1-3]_[1-9a-km-zA-HJ-NP-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_deploy_token_in_url                     339    341     356    gitlab\+deploy-token-[0-9]+:([0-9a-zA-Z_\-]{20})@
+gitlab_pipeline_trigger_token_in_url           530    532     558    /trigger/pipeline\?(?:[0-9a-zA-Z_.%\[\]=-]{1,100}&){0,10}token=([0-9a-f]{30})\b
+gitlab_session_cookie                          547    549     576    (?:cell-[0-9]+-)?[0-9a-f]{64}
+gitlab_personal_access_token                   2      4       2      \b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_personal_access_token_routable          28     30      29     \b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b
+gitlab_personal_access_token_routable_versioned 49     51      51     \b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b
+gitlab_runner_auth_token                       112    114     117    \b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_runner_auth_token_routable              134    136     140    \b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b
+gitlab_deploy_token                            253    255     265    \b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
+gitlab_deploy_token_routable                   322    324     338    \b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b
+gitlab_ci_build_token_jwt                      428    430     450    \b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}
+gitlab_stateless_access_token                  445    447     468    \b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}
+gitlab_iam_access_token                        462    464     486    \bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}
+
+# implemented vs unlanded (the landed scanner implements 5 of the 30 rules):
+#   implemented : gitlab_personal_access_token (gitlab-pat), gitlab_runner_auth_token (gitlab-runner-auth-token),
+#                 gitlab_deploy_token (gitlab-deploy-token),
+#                 gitlab_ci_build_token_jwt + gitlab_stateless_access_token + gitlab_iam_access_token (gitlab-jwt-token)
+#   unlanded   : the other 24 rules listed above.

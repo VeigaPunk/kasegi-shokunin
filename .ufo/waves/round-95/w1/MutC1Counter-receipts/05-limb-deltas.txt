@@ -1,0 +1,393 @@
+====================================================================================================
+m01_part_old_from_key  KILLED  fails=['candidate', 'union-applied']
+  [candidate]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [do-nothing]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [partial-row-dropped]
+    pristine: LIMB M9 pass rows=15 unbound=none
+    mutant  : LIMB M9 FAIL rows=15 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [extra-unlisted-edit]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [wrong-new]
+    pristine: LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:396
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:396
+  [m5-out-of-range]
+    pristine: LIMB M9 pass rows=17 unbound=none
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [snapshot-missing]
+    pristine: LIMB M9 FAIL rows=16 unbound=iso-29147-divergence-and-clause-crosswalk.md:13
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,iso-29147-divergence-and-clause-crosswalk.md:13
+  [wrong-map-sha]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [unlabelled-row]
+    pristine: LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:143
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:143
+  [part-as-cell]
+    pristine: LIMB M9 pass rows=15 unbound=none
+    mutant  : LIMB M9 FAIL rows=15 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [union-applied]
+    pristine: LIMB M9 pass rows=17 unbound=none
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [cell-repair-lane-root]
+    pristine: LIMB M9 pass rows=17 unbound=none
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [two-cells-one-line]
+    pristine: LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:88,triage-thresholds.md:88
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:88
+====================================================================================================
+m02_lane_no_range_check  KILLED  fails=['m5-out-of-range']
+  [m5-out-of-range]
+    pristine: LIMB M5 FAIL out_of_range=r95-ctl.md:1
+    mutant  : LIMB M5 pass out_of_range=none
+  [cell-repair-lane-root]
+    pristine: LIMB M5 FAIL out_of_range=triage-thresholds.md:440
+    mutant  : LIMB M5 pass out_of_range=none
+====================================================================================================
+m03_map_sha_inverted  KILLED  fails=['wrong-map-sha']
+  [candidate]
+    pristine: LIMB M6 pass sha256=8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6
+    mutant  : (absent)
+  [do-nothing]
+    pristine: LIMB M6 pass sha256=8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6
+    mutant  : (absent)
+  [partial-row-dropped]
+    pristine: LIMB M6 pass sha256=b1d23d87b33f90ce2e66c711aece6bc291c46cc6d6777276432128c6377f89ab
+    mutant  : (absent)
+  [extra-unlisted-edit]
+    pristine: LIMB M6 pass sha256=8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6
+    mutant  : (absent)
+  [wrong-new]
+    pristine: LIMB M6 pass sha256=15c41ff19c99da193e64fb4a5d2c516ccae8c7d970858766959eb15f49adb16b
+    mutant  : (absent)
+  [m5-out-of-range]
+    pristine: LIMB M6 pass sha256=e25098fec846fab2104a8a32892ae279524f8a25d085136563678670156098cf
+    mutant  : (absent)
+  [snapshot-missing]
+    pristine: LIMB M6 pass sha256=c9873e9187676c1e949ad81a3f4f02d71a46f6a57c1505ac4dcdb68d8decdefd
+    mutant  : (absent)
+  [wrong-map-sha]
+    pristine: LIMB M6 FAIL sha256=8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6
+    mutant  : (absent)
+  [unlabelled-row]
+    pristine: LIMB M6 pass sha256=82a5d01830df8ae8b44119cde9bfb39d618681cab5dba3c6039c82b9a1929cb9
+    mutant  : (absent)
+  [part-as-cell]
+    pristine: LIMB M6 pass sha256=ba5907268c97b4ac3d3d92af403c109233fb3c1c64e9c10efc17c99030819dda
+    mutant  : (absent)
+  [union-applied]
+    pristine: LIMB M6 pass sha256=91fc94540dd7420a5695660f8902e3dc34221cc2d8f452ba336a40c6f00e5f50
+    mutant  : (absent)
+  [cell-repair-lane-root]
+    pristine: LIMB M6 pass sha256=c6c74ca0b4ce77dc835fb2d91d463a5dc0869f61ea9172047b8eac8b028ca108
+    mutant  : (absent)
+  [two-cells-one-line]
+    pristine: LIMB M6 pass sha256=3cd321bbbbed1286b072460aa53213323a1e00965f2670d1694b7bbe5f8fd3c1
+    mutant  : (absent)
+====================================================================================================
+m04_labels_read_swallowed  KILLED  fails=['missing-labels']
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M0 pass base=1007/1998
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M1 pass after=1008/1994
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M4 pass bad=none
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M5 pass out_of_range=none
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:89,triage-thresholds.md:356,triage-thresholds.md:434,triage-thresholds.md:435,triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:396,triage-thresholds.md:436,iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M10 FAIL labelled=0 want=0 mapped=16 kinds= unknown=none unapplied=none unlabelled=iso-29147-divergence-and-clause-crosswalk.md:13/S041.txt:1868-1870,iso-29147-divergence-and-clause-crosswalk.md:34/S041.txt:1792-1867,iso-29147-divergence-and-clause-crosswalk.md:43/S041.txt:1996-2079,iso-29147-divergence-and-clause-crosswalk.md:54/S041.txt:1868,iso-29147-divergence-and-clause-crosswalk.md:64/S041.txt,triage-thresholds.md:356/SKILL.md:522,triage-thresholds.md:396/SKILL.md:245-247,triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:434/SKILL.md:175,triage-thresholds.md:435/SKILL.md:10-11,triage-thresholds.md:436/corpus/knowledge/mission-control.md:21-23,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:89/SKILL.md:175,triage-thresholds.md:90/SKILL.md:113-114,175-176
+  [missing-labels]
+    pristine: (absent)
+    mutant  : LIMB M6 pass sha256=8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6
+====================================================================================================
+m05_snapshot_key_dropped  KILLED  fails=['candidate', 'union-applied']
+  [candidate]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [candidate]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [do-nothing]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [do-nothing]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [partial-row-dropped]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [partial-row-dropped]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [extra-unlisted-edit]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [extra-unlisted-edit]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [wrong-new]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [wrong-new]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [m5-out-of-range]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [snapshot-missing]
+    pristine: LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [wrong-map-sha]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [wrong-map-sha]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [unlabelled-row]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [unlabelled-row]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [part-as-cell]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [part-as-cell]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [union-applied]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [union-applied]
+    pristine: LIMB M5 pass out_of_range=none
+    mutant  : LIMB M5 FAIL out_of_range=none
+  [cell-repair-lane-root]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64
+  [two-cells-one-line]
+    pristine: LIMB M4 FAIL bad=triage-thresholds.md:88
+    mutant  : LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13,iso-29147-divergence-and-clause-crosswalk.md:34,iso-29147-divergence-and-clause-crosswalk.md:43,iso-29147-divergence-and-clause-crosswalk.md:54,iso-29147-divergence-and-clause-crosswalk.md:64,triage-thresholds.md:88
+====================================================================================================
+m06_cell_multi_value_forbidden  SURVIVED  fails=none
+  [cell-repair-lane-root]
+    pristine: LIMB M4 pass bad=none
+    mutant  : LIMB M4 FAIL bad=triage-thresholds.md:440
+  [cell-repair-lane-root]
+    pristine: LIMB M5 FAIL out_of_range=triage-thresholds.md:440
+    mutant  : LIMB M5 FAIL out_of_range=none
+====================================================================================================
+m07_m1_target_swapped  KILLED  fails=['candidate', 'union-applied']
+  [candidate]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [do-nothing]
+    pristine: LIMB M1 FAIL after=1007/1998
+    mutant  : LIMB M1 pass after=1007/1998
+  [partial-row-dropped]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [wrong-new]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [m5-out-of-range]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [wrong-map-sha]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [unlabelled-row]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [part-as-cell]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [union-applied]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+  [two-cells-one-line]
+    pristine: LIMB M1 pass after=1008/1994
+    mutant  : LIMB M1 FAIL after=1008/1994
+====================================================================================================
+m08_m0_target_swapped  KILLED  fails=['candidate', 'union-applied']
+  [candidate]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [do-nothing]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [partial-row-dropped]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [extra-unlisted-edit]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [wrong-new]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [m5-out-of-range]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [snapshot-missing]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [wrong-map-sha]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [unlabelled-row]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [part-as-cell]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [union-applied]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [cell-repair-lane-root]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+  [two-cells-one-line]
+    pristine: LIMB M0 pass base=1007/1998
+    mutant  : LIMB M0 FAIL base=1007/1998
+====================================================================================================
+m09_part_kind_removed  KILLED  fails=['candidate', 'union-applied']
+  [candidate]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [candidate]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [do-nothing]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [do-nothing]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [partial-row-dropped]
+    pristine: LIMB M9 pass rows=15 unbound=none
+    mutant  : LIMB M9 FAIL rows=15 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [partial-row-dropped]
+    pristine: LIMB M10 FAIL labelled=16 want=16 mapped=15 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=triage-thresholds.md:435/SKILL.md:10-11 unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=15 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=triage-thresholds.md:435/SKILL.md:10-11 unlabelled=none
+  [extra-unlisted-edit]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [extra-unlisted-edit]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [wrong-new]
+    pristine: LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:396
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:396
+  [wrong-new]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [m5-out-of-range]
+    pristine: LIMB M9 pass rows=17 unbound=none
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [m5-out-of-range]
+    pristine: LIMB M10 pass labelled=17 want=17 mapped=17 kinds=cell-repair=4,part=5,range=8 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=17 want=17 mapped=17 kinds=cell-repair=4,range=8,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [snapshot-missing]
+    pristine: LIMB M9 FAIL rows=16 unbound=iso-29147-divergence-and-clause-crosswalk.md:13
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,iso-29147-divergence-and-clause-crosswalk.md:13
+  [snapshot-missing]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [wrong-map-sha]
+    pristine: LIMB M9 pass rows=16 unbound=none
+    mutant  : LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [wrong-map-sha]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [unlabelled-row]
+    pristine: LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:143
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:143
+  [unlabelled-row]
+    pristine: LIMB M10 FAIL labelled=16 want=16 mapped=17 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=triage-thresholds.md:143/SKILL.md:526
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=17 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=triage-thresholds.md:143/SKILL.md:526
+  [part-as-cell]
+    pristine: LIMB M9 pass rows=15 unbound=none
+    mutant  : LIMB M9 FAIL rows=15 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [part-as-cell]
+    pristine: LIMB M10 FAIL labelled=16 want=16 mapped=15 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=triage-thresholds.md:89/SKILL.md:175 unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=15 kinds=cell-repair=4,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=triage-thresholds.md:89/SKILL.md:175 unlabelled=none
+  [union-applied]
+    pristine: LIMB M9 pass rows=17 unbound=none
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [union-applied]
+    pristine: LIMB M10 pass labelled=17 want=17 mapped=17 kinds=cell-repair=4,part=5,range=8 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=17 want=17 mapped=17 kinds=cell-repair=4,range=8,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [cell-repair-lane-root]
+    pristine: LIMB M9 pass rows=17 unbound=none
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433
+  [cell-repair-lane-root]
+    pristine: LIMB M10 pass labelled=17 want=17 mapped=17 kinds=cell-repair=5,part=5,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=17 want=17 mapped=17 kinds=cell-repair=5,range=7,unknown=5 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:113-114,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+  [two-cells-one-line]
+    pristine: LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:88,triage-thresholds.md:88
+    mutant  : LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:90,triage-thresholds.md:88,triage-thresholds.md:88,triage-thresholds.md:433,triage-thresholds.md:433,triage-thresholds.md:88
+  [two-cells-one-line]
+    pristine: LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=5,part=4,range=7 unknown=none unapplied=none unlabelled=none
+    mutant  : LIMB M10 FAIL labelled=16 want=16 mapped=16 kinds=cell-repair=5,range=7,unknown=4 unknown=triage-thresholds.md:433/SKILL.md:113-114,triage-thresholds.md:433/SKILL.md:175-176,triage-thresholds.md:88/SKILL.md:175-176,triage-thresholds.md:90/SKILL.md:113-114,175-176 unapplied=none unlabelled=none
+====================================================================================================
+s01_old_absent_accepted  SURVIVED  fails=none
+  [unlabelled-row]
+    pristine: LIMB M3 FAIL same_files=True bad_lines=0 old_not_once=1 dup_rows=0
+    mutant  : LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+====================================================================================================
+s02_m9_ignores_new  SURVIVED  fails=none
+  [wrong-new]
+    pristine: LIMB M9 FAIL rows=16 unbound=triage-thresholds.md:396
+    mutant  : LIMB M9 pass rows=16 unbound=none
+  [snapshot-missing]
+    pristine: LIMB M9 FAIL rows=16 unbound=iso-29147-divergence-and-clause-crosswalk.md:13
+    mutant  : LIMB M9 pass rows=16 unbound=none
+  [two-cells-one-line]
+    pristine: LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:88,triage-thresholds.md:88
+    mutant  : LIMB M9 pass rows=17 unbound=none
+====================================================================================================
+s03_missing_label_no_edit  SURVIVED  fails=none
+====================================================================================================
+s04_snapshot_existence_dropped  SURVIVED  fails=none
+  [snapshot-missing]
+    pristine: LIMB M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:13
+    mutant  : LIMB M4 pass bad=none
+  [snapshot-missing]
+    pristine: LIMB M5 FAIL out_of_range=none
+    mutant  : LIMB M5 pass out_of_range=none
+====================================================================================================
+s05_unknown_kind_allowed  SURVIVED  fails=none
+====================================================================================================
+s06_unlabelled_ignored  SURVIVED  fails=none
+  [unlabelled-row]
+    pristine: LIMB M10 FAIL labelled=16 want=16 mapped=17 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=triage-thresholds.md:143/SKILL.md:526
+    mutant  : LIMB M10 pass labelled=16 want=16 mapped=17 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=triage-thresholds.md:143/SKILL.md:526
+====================================================================================================
+s07_unapplied_ignored  SURVIVED  fails=none
+  [partial-row-dropped]
+    pristine: LIMB M10 FAIL labelled=16 want=16 mapped=15 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=triage-thresholds.md:435/SKILL.md:10-11 unlabelled=none
+    mutant  : LIMB M10 pass labelled=16 want=16 mapped=15 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=triage-thresholds.md:435/SKILL.md:10-11 unlabelled=none
+  [part-as-cell]
+    pristine: LIMB M10 FAIL labelled=16 want=16 mapped=15 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=triage-thresholds.md:89/SKILL.md:175 unlabelled=none
+    mutant  : LIMB M10 pass labelled=16 want=16 mapped=15 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=triage-thresholds.md:89/SKILL.md:175 unlabelled=none
+====================================================================================================
+s08_part_any_old  SURVIVED  fails=none
+====================================================================================================
+s09_skip_absent_label  SURVIVED  fails=none
+  [unlabelled-row]
+    pristine: LIMB M9 FAIL rows=17 unbound=triage-thresholds.md:143
+    mutant  : LIMB M9 pass rows=17 unbound=none

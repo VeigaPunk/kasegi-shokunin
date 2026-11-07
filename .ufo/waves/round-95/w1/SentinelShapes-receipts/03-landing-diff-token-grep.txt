@@ -1,0 +1,12 @@
+== git show 38e7319 | grep -nE 'ghr_[A-Za-z0-9]{10,}|(glcbt|glsat|gliamat)-eyJ' ==
+69:+        ("gl-jwt-clcbt", b"glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+70:+        ("gl-jwt-clcbt-custom", b"acme-glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+71:+        ("gl-jwt-glsat", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+72:+        ("gl-jwt-gliamat", b"gliamat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+74:+        ("gl-jwt-short-head", b"glcbt-eyJ<redacted>" + b"z"*30, set()),
+75:+        ("gl-jwt-third-19-chars", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*19 + b" ", set()),
+76:+        ("gl-jwt-letter-before", b"xglcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, set()),
+77:+        ("gl-jwt-doc-placeholder", b"glcbt-eyJ<header>.<payload>.<signature>", set()),
+rc=0
+== git show 53ec479 (C1) | grep same ==
+rc=1

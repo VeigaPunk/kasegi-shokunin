@@ -1,0 +1,43 @@
+fixture toplevel: /fast/scratch/hyaku/kasegi-r95/ExecC2Probe/exec2probe-fx-o6_q0x3v
+files: 38  (positives-new-shape: 19, negatives-new-shape: 17, old-shape regression: 2)
+expected C2 (file,shape) pairs: 23
+expected R94 (file,shape) pairs: 3
+note: contents are synthetic placeholders (aB3/x/y/z repeats); token values not printed
+  neg/generic-jwt-url.txt                              generic valid JWT in URL query (no provider prefix)
+  neg/ghr36-classic.txt                                ghr_+36 classic (old shape only)
+  neg/ghr75.txt                                        ghr_+75 (one below boundary)
+  neg/ghr76-dash-inside.txt                            ghr_ tail broken by dash (fixed 76 window)
+  neg/ghr76-letter-prefixed.txt                        letter before ghr_ (lookbehind kill)
+  neg/ghr76-trailing-underscore.txt                    ghr_+76 then _ (lookahead kill)
+  neg/ghr76-underscore-prefixed.txt                    underscore before ghr_ (lookbehind kill)
+  neg/ghr77.txt                                        ghr_+77 (one above boundary)
+  neg/gl-jwt-doc-placeholder.txt                       glcbt-eyJ<header> doc placeholder
+  neg/gl-jwt-glsat-mid-not-eyj.txt                     glsat- middle segment not eyJ
+  neg/gl-jwt-glued-prefix.txt                          21 alnum glued to glcbt- (no dash boundary)
+  neg/gl-jwt-head-not-eyj.txt                          glsat- first segment not starting eyJ
+  neg/gl-jwt-letter-before.txt                         letter before glcbt-
+  neg/gl-jwt-seg-1001.txt                              first segment 1001 chars (one above cap)
+  neg/gl-jwt-seg9.txt                                  first segment 9 chars (one below)
+  neg/gl-jwt-tail-1001.txt                             third segment 1001 chars (one above cap)
+  neg/gl-jwt-tail19.txt                                third segment 19 chars (one below)
+  pos/ghr76-entity.html                                ghr_+76, HTML entity context
+  pos/ghr76-escaped-u0020.json                         ghr_+76, \u0020 escape left boundary
+  pos/ghr76-json-joined.json                           ghr_+76, JSON-joined (refresh_token key)
+  pos/ghr76-line-start.txt                             ghr_+76, start-of-input boundary
+  pos/ghr76-pct-escaped.txt                            ghr_+76, %41 escape left boundary (forced path)
+  pos/ghr76-plain.txt                                  ghr_+76, plain text
+  pos/ghr76-trailing-quote.json                        ghr_+76, quote right boundary
+  pos/gl-jwt-dash-inside-tail.txt                      dash inside tail absorbed (variable-length tail)
+  pos/gl-jwt-glcbt-plain.txt                           glcbt- no prefix
+  pos/gl-jwt-glcbt-prefix20.txt                        glcbt- 20-char instance prefix (max)
+  pos/gl-jwt-gliamat-dashprefix.txt                    acme-gliamat- (match begins at gliamat)
+  pos/gl-jwt-gliamat.html                              gliamat-
+  pos/gl-jwt-glsat-escaped-n.json                      glsat-, \n escape left boundary
+  pos/gl-jwt-prefix21-overflow.txt                     21-char label + -glcbt (match begins at glcbt)
+  pos/gl-jwt-tail-max1000.txt                          third segment exactly 1000 (cap inclusive)
+  pos/multi-shape.json                                 ghr_+76 + glcbt JWT in one file
+  pos/url-query-jwt.txt                                glcbt- JWT inside URL query (?ticket=)
+  reg/glpat20.txt                                      glpat-20 (old shape)
+  relocated/b/other-name.md                            glcbt- acme- prefix, %2F escape, relocated dir+basename
+  relocated/c/vendor-notes/ghp36.txt                   ghp_+36 classic (old shape), relocated
+  relocated/dir-a/deep/nested/audit-2026-11.log        ghr_+76, relocated dir+basename

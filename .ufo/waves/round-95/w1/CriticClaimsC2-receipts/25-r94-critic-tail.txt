@@ -1,0 +1,51 @@
+   lesson should not over-claim.
+2. **K1's selftest is the first wall for a careless forger, not the load-bearing one.** For A, C and D the
+   instrument's own `--selftest` flips to `rc=1` (the selftest fixtures carry no plant-path shape; the
+   deploy 19/21-char negatives; the GitHub positives). That is a weak rejection — a forger edits the
+   selftest too — so the A2/C2/D2 variants were run with the selftest filtered, and K4/K7/K8/K9 still
+   rejected all three. The counter's rejection does not depend on the instrument policing itself.
+3. **The receipt's `candidate=1ab01c98…` is a fixture clone HEAD, not a lane revision.** P4's "candidate rc 0
+   pinned" is carried by the instrument sha256 in the same line, not by that SHA; nobody should read
+   `1ab01c98…` as evidence about the lane.
+4. **K3's `allowed=24` vs 23 data rows** is not a contradiction, measured not assumed: 23 rows, all 23 used
+   (`unused_allow=0`), 24 allowlisted matches, three `(path, shape)` pairs carrying more than one allowed
+   value (receipt 08). Recorded so a later reader does not read `24` as a stale-row defect.
+
+## Impacted axes
+
+- `coverage` (8 held): **unchanged**. The capability is re-derived at the landing — three new shapes with the
+  frozen alphabets/boundaries, the retired `glrt-` limit, relocated plants, K9 — and no attack this seat
+  built survives. Nothing here justifies a coverage downgrade.
+- Claim-package verifiability: **blocked at P4 as written**. The frozen predicate names a control the frozen
+  evidence does not contain, so no re-run can make P4 true; the axis score cannot be booked against P4 until
+  the enumeration is corrected. This is the freeze's defect, not the landing's.
+
+## Smallest safe correction
+
+Replace P4's parenthetical item "the S140-allowlist-removed control" with "the tampered-instrument pin
+control" — that is the control that was executed and that the receipt evidences (with the note that the C2
+allowlist holds no S140 rows, so no allowlist-removal control is meaningful here). Do it at the next
+freeze-capable point together with the `claims.json` `controls` field, which carries the same misnomer
+(`s140-allow-rows-removed`). If instead a genuine allowlist-removal control is wanted, it must first create
+an S140 row to remove, and it then belongs to a new freeze, not to this predicate. Everything else in P1–P3
+and the claim statement can stand as landed; no counter, scanner or row change is needed.
+
+## Receipts
+
+All under `.ufo/waves/round-94/w1/CriticClaimsC2-receipts/`; every line below is observed output.
+
+| receipt | command (cwd = lane root unless noted) | rc | lines |
+|---|---|---|---|
+| `01-rederive-p2-p3.txt` | `git -C <clone> rev-parse --show-toplevel` / `HEAD` / `log -1 --format='%H %P %s' 99646086…`; `sha256sum` both instruments; `git diff --name-status` and `--raw` and `--stat d51220ae… 99646086…`; python row-vs-`candidate-row.txt` byte compare | 0 | 26 |
+| `02-run-seed-auto.txt` | `python3 -B .ufo/waves/round-94/c2/capability-check.py --lane <clone> --rev 99646086… --work <scratch> --instrument-sha256 22ba32d1… --gate-sha256 8b6f8493…` | 0 | 11 |
+| `03-run-seed-1.txt` | same with `--seed 1` | 0 | 11 |
+| `04-run-seed-9191.txt` | same with `--seed 9191` | 0 | 11 |
+| `05-forgery-A…` / `A2…` | `CriticClaimsC2-forges.py` (A) and `CriticClaimsC2-forges-selftest-green.py` (A2): clone at landing, patch, commit (toplevel asserted), counter `--rev HEAD --gate-sha256 8b6f8493… --seed 4242`, no instrument pin | 1 (counter) | 17 each |
+| `05-forgery-B…` | same driver, harness-gated patch | 1 | 17 |
+| `05-forgery-C…` / `C2…` | same drivers, `gldt-` `{20}`→`{3,}` | 1 | 17 each |
+| `05-forgery-D…` / `D2…` | same drivers, `GITHUB_PATTERNS` dropped from `patterns()` | 1 | 17 each |
+| `06-controls-receipt-audit.txt` | `grep -n '^C2-CONTROLS\|^CONTROL ' c2-controls-r94.txt`; `grep -n 'record("' c2-controls-r94.py`; python extract of P4 + `controls` field; `grep -rn allow-rows\|allowlist-removed` (0); `grep -c S140` driver (0) / receipt (5); `grep -vc '^#' capture-secret-allow.tsv` (23); `grep -c 'round-94\|S140'` allowlist (0); `sed -n 119,131p` driver (ctl-tamper) | 0 | 47 |
+| `07-s140-anchors-and-known-limits.txt` | `wc -l S140.txt` (563); `sed -n 4p/114p/255p`; `git show 99646086…:…capture-secret-scan.py` GITLAB_PATTERNS; base vs landing `Known limits:` paragraphs; frozen `source-recheck-r94.txt` | 0 | 54 |
+| `08-allowlist-and-capture-shape.txt` | landed instrument imported in-process: `load_allow` + `tree_blobs` + `scan_bytes` over the landing rev → rows/used/matches; `wc -l S140.txt`, `tail -1`, last byte | 0 | 9 |
+| `09-path-key-reach.txt` | counter module imported; `PLANT_EXPECT` relocated with the A2 nonce `3d63872e`; set difference against A2's K4 `missing=` list → 15 found pairs listed | 0 | 17 |
+| `CriticClaimsC2-forges.py`, `CriticClaimsC2-forges-selftest-green.py` | the two attack drivers as run (kept here because the scratch is deleted at seat exit) | — | 2 files |

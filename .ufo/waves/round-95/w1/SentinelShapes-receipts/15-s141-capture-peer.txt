@@ -1,0 +1,24 @@
+=== 11-s141-capture.txt ===
+== receipt file size/lines
+ 20 795 .ufo/waves/round-94/w1/ScoutGitLabRules-receipts/08-github-rules-file.txt
+== receipt content
+
+# R08 GitHub rules file (S141) fetched bytes + its ghr_ rule
+$ curl -sS --max-time 40 -o github.toml.raw <github.toml raw url>
+$ sha256sum github.toml.raw; wc -c -l github.toml.raw
+02c67cebbf24803552c5696b65f9f9885569580ec38480bc29ee56957c2a83e0  github.toml.raw
+ 130 3955 github.toml.raw
+
+$ grep -n 'id = \|regex = ' github.toml.raw
+2:id = "Github Personal Access Token"
+4:regex = "ghp_[0-9a-zA-Z]{36}"
+28:id = "Github OAuth Access Token"
+30:regex = "gho_[0-9a-zA-Z]{36}"
+49:id = "Github App Token"
+51:regex = "(ghu|ghs)_[0-9a-zA-Z]{36}"
+70:id = "Github Refresh Token"
+72:regex = "ghr_[0-9a-zA-Z]{76}"
+91:id = "GithubFineGrainedPersonalAccessToken"
+93:regex = '''\bgithub_pat_[0-9A-Za-z]{22}_[0-9A-Za-z]{59}\b'''
+112:id = "GithubAppInstallationToken"
+114:regex = '''\bv1\.[0-9A-Fa-f]{40}\b'''
