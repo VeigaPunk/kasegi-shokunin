@@ -1,0 +1,55 @@
+{
+  "round": 94,
+  "lane": "kasegi",
+  "base": "dff5a0a01e8aafe6be81f4ee61567745c3c4c485",
+  "claims": [
+    {
+      "id": "C1",
+      "axis": "depth:verifiability (lowest non-retired axis, score 4; anchor repair + counter integrity, score not claimed to move)",
+      "surface": "the 19 token-level repoints the round-94 non-author label set names in corpus/knowledge/triage-thresholds.md and corpus/knowledge/considerthese-proposals-ledger.md, applied under a successor counter that walks every labelled file (not only corpus/knowledge), binds lane-root tokens embedded in any written value including a cell-repair replacement, and prints the measured after revision",
+      "statement": "Tranche 9: the 19 token-level repoints are applied byte-exactly at their labelled anchors in corpus/knowledge/triage-thresholds.md (lines 143, 151, 153, 220, 267, 310, 311, 312, 313, 355, 374, 390, 394, 397 twice, 446, 459, 460) and corpus/knowledge/considerthese-proposals-ledger.md line 156 (both occurrences of the key on that line). The ten label rows that ask for a prose reword stay unmapped, frozen in the counter's EXCLUDED with a reason each. The successor counter compares every labelled file, including one outside corpus/knowledge, and rejects a cell-repair replacement whose lane-root token lies past SKILL.md's last line. The citation meter reads 1008/1999 at base and 1009/2000 at the landing.",
+      "predicate": "P1: knowledge-meter.py --base-rev dff5a0a01e8aafe6be81f4ee61567745c3c4c485 --after-rev <C1 landing> --labels-rev <freeze> prints KNOWLEDGE-METER-RESULT pass rc=0 with M0 base=1008/1999, M1 after=1009/2000, M3 (one edit per site, 19 sites, no duplicate row), M4, M5, M9 rows=19 unbound=none, M10 labelled=29 want=19 mapped=19 kinds=excluded=10,range=19 unknown=none, M6 the frozen map sha256, and after_rev=<C1 landing>. P2: counter sha256 03947734a0a01160b37eb1891b05561520ac4c1c9210d1ec627a109492161f67, map sha256 11de45a74337b945b5179645e18e0f710a2f9ec54935450806a0e4bda7a78847 and labels sha256 41bc438b04b0531a74bb9e52550fb968c0c818fee3aa315ad7ba99cd527a556b equal the frozen values. P3: the C1 landing commit changes exactly corpus/knowledge/triage-thresholds.md and corpus/knowledge/considerthese-proposals-ledger.md (git diff-tree --no-commit-id --name-only -r <landing>). P4: .ufo/waves/round-94/controls/c1-controls-r94.txt prints C1-CONTROLS-RESULT pass controls=12, including the two red-before receptions: the round-93 counter crashes (Traceback) on the labelled non-knowledge file where the successor passes clean, and the round-93 counter exits 0 on the out-of-range cell-repair lane-root token where the successor fails M5.",
+      "counter": ".ufo/waves/round-94/c1/knowledge-meter.py",
+      "counter_sha256": "03947734a0a01160b37eb1891b05561520ac4c1c9210d1ec627a109492161f67",
+      "map": ".ufo/waves/round-94/c1/repair-map.tsv",
+      "map_sha256": "11de45a74337b945b5179645e18e0f710a2f9ec54935450806a0e4bda7a78847",
+      "labels": ".ufo/waves/round-94/c1/labels.tsv",
+      "labels_sha256": "41bc438b04b0531a74bb9e52550fb968c0c818fee3aa315ad7ba99cd527a556b",
+      "command": "python3 -B .ufo/waves/round-94/c1/knowledge-meter.py --lane <lane> --base-rev dff5a0a01e8aafe6be81f4ee61567745c3c4c485 --after-rev <C1 landing> --map .ufo/waves/round-94/c1/repair-map.tsv --labels-rev <freeze> --base-target 1008/1999 --target 1009/2000 --map-sha256 11de45a74337b945b5179645e18e0f710a2f9ec54935450806a0e4bda7a78847 --work <scratch>",
+      "kill": "Any limb FAIL at the landing, P3 naming another path set, or P4 not reproducing: C1 NOT VERIFIED; no target narrowing, no re-labelling, no change to the map or labels after landing.",
+      "controls": ".ufo/waves/round-94/controls/c1-controls-r94.txt (candidate PASS; do-nothing, m3-union-unmapped, m5-cell-repair-lane-root, m5-out-of-range, m9-wrong-new, m10-excluded-mapped, missing-labels rc 2, wrong-map-sha all rc 1/2; m3-union-applied PASS; m3-union-applied-before-r93 rc 1 with Traceback; m5-cell-repair-before-r93 rc 0)",
+      "do_nothing": "no-work control: after = base prints M1 after=1008/1999 and M3 with 19 bad lines -> rc 1"
+    },
+    {
+      "id": "C2",
+      "axis": "coverage (score 8 held); capability extension capture-secret-scan (sourced: S140)",
+      "surface": "three GitLab edge classes the round-93 scanner could not express, taken from GitLab's own rules file: the personal access token's optional custom instance prefix, the runner authentication token (glrt-/glrtr-, optional t1_/t2_/t3_) and the deploy token (gldt-); plus the round-93 M93-4 plant-relocation fix and a regression limb against the round-93 landing",
+      "statement": "At the landing commit corpus/instruments/capture-secret-scan.py reports `gitlab-pat` for `glpat-` with an optional custom instance prefix of 1-20 alphanumerics plus `-`, a 20-character `[A-Za-z0-9_-]` tail and the right boundary `(?![A-Za-z0-9_-])`; `gitlab-runner-auth-token` for `glrt-` or `glrtr-`, an optional `t1_`/`t2_`/`t3_` partition and 20 tail characters; and `gitlab-deploy-token` for `gldt-` plus 20 tail characters (S140 lines 4, 114, 255). The round-93 `glrt-` known limit is retired, the custom-instance prefix is accepted on all three shapes, and a letter immediately before the prefix without a hyphen is still not a hit. Every planted path and basename is relocated at run time (M93-4), so a path-shape-keyed detector finds nothing. The successor counter adds K9: the round-93 landing instrument catches none of the new shape pairs and loses none it caught.",
+      "predicate": "P1: capability-check.py --rev <C2 landing> --work <scratch> --instrument-sha256 22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 prints CAPABILITY-CHECK-RESULT pass rc=0 with K1-K9 pass at the printed run-time seed and at seeds 1 and 9191. P2: the landed capture-secret-scan.py sha256 equals the frozen candidate sha256 and claim-package-check.py equals the gate pin. P3: the C2 landing commit changes exactly corpus/instruments/capture-secret-scan.py and SCORECARD.md, whose capture-secret-scan row is the frozen candidate row (sha256 4f10e273f3c27e5b43cec77b280071d13284c3c475e976ac160bb674ca4beed8). P4: .ufo/waves/round-94/controls/c2-controls-r94.txt prints C2-CONTROLS-RESULT pass controls=10 (candidate rc 0 pinned; do-nothing, the six forgeries F1-F6, the round-93 row and the S140-allowlist-removed control each rc 1).",
+      "counter": ".ufo/waves/round-94/c2/capability-check.py",
+      "counter_sha256": "7619ea9464c53a84b5f9c3f409ffbf3482754ee35648d0632486fca55fb1d076",
+      "candidate": ".ufo/waves/round-94/c2/candidate-capture-secret-scan.py",
+      "candidate_sha256": "22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf",
+      "gate_sha256": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+      "scorecard_row": ".ufo/waves/round-94/c2/candidate-row.txt",
+      "scorecard_row_sha256": "4f10e273f3c27e5b43cec77b280071d13284c3c475e976ac160bb674ca4beed8",
+      "command": "python3 -B .ufo/waves/round-94/c2/capability-check.py --lane <lane> --rev <C2 landing> --work <scratch> --instrument-sha256 22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 [--seed N]",
+      "kill": "Any limb FAIL at the landing at any of the three seeds, or P3 naming another path set: C2 NOT VERIFIED.",
+      "controls": ".ufo/waves/round-94/controls/c2-controls-r94.txt (candidate PASS rc 0; do-nothing, F1 path-shape-keyed, F2 harness-gated, F3 drop-github, F4 loose-runner, F5 literal-keyed, F6 always-clean, row-round93, s140-allow-rows-removed all rc 1)",
+      "do_nothing": "no-work control: the round-93 landing instrument misses all six round-94 plant/shape pairs (K4 missing, K9 prev_caught_new=none) -> rc 1"
+    }
+  ],
+  "frontier": {
+    "sourced_claim": "C2 on S140 (opened 2026-11-07, capture corpus/source-snapshots/round-94/S140.txt, sha256 04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921; manifest source-recheck rc 0; quotes at S140 lines 4, 114 and 255)",
+    "rejected": "none this round",
+    "census_start": ".ufo/waves/round-94/controls/census-start-r94.txt (rc 0, 139 rows, six inherited W04 warnings) and .ufo/waves/round-94/controls/census-mid-r94.txt (rc 0, 140 rows after the S140 row)"
+  },
+  "declined": {
+    "round-93 routed C2 defects D2 (S139 line 86 vs 87), D3 (&#xXX; unpinned), D4 (stale K8 doc line, no GitLab left-boundary plant)": "partially landed: the gitlab-pat docstring no longer carries the line-86 sentence; the &#xXX; branch gains a plant and a clause; the left-boundary clause names the custom-prefix rule. The `S139 line 86` mention in the counter's earlier clause titles is superseded by the round-94 clause titles.",
+    "round-93 routed C1 defects 1 (M3 crash), 3 (M5 cell-repair), 5 (revision print)": "landed; defect 6 (R145 enumerator) and defect 7 (LOG tie) land in this round's lesson/LOG, not as a claim limb.",
+    "round-93 C2 residues: K6 blindness to a removed shape, harness-gated forgeries": "K9 forbids a removed shape (previous-landing regression); F1/F2 forgeries are rejected by the frozen controls.",
+    "ghr_ refresh token 76 characters (ScoutGitLab D3)": "not claimed this round; routed to round 95 with its own source row.",
+    "routable/versioned GitLab forms, JWT-form GitLab tokens, the remaining eleven prefixes": "named known limits in the instrument, not claimed.",
+    "assimilation package merge/kasegi": "not adopted this round (staged ids collide with the lane registry by construction; adoption waits for a later round)."
+  }
+}

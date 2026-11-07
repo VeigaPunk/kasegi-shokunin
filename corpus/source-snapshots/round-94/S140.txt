@@ -1,0 +1,563 @@
+[[rules]]
+id = "gitlab_personal_access_token"
+keywords = ["glpat"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+autoRevocation = true
+validityCheck = true
+[[rules]]
+id = "gitlab_personal_access_token_routable"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+autoRevocation = true
+validityCheck = true
+[[rules]]
+id = "gitlab_personal_access_token_routable_versioned"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+autoRevocation = true
+validityCheck = true
+[[rules]]
+id = "gitlab_pipeline_trigger_token"
+keywords = ["glptt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_runner_registration_token"
+keywords = ["GR1348941"]
+regex = "\\b(GR1348941[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_runner_auth_token"
+keywords = ["glrt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_runner_auth_token_routable"
+keywords = ["glrt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+validationRegex = "(?i)gitlab"
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_feed_token"
+keywords = ["feed_token"]
+regex = "\\b(feed_token=[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+# TODO: This is an old pattern
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+[[rules]]
+id = "gitlab_oauth_app_secret"
+keywords = ["gloas"]
+regex = "\\b(gloas-[0-9a-zA-Z_\\-]{64})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "client_secret"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_feed_token_v2"
+keywords = ["glft"]
+regex = "\\b(glft-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_kubernetes_agent_token"
+keywords = ["glagent"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)'''
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_incoming_email_token"
+keywords = ["glimt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glimt-[0-9a-z]{20,25})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_deploy_token"
+keywords = ["gldt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_scim_oauth_token"
+keywords = ["glsoat"]
+regex = "\\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_ci_build_token"
+keywords = ["glcbt"]
+regex = "\\b(glcbt-[0-9a-zA-Z]{1,5}_[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_runner_auth_token_legacy_partition"
+keywords = ["t1_", "t2_", "t3_"]
+regex = '''(?:(?m:^)|[^0-9a-zA-Z_\-\r\n])(t[1-3]_[1-9a-km-zA-HJ-NP-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab"]
+type = "token"
+maturity = "beta"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+[[rules]]
+id = "gitlab_deploy_token_routable"
+keywords = ["gldt-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_deploy_token_in_url"
+keywords = ["gitlab+deploy-token-"]
+regex = '''gitlab\+deploy-token-[0-9]+:([0-9a-zA-Z_\-]{20})@'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "connection_string"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_kubernetes_agent_token_routable"
+keywords = ["glagent-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_workspace_token"
+keywords = ["glwt-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_feature_flags_client_token"
+keywords = ["glffct-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[[rules]]
+id = "gitlab_runner_controller_token"
+keywords = ["glrct-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_ci_build_token_jwt"
+keywords = ["glcbt-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_stateless_access_token"
+keywords = ["glsat-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_iam_access_token"
+keywords = ["gliamat-"]
+regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_iam_refresh_token"
+keywords = ["gliamrt-"]
+regex = '''\b(gliamrt-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_iam_authorization_code"
+keywords = ["gliamac-"]
+regex = '''\b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_feed_token_path_dependent"
+keywords = ["glft-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glft-[0-9a-f]{64}-[0-9]{1,20}\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_pipeline_trigger_token_in_url"
+keywords = ["/trigger/pipeline?"]
+regex = '''/trigger/pipeline\?(?:[0-9a-zA-Z_.%\[\]=-]{1,100}&){0,10}token=([0-9a-f]{30})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "connection_string"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_session_cookie"
+keywords = ["_gitlab_session"]
+regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+assignmentContext.keywordGroupType = "raw"
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
