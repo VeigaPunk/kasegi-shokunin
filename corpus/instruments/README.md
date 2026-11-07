@@ -172,6 +172,16 @@ moves only on measurements of the actual lane corpus and domain roots.
   conversion is deterministic. **Known limit:** it is a network-capable producer;
   the scheme allowlist lives in `allow_url()`, redirects stay on http(s), but it
   cannot certify that a host will serve the same bytes again.
+  **Intake gate (round 90):** before the snapshot is opened, its bytes are scanned
+  with `capture-secret-scan.py` (imported: `patterns()`, `load_allow()`,
+  `scan_bytes()`) under the lane-relative `--out` path. A hit prints
+  `INTAKE-REFUSED <id> shape=<shape> line=<n> out=<path> written=no` (never the
+  value), writes nothing, leaves an existing `--out` byte-identical and exits 3;
+  a scanner or allowlist that cannot load refuses the same way (fail closed);
+  `--allow TSV` (default `capture-secret-allow.tsv`) lets one documented value
+  through at one path. Design source S131 (GitHub push protection). **Known
+  limit:** the gate sees only what the scanner's shapes name; a credential shape
+  the scanner lacks passes the gate as it passes the scanner.
 - `frontier-recheck-count.py` — the C1 counter-A harness: reads the Frontier table
   in `corpus/README.md`, and for each admitted entry binds the entry to its own
   `recheck:` line before running it (header `source:` ids must be covered by the
