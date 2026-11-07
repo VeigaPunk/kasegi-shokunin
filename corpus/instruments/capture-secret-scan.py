@@ -40,9 +40,29 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          order, separated by `&`, `&amp;` or JSON `\\u0026`: an
                          Azure Storage SAS signature, an HMAC-SHA256 "encoded by
                          using Base64 encoding" (S127 lines 402-404, 605, 638-639).
-Known limits: GCS V2 `Signature=` and CloudFront `Signature=`/`Key-Pair-Id=`
-URLs, percent-encoded parameter names, and gzip/UTF-16/base64-wrapped captures
-are not detected.
+                         Round 89: the match may start right after a `\\u0026`
+                         or `%26` separator, so a JSON-escaped SAS whose first
+                         matched parameter is not the query's first parameter
+                         (S127 line 605's order, sv sixth) is detected.
+  cloudfront-signed-url-signature  (round 89) a `Signature=<value>` query
+                         parameter of 40+ CloudFront URL-safe base64 characters
+                         (`A-Za-z0-9`, `-`, `_`, `~`: CloudFront replaces `+`,
+                         `=`, `/` with `-`, `_`, `~`, S128 lines 202-211) in the
+                         same query as a `Key-Pair-Id=<ID>` parameter (8-32
+                         upper-case letters or digits), either order, separated
+                         by `&`, `&amp;` or `\\u0026`, parameter names
+                         case-sensitive, any other parameters (Expires, Policy,
+                         Hash-Algorithm) between: an Amazon CloudFront signed URL,
+                         canned or custom policy (S128 lines 13, 70-78; S130 lines
+                         14, 75-84). "anyone with the signed URL can access" the
+                         files its policy covers (S130 lines 163-165). A
+                         `Signature=` preceded by `-` (`X-Amz-Signature=`) never
+                         starts a match.
+Known limits: GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+cookies (`CloudFront-Signature`), percent-encoded parameter names or `=`
+(a whole URL percent-encoded inside another URL's query), more than 20 other
+parameters between the two matched ones, values soft-wrapped across lines,
+and gzip/UTF-16/base64-wrapped captures are not detected.
 The documented example key id AKIAIOSFODNN7EXAMPLE (S124 line 409) is allowed.
 
 Allowlist. The gate's generic shapes also match non-secrets in captures (a
@@ -80,11 +100,18 @@ _SEP = rb"(?:&amp;|&|\\u0026)"
 _PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,6}=[^&\s\"'<>\\]*){0,20}?"
 _SIG = rb"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}"
 _SV = rb"sv=\d{4}-\d{2}-\d{2}"
+_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\u0026)|(?<=%26))"
+_CF_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\u0026)|(?<=%26))"
+_CF_PARAM = rb"(?:" + _SEP + rb"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\s\"'<>\\]*){0,20}?"
+_CF_SIG = rb"Signature=[A-Za-z0-9_~-]{40,}"
+_CF_KPI = rb"Key-Pair-Id=[A-Z0-9]{8,32}(?![A-Za-z0-9_-])"
 CLOUD_PATTERNS = (
     ("gcs-signed-url-signature", re.compile(
         rb"(?i)X-Goog-Signature(?:=|\\?[\"']?\s*:\s*\\?[\"']?)[0-9a-f]{64,}")),
     ("azure-sas-signature", re.compile(
-        rb"(?i)(?<![A-Za-z0-9_])(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
+        rb"(?i)" + _LB + rb"(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
+    ("cloudfront-signed-url-signature", re.compile(
+        _CF_LB + rb"(?:" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb"|" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb")")),
 )
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
@@ -218,6 +245,7 @@ def selftest(pats):
     token = b"IQoJb3JpZ2luX2VjEXAMPLEFAKESESSIONTOKENVALUE0123456789abcdefABCDEF"
     gsig = b"0123456789abcdef" * 8
     asig = b"FAKEsasSIGNATUREfake0123456789abcdefABCDEFG%3D"
+    cfsig = b"FAKEcfSIGNATUREfake~0123456789-abcdefABCDEF_ghijklmnopqrstuvwxyz~XYZ"
     cases = [
         ("presigned-sts", b'{"url":"https://x.s3.amazonaws.com/a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGYBPQ6EXAMPLE12%2F20261107%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Security-Token=' + token + b'&X-Amz-Signature=ab"}', {"aws-sts-session-token", "aws-access-key-id", "credential"}),
         ("json-escaped-sts", b'"X-Amz-Security-Token=' + token + b'\\u0026X-Amz-Signature=1"', {"aws-sts-session-token", "credential"}),
@@ -241,6 +269,16 @@ def selftest(pats):
         ("azure-doc-placeholder", b"https://myaccount.blob.core.windows.net/sascontainer/blob1.txt?sp=rw&spr=https&sv=2022-11-02&sr=b&sig=<signature>", set()),
         ("azure-sig-without-sv", b"https://example.com/x?id=1&sig=" + asig, set()),
         ("azure-short-sig", b"https://a.blob.core.windows.net/c?sv=2022-11-02&sig=abcdEFGH1234", set()),
+        ("azure-json-escaped-s127-order", b'"https://myaccount.blob.core.windows.net/sascontainer/blob1.txt?sp=rw\\u0026st=2026-11-07T00:00:00Z\\u0026se=2026-11-08T00:00:00Z\\u0026spr=https\\u0026sv=2022-11-02\\u0026sr=b\\u0026sig=' + asig + b'"', {"azure-sas-signature"}),
+        ("cf-canned", b"https://d111111abcdef8.cloudfront.net/image.jpg?color=red&size=medium&Expires=1767290400&Signature=" + cfsig + b"&Key-Pair-Id=K2JCJMDEHXQW5F&Hash-Algorithm=SHA256", {"cloudfront-signed-url-signature"}),
+        ("cf-custom", b"https://d111111abcdef8.cloudfront.net/image.jpg?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMTExMTExYWJjZGVmOC5jbG91ZGZyb250Lm5ldC8qIn1dfQ__&Signature=" + cfsig + b"&Key-Pair-Id=K2JCJMDEHXQW5F", {"cloudfront-signed-url-signature"}),
+        ("cf-kpi-first-json", b'"https://d1.cloudfront.net/a.mp4?Key-Pair-Id=K2JCJMDEHXQW5F\\u0026Expires=1767290400\\u0026Signature=' + cfsig + b'"', {"cloudfront-signed-url-signature"}),
+        ("cf-html-amp", b'<a href="https://d1.cloudfront.net/a.mp4?Expires=1767290400&amp;Signature=' + cfsig + b'&amp;Key-Pair-Id=K2JCJMDEHXQW5F">', {"cloudfront-signed-url-signature"}),
+        ("cf-doc-placeholder", b"5. &Signature=hashed and signed version of the policy statement 6. &Key-Pair-Id=public key ID for the", set()),
+        ("cf-sig-without-kpi", b"https://d1.cloudfront.net/a.mp4?Expires=1767290400&Signature=" + cfsig, set()),
+        ("cf-amz-signature-beside-kpi", b"https://x.s3.amazonaws.com/a?X-Amz-Signature=" + b"ab" * 32 + b"&Key-Pair-Id=K2JCJMDEHXQW5F", set()),
+        ("cf-short-sig", b"https://d1.cloudfront.net/a.mp4?Signature=abcDEF123~-_&Key-Pair-Id=K2JCJMDEHXQW5F", set()),
+        ("cf-lowercase-names", b"https://d1.cloudfront.net/a.mp4?signature=" + cfsig + b"&key-pair-id=K2JCJMDEHXQW5F", set()),
     ]
     bad = 0
     for name, data, want in cases:
