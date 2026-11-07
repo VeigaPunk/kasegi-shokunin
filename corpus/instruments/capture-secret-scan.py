@@ -186,11 +186,17 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          (S140 line 480), right boundary `[^0-9a-zA-Z_-]`/EOL.
   gitlab-iam-authorization-code (round 98) `gliamac-` + 43 + `.` + 43 of
                          `A-Za-z0-9_-` (S140 line 497), same right boundary.
-  gitlab-session-cookie  (round 98) the session cookie value: the
-                         assignmentContext keyword `_gitlab_session` (optionally
-                         `_geo_` + 64 hex) then a separator, an optional
-                         `cell-<N>-` prefix and 64 lower-case hex characters
-                         (S140 lines 549-551).
+  gitlab-session-cookie  (round 98; separator model round 99) the session
+                         cookie value: the assignmentContext keyword
+                         `_gitlab_session` (optionally `_geo_` + 64 hex) then
+                         S140's assignment-context separator class
+                         `[^\n]{0,8}[:=][^\n]{0,8}` (up to 8 non-newline bytes,
+                         an operator, up to 8 more), an optional `cell-<N>-`
+                         prefix and 64 lower-case hex characters (S140 lines
+                         549-551). Round 98 used a whitespace/quote/operator class, which refused
+                         the twelve real session values the round-98 sentinel
+                         measured (`_gitlab_session => H`, `%20=%20`, `,=`,
+                         `|=`, `+=`, `(=`, ` ( = ) `, `=> `, `cell--`).
   gitlab-jwt-token       (round 95) the GitLab JWT-form tokens: `glcbt-` or
                          `glsat-` (optional 1-20 character instance prefix) or
                          `gliamat-`, then `eyJ` + 10-1000 characters, `.eyJ` +
@@ -310,7 +316,7 @@ GITLAB_PATTERNS = (
     ("gitlab-iam-authorization-code", re.compile(
         _GL_LB + rb"gliamac-[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])")),
     ("gitlab-session-cookie", re.compile(
-        _GL_LB + rb"_gitlab_session(?:_geo_[0-9a-f]{64})?[\s\"'=:;]+"
+        _GL_LB + rb"_gitlab_session(?:_geo_[0-9a-f]{64})?[^\n]{0,8}[:=][^\n]{0,8}"
         rb"(?:cell-[0-9]+-)?[0-9a-f]{64}(?![0-9a-f])")),
     ("gitlab-runner-registration-token", re.compile(
         _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
@@ -632,6 +638,32 @@ def selftest(pats):
         ("gl-session-cookie", b"Cookie: _gitlab_session=" + b"0a" * 32 + b"; Path=/", {"gitlab-session-cookie"}),
         ("gl-session-cookie-cell", b"_gitlab_session=" + b"cell-7-" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
         ("gl-session-cookie-geo", b"_gitlab_session_geo_" + b"0a" * 32 + b"=" + b"1b" * 32 + b"\n", {"gitlab-session-cookie"}),
+        # round 99: S140's assignment-context separator class
+        # `[^\n]{0,8}[:=][^\n]{0,8}` (S140:549-551). The twelve positives are
+        # the round-98 sentinel's MUST-FIX payloads, verbatim
+        # (.ufo/waves/round-98/w1/SentinelShapes-receipts/final-checks.txt:15-26).
+        ("gl-session-ck-ruby-hash-rocket", b"_gitlab_session => " + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-rocket-nospace", b"_gitlab_session=> " + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-pct20-eq", b"_gitlab_session%20=%20" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-pct20-colon", b"_gitlab_session%20:%20" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-pct20-after-eq", b"_gitlab_session=%20" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-geo-pct20", b"_gitlab_session_geo_" + b"0a" * 32 + b"%20=%20" + b"1b" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-comma-eq", b"_gitlab_session,=" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-pipe-eq", b"_gitlab_session|=" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-plus-eq", b"_gitlab_session+=" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-paren-eq", b"_gitlab_session(=(" + b"0a" * 32 + b")\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-paren-gap", b"_gitlab_session ( = ) " + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-cell-gap", b"_gitlab_session=cell--" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-63-hex", b"_gitlab_session=" + b"0a" * 31 + b"0\n", set()),
+        ("gl-session-ck-geo-short", b"_gitlab_session_geo_" + b"0a" * 31 + b"0=" + b"1b" * 32 + b"\n", set()),
+        ("gl-session-ck-upper-hex", b"_gitlab_session=" + b"0A" * 32 + b"\n", set()),
+        ("gl-session-ck-no-keyword", b"session=" + b"0a" * 32 + b"\n", set()),
+        ("gl-session-ck-other-keyword", b"_other_session=" + b"0a" * 32 + b"\n", set()),
+        ("gl-session-ck-cell-nondigit", b"_gitlab_session=cell-abc-" + b"0a" * 32 + b"\n", set()),
+        ("gl-session-ck-gap-9", b"_gitlab_session" + b" " * 9 + b"=" + b"0a" * 32 + b"\n", set()),
+        ("gl-session-ck-gap-newline", b"_gitlab_session=\n" + b"0a" * 32 + b"\n", set()),
+        ("gl-session-ck-value-hyphen", b"_gitlab_session=" + b"0a" * 16 + b"-" + b"0a" * 15 + b"\n", set()),
+        ("gl-session-ck-left-word", b"x_gitlab_session=" + b"0a" * 32 + b"\n", set()),
         ("gl-session-cookie-63", b"_gitlab_session=" + b"0a" * 31 + b"0", set()),
         ("gl-session-cookie-no-context", b"x=" + b"0a" * 32 + b"\n", set()),
         ("gl-session-cookie-upper", b"_gitlab_session=" + b"0A" * 32 + b"\n", set()),
