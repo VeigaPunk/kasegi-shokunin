@@ -303,6 +303,7 @@ new-entry corrections: `corpus/lessons/round-21-routing-blocked.md`.
 | Capability | What it can now do | Evidence pointer | First-working round |
 |---|---|---|---|
 | sources-registry | Curates where kasegi learns: `corpus/SOURCES.md` (contract v1) — opened, scope-tiered rows with anchors, rejected rows with flips, study paths and a search log; all seven contract census commands run clean | `corpus/SOURCES.md`; seven contract census outputs recorded in `corpus/lessons/round-22.md` § Gate (Census block); 27 rows (A=25 C=2; mined=15 queued=10 rejected=2), malformed 0, dup/enum/missing-used-by empty | 22 |
+| priced-claim-package | Builds a six-file claim package for one public disclosed report and prices it from the platform record, the vendor advisory, the vendor's current policy and the KEV capture, keeping conflicting reward records as separate fields | `python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane . --pkg corpus/practice/curl-h1-1913733` (E1–E5 pass) and `python3 corpus/instruments/claim-package-check.py corpus/practice/curl-h1-1913733` (WELL-FORMED); limits: the frozen counter does not bind the subject (lesson M85-2) | 85 |
 
 The `sources-registry` capability entered in round 22; the preceding row replaces the rollout's empty repertoire placeholder. New rows require an exercised round demonstration (`AXES.md` §Capabilities).
 
@@ -3121,3 +3122,25 @@ Plan-versus-delivery for the "Planned round 84" line above, which is kept unedit
 Quality criteria added: R135 (a falsifiable rule's consequence must not assert an absence its quote does not state or contradict the entry's own Limits). Capabilities: none entered. Saturation: unchanged. Axis-label note (CriticTrend § C1): depth:verifiability has moved only nominally since r70, so the round-84 C1 is gate hardening with no meter move. The lowest-axis obligation is not met by a meter move this round. Retired: none.
 
 Planned round 85 (not frozen): either a `resolve.py`/`anchorcheck.py`-read move on depth:verifiability or a recorded retirement/split of that axis with its reason; MutC1Hunt r84 survivors (summary-fields zero slots X09/X10/X18, exit-1 in entry-set X11, a subprocess end-to-end CLI test X13/X14, conform_ok coupling X21, selftest restores X01–X05); considerthese proposal 2 (one end-to-end claim-package task, SHONEN box 2); C2 leads: the OSV data-quality initiatives post (one-line quote, ScoutSource §4) or GET /v1/vulns/{id}.
+
+## Round 85 — C1 VERIFIED-pending-closure (resolve.py SKILL meter 158/741 → 167/732; internal-citation repoint, score held 4); C2 VERIFIED-pending-closure (first end-to-end domain task: priced practice package for H1 1913733; capability `priced-claim-package` enters)
+
+Frozen claims: `.ufo/waves/round-85/claims.json` (freeze `4a2d34f203519a87078f21a896dc8679137ff675`, base `bc722e540c93b48ff159454b65a0f9f4630db1ed`). Every control was executed and committed in the freeze. Landing receipt: `.ufo/waves/round-85/l1/L1-landing-r85.txt`, measured over a `git clone --shared` checkout of the landing commit it names.
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest; R58 satisfied: the meter resolve.py computes moves) | score 4; resolve.py SKILL scope 158/741 = 21.32 % (checkout with .git; extract 157/741); external RESOLVES 4/741 | score 4 held; 167/732 = 22.81 %; external RESOLVES still 4 (CriticClaims A1 qualifier: an internal-citation repoint, not new external evidence); 18/18 repairs semantically CORRECT (ReviewC1Semantics) | see the landing receipt | `python3 -B .ufo/waves/round-85/c1/skill-meter.py --lane . --base <git show bc722e54:SKILL.md> --after SKILL.md --map .ufo/waves/round-85/c1/repair-map.json --target 167/732 --map-sha256 b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944` | `.ufo/waves/round-85/c1/`, `.ufo/waves/round-85/l1/census-of-record-c1-r85.txt`, `w1/ReviewC1Semantics.md` |
+| C2 | coverage 8 held; claim type capability acquisition | no end-to-end task logged (SHONEN box 2 `[ ]`); S119–S121 queued; registry 121 | package `corpus/practice/curl-h1-1913733` WELL-FORMED; e2e E1–E5 pass; S119–S121 mined; SHONEN box 2 `[~]` | see the landing receipt; counter limits in lesson M85-2 | `python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane . --pkg corpus/practice/curl-h1-1913733` | `corpus/practice/curl-h1-1913733/`, `w1/ReviewC2Package.md`, `w1/CriticClaims.md` |
+| — | depth:density | 273.2 | 273.2 | unchanged | `python3 corpus/instruments/density.py SKILL.md --label x` | landing receipt |
+
+- **Capabilities:** `priced-claim-package` enters (first working round 85).
+- **Quality criteria added:** R136 (run shonen-form when SHONEN.md changes; canonical pointer form).
+- **Saturation:** unchanged.
+- **Retired:** none.
+- **Census of record:** `corpus/instruments/citation-survival.md` still reads 132/701 (r57-era). It is not regenerated this round because figure-audit pins r56 figures; routed to r86, with the rerun receipt committed.
+
+Planned round 86 (not frozen):
+- Amend the e2e counter: subject binding, minimum quote length, duplicate keys, one Pricing section.
+- Regenerate the census of record together with the figure-audit ledger.
+- Second repair-map tranche from ExecC1Hunt's 31 candidates.
+- Leads: IBB 1997312 and the 2026-01-26 end-of-bounty post, as a payer field in a second package.

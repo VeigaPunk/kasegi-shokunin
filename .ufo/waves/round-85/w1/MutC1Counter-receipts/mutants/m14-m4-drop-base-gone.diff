@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r85/MutC1Counter/orig/skill-meter.py	2026-11-06 21:37:42.532405941 -0300
++++ /fast/scratch/hyaku/kasegi-r85/MutC1Counter/mutants/m14-m4-drop-base-gone.py	2026-11-06 21:38:58.120301526 -0300
+@@ -134,7 +134,7 @@
+     mirror = os.path.expanduser(R.MIRROR_ROOT)
+     for k, v in sorted(rmap.items()):
+         ok = (v in tracked and not v.startswith(".ufo/") and v.endswith("/" + k)
+-              and R.classify(v, lane, mirror)[0] == "INTERNAL" and bcls.get(k) == "GONE")
++              and R.classify(v, lane, mirror)[0] == "INTERNAL")
+         if not ok:
+             m4bad.append(k)
+     limbs.append(("M4", not m4bad and bool(tracked), "bad=%s" % (",".join(m4bad) or "none")))

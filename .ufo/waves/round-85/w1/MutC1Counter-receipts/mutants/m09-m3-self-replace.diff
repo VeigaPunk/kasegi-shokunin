@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r85/MutC1Counter/orig/skill-meter.py	2026-11-06 21:37:42.532405941 -0300
++++ /fast/scratch/hyaku/kasegi-r85/MutC1Counter/mutants/m09-m3-self-replace.py	2026-11-06 21:38:58.107522050 -0300
+@@ -121,7 +121,7 @@
+             for k, v in rmap.items():
+                 if "`%s`" % k in fwd:
+                     hit.add(k)
+-                    fwd = fwd.replace("`%s`" % k, "`%s`" % v)
++                    fwd = fwd.replace("`%s`" % k, "`%s`" % k)
+             if fwd != al:
+                 bad += 1
+         m3 = bad == 0 and hit == keys

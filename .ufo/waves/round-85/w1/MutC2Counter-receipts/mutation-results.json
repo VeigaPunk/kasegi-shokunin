@@ -1,0 +1,1112 @@
+{
+ "frozen_sha256": "a6f238022d0d263403b46221fa9ca959b91c8941157c3275eb0ae5ae76a6814d",
+ "mutants": {
+  "sev_case_sensitive": {
+   "note": "E3 severity compared without lowercasing",
+   "sha256": "7186d97292d5178050f1c84f7cba1b56f8287eade6f4224506a656665ae8b4c9",
+   "frozen_control_flips": [
+    {
+     "control": "positive-pricing",
+     "pristine": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-quote",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    }
+   ],
+   "verdict": "killed",
+   "new_control": null
+  },
+  "fields_drop_cve": {
+   "note": "cve dropped from FIELDS",
+   "sha256": "d733bb57016fcabffeb896934d6c8e75032dbd75874f426502866732e107bbbc",
+   "frozen_control_flips": [
+    {
+     "control": "forged-cve",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     }
+    }
+   ],
+   "verdict": "killed",
+   "new_control": null
+  },
+  "flag_always_true": {
+   "note": "platform flag hardwired true",
+   "sha256": "591ac33cbc74313bbfda53f37e793e8f37d1a89c00fe9d435159b86461ed4f30",
+   "frozen_control_flips": [
+    {
+     "control": "positive-pricing",
+     "pristine": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-platform-flag",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-quote",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    }
+   ],
+   "verdict": "killed",
+   "new_control": null
+  },
+  "kev_reverse_prefix": {
+   "note": "kev comparison reversed",
+   "sha256": "4612aa3c3d6c3b99d23013744f308a9d64bbc9c04b63c366e5681505efc9bea9",
+   "frozen_control_flips": [
+    {
+     "control": "positive-pricing",
+     "pristine": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-quote",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    }
+   ],
+   "verdict": "killed",
+   "new_control": null
+  },
+  "e4_ignore_missing": {
+   "note": "E4 ignores quotes absent from the snapshots",
+   "sha256": "dc8d768e3ae17161b9a44e31f8d839f6e904085ed6a657418703034b1bdeec2c",
+   "frozen_control_flips": [
+    {
+     "control": "forged-quote",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     }
+    }
+   ],
+   "verdict": "killed",
+   "new_control": null
+  },
+  "e4_pool_s119_only": {
+   "note": "quote pool loses S120/S121",
+   "sha256": "0b04146b26471bd5d61549eb5acdb90d93ce04ce291331951adf8c9937fb6a20",
+   "frozen_control_flips": [
+    {
+     "control": "positive-pricing",
+     "pristine": {
+      "rc": 0,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "pass"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-severity",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-reward-exemplar",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-platform-flag",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-current-policy",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-cvss",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-kev",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    },
+    {
+     "control": "forged-cve",
+     "pristine": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "pass"
+       ]
+      ]
+     },
+     "mutant": {
+      "rc": 1,
+      "limbs": [
+       [
+        "E3",
+        "FAIL"
+       ],
+       [
+        "E4",
+        "FAIL"
+       ]
+      ]
+     }
+    }
+   ],
+   "verdict": "killed",
+   "new_control": null
+  },
+  "e1_rc_only": {
+   "note": "E1 drops the verdict token",
+   "sha256": "0b49513b990cd71aa85338372704a1270023fced8b54a711b34025aa72dd4d90",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "gate_rc0_bad",
+    "limb": "E1",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=0",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../pkg-valid log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 pass gate_rc=0",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../pkg-valid log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "e1_verdict_only": {
+   "note": "E1 drops the gate exit code",
+   "sha256": "f97ca4395de44136d42c160b21351f9256f503a21b075d69df94474ac4c9e45f",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "gate_rc3_good",
+    "limb": "E1",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=3",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../pkg-valid log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 pass gate_rc=3",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../pkg-valid log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "e2_drop_recorded_sha": {
+   "note": "E2 drops the package-recorded sha256",
+   "sha256": "a7e8e7f06b41b2b698f31d0997946f98e67c70687a3f74b128d5d723dd0a1abe",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "bogus_recorded_sha",
+    "limb": "E2",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 FAIL bound=none",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/MutC2Counter/pr/pkg-bogus-recorded log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/MutC2Counter/pr/pkg-bogus-recorded log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "e2_drop_manifest_binding": {
+   "note": "E2 drops the round-85 manifest sha256 binding",
+   "sha256": "20723bea9e19e228bc5abd30e441ace3d91dbdeca38cd7d20129e550ced235a4",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "manifest_lie",
+    "limb": "E2",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 FAIL bound=S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../pkg-manifest-lie log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../pkg-manifest-lie log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "e2_one_source": {
+   "note": "E2 needs only S119",
+   "sha256": "391259183b9440775bb26f420aeb94db7760cd407cef4aed013d380b019e2ff7",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "one_source",
+    "limb": "E2",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 FAIL bound=S119",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/MutC2Counter/pr/pkg-one-source log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/MutC2Counter/pr/pkg-one-source log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "e2_symlink_evidence": {
+   "note": "E2 follows symlinked evidence",
+   "sha256": "3ee1b79eadc1228e9cb0638ff700a59a150c326f82204f0d031a721bb5bc9614",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "symlink_evidence",
+    "limb": "E2",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 FAIL bound=S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/MutC2Counter/pr/pkg-symlink log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/MutC2Counter/pr/pkg-symlink log=False shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "sev_ignore_s120": {
+   "note": "severity derived from S119 without the S120 agreement",
+   "sha256": "04d8bff9644f423264befa5779079e60ec67d34c16fefe256f64d5ddb2facafa",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "s120_disagrees",
+    "limb": "E3",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E3 FAIL section=True bad=severity",
+     "LIMB E4 FAIL quotes=2 missing=1",
+     "E2E-RESULT fail limbs=2 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 FAIL quotes=2 missing=1",
+     "E2E-RESULT fail limbs=2 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "reward_case_insensitive": {
+   "note": "reward compared case-insensitively",
+   "sha256": "f23e599b3217790bc15dcde081dd98681cbdab5f90d4628002eccd5b8613875e",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "reward_case",
+    "limb": "E3",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E3 FAIL section=True bad=reward-at-disclosure",
+     "LIMB E4 pass quotes=3 missing=0",
+     "E2E-RESULT fail limbs=2 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "E2E-RESULT pass limbs=2 rc=0"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 0
+   }
+  },
+  "e4_threshold_1": {
+   "note": "E4 quote threshold 3 -> 1",
+   "sha256": "9e060fe217803a474ab62f556927e7c9b3bbb7a2a55513460c9bd0b75e2266ef",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "two_quotes",
+    "limb": "E4",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 FAIL quotes=2 missing=0",
+     "E2E-RESULT fail limbs=2 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=2 missing=0",
+     "E2E-RESULT pass limbs=2 rc=0"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 0
+   }
+  },
+  "e4_raw_no_norm": {
+   "note": "E4 compares raw text (no whitespace collapse)",
+   "sha256": "f577adca87bd4b0bafb22160bc8876d7a91465da11c34c1cae12e05a50dcfce7",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "ws_quote",
+    "limb": "E4",
+    "pristine": "pass",
+    "mutant": "FAIL",
+    "designed": [
+     "pass",
+     "FAIL"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "E2E-RESULT pass limbs=2 rc=0"
+    ],
+    "mutant_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 FAIL quotes=3 missing=2",
+     "E2E-RESULT fail limbs=2 rc=1"
+    ],
+    "pristine_rc": 0,
+    "mutant_rc": 1
+   }
+  },
+  "e4_pool_includes_kev": {
+   "note": "E4 pool gains the S052 KEV capture",
+   "sha256": "04e44a55d158dce4aa80bdfaa4a437204647be292ed2033792245e6396f419fa",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "kev_quote",
+    "limb": "E4",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 FAIL quotes=4 missing=1",
+     "E2E-RESULT fail limbs=2 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=4 missing=0",
+     "E2E-RESULT pass limbs=2 rc=0"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 0
+   }
+  },
+  "e5_or": {
+   "note": "E5 accepts either LOG.md or SHONEN.md",
+   "sha256": "bd55507320f1f0d54ba7c0dd826e6b2df8153e3144c46adf723b29d620f91c90",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "log_only",
+    "limb": "E5",
+    "pristine": "FAIL",
+    "mutant": "pass",
+    "designed": [
+     "FAIL",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 FAIL rel=corpus/practice/curl-h1-1913733 log=True shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 pass rel=corpus/practice/curl-h1-1913733 log=True shonen=False",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 1
+   }
+  },
+  "allok_ignores_e1": {
+   "note": "overall verdict ignores limb E1",
+   "sha256": "2d92ba05bbb12994858f4db667180b06223a556de524a6059a2b884f540ccf82",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": {
+    "probe": "only_e1_fails",
+    "limb": "RESULT",
+    "pristine": "fail",
+    "mutant": "pass",
+    "designed": [
+     "fail",
+     "pass"
+    ],
+    "detects": true,
+    "pristine_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 pass rel=corpus/practice/curl-h1-1913733 log=True shonen=True",
+     "E2E-RESULT fail limbs=5 rc=1"
+    ],
+    "mutant_full": [
+     "LIMB E1 FAIL gate_rc=1",
+     "LIMB E2 pass bound=S119,S120",
+     "LIMB E3 pass section=True bad=none",
+     "LIMB E4 pass quotes=3 missing=0",
+     "LIMB E5 pass rel=corpus/practice/curl-h1-1913733 log=True shonen=True",
+     "E2E-RESULT pass limbs=5 rc=0"
+    ],
+    "pristine_rc": 1,
+    "mutant_rc": 0
+   }
+  },
+  "kev_dead_guard": {
+   "note": "removes the second kev conjunct",
+   "sha256": "10f1cbbbdcf6708df1bd74a2b27504d94836fc87e73d1bc7b51dbb4766552dd7",
+   "frozen_control_flips": [],
+   "verdict": "survived",
+   "new_control": null
+  }
+ },
+ "probes": {
+  "kev_dead_guard_equivalence": {
+   "pairs": 16,
+   "differing": [],
+   "equivalent": true,
+   "proof": "when w=='listed', not g.startswith('listed') is already true for g starting 'not-listed'; the second conjunct can never change the value"
+  }
+ },
+ "candidate": {
+  "path": "/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-85/w1/ExecC2Package-candidate/curl-h1-1913733",
+  "present": true,
+  "files": [
+   "claim_checklist.md",
+   "custodian-receipts.json",
+   "evidence/S119.txt",
+   "evidence/S120.txt",
+   "evidence/S121.txt",
+   "evidence/manifest.json",
+   "provenance.json",
+   "report.md",
+   "status.json"
+  ],
+  "pristine": {
+   "rc": 1,
+   "limbs": [
+    [
+     "E1",
+     "pass"
+    ],
+    [
+     "E2",
+     "pass"
+    ],
+    [
+     "E3",
+     "pass"
+    ],
+    [
+     "E4",
+     "pass"
+    ],
+    [
+     "E5",
+     "FAIL"
+    ]
+   ],
+   "result": "fail",
+   "out": [
+    "LIMB E1 pass gate_rc=0",
+    "LIMB E2 pass bound=S119,S120",
+    "LIMB E3 pass section=True bad=none",
+    "LIMB E4 pass quotes=4 missing=0",
+    "LIMB E5 FAIL rel=.ufo/waves/round-85/w1/ExecC2Package-candidate/curl-h1-1913733 log=False shonen=False",
+    "E2E-RESULT fail limbs=5 rc=1"
+   ]
+  },
+  "mutant_flips": {
+   "flag_always_true": {
+    "rc": 1,
+    "limbs": [
+     [
+      "E1",
+      "pass"
+     ],
+     [
+      "E2",
+      "pass"
+     ],
+     [
+      "E3",
+      "FAIL"
+     ],
+     [
+      "E4",
+      "pass"
+     ],
+     [
+      "E5",
+      "FAIL"
+     ]
+    ]
+   },
+   "kev_reverse_prefix": {
+    "rc": 1,
+    "limbs": [
+     [
+      "E1",
+      "pass"
+     ],
+     [
+      "E2",
+      "pass"
+     ],
+     [
+      "E3",
+      "FAIL"
+     ],
+     [
+      "E4",
+      "pass"
+     ],
+     [
+      "E5",
+      "FAIL"
+     ]
+    ]
+   },
+   "e4_pool_s119_only": {
+    "rc": 1,
+    "limbs": [
+     [
+      "E1",
+      "pass"
+     ],
+     [
+      "E2",
+      "pass"
+     ],
+     [
+      "E3",
+      "pass"
+     ],
+     [
+      "E4",
+      "FAIL"
+     ],
+     [
+      "E5",
+      "FAIL"
+     ]
+    ]
+   }
+  }
+ }
+}

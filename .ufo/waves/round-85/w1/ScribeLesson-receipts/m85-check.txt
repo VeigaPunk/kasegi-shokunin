@@ -1,0 +1,37 @@
+# ScribeLesson receipts r85 (read-only git; no census run)
+date: 2026-11-07T00:35:08Z
+
+## M85-1: .git presence differs between checkout and git-archive extract
+$ test -d .git; echo $?
+0
+$ git show bc722e5:SKILL.md | grep -c 'the-bounty-hunter` (excluding `.git`)'
+1
+$ git archive bc722e5 | tar -t | grep -c '^\.git/'
+0
+census-of-record-base-r85.txt header (frozen control, extract root):
+# base census-of-record rerun r85 (resolve.py over git-archive extract of bc722e54 at /fast/scratch/hyaku/kasegi-r85/l1/base; extract has no .git so '.git' classifies GONE there; worktree root gives 158/741)
+c1-controls-r85.txt header (frozen control, worktree root):
+SKILL-METER rate=158/741 pct=21.32 gone=583 mirror_absent=True
+
+## M85-2: every control path named by claims.json must exist at its freeze
+.ufo/waves/round-84/claims.json @ 7f76b7eb: named=1 missing=1
+  MISSING .ufo/waves/round-84/controls/ executed before and committed in the freeze commit: census-start-r84.txt; c1-donothing-r84.txt (landed r83 bytes 343b21e4 under the r84 counter); c1-stub-r84.txt (r83 bytes with the six r84 check ids asserted by len(done) >= 0, selftest cases=33 failures=0); c1-candidate-r84.raw (frozen candidate under the r84 counter); c1-counter-mutants-r84.txt (M09/M10/M12 under r83 and r84 counter selftests); c2-prefreeze-r84.txt (S118 B0 recheck, literal sweep 0 over 97 entries, do-nothing FRONTIER-CENSUS rows=59 knowledge 97 registry 118 S118 queued, r83 entry gate pass on the uncommitted draft, census rc0).
+.ufo/waves/round-85/claims.json @ 4a2d34f2: named=6 missing=0
+
+## M85-2 targeted (r84 freeze 7f76b7eb)
+$ git cat-file -e 7f76b7eb:.ufo/waves/round-84/controls/c1-candidate-r84.raw; echo rc=$?
+rc=128
+$ git cat-file -e 7f76b7eb:.ufo/waves/round-84/controls/c1-candidate-r84.txt; echo rc=$?
+rc=0
+$ git show 7f76b7eb:.ufo/waves/round-84/claims.json | grep -o 'c1-candidate-r84[^ ;)]*'
+c1-candidate-r84.raw
+committed controls at 7f76b7eb:
+c1-candidate-r84.txt
+c1-counter-mutants-r84.py
+c1-counter-mutants-r84.txt
+c1-donothing-r84.txt
+c1-stub-r84.py
+c1-stub-r84.txt
+c2-draft-v0-r84.txt
+c2-prefreeze-r84.txt
+census-start-r84.txt

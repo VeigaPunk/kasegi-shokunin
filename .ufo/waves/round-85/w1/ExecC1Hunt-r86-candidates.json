@@ -1,0 +1,589 @@
+{
+ "base_rev": "bc722e540c93b48ff159454b65a0f9f4630db1ed",
+ "freeze_rev": "4a2d34f203519a87078f21a896dc8679137ff675",
+ "landed_rev": "c0507ad",
+ "skill_candidates": [
+  {
+   "token": "bash corpus/instruments/r35-defect-closure.sh --selftest",
+   "proposed": "corpus/instruments/r35-defect-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1112
+   ],
+   "landed_lines": [
+    1112
+   ],
+   "ctx": [
+    "| r35-defect-closure.sh | gate\\|probe | `bash corpus/instruments/r35-defect-closure.sh [--root DIR]` | plain run prints one `D# \u2026` line per check D1\u2013D7 then `closed=K/7 exit=0\\|1`; exit 0 only for K=7; `--selftest` prints `cases=7 failures=0` | `bash corpus/instruments/r35-defect-closure.sh --selftest` -> `selftest cases=7 failures=0` exit 0 | base export `3266c993` -> `closed=0/7 exit=1` | read-o"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r35-defect-closure.sh [--root DIR]",
+   "proposed": "corpus/instruments/r35-defect-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1112
+   ],
+   "landed_lines": [
+    1112
+   ],
+   "ctx": [
+    "| r35-defect-closure.sh | gate\\|probe | `bash corpus/instruments/r35-defect-closure.sh [--root DIR]` | plain run prints one `D# \u2026` line per check D1\u2013D7 then `closed=K/7 exit=0\\|1`; exit 0 only for K=7; `--selftest` prints `cases=7 failures=0` | `bash corpus/instruments/r35-defect-closure.sh --selftest` -> `selftest cases=7 failures=0` exit 0 | base export `3266c993` -> `closed=0/7 exit=1` | read-o"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r36-closure.sh --export-ref <hash>",
+   "proposed": "corpus/instruments/r36-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1113,
+    1115
+   ],
+   "landed_lines": [
+    1113,
+    1115
+   ],
+   "ctx": [
+    "| r36-closure.sh | gate\\|probe | `bash corpus/instruments/r36-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `E<n> payload=\u2026 closed=0\\|1` line per check E1\u2013E9, then `closed=K/9 exit=0\\|1`; exit 0 only for K=9 | `bash corpus/instruments/r36-closure.sh --selftest` -> `selftest cases=9 failures=0` exit 0 | r35 base export `3266c993` -> `closed=0/9 exit=1`; r",
+    "| r36-closure.sh | gate | `bash corpus/instruments/r36-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | 0 closed \\| 1 open \\| 2 could-not-evaluate | `bash corpus/instruments/r36-closure.sh --selftest` -> `selftest cases=9 failures=0` exit 0 | r35 base export `3266c993` -> `closed=0/9 exit=1`; r35 judged head `0aee0ef` -> `closed<9/9 exit=1` | read-only (export "
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r36-closure.sh --selftest",
+   "proposed": "corpus/instruments/r36-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1113,
+    1115
+   ],
+   "landed_lines": [
+    1113,
+    1115
+   ],
+   "ctx": [
+    "| r36-closure.sh | gate\\|probe | `bash corpus/instruments/r36-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `E<n> payload=\u2026 closed=0\\|1` line per check E1\u2013E9, then `closed=K/9 exit=0\\|1`; exit 0 only for K=9 | `bash corpus/instruments/r36-closure.sh --selftest` -> `selftest cases=9 failures=0` exit 0 | r35 base export `3266c993` -> `closed=0/9 exit=1`; r",
+    "| r36-closure.sh | gate | `bash corpus/instruments/r36-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | 0 closed \\| 1 open \\| 2 could-not-evaluate | `bash corpus/instruments/r36-closure.sh --selftest` -> `selftest cases=9 failures=0` exit 0 | r35 base export `3266c993` -> `closed=0/9 exit=1`; r35 judged head `0aee0ef` -> `closed<9/9 exit=1` | read-only (export "
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r37-closure.sh --export-ref <hash>",
+   "proposed": "corpus/instruments/r37-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1114
+   ],
+   "landed_lines": [
+    1114
+   ],
+   "ctx": [
+    "| r37-closure.sh | gate | `bash corpus/instruments/r37-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `E<n> payload=\u2026 closed=0\\|1` line per check E1\u2013E14, then `closed=K/14 exit=0\\|1`; exit 0 only for K=14; exit 2 on harness error or plain run; 0 closed \\| 1 open \\| 2 could-not-evaluate | `bash corpus/instruments/r37-closure.sh --selftest` -> `selftest cas"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r37-closure.sh --selftest",
+   "proposed": "corpus/instruments/r37-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1114
+   ],
+   "landed_lines": [
+    1114
+   ],
+   "ctx": [
+    "| r37-closure.sh | gate | `bash corpus/instruments/r37-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `E<n> payload=\u2026 closed=0\\|1` line per check E1\u2013E14, then `closed=K/14 exit=0\\|1`; exit 0 only for K=14; exit 2 on harness error or plain run; 0 closed \\| 1 open \\| 2 could-not-evaluate | `bash corpus/instruments/r37-closure.sh --selftest` -> `selftest cas"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r38-closure.sh --export-ref <hash>",
+   "proposed": "corpus/instruments/r38-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1116
+   ],
+   "landed_lines": [
+    1116
+   ],
+   "ctx": [
+    "| r38-closure.sh | gate | `bash corpus/instruments/r38-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `G<n> payload=\u2026 closed=0\\|1` line per check G1\u2013G8, then `closed=K/8 exit=0\\|1`; exit 0 only for K=8; exit 2 on harness error or plain run; 0 closed \\| 1 open \\| 2 could-not-evaluate; G1\u2013G8 check, one clause each: D-A front-door `Correction (round 38)` lin"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r38-closure.sh --selftest [--export-ref <hash>]",
+   "proposed": "corpus/instruments/r38-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1116
+   ],
+   "landed_lines": [
+    1116
+   ],
+   "ctx": [
+    "| r38-closure.sh | gate | `bash corpus/instruments/r38-closure.sh --export-ref <hash>` (export-mode only; a plain run refuses with exit 2) | one `G<n> payload=\u2026 closed=0\\|1` line per check G1\u2013G8, then `closed=K/8 exit=0\\|1`; exit 0 only for K=8; exit 2 on harness error or plain run; 0 closed \\| 1 open \\| 2 could-not-evaluate; G1\u2013G8 check, one clause each: D-A front-door `Correction (round 38)` lin"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r39-closure.sh --export-ref <hash>",
+   "proposed": "corpus/instruments/r39-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1117
+   ],
+   "landed_lines": [
+    1117
+   ],
+   "ctx": [
+    "| r39-closure.sh | gate | `bash corpus/instruments/r39-closure.sh --export-ref <hash>` (export-mode only; plain run refuses with exit 2) | one `G<n> payload=\u2026 closed=0\\|1` line per check G1\u2013G8, then `closed=K/8 exit=0\\|1`; exit 0 only for K=8; exit 2 on harness error or plain run | `bash corpus/instruments/r39-closure.sh --selftest --export-ref <hash>` -> eight graded cases, `selftest cases=8 fail"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r39-closure.sh --selftest --export-ref <hash>",
+   "proposed": "corpus/instruments/r39-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1117
+   ],
+   "landed_lines": [
+    1117
+   ],
+   "ctx": [
+    "| r39-closure.sh | gate | `bash corpus/instruments/r39-closure.sh --export-ref <hash>` (export-mode only; plain run refuses with exit 2) | one `G<n> payload=\u2026 closed=0\\|1` line per check G1\u2013G8, then `closed=K/8 exit=0\\|1`; exit 0 only for K=8; exit 2 on harness error or plain run | `bash corpus/instruments/r39-closure.sh --selftest --export-ref <hash>` -> eight graded cases, `selftest cases=8 fail"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]",
+   "proposed": "corpus/instruments/r40-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1123
+   ],
+   "landed_lines": [
+    1123
+   ],
+   "ctx": [
+    "| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `H<n> payload=\u2026 closed=0-or-1` line per check H1-H10, then `closed=K/10 exit=0-or-1`; exit 0 only for K=10; `--selftest` prints ten graded `selftest case=H<i> \u2026 verdict=pass-or-fail` lines and `"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r40-closure.sh --selftest",
+   "proposed": "corpus/instruments/r40-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1123
+   ],
+   "landed_lines": [
+    1123
+   ],
+   "ctx": [
+    "| r40-closure.sh | gate | `bash corpus/instruments/r40-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `H<n> payload=\u2026 closed=0-or-1` line per check H1-H10, then `closed=K/10 exit=0-or-1`; exit 0 only for K=10; `--selftest` prints ten graded `selftest case=H<i> \u2026 verdict=pass-or-fail` lines and `"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r41-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]",
+   "proposed": "corpus/instruments/r41-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1129
+   ],
+   "landed_lines": [
+    1129
+   ],
+   "ctx": [
+    "| r41-closure.sh | gate | `bash corpus/instruments/r41-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `I<n> payload=\u2026 closed=0-or-1` line per check I1-I12, then `closed=K/12 exit=0-or-1`; exit 0 only for K=12; `--selftest` prints twelve graded `selftest case=I<n> \u2026 verdict=pass-or-fail` lines an"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r41-closure.sh --selftest --export-ref <hash>",
+   "proposed": "corpus/instruments/r41-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1129
+   ],
+   "landed_lines": [
+    1129
+   ],
+   "ctx": [
+    "| r41-closure.sh | gate | `bash corpus/instruments/r41-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `I<n> payload=\u2026 closed=0-or-1` line per check I1-I12, then `closed=K/12 exit=0-or-1`; exit 0 only for K=12; `--selftest` prints twelve graded `selftest case=I<n> \u2026 verdict=pass-or-fail` lines an"
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r42-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]",
+   "proposed": "corpus/instruments/r42-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1135
+   ],
+   "landed_lines": [
+    1135
+   ],
+   "ctx": [
+    "| r42-closure.sh | gate | `bash corpus/instruments/r42-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2; unresolvable `--export-ref` prints a distinct ref-not-found red) | one `J<n> payload=\u2026 closed=0\\|1` line per check J1-J13, then `closed=K/13 exit=0\\|1`; exit 0 only for K=13; a `REPLAY <family>` limb "
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r42-closure.sh --selftest --export-ref <hash>",
+   "proposed": "corpus/instruments/r42-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1135
+   ],
+   "landed_lines": [
+    1135
+   ],
+   "ctx": [
+    "| r42-closure.sh | gate | `bash corpus/instruments/r42-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2; unresolvable `--export-ref` prints a distinct ref-not-found red) | one `J<n> payload=\u2026 closed=0\\|1` line per check J1-J13, then `closed=K/13 exit=0\\|1`; exit 0 only for K=13; a `REPLAY <family>` limb "
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r43-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]",
+   "proposed": "corpus/instruments/r43-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1144
+   ],
+   "landed_lines": [
+    1144
+   ],
+   "ctx": [
+    "| r43-closure.sh | gate | `bash corpus/instruments/r43-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `K<n> payload=\u2026 closed=0\\|1` per K1-K19, then `closed=K/19 exit=0\\|1`; exit 0 only for K=19 | `bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash>` \u2192 nineteen graded cases and "
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash>",
+   "proposed": "corpus/instruments/r43-closure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1144
+   ],
+   "landed_lines": [
+    1144
+   ],
+   "ctx": [
+    "| r43-closure.sh | gate | `bash corpus/instruments/r43-closure.sh --export-ref <hash> [--receipt-out PATH] [--lane DIR] [--work DIR] [--scratch-root DIR]` (export-mode only; plain run refuses exit 2) | one `K<n> payload=\u2026 closed=0\\|1` per K1-K19, then `closed=K/19 exit=0\\|1`; exit 0 only for K=19 | `bash corpus/instruments/r43-closure.sh --selftest --export-ref <hash>` \u2192 nineteen graded cases and "
+   ]
+  },
+  {
+   "token": "bash corpus/instruments/r46-plain-measure.sh TREE",
+   "proposed": "corpus/instruments/r46-plain-measure.sh",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1167
+   ],
+   "landed_lines": [
+    1167
+   ],
+   "ctx": [
+    "| r46-plain-measure.sh | counter | run `bash corpus/instruments/r46-plain-measure.sh TREE`; prints six `name=value` lines c1a, c1b, c2a, c2b, c2c, c2d (bash, grep, sed, ls, wc only: no python and no counter) | prints values, never a verdict: c1a recheck lines guarded by `test -d ~/Projects/` (base 23, tip 21), c1b gated lines (24, 22), c2a frontier rows (27, 28), c2b SOURCES rows (72, 73), c2c kno"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/r47-routed-defects.py --root TREE",
+   "proposed": "corpus/instruments/r47-routed-defects.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1182
+   ],
+   "landed_lines": [
+    1182
+   ],
+   "ctx": [
+    "| r47-routed-defects.py | gate (frozen diagnostic) | `python3 corpus/instruments/r47-routed-defects.py --root TREE` | 0 eleven mechanical limbs; 1 fewer; 2 usage/could-not-evaluate | external fixture runner below; no direct self-invocation flag (conformance limitation) | `.ufo/waves/round-47/freeze.txt`, constants in counter | read-only TREE | kasegi |"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/r47-f30-gate.py --root TREE",
+   "proposed": "corpus/instruments/r47-f30-gate.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1183
+   ],
+   "landed_lines": [
+    1183
+   ],
+   "ctx": [
+    "| r47-f30-gate.py | gate (frozen diagnostic) | `python3 corpus/instruments/r47-f30-gate.py --root TREE` | 0 seven mechanical limbs; 1 fewer; 2 usage/could-not-evaluate | external fixture runner below; no direct self-invocation flag (conformance limitation) | same freeze record; embedded PINS | read-only TREE | kasegi |"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/r47-counters-selftest.py --base BASE_EXPORT --work SCRATCH --counter both",
+   "proposed": "corpus/instruments/r47-counters-selftest.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1184
+   ],
+   "landed_lines": [
+    1184
+   ],
+   "ctx": [
+    "| r47-counters-selftest.py | gate | `python3 corpus/instruments/r47-counters-selftest.py --base BASE_EXPORT --work SCRATCH --counter both` | 0 all fixture expectations; 1 mismatch; 2 usage/could-not-evaluate | command itself; `--gate MUTANT_FILE` grades changed counter bytes | builder constants and `corpus/instruments/entry29-fixed-bytes.md` | SCRATCH only; reads lane capture package | kasegi |"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/r47-mutbat.py --base BASE_EXPORT --work SCRATCH --counter both",
+   "proposed": "corpus/instruments/r47-mutbat.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1185
+   ],
+   "landed_lines": [
+    1185
+   ],
+   "ctx": [
+    "| r47-mutbat.py | gate | `python3 corpus/instruments/r47-mutbat.py --base BASE_EXPORT --work SCRATCH --counter both` | 0 clean baseline and no uncaught survivor after optional equivalence-map handling; 1 baseline/survivor failure (disclosure does not change the exit); 2 usage/could-not-evaluate; string abort/could-not-evaluate if an edit anchor is not unique | grades the external selftest under 56"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/shonen-form-selftest.py --root TREE --work SCRATCH",
+   "proposed": "corpus/instruments/shonen-form-selftest.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1198
+   ],
+   "landed_lines": [
+    1198
+   ],
+   "ctx": [
+    "| shonen-form.py | gate, restricted author-assessment grammar | `python3 corpus/instruments/shonen-form.py --root TREE` | 0 clean form; 1 noncanonical; 2 could-not-evaluate/unreadable or argparse usage | `python3 corpus/instruments/shonen-form-selftest.py --root TREE --work SCRATCH`; separate runner, not a direct self-invocation flag (conformance limitation) | `.ufo/waves/round-48/claims.json`, `c"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE",
+   "proposed": "corpus/instruments/shonen-shipped-fixture-check.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1207
+   ],
+   "landed_lines": [
+    1207
+   ],
+   "ctx": [
+    "| shonen-shipped-fixture-check.py | probe, shipped-bytes positive control and the shapes the round-48 battery does not cover | `python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE` | 0 every case matches; 1 a case fails; 2 the shipped bytes, the fixture file or the checker cannot be read | `python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE --work SCRATCH` (p"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE --work SCRATCH",
+   "proposed": "corpus/instruments/shonen-shipped-fixture-check.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1207
+   ],
+   "landed_lines": [
+    1207
+   ],
+   "ctx": [
+    "| shonen-shipped-fixture-check.py | probe, shipped-bytes positive control and the shapes the round-48 battery does not cover | `python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE` | 0 every case matches; 1 a case fails; 2 the shipped bytes, the fixture file or the checker cannot be read | `python3 corpus/instruments/shonen-shipped-fixture-check.py --root TREE --work SCRATCH` (p"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/citation-ground-check.py --root TREE --fleet-root FLEET --ledger LEDGER",
+   "proposed": "corpus/instruments/citation-ground-check.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1208
+   ],
+   "landed_lines": [
+    1208
+   ],
+   "ctx": [
+    "| citation-ground-check.py | gate, citation-base grounding over the lane's own files | `python3 corpus/instruments/citation-ground-check.py --root TREE --fleet-root FLEET --ledger LEDGER` | 0 no class member survives and every ledger row resolves; 1 a class member or a ledger row fails; 2 an input cannot be read | `python3 corpus/instruments/citation-ground-check.py --selftest` (prints `selftest c"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/citation-ground-check.py --selftest",
+   "proposed": "corpus/instruments/citation-ground-check.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1208
+   ],
+   "landed_lines": [
+    1208
+   ],
+   "ctx": [
+    "| citation-ground-check.py | gate, citation-base grounding over the lane's own files | `python3 corpus/instruments/citation-ground-check.py --root TREE --fleet-root FLEET --ledger LEDGER` | 0 no class member survives and every ledger row resolves; 1 a class member or a ledger row fails; 2 an input cannot be read | `python3 corpus/instruments/citation-ground-check.py --selftest` (prints `selftest c"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/figure-audit.py --selftest",
+   "proposed": "corpus/instruments/figure-audit.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1225
+   ],
+   "landed_lines": [
+    1225
+   ],
+   "ctx": [
+    "| figure-audit.py | gate | `python3 corpus/instruments/figure-audit.py [--ledger PATH] [--root DIR]` | 0 every recorded figure re-derives; 1 stale or derive failed; 2 unreadable ledger or derive refused (`derive-not-read-only`) | `python3 corpus/instruments/figure-audit.py --selftest` (`selftest cases=110 failures=0`, current interpreter) | `corpus/instruments/figure-audit-ledger.json` (35 figures"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/figure-audit.py [--ledger PATH] [--root DIR]",
+   "proposed": "corpus/instruments/figure-audit.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1225
+   ],
+   "landed_lines": [
+    1225
+   ],
+   "ctx": [
+    "| figure-audit.py | gate | `python3 corpus/instruments/figure-audit.py [--ledger PATH] [--root DIR]` | 0 every recorded figure re-derives; 1 stale or derive failed; 2 unreadable ledger or derive refused (`derive-not-read-only`) | `python3 corpus/instruments/figure-audit.py --selftest` (`selftest cases=110 failures=0`, current interpreter) | `corpus/instruments/figure-audit-ledger.json` (35 figures"
+   ]
+  },
+  {
+   "token": "python3 corpus/instruments/figure-audit-mutbat.py",
+   "proposed": "corpus/instruments/figure-audit-mutbat.py",
+   "rule": "B:split-first-resolving-word",
+   "why": "token is a command invocation; its first word that exists verbatim in the lane is the cited file",
+   "base_lines": [
+    1226
+   ],
+   "landed_lines": [
+    1226
+   ],
+   "ctx": [
+    "| figure-audit-mutbat.py | gate (mutant battery) | `python3 corpus/instruments/figure-audit-mutbat.py` | 0 every mutant killed and both controls pass; 1 survivor, invalid mutant or failed control; 2 usage/error could not evaluate | Battery is the self-test of the self-test (`mutbat killed=5/5 survivors=0 invalid=0 controls=pass`) | Exact-once mutant anchors embedded in the file, including literal-"
+   ]
+  }
+ ],
+ "excluded_ruleB": [
+  {
+   "token": "bash corpus/instruments/r-defect-closure.sh --root <base-extraction>",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/r-defect-closure.sh"
+  },
+  {
+   "token": "bash corpus/instruments/r-defect-closure.sh --selftest",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/r-defect-closure.sh"
+  },
+  {
+   "token": "bash corpus/instruments/r-defect-closure.sh --selftest [--scratch DIR]",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/r-defect-closure.sh"
+  },
+  {
+   "token": "bash corpus/instruments/r-defect-closure.sh [--root DIR]",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/r-defect-closure.sh"
+  },
+  {
+   "token": "cd <lane> && python3 corpus/instruments/kill-rule-check.py [--instrument PATH] [--fake PATH] [--root DIR] [--scratch DIR] [--row-file PATH] [--json PATH]",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/kill-rule-check.py"
+  },
+  {
+   "token": "cd <lane> && sha256sum corpus/instruments/capture-binding-check.py",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/capture-binding-check.py"
+  },
+  {
+   "token": "corpus/instruments/r46-mutbat.py --counter f29",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/r46-mutbat.py"
+  },
+  {
+   "token": "python3 corpus/instruments/",
+   "reason": "proposed value not a tracked file at base",
+   "value": "corpus/instruments/"
+  },
+  {
+   "token": "python3 corpus/instruments/claim-package-check.py --selftest",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/claim-package-check.py"
+  },
+  {
+   "token": "python3 corpus/instruments/claim-package-check.py <package-dir>",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/claim-package-check.py"
+  },
+  {
+   "token": "python3 corpus/instruments/kill-rule-check.py --selftest",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/kill-rule-check.py"
+  },
+  {
+   "token": "python3 corpus/instruments/shonen-form.py --root TREE",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/shonen-form.py"
+  },
+  {
+   "token": "sha256sum corpus/instruments/r-defect-closure.sh corpus/instruments/kill-rule-check.py",
+   "reason": "value already a distinct cited token at landing (rewrite would be a de-cite, numerator gain 0)",
+   "value": "corpus/instruments/r-defect-closure.sh"
+  }
+ ],
+ "knowledge": {
+  "glob": "corpus/knowledge/*.md",
+  "n_files": 98,
+  "distinct_tokens": 1721,
+  "gone_distinct": 1322,
+  "nongone_distinct": 399,
+  "unique_basename_distinct": 496,
+  "unique_basename_occurrences": 764,
+  "by_dir": {
+   "corpus/source-snapshots/round-40": 42,
+   "corpus/knowledge": 110,
+   "corpus/source-snapshots/round-32": 10,
+   "corpus/instruments": 14,
+   "corpus/source-snapshots/round-35": 2,
+   "considerthese": 2,
+   "corpus": 2,
+   "corpus/lessons": 1,
+   "corpus/source-snapshots/round-23": 1,
+   "corpus/source-snapshots/round-49": 8,
+   "corpus/source-snapshots/round-67": 2,
+   "corpus/source-snapshots/round-74": 2,
+   "corpus/source-snapshots/round-70": 36,
+   "corpus/source-snapshots/round-69": 40,
+   "corpus/source-snapshots/round-46": 15,
+   "corpus/source-snapshots/round-47": 32,
+   "corpus/source-snapshots/round-44": 10,
+   "corpus/source-snapshots/round-34": 1,
+   "corpus/source-snapshots/round-57": 18,
+   "corpus/source-snapshots/round-25": 3,
+   "corpus/source-snapshots/round-45": 39,
+   "corpus/source-snapshots/round-68": 70,
+   "corpus/source-snapshots/round-50": 1,
+   "corpus/source-snapshots/round-79": 6,
+   "corpus/source-snapshots/round-82": 1,
+   "corpus/source-snapshots/round-81": 3,
+   "corpus/source-snapshots/round-80": 5,
+   "corpus/source-snapshots/round-31": 8,
+   "corpus/source-snapshots/round-71": 12
+  }
+ },
+ "expected_meter_if_all_applied": {
+  "after": "186/701",
+  "note": "each token replaced by its proposed value; values not already cited at landing (13 collapsed excluded), so each distinct new value adds 1 to numerator and each distinct GONE token removed subtracts 1 from denominator"
+ }
+}

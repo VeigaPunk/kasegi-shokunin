@@ -1,0 +1,26 @@
+{
+ "schema_version": "custodian-receipts/v1",
+ "policy": "every matched grant carries scope_signal NO_SCOPE_OBJECTION; the head binds the manifest",
+ "decision_formula": "decision_sha256 = sha256(action + '|' + input_sha256 + '|' + matched_grant_id + '|' + 'NO_SCOPE_OBJECTION')",
+ "chain": [
+  {
+   "seq": 1,
+   "action": "capture-sources",
+   "input_sha256": "37b90125f9590d926ac1fb9bb617890bbac02c82221b719457960cb473d3e05d",
+   "matched_grant_id": "kasegi-PROVINCE-documentation-only",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "ExecC2Package",
+   "decision_sha256": "e7303bdae71bd1550c2326582480cda187f823349f97f81cdb262d206e3f2820"
+  },
+  {
+   "seq": 2,
+   "action": "build-practice-package",
+   "input_sha256": "e7303bdae71bd1550c2326582480cda187f823349f97f81cdb262d206e3f2820",
+   "matched_grant_id": "kasegi-PROVINCE-documentation-only",
+   "scope_signal": "NO_SCOPE_OBJECTION",
+   "decided_by": "ExecC2Package",
+   "decision_sha256": "5d306fb5ae79460d24223218e5d705641ff88cfafc3869ffd3f48c74e39e2bb2"
+  }
+ ],
+ "head_sha256": "5d306fb5ae79460d24223218e5d705641ff88cfafc3869ffd3f48c74e39e2bb2"
+}

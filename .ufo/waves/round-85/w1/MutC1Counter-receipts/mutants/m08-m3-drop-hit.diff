@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r85/MutC1Counter/orig/skill-meter.py	2026-11-06 21:37:42.532405941 -0300
++++ /fast/scratch/hyaku/kasegi-r85/MutC1Counter/mutants/m08-m3-drop-hit.py	2026-11-06 21:38:58.103056391 -0300
+@@ -124,7 +124,7 @@
+                     fwd = fwd.replace("`%s`" % k, "`%s`" % v)
+             if fwd != al:
+                 bad += 1
+-        m3 = bad == 0 and hit == keys
++        m3 = bad == 0
+     limbs.append(("M3", m3, "linecount_equal=%s bad_lines=%d keys_hit=%d" % (len(base_lines) == len(after_lines), bad, len(hit))))
+     try:
+         tracked = set(subprocess.run(["git", "-C", lane, "ls-files"], capture_output=True, text=True, check=True).stdout.split("\n"))

@@ -2923,3 +2923,29 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Mistakes mined: M84-1 (rule paraphrase drifts from the quote's vocabulary) and M84-2 (rule consequence contradicts the entry's own Limits), in `corpus/lessons/round-84.md`; QUALITY R135. SHONEN evidence pointers corrected (CriticTrend 1–2).
 - Measured scores: depth:verifiability 4 → 4 (nominal; no meter move, CriticTrend label note); coverage 8 → 8 (held pending the operator denominator).
 - Assimilation: none (88 staged-id collisions; L0 pending). considerthese: proposal 2's open half (one end-to-end task) identified by ConnectorOverlap; not adopted, planned for round 85.
+
+## Round 85 — C1 (resolve.py SKILL meter 158/741 → 167/732), C2 (first end-to-end domain task: priced practice package corpus/practice/curl-h1-1913733)
+
+- Read first: the r84 closure and `corpus/lessons/round-84-verifier-spotcheck.md`. Freeze `4a2d34f2` holds the claims, counters and executed controls (`.ufo/waves/round-85/controls/`):
+  - C1 controls: do-nothing, pad, de-cite, wrong-target and partial each give rc 1; the positive control gives 167/732, rc 0.
+  - C2 controls: absent package rc 1; r43 exemplar copy rc 1; eight pricing forgeries rc 1; positive pricing rc 0.
+- C1 landing `c0507adf`: the frozen 18-entry repair map is applied to SKILL.md.
+  - ReviewC1Semantics judged 18/18 CORRECT.
+  - The full resolve.py rerun on a clone of the landing gives SKILL 167/732 and lane 1755/6941 (`.ufo/waves/round-85/l1/census-of-record-c1-r85.txt`).
+  - Density stays 273.2.
+- **End-to-end domain task (SHONEN box 2):** built and logged the retrospective practice package `corpus/practice/curl-h1-1913733` for disclosed HackerOne report 1913733 (curl, CVE-2023-28319).
+  - Pricing: severity medium, from the platform and vendor records together; recorded bounty 2400 USD (S120); platform has_bounty? false (S119); current policy none (S121); CVSS not set by the vendor; KEV not-listed (S052 2026.10.23; the live 2026.11.06 feed also has 0 hits, ProbeKEV).
+  - Gate result: `rules=8 pass=8 verdict=WELL-FORMED`.
+  - ExecC2Package built the candidate. The L1 applied ReviewC2Package F-1..F-7 and CriticClaims D3 at integration: a real verifier scan (`.ufo/waves/round-85/l1/redaction-scan-r85.txt`), "recorded" instead of "paid", the custodian grant tied to PROVINCE.md:52, the resolved models, the KEV capture date, verbatim JSON scope, and the ladder quote.
+  - Builder: `.ufo/waves/round-85/l1/build-package-r85.sh`.
+- Sources: S119, S120 and S121 were opened 2026-11-07 and are now `mined` (registry 118 → 121). ScoutSources re-found all 12 quotes live. The leads (IBB 1997312 as the payer, the 2026-01-26 end of curl's bounty) were deferred.
+- Wave `w1`: 12 seats, 0 dead.
+  - Roles: executor×3, reviewer×2, mutation-tester×2, critic, scout×2, scribe, connector.
+  - Attack seats: 5/12.
+- Wave attacks routed to r86 rather than hidden (lesson M85-2):
+  - CriticClaims B3: a wrong-subject package passes the frozen e2e counter.
+  - E4/E3 forgeries.
+  - MutC2Counter: 13 survivors.
+  - MutC1Counter: 16 survivors against the frozen controls.
+- Mistakes: M85-1 (the r84 SHONEN pointer edit broke `shonen-form.py`, canonical 1 → 0; fixed, QUALITY R136), M85-2, M85-3 (census root dependence). Lesson: `corpus/lessons/round-85.md`.
+- Assimilation: none (91 staged-id collisions). considerthese: 2026-10-26 proposal 2's end-to-end half is adopted as C2.

@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r85/MutC1Counter/orig/skill-meter.py	2026-11-06 21:37:42.532405941 -0300
++++ /fast/scratch/hyaku/kasegi-r85/MutC1Counter/mutants/m16-m5-prefix.py	2026-11-06 21:38:58.126116594 -0300
+@@ -140,7 +140,7 @@
+     limbs.append(("M4", not m4bad and bool(tracked), "bad=%s" % (",".join(m4bad) or "none")))
+     if a.map_sha256:
+         got = hashlib.sha256(mb).hexdigest()
+-        limbs.append(("M5", got == a.map_sha256.lower(), "sha256=%s" % got))
++        limbs.append(("M5", got[:8] == a.map_sha256.lower()[:8], "sha256=%s" % got))
+     for name, ok, det in limbs:
+         print("LIMB %s %s %s" % (name, "pass" if ok else "FAIL", det))
+     allok = all(ok for _, ok, _ in limbs)

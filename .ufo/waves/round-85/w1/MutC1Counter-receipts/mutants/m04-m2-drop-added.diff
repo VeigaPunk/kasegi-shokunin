@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r85/MutC1Counter/orig/skill-meter.py	2026-11-06 21:37:42.532405941 -0300
++++ /fast/scratch/hyaku/kasegi-r85/MutC1Counter/mutants/m04-m2-drop-added.py	2026-11-06 21:38:58.094890294 -0300
+@@ -109,7 +109,7 @@
+     keys, vals = set(rmap), set(rmap.values())
+     removed = set(bcls) - set(acls)
+     added = set(acls) - set(bcls)
+-    m2 = removed == keys and added <= vals
++    m2 = removed == keys
+     limbs.append(("M2", m2, "removed=%d keys=%d stray_removed=%d stray_added=%d unrepaired=%d" % (
+         len(removed), len(keys), len(removed - keys), len(added - vals), len(keys - removed))))
+     m3 = len(base_lines) == len(after_lines)

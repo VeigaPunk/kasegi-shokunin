@@ -1,0 +1,11 @@
+--- /fast/scratch/hyaku/kasegi-r85/MutC1Counter/orig/skill-meter.py	2026-11-06 21:37:42.532405941 -0300
++++ /fast/scratch/hyaku/kasegi-r85/MutC1Counter/mutants/m03-m1-ge.py	2026-11-06 21:38:58.093693204 -0300
+@@ -105,7 +105,7 @@
+     bn, bm = rate(bcls)
+     an, am = rate(acls)
+     print("SKILL-METER base=%d/%d after=%d/%d target=%d/%d mirror_absent=%s" % (bn, bm, an, am, tn, tm, R.MIRROR_ABSENT))
+-    limbs.append(("M1", (an, am) == (tn, tm), "after=%d/%d" % (an, am)))
++    limbs.append(("M1", an >= tn, "after=%d/%d" % (an, am)))
+     keys, vals = set(rmap), set(rmap.values())
+     removed = set(bcls) - set(acls)
+     added = set(acls) - set(bcls)

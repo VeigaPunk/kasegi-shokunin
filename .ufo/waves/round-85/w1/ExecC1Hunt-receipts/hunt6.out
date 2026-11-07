@@ -1,0 +1,77 @@
+FROZEN 'S040-live.txt' GONE? GONE -> 'corpus/source-snapshots/round-26/S040-live.txt' class INTERNAL exists True
+FROZEN 'S073.txt' GONE? GONE -> 'corpus/source-snapshots/round-46/S073.txt' class INTERNAL exists True
+FROZEN 'S074.txt' GONE? GONE -> 'corpus/source-snapshots/round-46-a2/S074.txt' class INTERNAL exists True
+FROZEN 'capture-binding-check.py' GONE? GONE -> 'corpus/instruments/capture-binding-check.py' class INTERNAL exists True
+FROZEN 'capture-source.py' GONE? GONE -> 'corpus/instruments/capture-source.py' class INTERNAL exists True
+FROZEN 'claim-package-check.py' GONE? GONE -> 'corpus/instruments/claim-package-check.py' class INTERNAL exists True
+FROZEN 'entry29-fixed-bytes.md' GONE? GONE -> 'corpus/instruments/entry29-fixed-bytes.md' class INTERNAL exists True
+FROZEN 'frontier-recheck-count.py' GONE? GONE -> 'corpus/instruments/frontier-recheck-count.py' class INTERNAL exists True
+FROZEN 'kill-rule-check.py' GONE? GONE -> 'corpus/instruments/kill-rule-check.py' class INTERNAL exists True
+FROZEN 'limb-ledger.json' GONE? GONE -> 'corpus/instruments/limb-ledger.json' class INTERNAL exists True
+FROZEN 'limb-mutation-check.py' GONE? GONE -> 'corpus/instruments/limb-mutation-check.py' class INTERNAL exists True
+FROZEN 'r-defect-closure.sh' GONE? GONE -> 'corpus/instruments/r-defect-closure.sh' class INTERNAL exists True
+FROZEN 'repo-git-state.md' GONE? GONE -> 'corpus/knowledge/repo-git-state.md' class INTERNAL exists True
+FROZEN 'resolve.py' GONE? GONE -> 'corpus/instruments/resolve.py' class INTERNAL exists True
+FROZEN 'score-gap.py' GONE? GONE -> 'corpus/instruments/score-gap.py' class INTERNAL exists True
+FROZEN 'shonen-form.py' GONE? GONE -> 'corpus/instruments/shonen-form.py' class INTERNAL exists True
+FROZEN 'source-recheck.py' GONE? GONE -> 'corpus/instruments/source-recheck.py' class INTERNAL exists True
+FROZEN 'target-checkouts.md' GONE? GONE -> 'corpus/knowledge/target-checkouts.md' class INTERNAL exists True
+work SKILL == base SKILL? False
+diff lines: 120
+--- 
++++ 
+@@ -313,8 +313,8 @@
+   (903 dirty entries) — `gitMutationBlocker` refuses every fleet commit; all
+   Sep 7–15 work is working-tree-only (`corpus/knowledge/repo-git-state.md`).
+ 
+-Authoritative detail: `corpus/knowledge/ufo-workspaces.md`, `repo-git-state.md`,
+-`target-checkouts.md`.
++Authoritative detail: `corpus/knowledge/ufo-workspaces.md`, `corpus/knowledge/repo-git-state.md`,
++`corpus/knowledge/target-checkouts.md`.
+ 
+ ## Ops integrity layer — invariants, intake, finalize
+ 
+@@ -1052,7 +1052,7 @@
+ 
+ | name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+ |---|---|---|---|---|---|---|---|
+-| frontier-recheck-count.py | gate\|probe | python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH] | exit 0 when every admitted Frontier row passes (recheck `--source` ids ⊇ header `source:` ids
++| frontier-recheck-count.py | gate\|probe | python3 corpus/instruments/frontier-recheck-count.py [--root DIR] [--json PATH] | exit 0 when every admitted Frontier row passes (recheck `--source` ids ⊇ header `source:` ids
+ | source-recheck.py | gate\|probe | python3 corpus/instruments/source-recheck.py --manifest <path> --source S### | exit 0 when every pinned assertion for the asked id verifies (sha256 OK; quote exactly-once in the captu
+ 
+ These rows register the two wave-C1 instruments absent from the earlier registry (the rounds-23/24-onward verdict surface). Measured at append time (working tree, 2026-10-25): frontier-recheck-count.py sha256 `bab0d321f
+@@ -1065,11 +1065,11 @@
+ | limb-mutation-check.py + limb-ledger.json | gate\|probe | cd <lane> && python3 corpus/instruments/limb-mutation-check.py --ledger corpus/instruments/limb-ledger.json | exit 0 iff 13 `LIMB ` lines all print `verdict=ki
+ | score-gap.py | reporter (read-only, NOT a claim) | cd <lane> && python3 corpus/instruments/score-gap.py [--root DIR] | exit 0 on a complete read even when the gates it reads are red — it reports, it does not judge; ex
+ 
+-`limb-mutation-check.py` + `limb-ledger.json` are the round-31 one-limb mutation surface (R13 in executable form): per limb it runs the limb's `kill` command on an unmutated scratch copy of `corpus/` (baseline), applies
+-
+-Measured at append time (working tree, 2026-10-25): ledger sha256 `c042adf6…`; counter `f926bf75…` (the merge receipt's FINAL was `cde7c2b6…`; the file moved once more after that merge and both digests print the same 18
+-
+-`score-gap.py` answers considerthese/2026-10-25.md proposal 2 as a read-only reporter: the four committed-byte measurements that decide whether depth:verifiability 5 is reachable, each with the command it came from, the
++`corpus/instruments/limb-mutation-check.py` + `corpus/instruments/limb-ledger.json` are the round-31 one-limb mutation surface (R13 in executable form): per limb it runs the limb's `kill` command on an unmutated scratch
++
++Measured at append time (working tree, 2026-10-25): ledger sha256 `c042adf6…`; counter `f926bf75…` (the merge receipt's FINAL was `cde7c2b6…`; the file moved once more after that merge and both digests print the same 18
++
++`corpus/instruments/score-gap.py` answers considerthese/2026-10-25.md proposal 2 as a read-only reporter: the four committed-byte measurements that decide whether depth:verifiability 5 is reachable, each with the comman
+ 
+ ## Round-33 Gates & probes registry addition (appended 2026-10-26)
+ 
+@@ -1089,19 +1089,19 @@
+base L983 | anchorcheck.py | gate\|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture pe
+base L1042 | anchorcheck.py | gate\|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture pe
+base L1106 Re-verify: `sha256sum corpus/instruments/r-defect-closure.sh corpus/instruments/kill-rule-check.py` (targets `809aaf90…` / `c279d952…`) then `bash corpus/instruments/r-defect-closure.sh --selftest` → `selftest cases=9 failures=0` exit 0, and `python3 corpus/instruments/kill-rule-check.py --selftest` → `selftest cases=3 failures=0` exit 0. The plain runs' expected values are `closed=9/9 exit=0` and
+base L1225 | figure-audit.py | gate | `python3 corpus/instruments/figure-audit.py [--ledger PATH] [--root DIR]` | 0 every recorded figure re-derives; 1 stale or derive failed; 2 unreadable ledger or derive refused (`derive-not-read-only`) | `python3 corpus/instruments/figure-audit.py --selftest` (`selftest cases=110 failures=0`, current interpreter) | `corpus/instruments/figure-audit-ledger.json` (35 figures
+base L1226 | figure-audit-mutbat.py | gate (mutant battery) | `python3 corpus/instruments/figure-audit-mutbat.py` | 0 every mutant killed and both controls pass; 1 survivor, invalid mutant or failed control; 2 usage/error could not evaluate | Battery is the self-test of the self-test (`mutbat killed=5/5 survivors=0 invalid=0 controls=pass`) | Exact-once mutant anchors embedded in the file, including literal-
+cited 'python3 corpus/instruments/figure-audit-mutbat.py' ('GONE', '', '', 'rel')
+figure-audit.py exists? True
+git ls figure: corpus/instruments/figure-audit-ledger.json
+corpus/instruments/figure-audit-mutbat.py
+corpus/instruments/figure-audit.py
+
+git log figure: 123796a round-72: C1 derive-gate write-root and realpath repair (census READMITTED 19->0, alias refused, selftest 110, mutbat 5/5); C2 F50 Bugzilla REST bug endpoints on S107 (counters 49->50; api_key clause falsified, reported); wave w1 evidence, lesson, LOG, SCORECARD
+4e33119 round-71: C1 per-script python-head census (gate sha256 182f4ef7, selftest 106/0) and the S106 ZDI capture with its 15-quote manifest
+c105174 round-70: derive gate refuses python-head write/exec/ingress options by name and abbreviation, pins the two git-show limbs (C1); selftest 86 -> 96
+
+L1225 | figure-audit.py | gate | `python3 corpus/instruments/figure-audit.py [--ledger PATH] [--root DIR]` | 0 every recorded figure re-derives; 1 stale or derive failed; 2 unreadable ledger or derive refused (`derive-not-read-only`) | `python3 corpus/instruments/figure-audit.py --selftest` (`selftest cases=110 failures=0`, current interpreter) | `corpus/instruments/figure-audit-ledger.json` (35 figures) | Direct execution of the validated decoded argv plan. Final-stage nonzero status takes precedence
+L1226 | figure-audit-mutbat.py | gate (mutant battery) | `python3 corpus/instruments/figure-audit-mutbat.py` | 0 every mutant killed and both controls pass; 1 survivor, invalid mutant or failed control; 2 usage/error could not evaluate | Battery is the self-test of the self-test (`mutbat killed=5/5 survivors=0 invalid=0 controls=pass`) | Exact-once mutant anchors embedded in the file, including literal-prefix and separator-boundary removal | Scratch copies only; honors TMPDIR | kasegi |

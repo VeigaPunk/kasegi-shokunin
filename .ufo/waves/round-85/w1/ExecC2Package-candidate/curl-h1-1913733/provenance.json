@@ -1,0 +1,83 @@
+{
+ "schema_version": "provenance/v1",
+ "agents": [
+  {
+   "identity": "ExecC2Package",
+   "transition": "capture-sources",
+   "requested_model": "@m_cru",
+   "resolved_model": "unrecorded",
+   "role": "package producer"
+  },
+  {
+   "identity": "ExecC2Package",
+   "transition": "build-practice-package",
+   "requested_model": "@m_cru",
+   "resolved_model": "unrecorded",
+   "role": "artifact copy, manifest, report and gate runs"
+  }
+ ],
+ "transitions": [
+  {
+   "index": 1,
+   "agent": "ExecC2Package",
+   "requested_model": "@m_cru",
+   "resolved_model": "unrecorded",
+   "from": "committed snapshots S119-S121",
+   "to": "evidence artifacts (byte copies)"
+  },
+  {
+   "index": 2,
+   "agent": "ExecC2Package",
+   "requested_model": "@m_cru",
+   "resolved_model": "unrecorded",
+   "from": "evidence artifacts",
+   "to": "six-file candidate package"
+  }
+ ],
+ "identity_note": "Single leaf seat built the package; redaction verifier identity KasegiR85 did not verify inside this run, which is why reviewer distinctness stays a named residual gate.",
+ "commands": [
+  {
+   "command": "cp corpus/source-snapshots/round-85/S119.txt candidate/evidence/S119.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "cp corpus/source-snapshots/round-85/S120.txt candidate/evidence/S120.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "cp corpus/source-snapshots/round-85/S121.txt candidate/evidence/S121.txt",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 -B corpus/instruments/claim-package-check.py candidate (final run verdict=WELL-FORMED)",
+   "exit_code": 0
+  },
+  {
+   "command": "python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane <lane> --pkg candidate",
+   "exit_code": 1
+  },
+  {
+   "command": "python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane <lane> --pricing-only candidate/report.md",
+   "exit_code": 0
+  }
+ ],
+ "pin": {
+  "remote": "https://github.com/VeigaPunk/kasegi-shokunin.git",
+  "commit": "4a2d34f203519a87078f21a896dc8679137ff675"
+ },
+ "policy_sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+ "source": {
+  "id": "S121",
+  "url": "https://curl.se/dev/vuln-disclosure.html",
+  "sha256": "9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102",
+  "bytes": 19670,
+  "fetched_utc": "2026-11-07T00:26:30Z"
+ },
+ "external_effects_performed": [],
+ "secrets_attestation": {
+  "no_secrets": true,
+  "findings": 0,
+  "by": "ExecC2Package",
+  "method": "claim-package-check.py R-NOSECRET scan of every package file plus manual review; zero hits"
+ }
+}

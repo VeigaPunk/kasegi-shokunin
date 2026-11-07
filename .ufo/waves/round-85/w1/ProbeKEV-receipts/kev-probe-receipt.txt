@@ -1,0 +1,145 @@
+SEAT ProbeKEV — CISA KEV absence probe for CVE-2023-28319
+Hypothesis: CVE-2023-28319 is absent from the CISA KEV catalog both in the lane
+capture corpus/source-snapshots/round-35/S052.txt and in the live CISA feed today.
+
+Host/lane: cwd for every command = /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Scratch:    S=/fast/scratch/hyaku/kasegi-r85/ProbeKEV (TMPDIR=$S), deleted at exit
+Date (UTC-ish local): 2026-11-06, live fetch at 21:34 local
+
+=====================================================================
+A. LANE CAPTURE  corpus/source-snapshots/round-35/S052.txt
+=====================================================================
+$ ls -la corpus/source-snapshots/round-35/S052.txt
+-rw-r--r-- 1 vgpnk vgpnk 1479694 Oct 26 03:32 corpus/source-snapshots/round-35/S052.txt
+$ wc -l corpus/source-snapshots/round-35/S052.txt
+27870 corpus/source-snapshots/round-35/S052.txt
+$ sha256sum corpus/source-snapshots/round-35/S052.txt
+d69349e86c5cce17146ccb4a4d514272d5ef47cb9586d06085113cf6779e8826  corpus/source-snapshots/round-35/S052.txt
+
+$ grep -n '"catalogVersion"' corpus/source-snapshots/round-35/S052.txt
+3:"catalogVersion": "2026.10.23",
+$ grep -n '"count"' corpus/source-snapshots/round-35/S052.txt
+5:"count": 1756,
+$ grep -n '"dateReleased"' corpus/source-snapshots/round-35/S052.txt
+4:"dateReleased": "2026-10-23T19:30:18.9209Z",
+
+catalogVersion (line 3) = 2026.10.23   count (line 5) = 1756
+$ grep -c '"cveID"' corpus/source-snapshots/round-35/S052.txt
+1756                      # entries match the count field exactly
+
+$ grep -c 'CVE-2023-28319' corpus/source-snapshots/round-35/S052.txt
+0                        # rc=1 (no match)
+$ grep -c -i '28319' corpus/source-snapshots/round-35/S052.txt
+0                        # no near-miss spelling either
+$ grep -c 'CVE-2023-38545' corpus/source-snapshots/round-35/S052.txt
+0                        # positive-shape probe: ALSO 0 (see note below)
+$ grep -c 'CVE-2021-44228' corpus/source-snapshots/round-35/S052.txt
+3                        # positive control: present -> grep shape works
+$ grep -c -i 'curl' corpus/source-snapshots/round-35/S052.txt
+0                        # no curl/vendorProject entry at all
+$ grep -c -i 'haxx' corpus/source-snapshots/round-35/S052.txt
+0
+
+JSON structural check (python3 -B, stdlib only):
+catalogVersion= 2026.10.23 count_field= 1756 len_entries= 1756 unique= 1756
+CVE-2023-28319 present= False
+CVE-2023-38545 present= False
+CVE-2021-44228 present= True
+any 2023 id containing 28319: []
+
+=====================================================================
+B. LIVE FEED  https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+=====================================================================
+$ curl -sS -L -o $S/kev-live.json \
+    -w 'HTTP_STATUS=%{http_code}\nURL_EFFECTIVE=%{url_effective}\nSIZE=%{size_download}\n' \
+    https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+HTTP_STATUS=200
+URL_EFFECTIVE=https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+SIZE=1832349
+---exit=0---
+
+$ sha256sum $S/kev-live.json
+47e0406b2be5a40420eff66f3d90e83eb8883dae6ff4d08e1b2a942c366f6cc2  kev-live.json
+
+Live head (verbatim):
+{
+    "title": "CISA Catalog of Known Exploited Vulnerabilities",
+    "catalogVersion": "2026.11.06",
+    "dateReleased": "2026-11-06T19:44:45.1797Z",
+    "count": 1769,
+    "vulnerabilities": [
+        {
+            "cveID": "CVE-2026-19868",
+
+catalogVersion (line 3) = 2026.11.06   count (line 5) = 1769
+$ grep -c '"cveID"' $S/kev-live.json
+1769                      # entries match the count field exactly
+
+$ grep -c 'CVE-2023-28319' $S/kev-live.json
+0                        # rc=1 (no match)
+$ grep -c 'CVE-2023-38545' $S/kev-live.json
+0                        # positive-shape probe: ALSO 0 (see note below)
+$ grep -c 'CVE-2021-44228' $S/kev-live.json
+3                        # positive control: present -> grep shape works
+$ grep -c -i 'curl' $S/kev-live.json
+0                        # no curl/vendorProject entry at all
+$ grep -c -i 'haxx' $S/kev-live.json
+0
+$ grep -o '"vendorProject": "[^"]*"' $S/kev-live.json | sort -u | wc -l
+291                      # 291 distinct vendors; none is curl
+
+JSON structural check (python3 -B, stdlib only):
+catalogVersion= 2026.11.06 count_field= 1769 len_entries= 1769 unique= 1769
+CVE-2023-28319 present= False
+CVE-2023-38545 present= False
+CVE-2021-44228 present= True
+any 2023 id containing 28319: []
+
+CVE-year coverage (distinct cveID year prefixes present):
+capture: 2002 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015
+         2016 2017 2018 2019 2020 2021 2022 2023 2024 2025 2026
+live:    identical year span (2002..2026)
+
+Distinct CVE-2023 ids in each file: capture = 169, live = 169 (same set shape)
+
+=====================================================================
+C. INTERPRETATION / VERDICT
+=====================================================================
+VERDICT: HOLDS.
+
+Both halves of the hypothesis are confirmed by direct grep on the exact bytes the
+frozen counter reads:
+  * lane capture S052.txt  -> grep -c 'CVE-2023-28319' = 0
+  * live feed (HTTP 200)  -> grep -c 'CVE-2023-28319' = 0
+
+NOTE on the positive-shape probe (CVE-2023-38545, also a curl CVE):
+its count is 0 in BOTH files. It is therefore NOT a positive control — the
+requested shape-probe id is itself absent from KEV. Truthful report: count 0.
+The control that actually validates the grep shape is CVE-2021-44228 (Log4Shell),
+which returns 3 occurrences in each file, and the structural check that
+len(vulnerabilities) == count_field in each file.
+
+NOTE on the read-tool ellipsis: the `read` tool renders "…," inside long JSON
+lines; those are display elisions, NOT file bytes. Verified by python3 -B reading
+the raw file: lines 11-15 contain full JSON keys, and the file parses as valid
+JSON with 1756 unique cveIDs.
+
+NOTE on catalogVersion drift (relevant to C2 pricing):
+capture catalogVersion = 2026.10.23; live catalogVersion = 2026.11.06.
+The frozen counter .ufo/waves/round-85/c2/e2e-check.py line 80 derives
+price-kev from the CAPTURE only:
+    "kev": "not-listed" if kev.count(cve) == 0 else "listed"
+where kev = corpus/source-snapshots/round-35/S052.txt (counter line 70).
+The counter's E3 check (line 105) only requires the package's price-kev value to
+START WITH "not-listed". Therefore the package must cite the CAPTURE's
+catalogVersion 2026.10.23 (S052.txt line 3), not the live 2026.11.06, to stay
+consistent with the frozen derivation. Both versions yield the same membership
+verdict (not listed), so the conclusion is stable across the drift.
+
+VERIFICATION ARTIFACTS COPIED INTO THIS RECEIPT DIR:
+  kev-live-head.txt          first 30 lines of the live feed as fetched
+  kev-probe-receipt.txt      this file
+  rerun-kev-probe.sh         standalone re-run of every command above
+
+Re-run (scratch-bound, no writes outside $S):
+  bash /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-85/w1/ProbeKEV-receipts/rerun-kev-probe.sh
