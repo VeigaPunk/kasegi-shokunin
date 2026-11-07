@@ -8,7 +8,7 @@ pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 25
 host-inclusive rate (resolve.py's definition, confined HOME): SKILL 165/732 = 22.54% | corpus 2645/7624 = 34.69% | lane 2683/8026 = 33.43%
 host-owned inputs: 76 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
 header-sha256: ddad876669a002f3509bd0366f24b70f4bc45bc01b946d8cac7f0b5611f70379
-body-sha256: 0375a382de6d3282c98920d4748a3b4300a5133cf4e80188fdc25b5348c6c87a
+body-sha256: 680a3534cf47fb30b1a24b13f62719de98e0812365f4113c682778e6885eef69
 ---
 
 Instrument: `corpus/instruments/resolve.py` (stdlib-only, deterministic; r18 definition).
@@ -180,20 +180,20 @@ is compared against the resolved file's line count (editor convention).
 | `.ufo/waves/round-94/w1/SentinelShapes-receipts/08-unlisted-classes.txt:76` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-94/w1/SentinelShapes-receipts/08-unlisted-classes.txt` | 76 | 76 | in range |
 | `.ufo/waves/round-95/controls/c1-controls-r95.txt:139-149` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-95/controls/c1-controls-r95.txt` | 139-149 | 150 | in range |
 | `.ufo/waves/round-98/controls/c1-controls-r98.py:104` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-98/controls/c1-controls-r98.py` | 104 | 173 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/l0-questions.md:353` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/l0-questions.md` | 353 | 389 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md:49` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md` | 49 | 89 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md:61` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md` | 61 | 89 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-37/kasegi.md:25` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-37/kasegi.md` | 25 | 88 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-38/kasegi.md:37` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-38/kasegi.md` | 37 | 87 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-40/kasegi.md:32` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-40/kasegi.md` | 32 | 65 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-57/kasegi.md:115` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-57/kasegi.md` | 115 | 128 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3237 | in range |
-| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3237 | in range |
-| `/home/vgpnk/Projects/shokunin/CORPUS.md:101-104` | RESOLVES | `/home/vgpnk/Projects/shokunin/CORPUS.md` | 101-104 | 184 | in range |
-| `/home/vgpnk/Projects/shokunin/MISSION.md:49-56` | RESOLVES | `/home/vgpnk/Projects/shokunin/MISSION.md` | 49-56 | 93 | in range |
-| `/home/vgpnk/Projects/shokunin/PROTOCOL.md:457-461` | RESOLVES | `/home/vgpnk/Projects/shokunin/PROTOCOL.md` | 457-461 | 533 | in range |
-| `/home/vgpnk/Projects/shokunin/kake-shokunin/corpus/knowledge/security-txt-publishing.md:63` | RESOLVES | `/home/vgpnk/Projects/shokunin/kake-shokunin/corpus/knowledge/security-txt-publishing.md` | 63 | 156 | in range |
-| `/usr/lib/python3.14/http/client.py:845-855` | RESOLVES | `/usr/lib/python3.14/http/client.py` | 845-855 | 1598 | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/l0-questions.md:353` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/l0-questions.md` | 353 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md:49` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md` | 49 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md:61` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-33/kasegi.md` | 61 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-37/kasegi.md:25` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-37/kasegi.md` | 25 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-38/kasegi.md:37` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-38/kasegi.md` | 37 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-40/kasegi.md:32` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-40/kasegi.md` | 32 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/reports/round-57/kasegi.md:115` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-57/kasegi.md` | 115 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | - | in range |
+| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | - | in range |
+| `/home/vgpnk/Projects/shokunin/CORPUS.md:101-104` | RESOLVES | `/home/vgpnk/Projects/shokunin/CORPUS.md` | 101-104 | - | in range |
+| `/home/vgpnk/Projects/shokunin/MISSION.md:49-56` | RESOLVES | `/home/vgpnk/Projects/shokunin/MISSION.md` | 49-56 | - | in range |
+| `/home/vgpnk/Projects/shokunin/PROTOCOL.md:457-461` | RESOLVES | `/home/vgpnk/Projects/shokunin/PROTOCOL.md` | 457-461 | - | in range |
+| `/home/vgpnk/Projects/shokunin/kake-shokunin/corpus/knowledge/security-txt-publishing.md:63` | RESOLVES | `/home/vgpnk/Projects/shokunin/kake-shokunin/corpus/knowledge/security-txt-publishing.md` | 63 | - | in range |
+| `/usr/lib/python3.14/http/client.py:845-855` | RESOLVES | `/usr/lib/python3.14/http/client.py` | 845-855 | - | in range |
 | `LOG.md:1469` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1469 | 3114 | in range |
 | `LOG.md:1550` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1550 | 3114 | in range |
 | `LOG.md:1584` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/LOG.md` | 1584 | 3114 | in range |

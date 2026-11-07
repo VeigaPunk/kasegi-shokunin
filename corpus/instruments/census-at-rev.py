@@ -187,6 +187,17 @@ def measure(lane, rev, work, cache_ok=True):
     # body names the lane root (the extract is a byte-identical copy of the
     # revision's tree), and the Lane root line names the revision (R142).
     body = "\n".join(lines)
+    # A host-owned row's occurrence count is a property of the host's file, not
+    # of the revision (the watchdog log grows every round), so it is normalised
+    # to `-`; the pinned and host-inclusive rates are unaffected (R161).
+    norm = []
+    for ln in body.split("\n"):
+        cells = ln.split("|")
+        if len(cells) == 8 and cells[2].strip() in ("RESOLVES", "MIRROR-EQUIVALENT"):
+            cells[5] = " - "
+            ln = "|".join(cells)
+        norm.append(ln)
+    body = "\n".join(norm)
     # Neither the extract nor the confined HOME is evidence: both are scratch
     # paths, so the body names a stable token for each (M98-1 class).
     body = body.replace(home_dir(work) + "/", "<confined-home>/")
