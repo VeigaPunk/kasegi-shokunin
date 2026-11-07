@@ -1,0 +1,407 @@
+{
+ "probes": [
+  {
+   "name": "cf_lb_drop_pct26",
+   "sha": "f174710b0ea6b0df7ac4e6d5c2d8cac6d83a978c40a5346a2e49df42dd24d798",
+   "note": "CF match starts right after a %26 separator",
+   "frozen": [
+    "cloudfront-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_lb_drop_json_u0026",
+   "sha": "60357e268b75ce10b8c91783f816d8fa3e393df6656692d1888bbdea7bc24b40",
+   "note": "CF match starts right after a \\u0026 separator",
+   "frozen": [
+    "cloudfront-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_param_window_0_1",
+   "sha": "9544416dfa9bb89ffe40345352e854bc54a9559890a9871a14caa6851f0cbd48",
+   "note": "two intervening parameters between Signature and Key-Pair-Id",
+   "frozen": [
+    "cloudfront-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_param_name_letters_only",
+   "sha": "4f6cde1395d5c693f78bb5938b427dc9496e69fe67c28435852f9dceb415adac",
+   "note": "intervening name with a hyphen (Hash-Algorithm)",
+   "frozen": [
+    "cloudfront-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_param_name_upper_first",
+   "sha": "a7a29484de98b089b37dbd42688af6e8f698ba5642ac26a9f6213e0885d91a49",
+   "note": "intervening name starting lower-case (expires)",
+   "frozen": [
+    "cloudfront-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_sig_floor_64",
+   "sha": "525ecb167ddeaebb254fb9f31acd4c345ebda5f0855197ae5ea7ee4d96983de8",
+   "note": "positive with a 48-character signature",
+   "frozen": [
+    "cloudfront-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_kpi_len_8_64",
+   "sha": "56b92f720262853f6a54281a6d32427fb0c7a78824487378053790d98b3c5c62",
+   "note": "40-character key-pair-id (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "cloudfront-signed-url-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "cf_kpi_len_1_32",
+   "sha": "e3b34ccc587938d0d768969215092d9e9d5877bb70fd88cb88105227a5505811",
+   "note": "6-character key-pair-id (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "cloudfront-signed-url-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "cf_kpi_lowercase_admitted",
+   "sha": "ee19927755b84f185123de623b4b4cb1994cf5f776414d75c1a8ddfdda23329b",
+   "note": "lower-case letters in the key-pair-id value",
+   "frozen": [],
+   "mutant": [
+    "cloudfront-signed-url-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "cf_kpi_no_lookahead",
+   "sha": "df0eb39bb49aa187e1df0635931e384ba3b235400bc3bd4cb94372a07478510a",
+   "note": "key-pair-id followed by -EXTRA (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "cloudfront-signed-url-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "cf_kpi_lookahead_no_dash",
+   "sha": "b9b15ddff5439be2616dcbb5d948ae6138eac6bd34990b49a07c2d5186b10a38",
+   "note": "key-pair-id followed by -EXTRA (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "cloudfront-signed-url-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "az_lb_drop_pct26",
+   "sha": "37471a67b34fc0a0ceea6ad7c3da6f140afd3572987ef0e8cdeb11b00a0de827",
+   "note": "azure match starts right after a %26 separator",
+   "frozen": [
+    "azure-sas-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "az_lb_underscore_relaxed",
+   "sha": "584c5a2c8607fc2be581ea8676347611667ba94fbc3043591b4764796179c9ae",
+   "note": "negative: _sv= is not an sv parameter (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "azure-sas-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "az_case_insensitive_dropped",
+   "sha": "f76c10ad9120f2275df9275c2f34d6de5569189f4a7c3801ef5555f3271206df",
+   "note": "upper-case parameter names",
+   "frozen": [
+    "azure-sas-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "r88_azure_param_window_1",
+   "sha": "9ad6420d5bee0710791dc4f1573465a477f0dcdc345dc30de57acb8fc43161cf",
+   "note": "two intervening azure parameters",
+   "frozen": [
+    "azure-sas-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "r88_azure_param_name_max3",
+   "sha": "26f00e5658dda7c191082f433866a6c39fc9a45c8080b74df9ce5dc2c8af3499",
+   "note": "five-letter intervening name (skoid)",
+   "frozen": [
+    "azure-sas-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "r88_azure_sig_floor_32",
+   "sha": "89166af7f5bf7f97e8fa6f91f1a7e166657b4c5127fbb22dbfb48f61604d79b9",
+   "note": "negative: 35-character sig (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "azure-sas-signature"
+   ],
+   "separate": true
+  },
+  {
+   "name": "r88_azure_sv_hardcode",
+   "sha": "1439a2055e9eb7a41bc292be6130211a9a26fcee3903bc6855e305f952311878",
+   "note": "a second service version (2024-11-04)",
+   "frozen": [
+    "azure-sas-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "r88_gcs_floor_128",
+   "sha": "152d02c4ca75aeb879c32c6bf463031089fb00773d625d972b078a32663cb24d",
+   "note": "96 hex digits",
+   "frozen": [
+    "gcs-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "r88_gcs_floor_80",
+   "sha": "824fadf85d1ffdb717ed640c3d35a78f56b0f14a872b61cef3740283209b87c0",
+   "note": "72 hex digits",
+   "frozen": [
+    "gcs-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "r88_gcs_nocase",
+   "sha": "0af14c5c26b6e331eeda283e70f53ebfc5d122fccac6d4bb993b1f5a4c4972aa",
+   "note": "lower-case gcs name",
+   "frozen": [
+    "gcs-signed-url-signature"
+   ],
+   "mutant": [],
+   "separate": true
+  },
+  {
+   "name": "cf_sig_class_widen_keep_hyphen",
+   "sha": null,
+   "note": "negative: a 40+ run containing + or / is not a CloudFront signature (frozen: no hit, mutant: hit)",
+   "frozen": [],
+   "mutant": [
+    "cloudfront-signed-url-signature"
+   ],
+   "separate": true
+  }
+ ],
+ "equiv": [
+  {
+   "name": "cf_alt_swap",
+   "sha": "217dbd4b13cba9bf1bfd23376808d0bdd5d0d6be62a49eb0d1d8ff671eb699a9",
+   "fixtures": 6,
+   "separated": []
+  },
+  {
+   "name": "az_alt_swap",
+   "sha": "d6cdb54df501099c441c32bd4d3ea6a895432b9058743ed4ff5f57a5783653d3",
+   "fixtures": 6,
+   "separated": []
+  }
+ ],
+ "selftest": [
+  {
+   "name": "st_cases_zero",
+   "sha": "9775ab79e8ab7527e7ac433cb66b8bf0731858258e369415d7d72dd0c9aebf20",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=0",
+    35
+   ],
+   "dropped": []
+  },
+  {
+   "name": "st_drop_cf_canned",
+   "sha": "980b1960e8dd99a638fd3880e7bd99e1e085818dc5a451efefef845f4d384e6a",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "cf-canned"
+   ]
+  },
+  {
+   "name": "st_drop_cf_amz_beside_kpi",
+   "sha": "939858818b73a733b830a5ee6ba1538c11e30c597c09b8fa42b13b288e615894",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "cf-amz-signature-beside-kpi"
+   ]
+  },
+  {
+   "name": "st_drop_cf_lowercase_names",
+   "sha": "0aa33ce6235d3d9e38d727d9cfb96a57542e8d92b8547b31d7d89d18d3c0d4d5",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "cf-lowercase-names"
+   ]
+  },
+  {
+   "name": "st_drop_cf_short_sig",
+   "sha": "7cb1670336b92ffdade696863d2ad17408f90ff55c7ea48040d59b45f8995fb0",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "cf-short-sig"
+   ]
+  },
+  {
+   "name": "st_drop_az_s127_order",
+   "sha": "28fc0403ae5e1c655371fdffb816fce6c87330995942ae3ef50ee90df3de4f11",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "azure-json-escaped-s127-order"
+   ]
+  },
+  {
+   "name": "r88_st_drop_gcs_json_key",
+   "sha": "715ef5da8dce77625c20cc8342ce2177df777cc8d8d48174904c6233998c26b3",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "gcs-json-key"
+   ]
+  },
+  {
+   "name": "r88_st_drop_azure_html_amp",
+   "sha": "1555b93f00b4cf1dcc559cd36dc6afd817174bdf09a75e9afe1ddb4636de7e6f",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=42",
+    34
+   ],
+   "dropped": [
+    "azure-html-amp"
+   ]
+  },
+  {
+   "name": "r88_st_cases_zero",
+   "sha": "9775ab79e8ab7527e7ac433cb66b8bf0731858258e369415d7d72dd0c9aebf20",
+   "frozen": [
+    0,
+    "SELFTEST-RESULT pass cases=43",
+    35
+   ],
+   "mutant": [
+    0,
+    "SELFTEST-RESULT pass cases=0",
+    35
+   ],
+   "dropped": []
+  }
+ ],
+ "scope": [
+  {
+   "name": "r88_scope_prefix_loose",
+   "sha": "ed4b5e8e0202cbd0a34a82f284c97b225b02380dc0879d56d1d82bfc2f4decea",
+   "path": "corpus/practice2/p/evidence/F.txt",
+   "frozen": false,
+   "mutant": true,
+   "separate": true
+  },
+  {
+   "name": "r88_scope_evidence_at_end",
+   "sha": "50ed9b013e909cd0fcaf961889927851fcfeaac34bb8e11aa4f7d01af8c5b341",
+   "path": "corpus/practice/p/sub/evidence/F.txt",
+   "frozen": false,
+   "mutant": true,
+   "separate": true
+  }
+ ]
+}

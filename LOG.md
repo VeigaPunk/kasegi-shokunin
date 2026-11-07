@@ -2986,3 +2986,15 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Sources: S126 (Google Cloud Storage Signed URLs) and S127 (Azure Create a service SAS) opened 2026-11-07, captured, `mined` (registry 125 → 127). Rejected as C2 sources: the Azure SAS overview (example URI is an image) and the GCS Signatures page.
 - Admitted: `corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md` (ScribeEntry, L1-reviewed, one limit added). Fixed: three stale sentences in `corpus/knowledge/presigned-url-credentials-in-captured-evidence.md` (CriticHarm H2).
 - Mistakes: M88-1 (lexical proxy passes wrong anchors), M88-2 (statement clause not bound by the counter). Lesson: `corpus/lessons/round-88.md`.
+
+## Round 89 — C1 (tranche 4: 9 non-author-labelled sibling-entry citations, meter 777/1798 → 785/1797, M9 label binding), C2 (capture-secret-scan: CloudFront signed URLs on S128/S130, Azure `\u0026` boundary)
+
+- Read first: the r88 closure (`admitted`) and `corpus/lessons/round-88-verifier-spotcheck.md` routed defects 1–8. Freeze `94573d25` holds claims, counters, map, labels, candidates and executed controls (`.ufo/waves/round-89/controls/`):
+  - C1 controls: do-nothing, working-tree-only, prefix-only forgery (unpinned and pinned), shifted label line, extra unlabelled repoint, cited-entry line shift, out-of-range re-anchor each rc 1; positive 785/1797 rc 0.
+  - C2 controls: do-nothing, wrong pin, no row, no allowlist rows, r88 instrument and nine behavioural mutants each rc 1 (the fixture-literal detector fails K7 only); positive rc 0 at seeds 8989 and 1. The first controls run exposed a counter plant outside the scanner's scope (M89-1, QUALITY R141).
+- C1 landing `eb5f0df8` (`triage-thresholds.md` only, scope check PASS): counter pass 785/1797, 15/15 pins; ReviewC1Labels 9/9 CORRECT; ExecC1Indep AGREE 10/10.
+- C2 landing `c61c5586` (scanner, allowlist, SCORECARD row only, scope check PASS): K1–K8 pass, byte-equal candidates. Counter under-binds three statement details (M89-2); two controls read moving paths (M89-3).
+- Sources: S128 and S130 (CloudFront canned and custom policy signed URLs) opened 2026-11-07, captured, `queued` at the freeze → `mined` at integration; S129 (GCS V2 signing, legacy) opened and rejected (no query-string example). Registry 127 → 130.
+- Integration: `corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md` replaced by the ScribeEntry candidate (Claim 7 CloudFront; instrument references repointed after the C2 line shift, CriticHarm F1); `presigned-url-credentials-in-captured-evidence.md:69` repointed. QUALITY R141 added.
+- Routed to the operator: committed live CloudFront signed URLs in two sibling lanes' wave receipts (L0 `kasegi | round-89`).
+- Mistakes: M89-1 (plant outside instrument scope), M89-2 (hand-listed clause map claimed complete), M89-3 (control input read from a moving path). Lesson: `corpus/lessons/round-89.md`.

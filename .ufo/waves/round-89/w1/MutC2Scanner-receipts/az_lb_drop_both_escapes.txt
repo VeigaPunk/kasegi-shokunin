@@ -1,0 +1,31 @@
+# mutant az_lb_drop_both_escapes  section=A
+# sha256(mutated instrument)=20c37b0a6a142b2969ba7dbe0c403eb48dbf8fbc3002a4450a3a1a1d33060fb0
+# why=r88 #12 re-run: the r89 addition
+# expected=kill K1 azure-json-escaped-s127-order, K4 E3, K7 g3
+# selftest rc=1
+# SELFTEST azure-json-escaped-s127-order FAIL got=none
+# SELFTEST-RESULT fail cases=43
+# ---- seed 8989
+CAPABILITY-CHECK rev=a29fb265705ce7ebc17ef014355ec6eead72f2f8 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=20c37b0a6a142b2969ba7dbe0c403eb48dbf8fbc3002a4450a3a1a1d33060fb0 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=a29fb265705ce7ebc17ef014355ec6eead72f2f8 instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=20c37b0a6a142b2969ba7dbe0c403eb48dbf8fbc3002a4450a3a1a1d33060fb0 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1

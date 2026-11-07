@@ -1,0 +1,131 @@
+ReviewC2Scanner (round 89, attempt 1) — C2 code and source review, executed checks
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+base=090a46f89932324787e00ca20b1007f893934c9a  freeze=94573d2573dc6cca83454cc65b787d37d96988f5
+C1=eb5f0df8eaceca617465e493c710e8626e9aa618    C2=c61c55868e6d28653f57413bac6a6de5a398d11f
+scratch=/fast/scratch/hyaku/kasegi-r89/ReviewC2Scanner (deleted on exit; nothing written under /tmp)
+No fixture value, no snapshot bytes and no scanner copy is stored in this receipt: only shape names,
+line numbers, booleans, lengths and sha256 digests.
+
+== 1. predicates re-run independently (not taken from the panel's controls)
+$ git diff --name-only eb5f0df8 c61c5586
+  SCORECARD.md
+  corpus/instruments/capture-secret-allow.tsv
+  corpus/instruments/capture-secret-scan.py            -> P3 scope exact
+$ git show c61c5586:corpus/instruments/capture-secret-scan.py | sha256sum
+  95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec  == .ufo/waves/round-89/c2/candidate/ (P2)
+$ git show c61c5586:corpus/instruments/capture-secret-allow.tsv | sha256sum
+  76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985  == .ufo/waves/round-89/c2/candidate/ (P2)
+$ python3 -B corpus/instruments/capture-secret-scan.py --lane . --rev c61c5586
+  CAPTURE-SECRET-SCAN mode=rev:c61c5586... scanned=1530 hits=0 files=0 allowed=20 unused_allow=0 rc=0
+  (base instrument at the same rev: hits=0 allowed=18 unused_allow=2 — the two new rows are the only new consumers)
+  wall 1.42 s / 24.9 MB maxrss (base 1.06 s / 25.9 MB) on 1530 capture-class blobs
+$ python3 -B corpus/instruments/capture-secret-scan.py --selftest
+  SELFTEST-RESULT pass cases=43
+$ python3 -B corpus/instruments/capture-secret-scan.py --files <S128.txt> <S130.txt>
+  CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=2 unused_allow=17 rc=0
+  The single match per snapshot is 209 bytes long (Signature= ... Key-Pair-Id=...) and its
+  sha256 is f8d573cbc618aea3e4c849c0f2aafa71790d0609862c454d61b9c5054c1619dd, which is the digest
+  in both new allowlist rows. Re-computed independently from S128 line 13 and S130 line 14: equal.
+  The reason cell ("Signature value contains the literal EXAMPLE, Key-Pair-Id is K2JCJMDEHXQW5F")
+  holds: the value carries the literal EXAMPLE and the id is the documented example id.
+
+== 2. docstring <-> code exactness (every falsifiable clause, exercised in memory)
+clause (docstring / frozen statement)                     code                         observed
+40+ url-safe base64 (A-Za-z0-9 - _ ~)                     [A-Za-z0-9_~-]{40,}          exact: 39 -> miss, 40 -> hit
+  replacement table order + , = , / -> - , _ , ~          matches S128:206-211        exact
+Key-Pair-Id 8-32 upper-case alnum                        [A-Z0-9]{8,32}               exact: 7 -> miss, 8/15/20/32 -> hit
+   ... plus an unstated right boundary                    (?![A-Za-z0-9_-])            33 -> TOTAL miss (no partial match)
+either order                                              both alternatives           exact (both orders hit)
+separators & &amp; \u0026                                  _SEP                        exact
+parameter names case-sensitive                            no (?i)                     exact (lowercase names -> miss)
+other parameters between                                  {0,20}?                     exact: 20 mid params hit, 21 miss
+X-Amz-Signature never starts a match                      (?<![A-Za-z0-9_-])          exact (also blocks _ and alnum)
+Known limits: CloudFront signed cookies                   CloudFront-Signature         exact (query form and Cookie header both miss)
+Known limits: whole URL percent-encoded                   %26 not in _SEP             exact (all-separator-%26 -> miss)
+Known limits: soft-wrapped value                          byte class breaks at \n     exact (wrapped value -> miss)
+Known limits: >20 intervening parameters                  {0,20}?                     exact
+misses NOT in Known limits (each verified):
+  a) Signature value retaining base64 + / =  (not url-safe-translated)      -> no match
+  b) HAR / DevTools structured query array  {"name":"Signature","value":..} -> no match
+  c) percent-encoded signature value (%2B, %2F)                            -> no match
+  d) Key-Pair-Id longer than 32 characters                                 -> no match (see above)
+understatement: the CloudFront paragraph does not mention that its own left boundary also admits a
+  preceding %26 (only the Azure paragraph documents %26); the code does admit it (_CF_LB line 104).
+
+== 3. no false positives found (every probe clean)
+X-Amz-Signature beside Key-Pair-Id, both orders ....... clean
+X-Amz-Signature URL that also carries a CloudFront pair  hits only the CloudFront pair (correct)
+CloudFront cookie form as query string ................. clean
+CloudFront cookie form as Cookie header ................ clean
+Signature= without Key-Pair-Id ......................... clean
+Key-Pair-Id without Signature .......................... clean
+azure / gcs Signature= without Key-Pair-Id ............. clean
+S128/S130 documentation step lists ("&Signature=hashed and signed version ...
+  &Key-Pair-Id=public key ID for the") ................. clean
+prose, XML/SAML, OAuth oauth_signature= ................ clean (separator is not &/&amp;/\u0026)
+
+== 4. r88 F1 (Azure \u0026 boundary) — fix is real and not a regression
+S127:605 order JSON-escaped, sv sixth ................. candidate HIT azure-sas-signature / base none
+existing azure cases (sv first, sig first, &amp;, json, placeholders, short, no sv) ... unchanged
+_LB's first alternative is the old assertion verbatim, so no old match is lost; the two lookbehinds
+only add start positions. %26 reachability measured:
+  "?u=x%26sv=2022-11-02&sig=<40+>"   -> HIT   (preceding separator %26, in-match separator &)
+  "?sv=2022-11-02%26sig=<40+>"       -> miss  (in-match separator %26 is not in _SEP)
+  "?<whole url percent-encoded>"     -> miss  (documented limit)
+So the %26 limb is reachable only for a partially percent-encoded URL. No capture in the corpus uses
+%26 between query parameters, and no plant or selftest case exercises it.
+
+== 5. regex safety / cost
+six adversarial blobs (1.1-3.5 MB: 40-char signatures without Key-Pair-Id, 60k &name= runs, 60k
+\u0026 chains, 200k bare "Signature=", 40-char Key-Pair-Ids missing values, 80k short sig=):
+candidate 0.15-0.40 s, base 0.06-0.16 s, no superlinear growth, no state carried between matches.
+compile() under -W error::SyntaxWarning: no warnings (the docstring's \\u0026 escapes are correct).
+
+== 6. new docstring citations checked against the snapshots
+S128:13 example URL, :70-78 Signature+Key-Pair-Id parameter list, :202-211 invalid/valid table,
+S130:14 example URL, :75-84 parameter list, :163-165 "anyone with the signed URL can access" —
+all six resolve to the claimed content.
+
+== 7. STALE CITATIONS AT THE LANDING (attribution: all of these resolved correctly at base)
+Because the C2 diff inserts 18 docstring lines and 7 pattern lines, every instrument line reference
+that the round-88 knowledge entries make after line 40 now points at unrelated bytes.
+
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md
+  form "capture-secret-scan.py:N" (16 refs scanned: 11 point at unrelated bytes, 2 truncate,
+  3 still resolve — doc:67, doc:98, doc:216):
+  doc:49   :81      -> correct 101        landing reads: "scanned match consumed — reported, not an error)."
+  doc:65   :1-62    -> correct 1-83       (docstring now ends at line 83)
+  doc:69   :23-45   -> correct 23-66      (Shapes now ends at 66; 45 is mid-Azure)
+  doc:78   :43-45   -> GONE (paragraph rewritten; Known limits is 61-65)
+  doc:82   :242     -> correct 270
+  doc:83   :235     -> correct 263        landing 235 is "results, used, allowed = [], set(), 0"
+  doc:86   :87      -> correct 103/111    landing 87 is "import os"
+  doc:107  :43-45   -> GONE
+  doc:212  :84-87   -> correct 109-112    landing 84-87 is "import argparse"..
+  doc:213  :43-45   -> GONE
+  doc:221  :43-45   -> GONE
+  doc:222  :233-240 -> correct 261-268
+  doc:225  :84-87   -> correct 109-112
+  form ":N" (bare, 27 refs scanned, 18 stale):
+  doc:49 :86-87 -> 111-112 | doc:71 :84-85 -> 109-110 | doc:72 :80-87 -> 100-107
+  doc:74 :57-61 -> 77-81 | :182-194 -> 209-221 | :191 -> 218 | :62 -> 82
+  doc:76 :48-53 -> 68-73 | :53-55 -> 73-75 | :90 -> 117 | :46 -> 66 | :89 -> 116
+  doc:84 :236 -> 264 | :243 -> 271 | :241 -> 269
+  doc:99 :53-55 -> 73-75 | doc:102 :43-45 -> GONE | doc:217 :51-53 -> 71-73
+
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md (10 refs scanned, 2 stale)
+  doc:69 "instrument lines 57-62" -> correct 77-82   (landing 57-62 is inside the new CloudFront bullet)
+  doc:77 ":44-45"                 -> already wrong at base (pre-existing, not this landing)
+
+re-run:
+  git show C2:corpus/instruments/capture-secret-scan.py | sed -n '61,65p'     # Known limits
+  git show C2:corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md | sed -n '78p;86p;213p;221p'
+
+== 8. statements in that entry that are FALSE at the landing
+doc:78  "Named limits, verbatim from ...:43-45: GCS V2 Signature= and CloudFront Signature=/Key-Pair-Id=
+         URLs, ... are not detected"        -> the words are not in the instrument any more, and
+                                               CloudFront signed URLs ARE detected (209-byte match).
+doc:86  "...the \u0026 clause holds only when the matched sv= or sig= is the first query parameter ...
+         %26 separators are never recognised" -> both halves false at the landing.
+doc:213 "the named limits ... exclude GCS V2, CloudFront, ..." -> CloudFront is no longer excluded.
+doc:221 "Two providers, one form each"                          -> three shapes now.

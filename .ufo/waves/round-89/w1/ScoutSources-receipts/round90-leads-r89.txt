@@ -1,0 +1,116 @@
+# round-89 ScoutSources — round-90 source leads (URL, HTTP status, located quote)
+# Every URL below was fetched live with the instrument UA on 2026-11-07 (plain GET only).
+# Each lead was recaptured with corpus/instruments/capture-source.py into the seat scratch; the
+# scratch was deleted at yield. This receipt carries digests, statuses and quotes only.
+# Quotes are <= 25 words. No snapshot bytes are reproduced here.
+
+================================================================================
+LEAD L1 — GCS V2 signed-URL query (GoogleAccessId / Expires / Signature) as text
+================================================================================
+This is the flip condition SOURCES.md row S129 records: "a first-party capture that shows a V2
+signed URL's query parameters as text". The GCS docs page itself does not (see the S129 receipt),
+so the shape was located in Google's own client-library sources, which set the three query
+parameters together. Three independent first-party Google repositories carry it.
+
+L1a  url=https://raw.githubusercontent.com/googleapis/google-cloud-go/main/storage/storage.go
+     http=200 raw_bytes=105181 snapshot_bytes=99409 snapshot_sha256=9edf54caa87b4b38d84896ea7ec76f231ec3f395ddf77dcf540710ad51bf9f15
+     lines 887-889 of the normalized capture (line 992 of the raw file):
+       q.Set("GoogleAccessId", opts.GoogleAccessID)
+       q.Set("Expires", fmt.Sprintf("%d", opts.Expires.Unix()))
+       q.Set("Signature", string(encoded))
+     Located quote (11 words): "q.Set("GoogleAccessId", opts.GoogleAccessID)" — the same function
+     sets Expires and Signature on the same URL query.
+
+L1b  url=https://raw.githubusercontent.com/googleapis/nodejs-storage/main/src/signer.ts
+     http=200 raw_bytes=14026 snapshot_bytes=12189 snapshot_sha256=62a7fce59477def8c32504eac71bdca8958682b7451b5fdae378f92fc33a9ad3
+     lines 70-73 of the normalized capture:
+       interface V2SignedUrlQuery extends SignedUrlQuery {
+       GoogleAccessId: string;
+       Expires: number;
+       Signature: string;
+       }
+     Located quote (4 words): "interface V2SignedUrlQuery extends SignedUrlQuery" — the interface
+     names the three V2 query parameters as a set.
+
+L1c  url=https://raw.githubusercontent.com/googleapis/python-storage/main/google/cloud/storage/_signing.py
+     http=200 raw_bytes=26144 snapshot_bytes=22273 snapshot_sha256=62386fab8cc0e0ca6fe09d94db6226bb7dfa6e16c9766943a2cb382a8f543ebb
+     lines 72-74 of the normalized capture (the enclosing "return {" is line 71):
+       "GoogleAccessId": service_account_name,
+       "Expires": expiration,
+       "Signature": signature,
+     Located quote (3 words): '"GoogleAccessId": service_account_name,' — returned beside
+     "Expires" and "Signature" as the V2 query dict.
+
+================================================================================
+LEAD L2 — CloudFront signed cookies (CloudFront-Signature, CloudFront-Key-Pair-Id)
+================================================================================
+The round-89 C2 rule matches a CloudFront signed URL (Signature= + Key-Pair-Id= in a query).
+The signed-COOKIE form is a distinct shape: the names are CloudFront-Signature and
+CloudFront-Key-Pair-Id and they travel in Set-Cookie headers. AWS documents it on three pages.
+
+L2a  url=https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html
+     http=200 raw_bytes=51673 snapshot_bytes=21243 snapshot_sha256=ddf45b805c7f67f29cf15f60f805fd636968f14734f4e342c697760f8b49f1cc
+     lines 17-19 of the normalized capture:
+       and a CloudFront signed cookie requires three name-value pairs. The name-value
+       pairs are: CloudFront-Policy,
+       CloudFront-Signature, and CloudFront-Key-Pair-Id.
+     Located quote (9 words): "CloudFront-Signature, and CloudFront-Key-Pair-Id." — the third
+     cookie name of the custom-policy set.
+
+L2b  url=https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-canned-policy.html
+     http=200 raw_bytes=36439 snapshot_bytes=13229 snapshot_sha256=d6fccb868f4a8367da95912ee818d2a00807575ed23419c7b2395c5aaff3994c
+     lines 17-18 of the normalized capture:
+       are: CloudFront-Expires, CloudFront-Signature, and
+       CloudFront-Key-Pair-Id. You can optionally include a fourth
+     Located quote (5 words): "CloudFront-Expires, CloudFront-Signature, and" — the canned-policy
+     cookie set, which carries Expires in place of Policy.
+
+L2c  url=https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-signed-cookies.html
+     http=200 raw_bytes=24668 snapshot_bytes=8467 snapshot_sha256=a78303e45bda077ffe9f310860589546ab29d67b4221c8e032c06ea08404dd43
+     lines 102-104 of the normalized capture:
+       In the CloudFront-Expires attribute, specify the shortest reasonable expiration time based
+     Located quote (5 words): "In the CloudFront-Expires attribute, specify the shortest" —
+     the overview page names the same cookie attributes.
+
+================================================================================
+LEAD L3 — Azure user-delegation SAS example URI (skoid / sktid / skv beside sig)
+================================================================================
+L3   url=https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas
+     http=200 raw_bytes=118382 snapshot_bytes=60089 snapshot_sha256=56d858ac8c2988fdf95a045b5a75f13cc5a28a1f71b3786638522775b1786cd6
+     line 870 of the normalized capture (the "User delegation SAS example" URI; the table that
+     follows names each part at lines 876-925, with skoid= at 891, sktid= at 894, skv= at 906 and
+     sig= at 921):
+       https://myaccount.blob.core.windows.net/sascontainer/blob1.txt?sp=rw&st=2023-05-24T01:13:55Z&se=2023-05-24T09:13:55Z&skoid=<object-id>&sktid=<tenant-id>&skt=2023-05-24T01:13:55Z&ske=2023-05-24T09:13:55Z&sks=b&skv=2022-11-02&sip=198.51.100.10-198.51.100.20&spr=https&sv=2022-11-02&sr=b&sig=<signature>
+     Located quote (18 words, one URL): "myaccount.blob.core.windows.net/sascontainer/blob1.txt?sp=rw&st=2023-05-24T01:13:55Z&...&skoid=<object-id>&sktid=<tenant-id>&...&skv=2022-11-02&...&sig=<signature>" —
+     skoid, sktid and skv sit beside sig in one query string. All values are the page's own
+     placeholders; no credential value is present.
+
+================================================================================
+LEAD L4 — HackerOne attachment expiring_url format
+================================================================================
+L4   url=https://api.hackerone.com/hacker-reference/
+     http=200 raw_bytes=155762 snapshot_bytes=50170 snapshot_sha256=ee5d92ed5a36287bb07f7367cb46901c8caf5da2c0a2021b5c198b699eba97f4
+     lines 246-251 of the normalized capture (the field is "» expiring_url", type string,
+     required true):
+       A temporary, pre-signed URL to download the attachment file directly. Make a
+       GET request to this URL to fetch the file contents; there is no separate
+       endpoint to retrieve a single attachment. The URL will automatically expire
+       after 60 minutes, so request a fresh copy of the report to obtain a new one.
+     Located quote (13 words): "A temporary, pre-signed URL to download the attachment file directly." —
+     the field is a pre-signed URL on the attachments.s3.amazonaws.com host, expiring in 60 minutes.
+     The JSON example at lines 90 and 205 shows the same field on the same host; the path segment
+     of that example is an opaque HackerOne attachment id, not a credential, and is not reproduced here.
+
+================================================================================
+BONUS LEAD L5 — Google Cloud CDN signed URL (Expires + KeyName + Signature)
+================================================================================
+Not requested, but it is the one first-party page found that renders a complete signed-URL query
+for a Google signing scheme, so it is recorded for round 90's coverage decision.
+L5   url=https://cloud.google.com/cdn/docs/using-signed-urls
+     http=200 raw_bytes=284631 snapshot_bytes=38914 snapshot_sha256=76aac52e38e5f9f5c96c2b0ec24b98e76ab259bb63ac8630a86f06cf16a32010
+     lines 884 and 891 of the normalized capture:
+       https://example.com/PATH?Expires=EXPIRATION&KeyName=KEY_NAME&Signature=SIGNATURE
+       https://example.com/PATH?URLPrefix=URL_PREFIX&Expires=EXPIRATION&KeyName=KEY_NAME&Signature=SIGNATURE
+     Located quote (1 token, 6 words): "https://example.com/PATH?Expires=EXPIRATION&KeyName=KEY_NAME&Signature=SIGNATURE" —
+     placeholder values only. Note the shape uses KeyName=, not Key-Pair-Id=, so the round-89 C2
+     CloudFront rule would not fire on it.

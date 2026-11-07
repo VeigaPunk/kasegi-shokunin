@@ -1,0 +1,35 @@
+# round-89 ScoutSources — manifest quote re-check (source-recheck.py) over the round-89 manifest
+# Command: python3 -B corpus/instruments/source-recheck.py --manifest /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/source-snapshots/round-89/manifest.json
+
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-89/manifest.json
+S128:sha256 OK
+S128:Q01-signature-param OK occurrences=1 anchor=70-ok
+S128:Q02-key-pair-id OK occurrences=1 anchor=77-ok
+S128:Q03-urlsafe-replacement OK occurrences=1 anchor=202-ok
+S130:sha256 OK
+S130:Q01-anyone-with-url OK occurrences=1 anchor=163-ok
+S130:Q02-policy-param OK occurrences=1 anchor=66-ok
+EXIT=0
+
+# Every manifest quote is present exactly once (occurrences=1) and each declared anchor verifies
+# (anchor=N-ok). No MISMATCH / UNAVAILABLE lines. Exit status 0.
+
+# Independent re-verification of the same five quotes by literal grep (grep -F -c) on the live
+# scratch captures. Each manifest quote is counted in the file the manifest pins it to:
+S128 Q01-signature-param    "&Signature=hashed and signed version of the policy"            -> S128:1
+S128 Q02-key-pair-id        "The ID for a CloudFront public key, for example, K2JCJMDEHXQW5F." -> S128:1
+S128 Q03-urlsafe-replacement "Replace characters that are invalid in a URL query string with characters that are valid." -> S128:1
+S130 Q01-anyone-with-url    "anyone with the signed URL can access all of the files in any distribution that is associated" -> S130:1
+S130 Q02-policy-param       "Policy=base64 encoded version of"                              -> S130:1
+# Note (no defect): the same Q03 sentence also occurs raw twice in S130 (lines 138 and 399) but
+# the manifest pins that quote to S128 only, where it occurs once; source-recheck normalizes
+# whitespace and reports occurrences=1 with anchor=202-ok for S128.
+
+# Anchor lines as they stand in the live captures (normalized line numbers, matching the manifest):
+S128 line 70 : 5. &Signature=hashed and signed version of the policy
+S128 line 77 : The ID for a CloudFront public key, for example, K2JCJMDEHXQW5F. The public key
+S128 line 202: Replace characters that are invalid in a URL query string with characters that are valid.
+S130 line 66 : Policy=base64 encoded version of
+S130 line 163: anyone with the signed URL can access all of the files in any distribution that is associated
+
+# Verdict: the round-89 manifest's frozen quote set is fully re-verified at the landing commits.

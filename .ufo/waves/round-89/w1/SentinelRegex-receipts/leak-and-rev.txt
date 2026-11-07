@@ -1,0 +1,41 @@
+# dynamic HIT/leak check: frozen instrument at c61c5586, planted captures in scratch
+# fixture values are the instrument's own selftest fakes; nothing below is a real credential
+## --files mode on a planted tree (4 capture-class files, 5 shapes)
+MODE files rc=1
+HIT shape=cloudfront-signed-url-signature path=<SCRATCH>/leak/corpus/source-snapshots/round-1/S900.txt line=1
+HIT shape=cloudfront-signed-url-signature path=<SCRATCH>/leak/w/x-receipts/live-a.json line=1
+HIT shape=azure-sas-signature path=<SCRATCH>/leak/corpus/practice/p/evidence/E9.json line=1
+HIT shape=credential path=<SCRATCH>/leak/w/live-b.html line=1
+HIT shape=aws-sts-session-token path=<SCRATCH>/leak/w/live-b.html line=1
+CAPTURE-SECRET-SCAN mode=files scanned=4 hits=5 files=4 allowed=0 unused_allow=19 rc=1
+MARKER FAKEcfSIGNATURE        occurrences=0
+MARKER FAKEsasSIGNATURE       occurrences=0
+MARKER EXAMPLEFAKESESSION     occurrences=0
+MARKER IQoJb3JpZ2lu           occurrences=0
+MARKER K2JCJMDEHXQW5F         occurrences=0
+MARKER 0123456789-abcdefABCDEF occurrences=0
+LONGRUNS count=5
+LONGRUN len=86 sha256prefix=388316dcf903ca00
+LONGRUN len=69 sha256prefix=b280e34bb9d57afe
+LONGRUN len=79 sha256prefix=a5c6a1389388a69a
+LONGRUN len=58 sha256prefix=a5a648a5ceb9df67
+LONGRUN len=58 sha256prefix=a5a648a5ceb9df67
+
+## long-run audit of that stdout: is every 40+ url-safe run a path fragment?
+HIT_LINES=5 DISTINCT_PATHS=4 LONGRUNS=5 NON_PATH_LONGRUNS=0
+ALL_LONGRUNS_ARE_PATH_SUBSTRINGS=True
+
+## --rev mode on a planted fixture repo (git init in scratch, commit, scan HEAD)
+FIXTURE_TOPLEVEL_MATCHES=yes
+FIXTURE_HEAD=35421df
+HIT shape=cloudfront-signed-url-signature path=corpus/source-snapshots/round-1/S901.txt line=1
+HIT shape=credential path=w/live-t.html line=1
+HIT shape=aws-sts-session-token path=w/live-t.html line=1
+HIT shape=cloudfront-signed-url-signature path=w/q-receipts/live-z.json line=1
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=3 hits=4 files=3 allowed=0 unused_allow=19 rc=1
+Command exited with non-zero status 1
+WALL=0.12
+
+## lane --rev master (the real sweep)
+CAPTURE-SECRET-SCAN mode=rev:master scanned=1530 hits=0 files=0 allowed=20 unused_allow=0 rc=0
+WALL=3.56 MAXRSS_KB=24756

@@ -1,0 +1,34 @@
+# mutant cf_sig_name_typo  section=A
+# sha256(mutated instrument)=41e6fcde57b269b54dc01ff94b9412991cbd7ea811eaf83fad288d6ff2315f12
+# why=name literal ground
+# expected=kill K1/K4
+# selftest rc=1
+# SELFTEST cf-canned FAIL got=none
+# SELFTEST cf-custom FAIL got=none
+# SELFTEST cf-kpi-first-json FAIL got=none
+# SELFTEST cf-html-amp FAIL got=none
+# SELFTEST-RESULT fail cases=43
+# ---- seed 8989
+CAPABILITY-CHECK rev=4c3e0bb2fb3a8406438379f7d798110494a0e7a2 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=41e6fcde57b269b54dc01ff94b9412991cbd7ea811eaf83fad288d6ff2315f12 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1530,hits=0,files=0,allowed=18,unused_allow=2
+LIMB K4 FAIL rc=1 missing=corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+LIMB K8 FAIL clauses=10 failing=cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=4c3e0bb2fb3a8406438379f7d798110494a0e7a2 instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=41e6fcde57b269b54dc01ff94b9412991cbd7ea811eaf83fad288d6ff2315f12 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1530,hits=0,files=0,allowed=18,unused_allow=2
+LIMB K4 FAIL rc=1 missing=corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+LIMB K8 FAIL clauses=10 failing=cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1

@@ -1,0 +1,67 @@
+# round-89 ScoutSources — re-verification of the S129 rejection (GCS V2 signing page)
+# Page: https://docs.cloud.google.com/storage/docs/access-control/signed-urls-v2
+# SOURCES.md row S129 status: rejected. Reason recorded there: the page names Signature and
+# GoogleAccessId as values a program supplies when assembling a signed URL but shows no
+# query-string form or example URL, so the scanner's parameter shape cannot be located in it;
+# the page marks itself legacy. flip: a first-party capture that shows a V2 signed URL's query
+# parameters as text.
+
+$ python3 -B corpus/instruments/capture-source.py --id S129 --url "https://docs.cloud.google.com/storage/docs/access-control/signed-urls-v2" --out $S/S129.txt --kind html
+S129 status=200 fetched_bytes=121504 snapshot_bytes=10063 sha256=517f22a3669fb2e8b803637684476dc70f3e49451a03125e75c0cef4ef87de07 utc=2026-11-07T06:14:06Z
+
+# Byte-stability: the live capture is byte-identical to the round-88 lead capture recorded in
+# .ufo/waves/round-88/w1/ScoutSources-receipts/lead-urls-status-r88.txt:
+#   GCSv2 norm_sha256=517f22a3669fb2e8b803637684476dc70f3e49451a03125e75c0cef4ef87de07
+# (raw byte counts differ by 4: 121500 then vs 121504 now; the normalized snapshot is unchanged.)
+# The same digest is also returned by the ?hl=es and ?hl=ja renderings and by the
+# cloud.google.com and developers.google.com host aliases (all normalize to 517f22a3...).
+
+# --- The rejection holds: the page still shows no query-string form of the V2 parameters. ---
+# Strict parameter-form search over the whole live capture (0 = none):
+$ grep -n -c -E 'GoogleAccessId=|Expires=|Signature=|&amp;Expires' $S/S129.txt
+0
+
+# Every occurrence of the three parameter names on the page, in full:
+$ grep -n -E 'GoogleAccessId|Expires|Signature' $S/S129.txt
+120:Expires + "\n" +
+136:Expires
+138:Required. This is the timestamp (represented as the number of seconds since the Unix Epoch of 00:00:00 UTC on Januar
+156:your constructed string, providing the Signature you need when
+159:to retrieve a service account name, which is the GoogleAccessId you need
+
+# Reading of those five lines:
+#  120/136/138 "Expires" is a row label and a component of the STRING TO SIGN
+#            (StringToSign = HTTP_Verb + "\n" + Content_MD5 + ... + Expires + "\n" + ...),
+#            with 1388534400 as the example timestamp. It is never written as "Expires=".
+#  156/159 "Signature" and "GoogleAccessId" are described as values the program supplies when
+#            ASSEMBLING the signed URL, in prose, with no URL and no query string anywhere.
+#  There is no "?" -prefixed URL anywhere in the capture: a search for "\?[A-Za-z]+=" and for
+#  "https?://[^ ]*\?" returns nothing.
+
+# --- The page's own legacy marking, at the anchors SOURCES.md cites (scratch capture lines
+#     105-111 and 150-160). Both anchors hold on the live 2026-11-07 capture. ---
+$ sed -n '105,111p' $S/S129.txt
+Caution: This page covers legacy material related to the V2 signing process.
+We recommend that you work with the V4 signing process instead.
+This page provides an overview of signed URLs when working with the V2 signing
+process, which is a mechanism for query
+string authentication for buckets and objects.
+Signed URLs provide a way to give time-limited read or write access to anyone
+in possession of the URL, regardless of whether they have a user account.
+$ sed -n '150,160p' $S/S129.txt
+When creating a signed URL using a program, you can either sign the string
+from within your program, or else from
+within a App Engine application using the App Engine Identity service,
+which uses App Engine's service account credentials. For example, using the
+Python App Identity API, you can:
+Use google.appengine.api.app_identity.sign_blob() to sign the bytes from
+your constructed string, providing the Signature you need when
+assembling the signed URL.
+Use google.appengine.api.app_identity.get_service_account_name()
+to retrieve a service account name, which is the GoogleAccessId you need
+when assembling the signed URL.
+
+# Verdict: the S129 rejection in corpus/SOURCES.md is confirmed still correct at 2026-11-07.
+# The page names the parameters but never shows the scanner's parameter shape, so it cannot
+# ground a GCS V2 signed-URL rule; the recorded flip condition stands (see round-90 lead L1 in
+# ScoutSources.md, which locates the shape in Google's own client-library sources instead).

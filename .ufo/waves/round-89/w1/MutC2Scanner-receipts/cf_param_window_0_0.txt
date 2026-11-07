@@ -1,0 +1,31 @@
+# mutant cf_param_window_0_0  section=A
+# sha256(mutated instrument)=d71ce28d0e56b4ac4c6724a11f468861449f6b199136b11da1a8fd0fc36d830d
+# why=no intervening parameter allowed
+# expected=kill K4 live-d/live-e missing, K7 g2
+# selftest rc=1
+# SELFTEST cf-kpi-first-json FAIL got=none
+# SELFTEST-RESULT fail cases=43
+# ---- seed 8989
+CAPABILITY-CHECK rev=a4d14b26dfacbea85f75d206a39af8f161539d30 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=d71ce28d0e56b4ac4c6724a11f468861449f6b199136b11da1a8fd0fc36d830d gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+LIMB K8 FAIL clauses=10 failing=cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=a4d14b26dfacbea85f75d206a39af8f161539d30 instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=d71ce28d0e56b4ac4c6724a11f468861449f6b199136b11da1a8fd0fc36d830d gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+LIMB K8 FAIL clauses=10 failing=cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1

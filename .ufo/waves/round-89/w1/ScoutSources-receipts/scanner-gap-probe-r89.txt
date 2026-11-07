@@ -1,0 +1,100 @@
+# round-89 ScoutSources — scanner shape probe on the round-90 lead shapes
+# Purpose: for each round-90 lead, does the LANDED capture-secret-scan.py (C2 landing
+# c61c55868e6d28653f57413bac6a6de5a398d11f) fire on that shape? Falsifiable, re-runnable.
+# Method: a scratch fixture with one line per shape, run through the landed scanner with
+# --allow /dev/null. The fixture lives in scratch only and was deleted at yield. No fixture
+# bytes and no credential-shaped values are reproduced in this receipt; every value below is
+# described by SHAPE, not by content.
+
+$ python3 -B corpus/instruments/capture-secret-scan.py --files $S/probe4.txt --allow /dev/null
+HIT shape=cloudfront-signed-url-signature path=$S/probe4.txt line=3
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1
+
+# probe4.txt line order and shape (values elided):
+#   line 1  Set-Cookie: CloudFront-Signature=<40+ base64url chars>            -> NO HIT
+#   line 2  Set-Cookie: CloudFront-Key-Pair-Id=<8..32 uppercase alnum>        -> NO HIT
+#   line 3  <cloudfront url>?Expires=<epoch>&Signature=<40+ base64url chars>&Key-Pair-Id=<8..32 uppercase alnum>
+#                                                                             -> HIT (cloudfront-signed-url-signature)
+#   line 4  Signature=<40+ base64url chars>&Key-Pair-Id=<8..32 uppercase alnum>
+#                                                                             -> (masked by per-shape dedup; see Probe C)
+#
+# IMPORTANT — the scanner reports only the FIRST non-allowed match per shape per file
+# (scan_bytes: "first non-allowed match per shape"; it breaks out of the finditer loop after the
+# first hit of that shape). So in a multi-line fixture, a later line of the SAME shape is not
+# reported. Every shape below was therefore re-probed in its OWN single-line fixture so the
+# verdict is not a dedup artifact. All probes used --allow /dev/null.
+
+# --- Probe A: CloudFront signed COOKIE (lead L2) is NOT covered by the landed scanner. ---
+# Isolated single-line fixtures (values elided; the printed line is the scanner's own summary):
+#   "Set-Cookie: CloudFront-Signature=<40+ base64url chars>"          -> hits=0 rc=0
+#   "Set-Cookie: CloudFront-Key-Pair-Id=<8..32 uppercase alnum>"      -> hits=0 rc=0
+#   "Set-Cookie: CloudFront-Signature=<40+>&CloudFront-Key-Pair-Id=<8..32>" (same line, "&")
+#                                                                         -> hits=0 rc=0
+# Two independent causes, each isolated:
+#   (i)  LEFT BOUNDARY. The landed rule's boundary is
+#          (?:(?<![A-Za-z0-9_-])|(?<=\\u0026)|(?<=%26))
+#        The character before "Signature" in "CloudFront-Signature" is a hyphen, which is inside
+#        [A-Za-z0-9_-], so the negative lookbehind fails and the cookie name is skipped.
+#        Isolated confirmation: "X-Signature=<40+>&Key-Pair-Id=<8..32>"  -> hits=0 rc=0
+#                              "a-Signature=<40+>&Key-Pair-Id=<8..32>"  -> hits=0 rc=0
+#                              "Signature=<40+>&Key-Pair-Id=<8..32>"    -> hits=1 rc=1
+#        i.e. the rule fires only on a bare "Signature=", never on a hyphen-prefixed one.
+#   (ii) SEPARATOR. The rule requires the two parameters to be joined by "&", "&amp;" or "\u0026".
+#        Isolated confirmation: "Signature=<40+>&Key-Pair-Id=<8..32>"    -> hits=1 rc=1
+#                              "Signature=<40+>;Key-Pair-Id=<8..32>"    -> hits=0 rc=0
+#        In a Set-Cookie header the pair is separated by "; Domain=..." (or by a newline), so the
+#        adjacency requirement fails as well.
+# Re-runnable probe (values are shapes, not secrets):
+#   printf 'Set-Cookie: CloudFront-Signature=%s\nSet-Cookie: CloudFront-Key-Pair-Id=%s\n' \
+#     "$(printf 'A%.0s' {1..48})" "$(printf 'K%.0s' {1..14})" > $S/p.txt
+#   python3 -B corpus/instruments/capture-secret-scan.py --files $S/p.txt --allow /dev/null
+#   # observed: CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 ... rc=0
+# Consequence: a captured CloudFront signed-cookie Set-Cookie header would pass the scanner
+# unflagged. This is a coverage gap, not a defect in the round-89 frozen claim, which covers
+# the signed-URL shape only.
+# Length note for the round-90 designer: AWS's own documentation example cookie signature value
+# is 28 characters long, below the landed rule's {40,} minimum, so a cookie rule needs its own
+# length floor (the URL example at S128/S130 is far longer because it is a padded example).
+
+# --- Probe B: GCS V2 signed URL (lead L1) is NOT covered by the landed scanner. ---
+$ python3 -B corpus/instruments/capture-secret-scan.py --files $S/probe3.txt --allow /dev/null
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=0 rc=0
+# probe3.txt shapes (values elided):
+#   line 1  Set-Cookie: CloudFront-Signature=<40+ base64url chars>
+#   line 2  Set-Cookie: CloudFront-Key-Pair-Id=<8..32 uppercase alnum>
+#   line 3  <gcs url>?GoogleAccessId=<email>&Expires=<epoch>&Signature=<40+ base64url chars>
+# Neither the CloudFront rule nor the landed gcs-signed-url-signature rule fires: the latter is
+# anchored on "X-Goog-Signature" (the V4 parameter), while a V2 URL carries "Signature=" beside
+# "GoogleAccessId=". Re-runnable probe:
+#   printf 'https://storage.googleapis.com/b/o?GoogleAccessId=sa%%40p.iam.gserviceaccount.com&Expires=1388534400&Signature=%s\n' \
+#     "$(printf 'A%.0s' {1..92})" > $S/q.txt
+#   python3 -B corpus/instruments/capture-secret-scan.py --files $S/q.txt --allow /dev/null
+#   # observed: CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 ... rc=0
+
+# --- Probe C: a bare "Signature=...&Key-Pair-Id=" pair DOES fire (isolated). ---
+# probe4 line 4 showed no HIT only because line 3 had already reported that shape and the
+# scanner reports one match per shape per file. Re-probed alone in its own fixture:
+#   "Signature=<40+ base64url chars>&Key-Pair-Id=<8..32 uppercase alnum>"  -> hits=1 rc=1
+# So the landed rule needs the bare "Signature=" token, but neither a URL host nor any other
+# context is required. This corrects the first-pass reading of probe4 and is why every shape in
+# this receipt was re-probed in isolation.
+
+# --- Control: the landed scanner still fires on the two shapes it is pinned for. ---
+$ python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-89/S128.txt corpus/source-snapshots/round-89/S130.txt --allow /dev/null
+HIT shape=cloudfront-signed-url-signature path=corpus/source-snapshots/round-89/S128.txt line=13
+HIT shape=cloudfront-signed-url-signature path=corpus/source-snapshots/round-89/S130.txt line=14
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=2 files=2 allowed=0 unused_allow=0 rc=1
+$ python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-89/S128.txt corpus/source-snapshots/round-89/S130.txt --allow corpus/instruments/capture-secret-allow.tsv
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=2 unused_allow=17 rc=0
+
+# The two allowlist rows in corpus/instruments/capture-secret-allow.tsv (rows 21 and 22) bind the
+# AWS documentation example signature at S128.txt and S130.txt; the landed scanner with the
+# allowlist reports allowed=2 and rc=0, matching the frozen control
+# .ufo/waves/round-89/controls/capture-scan-r89.txt. Nothing about the round-89 frozen claim is
+# disturbed by these probes.
+
+# Summary for the L1 planner: two round-90 coverage candidates, both falsifiable:
+#   (a) cloudfront-signed-cookie — the landed rule's left boundary and adjacency requirement
+#       both exclude the "CloudFront-Signature=" / "CloudFront-Key-Pair-Id=" cookie names.
+#   (b) gcs-v2-signed-url — the landed gcs rule is anchored on the V4 "X-Goog-Signature"
+#       parameter and does not cover a V2 "GoogleAccessId=&Expires=&Signature=" query.

@@ -1,0 +1,33 @@
+# static print sites and matched-byte uses in the frozen r89 instrument (c61c5586)
+## print( sites
+217:            print("HIT shape=%s path=%s line=%d" % (shape, path, line))
+219:    print("CAPTURE-SECRET-SCAN mode=%s scanned=%d hits=%d files=%d allowed=%d unused_allow=%d rc=%d"
+288:        print("SELFTEST %s %s got=%s" % (name, "ok" if ok else "FAIL", ",".join(sorted(got)) or "none"))
+300:        print("SELFTEST scope %s %s" % (p, "ok" if ok else "FAIL"))
+313:        print("SELFTEST %s %s got=%s allowed=%d" % (name, "ok" if ok else "FAIL", ",".join(sorted(got)) or "none", n))
+314:    print("SELFTEST-RESULT %s cases=%d" % ("pass" if not bad else "fail", len(cases) + len(paths) + len(checks)))
+336:        print("CAPTURE-SECRET-SCAN error reason=%s rc=2" % type(e).__name__)
+338:    print("CAPTURE-SECRET-SCAN error reason=usage rc=2")
+## group(0) uses
+165:            if m.group(0) in ALLOWED_VALUES:
+167:            key = (path, name, hashlib.sha256(m.group(0)).hexdigest())
+303:    digest = hashlib.sha256(cred.search(fp).group(0)).hexdigest()
+## HIT format string
+77:Output never prints a matched value: `HIT shape=<s> path=<p> line=<n>` per
+217:            print("HIT shape=%s path=%s line=%d" % (shape, path, line))
+## print( lines added by the r89 C2 diff (0 expected)
+0
+## report() body
+    files = 0
+    hits = 0
+    for path, found in results:
+        if found:
+            files += 1
+        for shape, line in found:
+            hits += 1
+            print("HIT shape=%s path=%s line=%d" % (shape, path, line))
+    rc = 1 if hits else 0
+    print("CAPTURE-SECRET-SCAN mode=%s scanned=%d hits=%d files=%d allowed=%d unused_allow=%d rc=%d"
+          % (mode, scanned, hits, files, allowed, unused, rc))
+    return rc
+

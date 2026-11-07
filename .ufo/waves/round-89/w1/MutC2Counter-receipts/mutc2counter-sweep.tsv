@@ -1,0 +1,149 @@
+# round-89 C2 counter mutation sweep (seat MutC2Counter)
+# counter sha256 176effca85337a67093462b6239d7e6486566d72eeaf300958b298b00785abcf
+# base 090a46f89932324787e00ca20b1007f893934c9a  C2 landing c61c55868e6d28653f57413bac6a6de5a398d11f
+# positive = frozen candidate instrument+allowlist+SCORECARD row, pinned; seed 8989
+## pristine baselines: tree rc verdict limbs
+base	base-alwaysclean	alwaysclean	1	fail	K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=pass
+base	base-cfcase	cfcase	1	fail	K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass
+base	base-cfdash	cfdash	1	fail	K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL
+base	base-cffloor	cffloor	1	fail	K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL
+base	base-cfnokpi	cfnokpi	1	fail	K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL
+base	base-cfoff	cfoff	1	fail	K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL
+base	base-donothing	donothing	1	fail	K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL
+base	base-drift-noallow	drift-noallow	0	pass	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+base	base-drift-r88	drift-r88	0	pass	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+base	base-literal	literal	1	fail	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass
+base	base-noallow	noallow	1	fail	K1=pass K2=pass K3=FAIL K4=pass K5=pass K6=pass K7=pass K8=pass
+base	base-nojsonsep	nojsonsep	1	fail	K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL
+base	base-nolb	nolb	1	fail	K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL
+base	base-norow	norow	1	fail	K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass
+base	base-pos	pos	0	pass	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+base	base-pos-seed1	pos	0	pass	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+base	base-r88	r88	1	fail	K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL
+base	base-wronggate	wronggate	1	fail	K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+base	base-wrongsha	wrongsha	1	fail	K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+## mutants: id sha256 pos_rc verdict | negative base_rc rc status_flips detail_only
+# m01-k7-hitset-dropped sha256=3853a2f681e97d9fe472ab5af046903b771ec85a4e9b02bdedc5efc8958be00d
+pos	m01-k7-hitset-dropped	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m01-k7-hitset-dropped	literal	base_rc=1 rc=0	flips=K7:FAIL>pass	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]
+# m02-k7-cfsig-fixed-constant sha256=804d7c600bdcfe54287bc6cf428614ab0008308b372f144b9558a0ff50d13b38
+pos	m02-k7-cfsig-fixed-constant	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m02-k7-cfsig-fixed-constant	literal	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]
+# m02b-k7-cfsig-fixture-literal sha256=b21aca0dfad8e92af69ccaeec16610b378ff2340db05043ad3bf7a46a8b80d17
+pos	m02b-k7-cfsig-fixture-literal	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m02b-k7-cfsig-fixture-literal	literal	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]
+# m03-k7-generation-seed-ignored sha256=fedcdda6e8053b5e6f6b9a540d2f585d820361dd5113ea3cb23cdf326bf9a89e
+pos	m03-k7-generation-seed-ignored	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m03-k7-generation-seed-ignored	literal	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]
+# m04-seed-default-pinned sha256=eb5f114a8f627376e616918adfb10dfda965d5d31625797f6c14923c3c6ba244
+pos	m04-seed-default-pinned	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m04-seed-default-pinned	literal	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]
+# m05-k7-subset sha256=9a8ca6ea46c2848fa4137253c7f3fea65936660262443a5dc5a02fd815066e68
+pos	m05-k7-subset	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m05-k7-subset	cfcase	base_rc=1 rc=1	flips=K7:FAIL>pass	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]
+# m06-k7-rc-dropped sha256=ff494c9902402d2ce40b11ba08688045cd96d52dfc84441130cc30af0476f572
+pos	m06-k7-rc-dropped	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m06-k7-rc-dropped	alwaysclean	base_rc=1 rc=1	flips=K7:FAIL>pass	detail_only=-	base=[K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=pass]
+# m07-k7-asig-fixture-literal sha256=a5726ceb1908b4bd85fa41d07fa83a0e656facddce07e4362754b11600250f2a
+pos	m07-k7-asig-fixture-literal	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m07-k7-asig-fixture-literal	nolb	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+# m08-k8-polarity-dropped sha256=25df3fac5c082894c42ed9d69d62103a7d4e94e07fcb8076ed764d1b978debca
+pos	m08-k8-polarity-dropped	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m08-k8-polarity-dropped	cffloor	base_rc=1 rc=1	flips=K8:FAIL>pass	detail_only=K8	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=pass]
+# m09-k8-tolerate-one sha256=a89c2fc0a37df42f67ec607d298e77c5820353e9da2f3d102969bdad9153a32b
+pos	m09-k8-tolerate-one	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m09-k8-tolerate-one	cffloor	base_rc=1 rc=1	flips=K8:FAIL>pass	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=pass]
+# m10-k4-subset sha256=ff8d55ca20053b5e9bda9025b70389c793674927ef0030738c9f2a5f6d8cd26b
+pos	m10-k4-subset	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m10-k4-subset	cfnokpi	base_rc=1 rc=1	flips=K4:FAIL>pass	detail_only=-	base=[K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=FAIL K4=pass K5=pass K6=pass K7=FAIL K8=FAIL]
+# m11-k4-files-scope-negative-dropped sha256=b9bdc46152351eb12b7c123dc91b657fa341c6d6b669b9afa09589ad186d6bb3
+pos	m11-k4-files-scope-negative-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m11-k4-files-scope-negative-dropped	r88	base_rc=1 rc=1	flips=-	detail_only=K4	base=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+neg	m11-k4-files-scope-negative-dropped	cfoff	base_rc=1 rc=1	flips=-	detail_only=K4	base=[K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+# m12-k4-files-placeholder-dropped sha256=1f0d8a561bd00b341c4fe81e68e37b21230e1830baff252c6803e431f1b6dfb1
+pos	m12-k4-files-placeholder-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m12-k4-files-placeholder-dropped	literal	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]
+# m13-k4-sts-allow-relaxed sha256=6a33ae0272d56cf563a66a3d812b664720f7fa329a51c62f3bb20625756830d4
+pos	m13-k4-sts-allow-relaxed	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m13-k4-sts-allow-relaxed	alwaysclean	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=pass]
+# m14-k6-base-rev-moved sha256=f766409dec5edfe09f08deaabc2be5d3ee7795b202cb1641f9828582ea8f532d
+pos	m14-k6-base-rev-moved	1	FAIL	killed-by-positive	K1=pass K2=pass K3=pass K4=pass K5=pass K6=FAIL K7=pass K8=pass
+neg	m14-k6-base-rev-moved	pos	base_rc=0 rc=1	flips=K6:pass>FAIL	detail_only=K6	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=FAIL K7=pass K8=pass]
+neg	m14-k6-base-rev-moved	r88	base_rc=1 rc=1	flips=K6:pass>FAIL	detail_only=K6	base=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=FAIL K7=FAIL K8=FAIL]
+# m15-k6-plant-subset-dropped sha256=6dcd95cce4fbabc5bce483188c7b8a86716c3368310c66a7da71298cca4732a1
+pos	m15-k6-plant-subset-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m15-k6-plant-subset-dropped	r88	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+# m16-k5-gcs-needle-dropped sha256=63db7d148fa10e61807905862e503469e91628d0305420063a7bdd4e8f0eec86
+pos	m16-k5-gcs-needle-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m16-k5-gcs-needle-dropped	norow	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass]
+# m17-k5-last-cell-dropped sha256=f1974f2bef2d413f950b5f1c1b490a8465070efc0d952703cb87976d4333d3a4
+pos	m17-k5-last-cell-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m17-k5-last-cell-dropped	norow	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass]
+# m18-k2-expected-dropped sha256=d98569e9d5c4ad484f223b4c2136e913b26ba503d3f747a42c503bd2a327c063
+pos	m18-k2-expected-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m18-k2-expected-dropped	donothing	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]
+# m19-k2-any-shape sha256=aa5902a67af21ea0b3ab1728563bc86650b5a8930595e37fe9ca0b6aa0827e4d
+pos	m19-k2-any-shape	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m19-k2-any-shape	donothing	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]
+# m33-k2-oracle-narrowed sha256=38432a016559c61bdf5489d0933dc33f089d404d8ee54b1a6a2b49a99a58a4e2
+pos	m33-k2-oracle-narrowed	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m33-k2-oracle-narrowed	donothing	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]
+# m34-k2-expected-extra sha256=d158d7ecd943ecbc1c565a14bcd0b11f347b340e4b2eb78ad9443718b3afafef
+pos	m34-k2-expected-extra	1	FAIL	killed-by-positive	K1=pass K2=FAIL K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m34-k2-expected-extra	pos	base_rc=0 rc=1	flips=K2:pass>FAIL	detail_only=K2	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=FAIL K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]
+# m20-k1-gate-pin-dropped sha256=4425911773fe0386c70f9ca9cc66f017a4b66fa01333949cf40bce63c3c75fa8
+pos	m20-k1-gate-pin-dropped	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m20-k1-gate-pin-dropped	wrongsha	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]
+neg	m20-k1-gate-pin-dropped	wronggate	base_rc=1 rc=0	flips=K1:FAIL>pass	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]
+# m21-k1-selftest-string-dropped sha256=abd04b2f6d95eaf02cd824b51bacc3a45feb788e1b34e885adfb55e95cdc3f2b
+pos	m21-k1-selftest-string-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m21-k1-selftest-string-dropped	cfoff	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+# m22-k4-fp-binding-wrong sha256=3d946cbc10029851bc21cd6585b28e7b6e60754be547f4dbf44754e62c9ed6bf
+pos	m22-k4-fp-binding-wrong	1	FAIL	killed-by-positive	K1=pass K2=pass K3=pass K4=FAIL K5=pass K6=FAIL K7=pass K8=pass
+neg	m22-k4-fp-binding-wrong	pos	base_rc=0 rc=1	flips=K4:pass>FAIL,K6:pass>FAIL	detail_only=K4,K6	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=FAIL K5=pass K6=FAIL K7=pass K8=pass]
+# m23-k4-new-expect-dropped sha256=581fb33b4cb5a61b3a08ec51e31b61921987129d88b69d7c350983cd2de032f8
+pos	m23-k4-new-expect-dropped	1	FAIL	killed-by-positive	K1=pass K2=pass K3=pass K4=FAIL K5=pass K6=FAIL K7=pass K8=pass
+neg	m23-k4-new-expect-dropped	pos	base_rc=0 rc=1	flips=K4:pass>FAIL,K6:pass>FAIL	detail_only=K4	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=FAIL K5=pass K6=FAIL K7=pass K8=pass]
+# m24-read-head-not-rev sha256=07b4fefe5c02425059edd8f5c20d8b78c5b5805b5112b6eb31ac2a17f87a6da1
+pos	m24-read-head-not-rev	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m24-read-head-not-rev	donothing	base_rc=1 rc=1	flips=K1:FAIL>pass,K3:pass>FAIL,K4:FAIL>pass,K7:FAIL>pass,K8:FAIL>pass	detail_only=K1,K3,K4,K7,K8	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=FAIL K6=pass K7=FAIL K8=FAIL]	mut=[K1=pass K2=pass K3=FAIL K4=pass K5=FAIL K6=pass K7=pass K8=pass]
+# m25-k4-rc-not-one sha256=0595db6331cdca190302490831ab8a5c020c4a3e21d087c8c17625223c282100
+pos	m25-k4-rc-not-one	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m25-k4-rc-not-one	alwaysclean	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=FAIL K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=pass]
+# m26-k3-unused-allow-dropped sha256=6b2ba42c4cbad90dd16665721b143bfc90d5c827902fd26897ec0a8e364e402a
+pos	m26-k3-unused-allow-dropped	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m26-k3-unused-allow-dropped	noallow	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=FAIL K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=FAIL K4=pass K5=pass K6=pass K7=pass K8=pass]
+neg	m26-k3-unused-allow-dropped	r88	base_rc=1 rc=1	flips=K3:FAIL>pass	detail_only=-	base=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=pass K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+# m27-k3-allowed-floor-dropped sha256=fb0b85297e7ccc3aa10740927b8cefc43c85553460fed8ad50d770ecab876d2f
+pos	m27-k3-allowed-floor-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m27-k3-allowed-floor-dropped	noallow	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=FAIL K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=FAIL K4=pass K5=pass K6=pass K7=pass K8=pass]
+neg	m27-k3-allowed-floor-dropped	r88	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=pass K2=pass K3=FAIL K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]
+# m28-k7-host-constant sha256=51704da4d6044869cf7fa5a36648f3094e3237919ad63cc722ce4506f18fab2c
+pos	m28-k7-host-constant	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m28-k7-host-constant	literal	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=FAIL K8=pass]
+# m29-k7-azure-plant-dropped sha256=bd98c36eeac8c0449e4d178d16b8f4d36a94b5d3be26d7a329932f58ec63fd3e
+pos	m29-k7-azure-plant-dropped	0	pass	detected-by-negative	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m29-k7-azure-plant-dropped	nolb	base_rc=1 rc=1	flips=K7:FAIL>pass	detail_only=K7	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=FAIL K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL]
+# m30-k8-existence-guard-dropped sha256=3635e43c4daf6258d88091f91c44155a5ed5e65d504524dc043edde75e310d9f
+pos	m30-k8-existence-guard-dropped	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m30-k8-existence-guard-dropped	cffloor	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL]	mut=[K1=FAIL K2=pass K3=pass K4=FAIL K5=pass K6=pass K7=pass K8=FAIL]
+# m31-k4-s008-plant-and-expect-dropped sha256=11683cd5ac9f6c282d704726fa9f6e2502af5db2e9731223e7a2c89a7833f2ba
+pos	m31-k4-s008-plant-and-expect-dropped	1	FAIL	killed-by-positive	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=FAIL
+neg	m31-k4-s008-plant-and-expect-dropped	pos	base_rc=0 rc=1	flips=K8:pass>FAIL	detail_only=K8	base=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=FAIL]
+# m32-k5-rows-ge1 sha256=9eadf58a09270ffa78435b39b142b30dce9cda458a1cd73a04a065d282091775
+pos	m32-k5-rows-ge1	0	pass	UNDETECTED	K1=pass K2=pass K3=pass K4=pass K5=pass K6=pass K7=pass K8=pass
+neg	m32-k5-rows-ge1	norow	base_rc=1 rc=1	flips=-	detail_only=-	base=[K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass]	mut=[K1=pass K2=pass K3=pass K4=pass K5=FAIL K6=pass K7=pass K8=pass]
+## supplementary single-literal K7 detectors (seed 1 unless printed)
+probe	probe-m02-k7-cfsig-fixed-constant--det-a200	rc=1	LIMB K7 pass seed=1 rc=1 missing=none extra=none
+probe	probe-m02b-k7-cfsig-fixture-literal--det-siglit	rc=1	LIMB K7 pass seed=1 rc=1 missing=none extra=none
+probe	probe-m03-k7-generation-seed-ignored--det-seedlit	rc=1	LIMB K7 pass seed=1 rc=1 missing=none extra=none
+probe	probe-m04-seed-default-pinned--det-seedlit	rc=1	LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+probe	probe-m07-k7-asig-fixture-literal--det-alit	rc=1	LIMB K7 pass seed=1 rc=1 missing=none extra=none
+probe	probe-pristine--det-a200	rc=1	LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+probe	probe-pristine--det-alit	rc=1	LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g3.json|azure-sas-signature extra=none
+probe	probe-pristine--det-seedlit	rc=1	LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+probe	probe-pristine--det-siglit	rc=1	LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature extra=none
+## restoration
+lane counter .ufo/waves/round-89/c2/capability-check.py sha256 before=176effca85337a67093462b6239d7e6486566d72eeaf300958b298b00785abcf after=176effca85337a67093462b6239d7e6486566d72eeaf300958b298b00785abcf (measured when this receipt was rendered, after every mutant run)
+scratch /fast/scratch/hyaku/kasegi-r89/MutC2Counter held the only mutated copies and all fixture repositories; removed with trap 'rm -rf -- $S' EXIT after this receipt was copied
+receipt-hygiene file scan (landed scanner, --files): CAPTURE-SECRET-SCAN mode=files scanned=3 hits=0 files=0 allowed=0 unused_allow=19 rc=0

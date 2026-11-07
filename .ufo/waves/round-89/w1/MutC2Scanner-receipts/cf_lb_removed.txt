@@ -1,0 +1,31 @@
+# mutant cf_lb_removed  section=A
+# sha256(mutated instrument)=3dd760562de9e7c82faf32458a481a8babff7fd0a01eb925cff9cf71f1da7688
+# why=no boundary at all
+# expected=kill K4 extra S011
+# selftest rc=1
+# SELFTEST cf-amz-signature-beside-kpi FAIL got=cloudfront-signed-url-signature
+# SELFTEST-RESULT fail cases=43
+# ---- seed 8989
+CAPABILITY-CHECK rev=7dab706114d031f30f3820e24902fd2499b9983a instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=3dd760562de9e7c82faf32458a481a8babff7fd0a01eb925cff9cf71f1da7688 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S011.txt|cloudfront-signed-url-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 FAIL clauses=10 failing=cf: X-Amz-Signature beside Key-Pair-Id never starts a match
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=7dab706114d031f30f3820e24902fd2499b9983a instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=3dd760562de9e7c82faf32458a481a8babff7fd0a01eb925cff9cf71f1da7688 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/source-snapshots/round-1/S011.txt|cloudfront-signed-url-signature sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=1 rc=1 missing=none extra=none
+LIMB K8 FAIL clauses=10 failing=cf: X-Amz-Signature beside Key-Pair-Id never starts a match
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1

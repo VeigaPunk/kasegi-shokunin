@@ -1,0 +1,50 @@
+# R140 next-round input: 39 r88 anchor-content-drift exclusions NOT sampled by ReviewC1Semantics (54 - 15), all labelled against corpus/knowledge/*.md at eb5f0df8eaceca617465e493c710e8626e9aa618.
+# verdict CORRECT = the cited range states the citing line's content; WRONG = it does not and another range does (given); UNCLEAR = thematic/near match, content neither stated nor contradicted; MENTION = the span is a quotation of the bare form, not a content citation.
+# Every citing line is in corpus/knowledge/triage-thresholds.md unless the citing-file column says otherwise. Entry line numbers are at the landing rev.
+key	citing-file:line	verdict	supported-range-or-none	reason
+claim-gates.md:29-36	corpus/knowledge/triage-thresholds.md:226	UNCLEAR	none	entry L29-37 is the custodian-gates section but never states the row's trigger (file exists, readJson falsy); no range states it
+claim-gates.md:3	corpus/knowledge/citation-bases.md:14	MENTION	none	counter-example quotation of the bare form in the citation-bases guidance, not a content citation; correctly left bare
+claim-gates.md:38-40	corpus/knowledge/triage-thresholds.md:236	WRONG	corpus/knowledge/claim-gates.md:41	range is blank/heading/blank; the provenance-substance rule (steps/transitions/agents at least one non-empty) is L41
+claim-gates.md:42-47	corpus/knowledge/triage-thresholds.md:249	WRONG	corpus/knowledge/claim-gates.md:54-55	row calls the symlink gate new and the entry regex-only; entry L54-55 states the blanket symlink ban
+claim-gates.md:42-47	corpus/knowledge/triage-thresholds.md:251	WRONG	corpus/knowledge/claim-gates.md:45-48	secrets pattern is L48; the cited range stops at L47
+claim-gates.md:51	corpus/knowledge/triage-thresholds.md:261	WRONG	corpus/knowledge/claim-gates.md:67	L51 is blank; the state gate is L67
+claim-gates.md:52	corpus/knowledge/triage-thresholds.md:262	WRONG	corpus/knowledge/claim-gates.md:68	L52 is the non-regex-gates lead-in; claimable is L68
+claim-gates.md:52	corpus/knowledge/triage-thresholds.md:263	WRONG	corpus/knowledge/claim-gates.md:68	same range; finding_count is L68
+claim-gates.md:53-54	corpus/knowledge/triage-thresholds.md:264	WRONG	corpus/knowledge/claim-gates.md:69	manifest_sha256 binding is L69
+claim-gates.md:54-55	corpus/knowledge/triage-thresholds.md:265	WRONG	corpus/knowledge/claim-gates.md:70-71	review outcome/claim_ready is L70-71
+claim-gates.md:55	corpus/knowledge/triage-thresholds.md:266	WRONG	corpus/knowledge/claim-gates.md:71	producer_identity is L71
+claim-gates.md:56-58	corpus/knowledge/triage-thresholds.md:267	WRONG	corpus/knowledge/claim-gates.md:72-73	reviewer shape (role/identity/models/fallback) is L72-73
+claim-gates.md:58-59	corpus/knowledge/triage-thresholds.md:268	WRONG	corpus/knowledge/claim-gates.md:74	identity separation is L74
+claim-gates.md:59-61	corpus/knowledge/triage-thresholds.md:269	WRONG	corpus/knowledge/claim-gates.md:75-76	hard gates are L75-76
+claim-gates.md:61	corpus/knowledge/triage-thresholds.md:270	WRONG	corpus/knowledge/claim-gates.md:77	subchecks are L77
+claim-gates.md:67-70	corpus/knowledge/triage-thresholds.md:278	WRONG	corpus/knowledge/claim-gates.md:82-85	global duplicate scan is L82-85 (row 277 was repointed to L81-85 this round; 278 should be L82-85)
+claim-gates.md:70-71	corpus/knowledge/triage-thresholds.md:279	WRONG	corpus/knowledge/claim-gates.md:86-87	blocker fields are L86-87
+claim-package-contract.md:25	corpus/knowledge/triage-thresholds.md:261	WRONG	corpus/knowledge/claim-package-contract.md:31-34	state enum is L31-34; L25 is the no-submission prose regex
+claim-package-contract.md:27	corpus/knowledge/triage-thresholds.md:443	WRONG	corpus/knowledge/claim-package-contract.md:24-26	prose no-submission regex is L24-26; L27 is the §4 pointer
+claim-package-contract.md:30	corpus/knowledge/triage-thresholds.md:270	WRONG	corpus/knowledge/claim-package-contract.md:54	subchecks are L54; L30 is blank
+ev-model.md:11	corpus/knowledge/triage-thresholds.md:313	WRONG	corpus/knowledge/ev-model.md:18	adjusted_ev formula is L18; L11 is the census-as-of line
+ev-model.md:16	corpus/knowledge/triage-thresholds.md:371	WRONG	corpus/knowledge/ev-model.md:22-23	as_of schema pin is L22-23; L16 is the total_cost formula
+ev-model.md:16	corpus/knowledge/triage-thresholds.md:372	WRONG	corpus/knowledge/ev-model.md:22-23	free-form sources is L22-23
+ev-model.md:21-23	corpus/knowledge/triage-thresholds.md:368	UNCLEAR	corpus/knowledge/ev-model.md:22-23	schema line pins p_* only; "number, unbounded" for the six named inputs is not stated
+ev-model.md:6-20	corpus/knowledge/triage-thresholds.md:454	UNCLEAR	corpus/knowledge/ev-model.md:13-25	formula L13-19 is inside; the UNKNOWN fail-closed leg is L24-25
+ev-model.md:7	corpus/knowledge/triage-thresholds.md:310	WRONG	corpus/knowledge/ev-model.md:14	p_success formula is L14; L7 is the anchor-base prose
+ev-model.md:8	corpus/knowledge/triage-thresholds.md:311	WRONG	corpus/knowledge/ev-model.md:15	gross_value is L15
+ev-model.md:9-10	corpus/knowledge/triage-thresholds.md:312	WRONG	corpus/knowledge/ev-model.md:16-17	total_cost is L16-17
+intake-surface.md:68-79	corpus/knowledge/triage-thresholds.md:456	WRONG	corpus/knowledge/intake-surface.md:80-85	queue-score section and formula are L80-85; L68-79 is the freshness/coverage/name-drift census
+intake-surface.md:72	corpus/knowledge/triage-thresholds.md:90	WRONG	corpus/knowledge/intake-surface.md:83-85	is_live(1) term is L84; L72 is coverage counts
+mission-control.md:13-14	corpus/knowledge/triage-thresholds.md:141	WRONG	none	entry never states MAX default 5; L17 names --max only as a loop bound
+mission-control.md:13-14	corpus/knowledge/triage-thresholds.md:142	WRONG	none	entry never states STAGGER_S or its 20 s default
+mission-control.md:13-14	corpus/knowledge/triage-thresholds.md:148	WRONG	corpus/knowledge/mission-control.md:17	30 s sleep is L17
+mission-control.md:13-46	corpus/knowledge/triage-thresholds.md:458	CORRECT	corpus/knowledge/mission-control.md:13-46	range is the dispatcher-loop section the row names
+mission-control.md:19-21	corpus/knowledge/triage-thresholds.md:456	CORRECT	corpus/knowledge/mission-control.md:19-21	queue-score bullet carries all five terms incl. freshness.live +1
+mission-control.md:23-24	corpus/knowledge/triage-thresholds.md:143	WRONG	corpus/knowledge/mission-control.md:29	2 h lease expiry is L29; L23-24 is the ev_note dead-code correction
+mission-control.md:28-33	corpus/knowledge/triage-thresholds.md:145	WRONG	corpus/knowledge/mission-control.md:36	TERMINAL set is L36; L28-33 is the lease bullet
+mission-control.md:31-33	corpus/knowledge/triage-thresholds.md:442	WRONG	corpus/knowledge/mission-control.md:40	"budget still counts it" is L40; L31-33 is reconcile/launch
+mission-control.md:37-38	corpus/knowledge/triage-thresholds.md:155	WRONG	corpus/knowledge/mission-control.md:55-57	peak model is L55-57; entry already carries the openai-codex correction, so the SUPERSEDES premise is stale
+mission-control.md:37-38	corpus/knowledge/triage-thresholds.md:438	WRONG	corpus/knowledge/mission-control.md:55-57	same; §9.6's "entry writes openai-oauth/" is false at landing
+mission-control.md:38-40	corpus/knowledge/triage-thresholds.md:147	WRONG	corpus/knowledge/mission-control.md:59-60	--models-rr/--rr-until is L59-60
+mission-control.md:40-45	corpus/knowledge/triage-thresholds.md:152	WRONG	corpus/knowledge/mission-control.md:61	15-min log window is L61; the 20000-char tail is not stated anywhere
+mission-control.md:41-43	corpus/knowledge/triage-thresholds.md:158	WRONG	corpus/knowledge/mission-control.md:61-64	four signatures are L61-64
+mission-control.md:41-43	corpus/knowledge/triage-thresholds.md:439	WRONG	corpus/knowledge/mission-control.md:61-64	same
+mission-control.md:41-45	corpus/knowledge/triage-thresholds.md:157	WRONG	corpus/knowledge/mission-control.md:64-66	model-family regex is L64-66
+mission-control.md:43-44	corpus/knowledge/triage-thresholds.md:156	WRONG	corpus/knowledge/mission-control.md:66	limit-fallback pin is L66

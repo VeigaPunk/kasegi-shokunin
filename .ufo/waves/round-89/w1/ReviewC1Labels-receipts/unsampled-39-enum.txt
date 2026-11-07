@@ -1,0 +1,276 @@
+UNSAMPLED 39
+
+=== claim-gates.md:29-36  (entry claim-gates.md L29-36 of 161)
+  E 29| ## Custodian gates (L74–93)
+  E 30| 
+  E 31| - `chain`/`decisions` non-empty array.
+  E 32| - Per decision: `scope_signal` exactly `NO_SCOPE_OBJECTION` (any other value
+  E 33|   errors; `HARD_STOP` gets its own message AND the exact-signal message —
+  E 34|   two errors for one decision, L83-84, round-13 correction); nonempty `matched_grant_id`;
+  E 35|   `decision_sha256` matches `/^[a-f0-9]{64}$/i`.
+  E 36| - `head_sha256` = final decision's `decision_sha256` =
+  CITE corpus/knowledge/triage-thresholds.md:226 | | unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | MATCHES: `claim-gates.md:29-36` |
+
+=== claim-gates.md:3  (entry claim-gates.md L3-3 of 161)
+  E  3| Source: `~/Projects/bounties/ops/claim-check.mjs` (233 lines, read in full
+  CITE corpus/knowledge/citation-bases.md:14 | `ops-invariants.md:18` or `claim-gates.md:3` when the target is in the lane —
+
+=== claim-gates.md:38-40  (entry claim-gates.md L38-40 of 161)
+  E 38| 
+  E 39| ## Provenance gate (L97)
+  E 40| 
+  CITE corpus/knowledge/triage-thresholds.md:236 | | provenance substance | `provenance.json` parses AND `(steps ?? transitions ?? []).length === 0` AND falsy `agents` | `provenance.json: no steps/transitions/agents recorded` | 96-97 | MATCHES: `claim-gates.md:38-40` |
+
+=== claim-gates.md:42-47  (entry claim-gates.md L42-47 of 161)
+  E 42| 
+  E 43| ## Secrets gate (L100–114)
+  E 44| 
+  E 45| Regex over every non-symlink file ≤5 MiB in the package, read as UTF-8 —
+  E 46| no text/binary filter (round-13 correction: "every text file" was wrong;
+  E 47| L110-113):
+  CITE corpus/knowledge/triage-thresholds.md:249 | | symlink | any directory entry is a symlink (`lstatSync`) — aborts into that path | `symlink is forbidden in claim package: <rel>` | 104-105 | — (new; `claim-gates.md:42-47` covers the regex only) |
+  CITE corpus/knowledge/triage-thresholds.md:251 | | secrets | `/(api[_-]?key\|secret\|token\|password\|bearer)\s*[:=]\s*["']?[A-Za-z0-9_\-]{16,}/i` matches file text | `possible secret in <rel> — redact before commit` | 100, 113 | MATCHES: `claim-gates.md:42-47` |
+
+=== claim-gates.md:51  (entry claim-gates.md L51-51 of 161)
+  E 51| 
+  CITE corpus/knowledge/triage-thresholds.md:261 | | state | `status.state !== 'DONE'` (any other value, incl. `SUBMITTED`) | `status.json state is <state>, commits require DONE` | 119 | MATCHES: `claim-gates.md:51`, `claim-package-contract.md:25` |
+
+=== claim-gates.md:52  (entry claim-gates.md L52-52 of 161)
+  E 52| Same walk loop, non-regex gates (round-13 addition — omitted from earlier
+  CITE corpus/knowledge/triage-thresholds.md:262 | | claimable | `status.claimable !== true` (strict identity) | `status.json must affirm claimable: true` | 120 | MATCHES: `claim-gates.md:52` |
+  CITE corpus/knowledge/triage-thresholds.md:263 | | finding count | `!Number.isInteger(status.finding_count) \|\| status.finding_count < 1` | `status.json finding_count must be a positive integer` | 121 | MATCHES: `claim-gates.md:52` |
+
+=== claim-gates.md:53-54  (entry claim-gates.md L53-54 of 161)
+  E 53| lists here and in SKILL.md):
+  E 54| - **Blanket symlink ban**: any directory entry that is a symlink errors
+  CITE corpus/knowledge/triage-thresholds.md:264 | | manifest binding | `manifest_sha256` fails `/^[a-f0-9]{64}$/i` OR `!== sha256File(evidence/manifest.json)` at run time | `status.json manifest_sha256 does not bind the current evidence/manifest.json` | 122-123 | MATCHES: `claim-gates.md:53-54` |
+
+=== claim-gates.md:54-55  (entry claim-gates.md L54-55 of 161)
+  E 54| - **Blanket symlink ban**: any directory entry that is a symlink errors
+  E 55|   without traversal (L104-105) — separate from the manifest-artifact
+  CITE corpus/knowledge/triage-thresholds.md:265 | | review outcome | `String(claim_review.outcome).toUpperCase() !== 'APPROVED'` OR `claim_review.claim_ready !== true` | `status.json requires an APPROVED claim_review with claim_ready: true` | 126-127 | MATCHES: `claim-gates.md:54-55` |
+
+=== claim-gates.md:55  (entry claim-gates.md L55-55 of 161)
+  E 55|   without traversal (L104-105) — separate from the manifest-artifact
+  CITE corpus/knowledge/triage-thresholds.md:266 | | producer | `claim_review.producer_identity` empty after trim | `status.json claim_review must name producer_identity` | 132 | MATCHES: `claim-gates.md:55` |
+
+=== claim-gates.md:56-58  (entry claim-gates.md L56-58 of 161)
+  E 56|   `realpathSync` confinement (L48-49).
+  E 57| - **Per-file size cap**: files > `5 * 1024 * 1024` B error as `oversize
+  E 58|   artifact (>5MB)` and skip the secrets scan (L111).
+  CITE corpus/knowledge/triage-thresholds.md:267 | | reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` | 133-141 | MATCHES: `claim-gates.md:56-58`, `SKILL.md:94-95` |
+
+=== claim-gates.md:58-59  (entry claim-gates.md L58-59 of 161)
+  E 58|   artifact (>5MB)` and skip the secrets scan (L111).
+  E 59| - Error-set caveat: the manifest loop `continue`s past a failing artifact
+  CITE corpus/knowledge/triage-thresholds.md:268 | | identity separation | `producer_identity === reviewer.identity` (both non-empty, exact compare, untrimmed equality after per-field trim) | `status.json claim_review reviewer must differ from producer` | 142-143 | MATCHES: `claim-gates.md:58-59` |
+
+=== claim-gates.md:59-61  (entry claim-gates.md L59-61 of 161)
+  E 59| - Error-set caveat: the manifest loop `continue`s past a failing artifact
+  E 60|   (L46-49), so one run's error list is path-dependent, not a full partition
+  E 61|   of violations — while gate-level flow never exits early (L18-19, 228-231).
+  CITE corpus/knowledge/triage-thresholds.md:269 | | hard gates | each of `written_scope`, `authorization`, `evidence_integrity`, `no_duplicate_or_prior_submission` uppercased ≠ `'PASS'` — one error per gate | `status.json claim_review hard gate <gate> must be PASS` | 145-155 | MATCHES: `claim-gates.md:59-61`, `corpus/knowledge/claim-package-contract.md:52-53` |
+
+=== claim-gates.md:61  (entry claim-gates.md L61-61 of 161)
+  E 61|   of violations — while gate-level flow never exits early (L18-19, 228-231).
+  CITE corpus/knowledge/triage-thresholds.md:270 | | subchecks | each of `no_secrets`, `operator_attribution` uppercased ≠ `'PASS'` | `status.json claim_review subcheck <subcheck> must be PASS` | 156-160 | MATCHES: `claim-gates.md:61`, `claim-package-contract.md:30` |
+
+=== claim-gates.md:67-70  (entry claim-gates.md L67-70 of 161)
+  E 67| - `state === 'DONE'` (anything else fails, incl. SUBMITTED).
+  E 68| - `claimable === true`; `finding_count` positive integer.
+  E 69| - `manifest_sha256` = sha256 of current `evidence/manifest.json` bytes.
+  E 70| - `claim_review.outcome === 'APPROVED'` (case-insensitive) and
+  CITE corpus/knowledge/triage-thresholds.md:278 | | global duplicate | scans every `claims/<program>/<slug>/status.json` (root = `resolve(dir,'..','..')`, self skipped, unparseable skipped): another package has a prior-submission record AND (`slug === currentSlug` OR (`currentTitle.length >= 16` AND lowercased titles equal)) | `global duplicate guard: matching finding already has a submission record at <program>/<slug>` | 181-199 | MATCHES: `clai
+
+=== claim-gates.md:70-71  (entry claim-gates.md L70-71 of 161)
+  E 70| - `claim_review.outcome === 'APPROVED'` (case-insensitive) and
+  E 71|   `claim_ready === true`; nonempty `producer_identity`.
+  CITE corpus/knowledge/triage-thresholds.md:279 | | blockers | truthy `blocked_reason`, `submission_blocker`, `blocking_record`, OR `submit/BLOCKED.md` exists | `status.json or submit/BLOCKED.md records an unresolved readiness blocker` | 201-208 | MATCHES: `claim-gates.md:70-71` |
+
+=== claim-package-contract.md:25  (entry claim-package-contract.md L25-25 of 100)
+  E 25| (`/no submission (performed|made)/i`, :29), distinct from the JSON
+  CITE corpus/knowledge/triage-thresholds.md:261 | | state | `status.state !== 'DONE'` (any other value, incl. `SUBMITTED`) | `status.json state is <state>, commits require DONE` | 119 | MATCHES: `claim-gates.md:51`, `claim-package-contract.md:25` |
+
+=== claim-package-contract.md:27  (entry claim-package-contract.md L27-27 of 100)
+  E 27| `corpus/knowledge/triage-thresholds.md` §4.
+  CITE corpus/knowledge/triage-thresholds.md:443 | | 9.11 | `report.md` "no submission" is a **prose phrase** regex (`/no submission (performed\|made)/i`, 29), distinct from the `no_submission_performed` JSON guard listed in observed statuses. | 29 | `claim-package-contract.md:27` |
+
+=== claim-package-contract.md:30  (entry claim-package-contract.md L30-30 of 100)
+  E 30| 
+  CITE corpus/knowledge/triage-thresholds.md:270 | | subchecks | each of `no_secrets`, `operator_attribution` uppercased ≠ `'PASS'` | `status.json claim_review subcheck <subcheck> must be PASS` | 156-160 | MATCHES: `claim-gates.md:61`, `claim-package-contract.md:30` |
+
+=== ev-model.md:11  (entry ev-model.md L11-11 of 61)
+  E 11| (0/1088 and friends) are corpus-attested as-of 2026-09-28T23:32Z.
+  CITE corpus/knowledge/triage-thresholds.md:313 | | `adjusted_ev` | `gross_value − total_cost` | both finite | 82 | MATCHES: `ev-model.md:11`, `SKILL.md:502` |
+
+=== ev-model.md:16  (entry ev-model.md L16-16 of 61)
+  E 16| total_cost   = effort_hours × opportunity_rate
+  CITE corpus/knowledge/triage-thresholds.md:371 | | `as_of` | `format: date-time` | 49 | MATCHES: `ev-model.md:16` |
+  CITE corpus/knowledge/triage-thresholds.md:372 | | `sources` | `object`, free-form (basis provenance per input) | 50 | MATCHES: `ev-model.md:16` |
+
+=== ev-model.md:21-23  (entry ev-model.md L21-23 of 61)
+  E 21| Facts:
+  E 22| - Inputs live in `bounty-map/programs/<id>.json` → `ev_inputs`; schema pins
+  E 23|   `p_*` to [0,1], `as_of` datetime, free-form `sources` for provenance.
+  CITE corpus/knowledge/triage-thresholds.md:368 | | `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | MATCHES: `ev-model.md:21-23` |
+
+=== ev-model.md:6-20  (entry ev-model.md L6-20 of 61)
+  E  6| (`corpus/knowledge/source-tree-loss-2026-09-28.md`). Every `ops/ev-report.mjs`
+  E  7| line number in this file was re-verified this round against the frozen
+  E  8| 2026-09-05 mirror `~/Projects/the-bounty-hunter` HEAD `1cfbd86`
+  E  9| (`ops/ev-report.mjs`, 92 lines, sha256 `ba5485ed6a5d`) and resolves at 0
+  E 10| offset — anchor-compatible, not proven byte-identical. Live-census counts
+  E 11| (0/1088 and friends) are corpus-attested as-of 2026-09-28T23:32Z.
+  E 12| 
+  E 13| ```
+  E 14| p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+  E 15| gross_value  = p_success × expected_reward
+  E 16| total_cost   = effort_hours × opportunity_rate
+  E 17|                + direct_cost + delay_cost + expected_risk_cost
+  E 18| adjusted_ev  = gross_value − total_cost
+  E 19| ```
+  E 20| 
+  CITE corpus/knowledge/triage-thresholds.md:454 | | EV formula + UNKNOWN fail-closed | `ev-model.md:6-20`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
+
+=== ev-model.md:7  (entry ev-model.md L7-7 of 61)
+  E  7| line number in this file was re-verified this round against the frozen
+  CITE corpus/knowledge/triage-thresholds.md:310 | | `p_success` | `p_in_scope × p_reproducible × p_unique × p_accepted` (`reduce((a,b)=>a*b, 1)`) | all 4 finite | 77 | MATCHES: `ev-model.md:7`, `SKILL.md:498` |
+
+=== ev-model.md:8  (entry ev-model.md L8-8 of 61)
+  E  8| 2026-09-05 mirror `~/Projects/the-bounty-hunter` HEAD `1cfbd86`
+  CITE corpus/knowledge/triage-thresholds.md:311 | | `gross_value` | `p_success × expected_reward` | `p_success` finite AND `expected_reward` finite | 78 | MATCHES: `ev-model.md:8`, `SKILL.md:499` |
+
+=== ev-model.md:9-10  (entry ev-model.md L9-10 of 61)
+  E  9| (`ops/ev-report.mjs`, 92 lines, sha256 `ba5485ed6a5d`) and resolves at 0
+  E 10| offset — anchor-compatible, not proven byte-identical. Live-census counts
+  CITE corpus/knowledge/triage-thresholds.md:312 | | `total_cost` | `effort_hours × opportunity_rate + direct_cost + delay_cost + expected_risk_cost` | all 5 finite | 79-81 | MATCHES: `ev-model.md:9-10`, `SKILL.md:500-501` |
+
+=== intake-surface.md:68-79  (entry intake-surface.md L68-79 of 180)
+  E 68|   `~/Projects/the-bounty-hunter/ops/check-freshness.mjs` exits 1 (honest alarm AR4, currently firing).
+  E 69| - `source_kind`: platform 767 / web3 273 / independent 48, in 1:1 lockstep
+  E 70|   with `board_ref.dataset`.
+  E 71| - Coverage: 586/592 `evidence/` dirs have map records; 252/274 `claims/`
+  E 72|   dirs have map records; **352 map programs were never touched** (no
+  E 73|   evidence dir, no claims dir — platform 239 / web3 95 / independent 18).
+  E 74| - Name-drift pairs where map id ≠ claims/evidence dir name for the same
+  E 75|   program: `bugcrowd-spacex` (map) vs `bugcrowd-spacex-starlink` (claims),
+  E 76|   `github-bug-bounty` (map — the single curated record) vs `github-bounty`
+  E 77|   (claims+evidence), plus all the ingestion slugs. Duplicate-detection and
+  E 78|   any join on program id silently misses these.
+  E 79| 
+  CITE corpus/knowledge/triage-thresholds.md:456 | | queue score incl. `is_live(1)` | `intake-surface.md:68-79`, `mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
+
+=== intake-surface.md:72  (entry intake-surface.md L72-72 of 180)
+  E 72|   dirs have map records; **352 map programs were never touched** (no
+  CITE corpus/knowledge/triage-thresholds.md:90 | | freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `intake-surface.md:72`, `mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
+
+=== mission-control.md:13-14  (entry mission-control.md L13-14 of 172)
+  E 13| ## The dispatcher loop — `ops/fleet-dispatch.mjs`
+  E 14| 
+  CITE corpus/knowledge/triage-thresholds.md:141 | | `MAX` (`--max`) | default `5` | 29 | MATCHES: `mission-control.md:13-14` |
+  CITE corpus/knowledge/triage-thresholds.md:142 | | `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | MATCHES: `mission-control.md:13-14` |
+  CITE corpus/knowledge/triage-thresholds.md:148 | | poll interval | `setTimeout(tick, 30000)` = 30 s | 409 | MATCHES: `mission-control.md:13-14` |
+
+=== mission-control.md:13-46  (entry mission-control.md L13-46 of 172)
+  E 13| ## The dispatcher loop — `ops/fleet-dispatch.mjs`
+  E 14| 
+  E 15| A tmux-native `/loop` engine over `ufo_sighting:fleet-grid` panes. One tick =
+  E 16| window-flip check → `detectLimit()` → `sweep()` → `periodicSync()` → launch
+  E 17| until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
+  E 18| 
+  E 19| - **Queue score** (`buildQueue`): `priority` set +9e12 (`fleets/priority.json`),
+  E 20|   `continue` verdicts +2e12, `curated` EV inputs +1e12, `reward.min*1000`,
+  E 21|   `freshness.live` +1. `DONE` never redispatches; live leases and
+  E 22|   mission-file presence filter the candidate set. EV is ordering, never a
+  E 23|   gate (AR12). Round-13 correction: the "negative-EV dispatches carry an
+  E 24|   `ev_note`" claim is dead code — `ev_note` (fleet-dispatch.mjs:204) fires
+  E 25|   only when `ev_inputs.adjusted_ev` is a negative number, which can never
+  E 26|   exist (schema `additionalProperties:false`, 0/1088 records); every
+  E 27|   `mission_dispatched` line logs `adjusted_ev:"unknown"`.
+  E 28| - **Lease**: `fleets/leases.json`, `{program_id, mission_id, leased_at,
+  E 29|   expires_at}`; 2 h expiry (3030 lines — includes expired history and
+  E 30|   b1k-seat leases carrying `lease_holder`, `asset`, `official_url`,
+  E 31|   policy hashes). `reconcile()` on restart rebuilds the active map from
+  E 32|   live leases + tmux pane titles — dispatcher stop/start is safe.
+  E 33| - **Launch**: writes `{state:"SCOPING"}` status first, then lease, then
+  E 34|   `tmux split-window` pane titled with the program id running the L1
+  E 35|   (`omp` CLI against `fleets/missions/<id>.md`).
+  E 36| - **Sweep** (terminal states PARKED/DONE/RETIRED/FAILED): `DONE` +
+  E 37|   `deliverable` → `commitClaims` + `finalizePush` + `mission_done`; else
+  E 38|   `mission_parked`/`mission_failed`. Pane killed, lease deleted, slot
+  E 39|   rotates. Pane dead + lease alive + no terminal status → writes
+  E 40|   `{state:"FAILED", detail:"pane exited"}` — budget still counts it.
+  E 41| - **P20/P21**: dispatcher is the sole committer to `claims/`; every commit
+  E 42|   gated on a fresh `ops/claim-check.mjs` run (red = `claim_rejected`
+  E 43|   telemetry, not committed). Commit message:
+  E 44|   `claim(<id>): <verdict> — <title> [mission:… evidence:<12-char>]`.
+  E 45|   Post-commit it verifies a commit actually contains the package bytes and
+  E 46|   that `git diff <sha> -- <rel>` is clean — byte proof, not trust.
+  CITE corpus/knowledge/triage-thresholds.md:458 | | dispatcher runtime shape | `mission-control.md:13-46` | MATCHES except §9.6/9.7 |
+
+=== mission-control.md:19-21  (entry mission-control.md L19-21 of 172)
+  E 19| - **Queue score** (`buildQueue`): `priority` set +9e12 (`fleets/priority.json`),
+  E 20|   `continue` verdicts +2e12, `curated` EV inputs +1e12, `reward.min*1000`,
+  E 21|   `freshness.live` +1. `DONE` never redispatches; live leases and
+  CITE corpus/knowledge/triage-thresholds.md:456 | | queue score incl. `is_live(1)` | `intake-surface.md:68-79`, `mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
+
+=== mission-control.md:23-24  (entry mission-control.md L23-24 of 172)
+  E 23|   gate (AR12). Round-13 correction: the "negative-EV dispatches carry an
+  E 24|   `ev_note`" claim is dead code — `ev_note` (fleet-dispatch.mjs:204) fires
+  CITE corpus/knowledge/triage-thresholds.md:143 | | `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `mission-control.md:23-24`, `SKILL.md:526` |
+
+=== mission-control.md:28-33  (entry mission-control.md L28-33 of 172)
+  E 28| - **Lease**: `fleets/leases.json`, `{program_id, mission_id, leased_at,
+  E 29|   expires_at}`; 2 h expiry (3030 lines — includes expired history and
+  E 30|   b1k-seat leases carrying `lease_holder`, `asset`, `official_url`,
+  E 31|   policy hashes). `reconcile()` on restart rebuilds the active map from
+  E 32|   live leases + tmux pane titles — dispatcher stop/start is safe.
+  E 33| - **Launch**: writes `{state:"SCOPING"}` status first, then lease, then
+  CITE corpus/knowledge/triage-thresholds.md:145 | | `TERMINAL` | `['DONE','PARKED','FAILED','RETIRED']` | 47 | MATCHES: `mission-control.md:28-33` |
+
+=== mission-control.md:31-33  (entry mission-control.md L31-33 of 172)
+  E 31|   policy hashes). `reconcile()` on restart rebuilds the active map from
+  E 32|   live leases + tmux pane titles — dispatcher stop/start is safe.
+  E 33| - **Launch**: writes `{state:"SCOPING"}` status first, then lease, then
+  CITE corpus/knowledge/triage-thresholds.md:442 | | 9.10 | Pane-exit failures write `mission_failed` (327) and `attempts()` counts `mission_(parked\|failed)` (82), so two infra crashes exhaust a program's 2-attempt hunt budget. | 78-85, 325-328 | `mission-control.md:31-33` (notes budget counts it, not the infra-consumption consequence) |
+
+=== mission-control.md:37-38  (entry mission-control.md L37-38 of 172)
+  E 37|   `deliverable` → `commitClaims` + `finalizePush` + `mission_done`; else
+  E 38|   `mission_parked`/`mission_failed`. Pane killed, lease deleted, slot
+  CITE corpus/knowledge/triage-thresholds.md:155 | | peak model | `openai-codex/gpt-6-astra:max` | 300 | SUPERSEDES: `mission-control.md:37-38` — that entry writes `openai-oauth/gpt-6-astra:max`; source says `openai-codex/` |
+  CITE corpus/knowledge/triage-thresholds.md:438 | | 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6-astra:max`) |
+
+=== mission-control.md:38-40  (entry mission-control.md L38-40 of 172)
+  E 38|   `mission_parked`/`mission_failed`. Pane killed, lease deleted, slot
+  E 39|   rotates. Pane dead + lease alive + no terminal status → writes
+  E 40|   `{state:"FAILED", detail:"pane exited"}` — budget still counts it.
+  CITE corpus/knowledge/triage-thresholds.md:147 | | stagger/round-robin | `--models-rr m1,m2,m3 --rr-until <epochMs>`; active only while `Date.now() < RR_UNTIL` | 38-44 | MATCHES: `mission-control.md:38-40` |
+
+=== mission-control.md:40-45  (entry mission-control.md L40-45 of 172)
+  E 40|   `{state:"FAILED", detail:"pane exited"}` — budget still counts it.
+  E 41| - **P20/P21**: dispatcher is the sole committer to `claims/`; every commit
+  E 42|   gated on a fresh `ops/claim-check.mjs` run (red = `claim_rejected`
+  E 43|   telemetry, not committed). Commit message:
+  E 44|   `claim(<id>): <verdict> — <title> [mission:… evidence:<12-char>]`.
+  E 45|   Post-commit it verifies a commit actually contains the package bytes and
+  CITE corpus/knowledge/triage-thresholds.md:152 | | limit-log window | log `mtimeMs` within `15 * 60e3` = 900,000 ms = 15 min; tail = last `20000` chars | 276-277 | MATCHES: `mission-control.md:40-45` |
+
+=== mission-control.md:41-43  (entry mission-control.md L41-43 of 172)
+  E 41| - **P20/P21**: dispatcher is the sole committer to `claims/`; every commit
+  E 42|   gated on a fresh `ops/claim-check.mjs` run (red = `claim_rejected`
+  E 43|   telemetry, not committed). Commit message:
+  CITE corpus/knowledge/triage-thresholds.md:158 | | limit signature regex | `/usage limit has been reached\|usage_limit_reached\|rate limit exceeded\|429 Too Many/i` (ANDed with family, tail-only) | 272, 278 | SUPERSEDES: `mission-control.md:41-43` — that entry lists 3 signatures, omitting `usage_limit_reached` |
+  CITE corpus/knowledge/triage-thresholds.md:439 | | 9.7 | Usage-limit signatures are four (incl. `usage_limit_reached`), ANDed with a family regex, tail-only, 15-min mtime window. | 271-278 | `mission-control.md:41-43` (three signatures) |
+
+=== mission-control.md:41-45  (entry mission-control.md L41-45 of 172)
+  E 41| - **P20/P21**: dispatcher is the sole committer to `claims/`; every commit
+  E 42|   gated on a fresh `ops/claim-check.mjs` run (red = `claim_rejected`
+  E 43|   telemetry, not committed). Commit message:
+  E 44|   `claim(<id>): <verdict> — <title> [mission:… evidence:<12-char>]`.
+  E 45|   Post-commit it verifies a commit actually contains the package bytes and
+  CITE corpus/knowledge/triage-thresholds.md:157 | | limit family regex | `MODEL.includes('token-plan') ? /qwen|deepseek|token.?plan/i : /astra|daybreak|codex|openai/i` | 271 | MATCHES: `mission-control.md:41-45` |
+
+=== mission-control.md:43-44  (entry mission-control.md L43-44 of 172)
+  E 43|   telemetry, not committed). Commit message:
+  E 44|   `claim(<id>): <verdict> — <title> [mission:… evidence:<12-char>]`.
+  CITE corpus/knowledge/triage-thresholds.md:156 | | limit-fallback model | `xai-oauth/grok-4.6:low` | 281 | MATCHES: `mission-control.md:43-44` |

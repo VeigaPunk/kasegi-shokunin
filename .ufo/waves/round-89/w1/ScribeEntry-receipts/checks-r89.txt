@@ -1,0 +1,121 @@
+# ScribeEntry round-89 receipts — knowledge-entry extension for the CloudFront shape
+# All commands run from /home/vgpnk/Projects/shokunin/kasegi-shokunin with TMPDIR=/fast/scratch/hyaku/kasegi-r89/ScribeEntry
+# No credential value appears below: receipts carry HIT/summary lines and digests only.
+
+## 1. Captures re-opened (manifest digests)
+$ sha256sum corpus/source-snapshots/round-89/S128.txt corpus/source-snapshots/round-89/S130.txt
+cd246e7debb4ea67cccf783ac6b16307b1d0febbda9de133df29a5ada5ea3331  corpus/source-snapshots/round-89/S128.txt
+dcdaa1233df06b7304bc29c8af89371d81e7b0fa816251532ef9c52c8356ca39  corpus/source-snapshots/round-89/S130.txt
+
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-89/manifest.json --source S128
+S128:sha256 OK
+S128:Q01-signature-param OK occurrences=1 anchor=70-ok
+S128:Q02-key-pair-id OK occurrences=1 anchor=77-ok
+S128:Q03-urlsafe-replacement OK occurrences=1 anchor=202-ok
+rc 0
+
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-89/manifest.json --source S130
+S130:sha256 OK
+S130:Q01-anyone-with-url OK occurrences=1 anchor=163-ok
+S130:Q02-policy-param OK occurrences=1 anchor=66-ok
+rc 0
+
+## 2. Candidate entry scanned (no credential-shaped value)
+$ python3 -B corpus/instruments/capture-secret-scan.py --files .ufo/waves/round-89/w1/ScribeEntry-candidate/cloud-signed-url-credentials-in-captured-evidence.md
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+
+$ grep -oE 'Signature=[A-Za-z0-9_~-]{12,}' <candidate> | wc -l   -> 0
+$ grep -oE 'sig=[A-Za-z0-9%+/]{16,}' <candidate> | wc -l        -> 0
+$ grep -oE '\b(AKIA|ASIA)[A-Z0-9]{16}\b' <candidate>            -> (none)
+$ grep -c 'BEGIN .*PRIVATE KEY' <candidate>                     -> 0
+$ grep -oE '(token=|secret:)[^ `"]{16,}' <candidate> | wc -l    -> 0
+
+## 3. FC-1 (round-88 quote check, unchanged) — extracted from the candidate and run
+QUOTE-CHECK pass spans=11 bad=0   rc=0
+
+## 4. FC-2 (missing/corrupted source controls) — run
+S999:source UNAVAILABLE reason=not-listed
+missing_rc=2
+S126:sha256 MISMATCH expected=b04de8a9… actual=b5b7c4a3…
+corrupt_rc=1
+
+## 5. FC-3 (round-88 captures clean) — run
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+
+## 6. FC-5 (provider scope + instrument pin) — run
+S126 azure_sas=0
+S127 google=0
+S128 azure_sas=0 google=0
+S130 azure_sas=0 google=0
+r88_cloudfront=0
+95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec
+
+## 7. FC-6 (redaction blocks) — run
+Every JSON string value containing `X-Amz-` keeps its scheme/host/path and
+loses its query string, replaced by `?[presigned-query-redacted-r86]`. Output is
+r88_redaction_blocks=0
+r89_redaction_blocks=0
+r86_pre_digest_len=64 keys=applied_utc,note,pre_redaction_bytes,pre_redaction_sha256,removed,strings,tool
+
+## 8. FC-7 (wrapped GCS signature) — run
+HIT shape=gcs-signed-url-signature path=…/S126-joined.txt line=466
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1
+joined_rc=1
+
+## 9. FC-8 (15 CloudFront quote spans) — extracted from the candidate and run
+S128:56-57 occurrences=1 expected=1 anchored=y words=14 OK
+S128:58-59 occurrences=1 expected=1 anchored=y words=16 OK
+S128:62-62 occurrences=2 expected=2 anchored=y words=9 OK
+S128:70-70 occurrences=1 expected=1 anchored=y words=7 OK
+S128:77-77 occurrences=1 expected=1 anchored=y words=10 OK
+S128:82-83 occurrences=1 expected=1 anchored=y words=17 OK
+S128:94-95 occurrences=1 expected=1 anchored=y words=23 OK
+S128:202-202 occurrences=1 expected=1 anchored=y words=15 OK
+S128:206-211 occurrences=1 expected=1 anchored=y words=9 OK
+S128:212-212 occurrences=1 expected=1 anchored=y words=13 OK
+S130:66-66 occurrences=1 expected=1 anchored=y words=4 OK
+S130:70-71 occurrences=1 expected=1 anchored=y words=14 OK
+S130:77-78 occurrences=1 expected=1 anchored=y words=11 OK
+S130:79-81 occurrences=1 expected=1 anchored=y words=18 OK
+S130:163-163 occurrences=1 expected=1 anchored=y words=17 OK
+QUOTE-CHECK pass spans=15 bad=0   rc=0
+
+## 10. FC-9 (shape load-bearing + captures clean under two rows) — run
+SELFTEST cf-canned ok got=cloudfront-signed-url-signature
+SELFTEST cf-custom ok got=cloudfront-signed-url-signature
+SELFTEST cf-kpi-first-json ok got=cloudfront-signed-url-signature
+SELFTEST cf-html-amp ok got=cloudfront-signed-url-signature
+SELFTEST cf-doc-placeholder ok got=none
+SELFTEST cf-sig-without-kpi ok got=none
+SELFTEST cf-amz-signature-beside-kpi ok got=none
+SELFTEST cf-short-sig ok got=none
+SELFTEST cf-lowercase-names ok got=none
+SELFTEST-RESULT pass cases=43
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=2 unused_allow=17 rc=0
+
+## 11. recheck line parses as one command (Q10)
+$ sed -n '5p' <candidate> > recheck-line.sh && bash -n recheck-line.sh
+bash_n_rc=0
+
+## 12. Line-anchor preservation (R6): the entry is cited by line from
+## .ufo/waves/round-88/w1/ScoutSources.md:113 at :39
+$ awk 'NR==39' <candidate>
+> "The signature is a hash-based message authentication code (HMAC) that you compute over the string-to-sign and key by using the SHA256 algorithm" — corpus/source-snapshots/round-88/S127.txt:402-404
+$ awk 'NR<=13' <candidate>   # lines 1-13 unchanged in number; title/source/verified-at/recheck edited in place
+1|# Cloud signed-URL credentials in captured evidence — …
+3|source: S126 — … ; S127 — … ; S128 — … ; S130 — …
+4|verified-at: 2026-11-07 (… round-89 extension re-opened 2026-11-07: …)
+5|recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && … --source S130 && … --files …/S128.txt …/S130.txt
+
+## 13. Threshold and separator probes (scratch fixtures, generated values, deleted with the scratch dir)
+Each fixture was a single line in the scratch dir; only the scanner's HIT/summary line is recorded.
+- 39-char Signature= beside Key-Pair-Id  -> scanned=1 hits=0
+- 40-char Signature= beside Key-Pair-Id  -> HIT shape=cloudfront-signed-url-signature
+- Key-Pair-Id 7 chars                    -> hits=0
+- Key-Pair-Id 8 chars                    -> HIT shape=cloudfront-signed-url-signature
+- 20 intervening parameters              -> HIT shape=cloudfront-signed-url-signature
+- 21 intervening parameters              -> hits=0
+- Azure: `?x=1%26sv=…&sr=b&sig=…`        -> HIT shape=azure-sas-signature (match starts after %26, span joined by &)
+- Azure: all parameters joined by %26    -> hits=0
+- CloudFront: `?x=1\u0026Signature=…&Key-Pair-Id=…` -> HIT shape=cloudfront-signed-url-signature
+- CloudFront: `?Signature=…%26Key-Pair-Id=…`        -> hits=0

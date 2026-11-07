@@ -1,0 +1,33 @@
+# mutant sep_drop_json_u0026  section=A
+# sha256(mutated instrument)=6b77da4392d513cd9580c309be003e29458e8b24b1336c6542457ce7f681b248
+# why=CF \u0026 ground
+# expected=kill K1 cf-kpi-first-json, K4 live-d missing
+# selftest rc=1
+# SELFTEST azure-json-escaped FAIL got=none
+# SELFTEST azure-json-escaped-s127-order FAIL got=none
+# SELFTEST cf-kpi-first-json FAIL got=none
+# SELFTEST-RESULT fail cases=43
+# ---- seed 8989
+CAPABILITY-CHECK rev=f6a4bdfc4e889b6e062c6c2a596a9a53a0a5b44c instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=6b77da4392d513cd9580c309be003e29458e8b24b1336c6542457ce7f681b248 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=f6a4bdfc4e889b6e062c6c2a596a9a53a0a5b44c instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=6b77da4392d513cd9580c309be003e29458e8b24b1336c6542457ce7f681b248 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1

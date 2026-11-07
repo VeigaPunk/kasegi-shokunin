@@ -1,0 +1,37 @@
+# SKILL.md Corpus/Knowledge Citation Audit (Round 89)
+# Seat: ConnectorOverlap
+# Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+# Rev: 50e2632ea891bb080425f359d6a6115874cee61f (master / landing)
+
+=== AUDIT SCOPE ===
+Target entries touched by Round 89 C1 repair-map.json:
+1. corpus/knowledge/claim-gates.md
+2. corpus/knowledge/claim-package-contract.md
+3. corpus/knowledge/ops-invariants.md
+
+=== SCAN RESULTS OVER SKILL.md ===
+
+1. SKILL.md line 154:
+   Text: `claim-check.mjs enforces all of it (authoritative list: \`corpus/knowledge/claim-gates.md\`): required-file presence, \`report.md\` ...`
+   Status: UNANCHORED, CARRIES PREFIX (`corpus/knowledge/claim-gates.md`).
+   Analysis: Refers broadly to the entire claim-check gate suite (L10-85 of claim-gates.md). Not modified by C1 landing. No drift observed.
+
+2. SKILL.md line 338:
+   Text: `(\`[lost-tree] ops/shared.mjs:55\`, \`corpus/knowledge/ops-invariants.md:24\`).`
+   Status: ANCHORED, CARRIES PREFIX (`corpus/knowledge/ops-invariants.md:24`).
+   Analysis: Line 24 in ops-invariants.md is `| \`gitMutationBlocker\` | fail-closed preflight | ...`.
+   SKILL.md:335-338 discusses `gitMutationBlocker` being absent from mirror and existing only in lost tree.
+   The citation to line 24 is EXACT and SEMANTICALLY ACCURATE.
+   Round 89 C1 repointed `ops-invariants.md:17-25` in triage-thresholds.md:455; SKILL.md:338 already carries the full prefix and falls squarely within that table range (:17-25).
+
+3. SKILL.md line 444:
+   Text: `(\`/tmp/kasegi-r15/ev-smoke\`). Detail: \`corpus/knowledge/ops-invariants.md\`,`
+   Status: UNANCHORED, CARRIES PREFIX (`corpus/knowledge/ops-invariants.md`).
+   Analysis: General reference to ops invariants. Not touched by C1.
+
+4. `claim-package-contract.md`:
+   Scan over SKILL.md for `claim-package-contract`:
+   Result: 0 hits repo-wide in SKILL.md.
+
+=== CONCLUSION ===
+SKILL.md's citations to the round-89 target entries were entirely untouched by the C1 landing. All citations in SKILL.md to these targets already carried the canonical `corpus/knowledge/` prefix; none were corrupted, and none require emergency remediation.

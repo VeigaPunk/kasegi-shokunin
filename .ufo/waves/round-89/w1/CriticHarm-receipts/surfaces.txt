@@ -1,0 +1,32 @@
+# round-89 harm check — surfaces (CriticHarm), master 50e2632
+ corpus/source-snapshots/round-89/S128.txt          | 225 +++++++++++
+ corpus/source-snapshots/round-89/S130.txt          | 422 +++++++++++++++++++++
+ corpus/source-snapshots/round-89/manifest.json     |  67 ++++
+ 32 files changed, 2744 insertions(+), 14 deletions(-)
+## deletions
+(empty above = none)
+
+## capture-secret-scan --selftest
+SELFTEST allow-other-path ok got=credential allowed=0
+SELFTEST-RESULT pass cases=43
+rc=0
+
+## claim-package-check --selftest
+selftest cases=10 failures=0
+
+## source-recheck r89
+S130:Q01-anyone-with-url OK occurrences=1 anchor=163-ok
+S130:Q02-policy-param OK occurrences=1 anchor=66-ok
+rc=0
+
+## source-recheck r88
+S127:Q02-example-uri OK occurrences=1 anchor=605-ok
+rc=0
+
+## sources-census validate
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+
+## density SKILL.md
+| | **mean dens** | | | | | | | | **273.2** |
+Total path-citation instances: 932 across 38 blocks.

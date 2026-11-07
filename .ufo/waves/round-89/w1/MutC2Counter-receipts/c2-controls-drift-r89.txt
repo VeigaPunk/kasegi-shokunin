@@ -1,0 +1,63 @@
+# C2 controls re-run drift, round 89 (seat MutC2Counter)
+# The frozen script builds its r88 and noallow control trees from LANE WORKTREE files.
+# After the C2 landing those files hold the landed candidate bytes, so both trees become
+# byte-identical to the positive control. Build lines quoted from
+# .ufo/waves/round-89/controls/c2-controls-r89.sh:
+#   build r88 "" yes "$L/corpus/instruments/capture-secret-scan.py"
+#   build noallow "" yes "" "$L/corpus/instruments/capture-secret-allow.tsv"
+# frozen candidate instrument sha256 = 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec
+# frozen candidate allowlist  sha256 = 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+# base-rev instrument         sha256 = d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417
+# base-rev allowlist          sha256 = f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82
+
+## trees (rebuilt from the frozen script's own arguments, and commit-bound)
+built r88 instrument=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 allow=76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+built noallow instrument=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec allow=f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82
+built drift-r88 instrument=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec allow=76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+built drift-noallow instrument=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec allow=76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+
+== counter over drift-r88 (lane worktree argument, post-landing)
+CAPABILITY-CHECK rev=153f8508042bfc6ca4db77dcdbd0641db49b715a instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+== counter over drift-noallow (lane worktree argument, post-landing)
+CAPABILITY-CHECK rev=5277a147dd489e047299770c37a2489e7267b779 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+
+== counter over r88 rebuilt commit-bound (base-rev instrument)
+CAPABILITY-CHECK rev=bac7d798385a4e4f34ce84b024f9222a65d95a91 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1530,hits=0,files=0,allowed=18,unused_allow=2
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=0 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+== counter over noallow rebuilt commit-bound (base-rev allowlist)
+CAPABILITY-CHECK rev=b095b782b52e3794e28ff117186e0bc6b0e6ac35 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=scanned=1530,hits=2,files=2,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1

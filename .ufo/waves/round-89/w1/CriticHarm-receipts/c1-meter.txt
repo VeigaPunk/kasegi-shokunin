@@ -1,0 +1,20 @@
+## C1 meter at landing eb5f0df (clone --shared, checkout -C)
+KNOWLEDGE-METER base=777/1798 after=785/1797 target=785/1797 keys=9 mirror_absent=True
+LIMB M1 pass after=785/1797
+LIMB M2 pass removed=9 keys=9 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass same_files=True bad_lines=0 keys_hit=9
+LIMB M4 pass bad=none
+LIMB M9 pass labels=9 unbound=none
+LIMB M5 pass out_of_range=none
+LIMB M7 pass sha256=8aed5bded717a92df78943ea41332bd3a46b90858ec1396bc797eec85644050d
+LIMB M6 pass sha256=c29f4c2186ed13495a9b03866f2412c6da5b95f7425b93f7dd1675a986d0e2ec
+KNOWLEDGE-METER-RESULT pass rc=0
+
+## C1 meter do-nothing (after-rev = base)
+LIMB M1 FAIL after=777/1798
+LIMB M2 FAIL removed=0 keys=9 stray_removed=0 stray_added=0 unrepaired=9
+LIMB M3 FAIL same_files=True bad_lines=9 keys_hit=9
+LIMB M4 pass bad=none
+LIMB M9 pass labels=9 unbound=none
+LIMB M5 pass out_of_range=none
+KNOWLEDGE-METER-RESULT fail rc=1

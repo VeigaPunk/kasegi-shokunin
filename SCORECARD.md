@@ -3201,3 +3201,23 @@ Planned round 89 (not frozen):
 - New shapes from ScoutSources leads: CloudFront `Signature=`, GCS V2 `GoogleAccessId`/`Signature`, Azure user-delegation SAS `skv=`.
 - Intake gate in `capture-source.py` (considerthese/2026-10-24.md:49-52).
 - C1 tranche 4: re-anchor the drifted keys from `.ufo/waves/round-88/w1/ExecReanchor-receipts/reanchor-candidate.json` and ReviewC1Semantics' corrected lines, under R140; a stricter M8 (CriticClaims D2) and a commit-bound P1 (D1).
+
+## Round 89 — C1 VERIFIED-pending-closure (sibling-entry repoint tranche 4, 9 non-author-labelled keys, knowledge-scope meter 777/1798 → 785/1797 at landing `eb5f0df8`); C2 VERIFIED-pending-closure (capture-secret-scan gains `cloudfront-signed-url-signature` and the Azure `\u0026` boundary, K1–K8 pass at `c61c5586`; three statement details unbound by the counter, M89-2)
+
+Frozen claims: `.ufo/waves/round-89/claims.json` (freeze `94573d2573dc6cca83454cc65b787d37d96988f5`, base `090a46f89932324787e00ca20b1007f893934c9a`). Every listed control was executed and committed in the freeze (`.ufo/waves/round-89/controls/`). Landings: `.ufo/waves/round-89/landing.json`.
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest) | score 4; knowledge-scope meter 777/1798 at base | score 4 held; 785/1797 at `eb5f0df8` (M1–M7, M9 pass; 9 keys; P3 `changed=1 outside=0 verdict=PASS`) | VERIFIED-pending-closure on P1–P3 (CriticClaims re-run; ExecC1Indep AGREE; ReviewC1Labels 9/9 CORRECT). R140 scoped out: reviewer-selected map, 9/9 labelled | `python3 -B .ufo/waves/round-89/c1/knowledge-meter.py --lane <clone of eb5f0df8> --base-rev 090a46f89932324787e00ca20b1007f893934c9a --after-rev eb5f0df8eaceca617465e493c710e8626e9aa618 --map .ufo/waves/round-89/c1/repair-map.json --labels .ufo/waves/round-89/c1/labels.tsv --target 785/1797 --map-sha256 c29f4c2186ed13495a9b03866f2412c6da5b95f7425b93f7dd1675a986d0e2ec --labels-sha256 8aed5bded717a92df78943ea41332bd3a46b90858ec1396bc797eec85644050d` | `.ufo/waves/round-89/l1/c1-landing-r89.txt`; `.ufo/waves/round-89/w1/CriticClaims.md`, `ExecC1Indep.md`, `ReviewC1Labels.md` |
+| C2 | coverage 8 held; capability extension | capture-secret-scan: gate + AWS + GCS V4 + Azure SAS shapes; no CloudFront shape; Azure `\u0026` only in first position | `cloudfront-signed-url-signature` (S128, S130); Azure match after `\u0026`/`%26` in any position; K1–K8 pass at `c61c5586`; base instrument misses all 5 round-89 plant entries (K6) | VERIFIED-pending-closure on P1–P3; sourced on S128, S130. Qualifier: `%26` start, 20-parameter window and width bounds unplanted (M89-2) | `python3 -B .ufo/waves/round-89/c2/capability-check.py --lane . --rev c61c55868e6d28653f57413bac6a6de5a398d11f --work <scratch> --instrument-sha256 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` | `.ufo/waves/round-89/l1/c2-landing-r89.txt`; `.ufo/waves/round-89/w1/CriticClaims.md` |
+| — | depth:density | 273.2 | 273.2 | unchanged (SKILL.md untouched) | `python3 corpus/instruments/density.py SKILL.md --label x` | `.ufo/waves/round-89/w1/CriticHarm.md` |
+
+- **Capabilities:** `capture-secret-scan` row extended (CloudFront signed URLs, Azure `\u0026` boundary; pinned round-89 command; first-working round stays 87).
+- **Quality criteria added:** R141 (plants a counter expects to hit lie inside the instrument's scope; positive control run before freeze).
+- **Saturation / retired:** unchanged / none.
+- **Census of record:** `corpus/instruments/citation-survival.md` still reads 132/701; not regenerated. Carried.
+
+Planned round 90 (not frozen):
+- C2 counter successor: clause list derived from the statement with boundary plants (`%26` start, 20/21 parameters, 39/40, 7/8, 32/33), commit-bound control inputs (M89-2, M89-3); Azure `_PARAM` name class widened for `skdutid` (ReviewWindow, sourced on create-user-delegation-sas); Known-limits lines for Key-Pair-Id > 32, standard base64, HAR arrays (ReviewC2Scanner F3/F4).
+- C1 tranche 5: the 33 WRONG keys with a supporting range in `.ufo/waves/round-89/w1/ReviewC1Labels-receipts/tranche5-labels.tsv` (non-author labels, R140) plus ConnectorOverlap's unapplied reviewer-named ranges; a base-reading limb (CriticClaims C1-F1); composite tokens (`triage-thresholds.md:457`).
+- Intake gate in `capture-source.py` (declined r89 with reason; flip condition met when no capture-secret-scan claim is taken).

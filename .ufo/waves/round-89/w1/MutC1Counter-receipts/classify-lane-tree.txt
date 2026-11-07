@@ -1,0 +1,11 @@
+# MutC1Counter receipt: resolve.classify() resolves against the lane checkout, not the rev
+# probe: cp-free. `python3 c0.py --lane <tree> --measure-rev <rev>` where the tree differs from the rev only by one added file.
+pos tree (map applied, committed):      python3 -B c0.py --lane pos --measure-rev HEAD            -> rate=785/1797
+pl/p7 tree (same bytes + docs/claim-gates.md): python3 -B c0.py --lane pl/p7 --measure-rev HEAD      -> rate=788/1797
+pl/p7 tree at the BASE rev:             python3 -B c0.py --lane pl/p7 --measure-rev 090a46f8...  -> rate=780/1798 (frozen controls measure 777/1798)
+diff of per-token verdicts, same token set, pos vs pl/p7:
+  docs/         (pos)GONE -> (p7)INTERNAL
+  docs/*        (pos)GONE -> (p7)INTERNAL
+  docs/*.md     (pos)GONE -> (p7)INTERNAL
+# i.e. three pathlike tokens already cited by corpus/knowledge/*.md flip GONE->INTERNAL when the directory exists in the checkout.
+# This is resolve.py behaviour reached through classify_scope(); it is not a counter mutation.

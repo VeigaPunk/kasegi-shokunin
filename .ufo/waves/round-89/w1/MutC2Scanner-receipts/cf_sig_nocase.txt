@@ -1,0 +1,29 @@
+# mutant cf_sig_nocase  section=A
+# sha256(mutated instrument)=53ca341f45c2bcb38d6d819b12de0da2d459f05ee76e3cf1e548a5b0e47360df
+# why=case-sensitivity claim
+# expected=kill K1 cf-lowercase-names, K7 n2 extra
+# selftest rc=1
+# ---- seed 8989
+CAPABILITY-CHECK rev=f487a4876583b58382d9f5b555c982e9d781c382 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=53ca341f45c2bcb38d6d819b12de0da2d459f05ee76e3cf1e548a5b0e47360df gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=1 sts_files=0 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=none
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E2.json|aws-sts-session-token,corpus/practice/p/evidence/E2.json|credential,corpus/practice/p/evidence/E3.json|azure-sas-signature,corpus/source-snapshots/round-1/S001.txt|aws-access-key-id,corpus/source-snapshots/round-1/S001.txt|aws-sts-session-token,corpus/source-snapshots/round-1/S001.txt|credential,corpus/source-snapshots/round-1/S004.txt|gcs-signed-url-signature,corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-b.html|private-key,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature,w/x-receipts/live-a.json|aws-access-key-id,w/y-receipts/fp-other.json|credential,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=1 files_rc=1 files_hits=0 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=f487a4876583b58382d9f5b555c982e9d781c382 instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=53ca341f45c2bcb38d6d819b12de0da2d459f05ee76e3cf1e548a5b0e47360df gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=1 sts_files=0 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=none
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E2.json|aws-sts-session-token,corpus/practice/p/evidence/E2.json|credential,corpus/practice/p/evidence/E3.json|azure-sas-signature,corpus/source-snapshots/round-1/S001.txt|aws-access-key-id,corpus/source-snapshots/round-1/S001.txt|aws-sts-session-token,corpus/source-snapshots/round-1/S001.txt|credential,corpus/source-snapshots/round-1/S004.txt|gcs-signed-url-signature,corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-url-signature,corpus/source-snapshots/round-1/S009.txt|cloudfront-signed-url-signature,w/live-b.html|private-key,w/live-e.html|cloudfront-signed-url-signature,w/q-receipts/live-d.json|cloudfront-signed-url-signature,w/x-receipts/live-a.json|aws-access-key-id,w/y-receipts/fp-other.json|credential,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=1 files_rc=1 files_hits=0 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-signed-url-signature,g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: &amp; separator;cf: Policy, Signature, Key-Pair-Id, custom policy (S130 line 14 order);cf: Signature then Key-Pair-Id, canned policy (S128 line 13 order);cf: either order, \u0026 separator (Key-Pair-Id first, JSON-escaped)
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1

@@ -1,0 +1,33 @@
+## counter discrimination (executed)
+-- r89 counter, no pins, at base rev as landing:
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E3.json|azure-sas-signature,corpus/source-snapshots/round-1/S008.txt|cloudfront-signed-
+LIMB K7 FAIL seed=1684316112 rc=0 missing=g/x-receipts/live-g1.txt|cloudfront-signed-url-signature,g/x-receipts/live-g2.json|cloudfront-sign
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped;cf: &amp; separator;cf: Policy, Signat
+LIMB K5 FAIL rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+-- r89 counter, no pins, at C1 landing (instrument unchanged):
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd
+CAPABILITY-CHECK-RESULT fail rc=1
+
+## mutation M1: delete the azure %26 lookbehind from _LB (scratch clone, commit 9824ea8)
+   counter (no pins) at the mutant:
+LIMB K1 pass selftest_rc=0 instrument_sha256=37471a67b34fc0a0ceea6ad7c3da6f140afd3572987ef0e8cdeb11b00a0de827 gate_sha256=8b6f849349157a91dd
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K7 pass seed=3732759073 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+CAPABILITY-CHECK-RESULT pass rc=0
+   behaviour: master scanner on a scratch AZ query whose sv= starts after %26 -> HIT; mutant -> no HIT
+   (fixture values generated in scratch; only the summary lines are recorded)
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+
+## mutation M2: _CF_PARAM window {0,20}->{0,40} and _CF_KPI width {8,32}->{1,64} (scratch clone)
+LIMB K1 pass selftest_rc=0 instrument_sha256=4594ba1f3a856d5467081f7a016a9cbf8282c2f983ecfc9d6c205a151c434dbb gate_sha256=8b6f849349157a91dd
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K7 pass seed=342995815 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+CAPABILITY-CHECK-RESULT pass rc=0
+
+## why it matters: K8 CLAUSES (10) name no %26 clause, no Key-Pair-Id width, no 20-parameter window;
+## PLANTS/K4 and K7 and the selftest carry none of the three either (grep of the frozen counter + instrument)

@@ -1,0 +1,33 @@
+PROBE seed=8901 azsig_chars=48 azsig_pad=yes cfsig_chars=64
+## AZURE documented-name class: URL = https://acct.blob.core.windows.net/sascontainer/blob1.txt?sv=2025-07-05&<NAME>=x&sig=<44>
+AZ name-class in: 32 sr,st,se,sp,sip,spr,skoid,sktid,skt,ske,skv,sks,saoid,suoid,scid,sduoid,srh,srq,sdd,ses,tn,spk,srk,epk,erk,rscc,rscd,rsce,rscl,rsct,bv,bs
+AZ name-class OUT: 1 skdutid(doc line 1477)
+## CLOUDFRONT documented-name class: URL = https://d111111abcdef8.cloudfront.net/image.jpg?Signature=<60>&<NAME>=x&Key-Pair-Id=K2JCJMDEHXQW5F
+CF name-class in: 3 Policy,Expires,Hash-Algorithm
+CF name-class OUT: 0 -
+## AZURE window: in-class filler names available=27
+AZ window between=19 hit=True
+AZ window between=20 hit=True
+AZ window between=21 hit=False
+AZ window between=22 hit=False
+CF window between=19 hit=True
+CF window between=20 hit=True
+CF window between=21 hit=False
+## fixtures written=14 dir=/fast/scratch/hyaku/kasegi-r89/ReviewWindow/fixtures
+FIXTURE az_f1_skdutid_min                      azure=False cloudfront=False sha256=1099e58fcbdb1c7c
+FIXTURE az_f2_control_no_skdutid               azure=True cloudfront=False sha256=7fedcf749d823f44
+FIXTURE az_f3_skdutid_alone                    azure=False cloudfront=False sha256=7d19b8f6dcd3889a
+FIXTURE az_f4_ud_full                          azure=False cloudfront=False sha256=5aa2e9243dcce234
+FIXTURE az_f4b_ud_full_no_skdutid              azure=True cloudfront=False sha256=361af76317b62f11
+FIXTURE az_f5_doc_example_documented_order     azure=True cloudfront=False sha256=ef62d74a8db22a2d
+FIXTURE az_f6_doc_example_request_params_first azure=True cloudfront=False sha256=e404a0397668fa10
+FIXTURE az_f7_skdutid_after_sig                azure=True cloudfront=False sha256=d2ac11ac6d927703
+FIXTURE cf_f1_canned                           azure=False cloudfront=True sha256=c3032b8f630ded3c
+FIXTURE cf_f2_custom                           azure=False cloudfront=True sha256=969f147633cd58cd
+FIXTURE cf_f3_kpi_then_sig                     azure=False cloudfront=True sha256=2e6b9241f15f7852
+FIXTURE cf_f4_underscore_user_param_between    azure=False cloudfront=False sha256=f48355d909d608f2
+FIXTURE cf_f5_dotted_user_param_between        azure=False cloudfront=False sha256=a44a6c633882e600
+FIXTURE cf_f6_21_user_params_between           azure=False cloudfront=False sha256=6451f51702d846a9
+COUNT az_names_documented=35 az_names_out_of_class=1 az_names_in_class=32
+COUNT cf_names_documented=5 cf_names_out_of_class=0
+COUNT az_max_realistic_between_ud_blob=28

@@ -1,0 +1,1387 @@
+{
+ "mutants": [
+  {
+   "section": "A",
+   "name": "cf_lb_drop_json_u0026",
+   "kind": "sub",
+   "old": "_CF_LB = rb\"(?:(?<![A-Za-z0-9_-])|(?<=\\\\u0026)|(?<=%26))\"",
+   "new": "_CF_LB = rb\"(?:(?<![A-Za-z0-9_-])|(?<=%26))\"",
+   "expected": "kill only if some fixture starts a CF match right after a \\u0026 (K1 cf-kpi-first-json starts at '?', K4 live-d at '?')",
+   "sha256": "60357e268b75ce10b8c91783f816d8fa3e393df6656692d1888bbdea7bc24b40",
+   "verdict": "SEED-DEP",
+   "fail_8989": [
+    "K7"
+   ],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_lb_drop_pct26",
+   "kind": "sub",
+   "old": "|(?<=\\\\u0026)|(?<=%26))\"\n_CF_PARAM",
+   "new": "|(?<=\\\\u0026))\"\n_CF_PARAM",
+   "expected": "survive (no CF %26 fixture)",
+   "sha256": "f174710b0ea6b0df7ac4e6d5c2d8cac6d83a978c40a5346a2e49df42dd24d798",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_lb_dash_admitted",
+   "kind": "sub",
+   "old": "_CF_LB = rb\"(?:(?<![A-Za-z0-9_-])",
+   "new": "_CF_LB = rb\"(?:(?<![A-Za-z0-9_])",
+   "expected": "kill K4 extra S011",
+   "sha256": "3d070f6955c5005a4db54bfe1da4fcb1357e99e9536d931468db2b39940b9980",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_lb_removed",
+   "kind": "sub",
+   "old": "_CF_LB = rb\"(?:(?<![A-Za-z0-9_-])|(?<=\\\\u0026)|(?<=%26))\"",
+   "new": "_CF_LB = rb\"\"",
+   "expected": "kill K4 extra S011",
+   "sha256": "3dd760562de9e7c82faf32458a481a8babff7fd0a01eb925cff9cf71f1da7688",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_param_window_0_1",
+   "kind": "sub",
+   "old": "_CF_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\\s\\\"'<>\\\\]*){0,20}?\"",
+   "new": "_CF_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\\s\\\"'<>\\\\]*){0,1}?\"",
+   "expected": "kill if any fixture has 2+ intervening params between Signature and Key-Pair-Id",
+   "sha256": "9544416dfa9bb89ffe40345352e854bc54a9559890a9871a14caa6851f0cbd48",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_param_window_0_0",
+   "kind": "sub",
+   "old": "_CF_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\\s\\\"'<>\\\\]*){0,20}?\"",
+   "new": "_CF_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\\s\\\"'<>\\\\]*){0,0}?\"",
+   "expected": "kill K4 live-d/live-e missing, K7 g2",
+   "sha256": "d71ce28d0e56b4ac4c6724a11f468861449f6b199136b11da1a8fd0fc36d830d",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_param_window_1_20",
+   "kind": "sub",
+   "old": "_CF_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\\s\\\"'<>\\\\]*){0,20}?\"",
+   "new": "_CF_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\\s\\\"'<>\\\\]*){1,20}?\"",
+   "expected": "kill K1 cf-canned, K4 S008/S009 (0 intervening)",
+   "sha256": "e1fd0da4f67afe2649996110b298f5f0ad5ffaf192aaca4a19c40fc0103b82bc",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_param_name_2_6",
+   "kind": "sub",
+   "old": "rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=",
+   "new": "rb\"[A-Za-z]{2,6}=",
+   "expected": "kill K4 live-d missing (Expires is 7 letters), K7 g2",
+   "sha256": "d9e0c5ac75c516bd07602bbf392f58ad24340c2e969b519e2b3ebea2fb7153c4",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_param_name_letters_only",
+   "kind": "sub",
+   "old": "rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=",
+   "new": "rb\"[A-Za-z]{1,32}=",
+   "expected": "survive if no intervening name has a digit or hyphen",
+   "sha256": "4f6cde1395d5c693f78bb5938b427dc9496e69fe67c28435852f9dceb415adac",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_param_name_upper_first",
+   "kind": "sub",
+   "old": "rb\"[A-Za-z][A-Za-z0-9_-]{0,31}=",
+   "new": "rb\"[A-Z][A-Za-z0-9_-]{0,31}=",
+   "expected": "survive if every intervening name starts upper-case",
+   "sha256": "a7a29484de98b089b37dbd42688af6e8f698ba5642ac26a9f6213e0885d91a49",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "sep_drop_html_amp",
+   "kind": "sub",
+   "old": "_SEP = rb\"(?:&amp;|&|\\\\u0026)\"",
+   "new": "_SEP = rb\"(?:&|\\\\u0026)\"",
+   "expected": "kill K1 cf-html-amp, K4 live-e missing",
+   "sha256": "9c5cf1fc2d2e3efacc48dc1d1f9b617b603af4f2007f95407f1ba285e80b4289",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "sep_drop_json_u0026",
+   "kind": "sub",
+   "old": "_SEP = rb\"(?:&amp;|&|\\\\u0026)\"",
+   "new": "_SEP = rb\"(?:&amp;|&)\"",
+   "expected": "kill K1 cf-kpi-first-json, K4 live-d missing",
+   "sha256": "6b77da4392d513cd9580c309be003e29458e8b24b1336c6542457ce7f681b248",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_floor_12",
+   "kind": "sub",
+   "old": "_CF_SIG = rb\"Signature=[A-Za-z0-9_~-]{40,}\"",
+   "new": "_CF_SIG = rb\"Signature=[A-Za-z0-9_~-]{12,}\"",
+   "expected": "kill K4 extra S013",
+   "sha256": "2836801c5d185267b425dbfa97e4fc59fccb64209199242281782a932f45fe6c",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_floor_64",
+   "kind": "sub",
+   "old": "[A-Za-z0-9_~-]{40,}",
+   "new": "[A-Za-z0-9_~-]{64,}",
+   "expected": "survive if every positive sig is >=64 (CFSIG=74, generated 172-344)",
+   "sha256": "525ecb167ddeaebb254fb9f31acd4c345ebda5f0855197ae5ea7ee4d96983de8",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_floor_75",
+   "kind": "sub",
+   "old": "[A-Za-z0-9_~-]{40,}",
+   "new": "[A-Za-z0-9_~-]{75,}",
+   "expected": "kill K1 cf-canned (CFSIG is 74)",
+   "sha256": "1686e1641883126b9ccf88ed4f674eab99ae21f5fdb7052cb9f4f31aad58ad6b",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_class_drop_tilde",
+   "kind": "sub",
+   "old": "[A-Za-z0-9_~-]{40,}",
+   "new": "[A-Za-z0-9_-]{40,}",
+   "expected": "kill (first ~ at index 18)",
+   "sha256": "d695e4be9c298cc0578ec7d38d12a43b188425e0da0f58504afef2e2802adfd0",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_class_drop_hyphen",
+   "kind": "sub",
+   "old": "[A-Za-z0-9_~-]{40,}",
+   "new": "[A-Za-z0-9_~]{40,}",
+   "expected": "kill (first - at index 26)",
+   "sha256": "6c4ff4ff7114aa49970d5d232df9e82bc465d9739da1af3e50682f7f43f40070",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_class_drop_underscore",
+   "kind": "sub",
+   "old": "[A-Za-z0-9_~-]{40,}",
+   "new": "[A-Za-z0-9~-]{40,}",
+   "expected": "kill (first _ at index 37)",
+   "sha256": "045f80c9f2fdc060f69f230c56889b940d2dbcac00998d2974cd709cb6e41f78",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_class_add_plus_slash",
+   "kind": "sub",
+   "old": "[A-Za-z0-9_~-]{40,}",
+   "new": "[A-Za-z0-9_~+/]{40,}",
+   "expected": "survive (widening; no negative uses + or /)",
+   "sha256": "ae787113ad88cfcfae087b02496c17eea70f332e72d9a76408572d7e35d86b04",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_nocase",
+   "kind": "sub",
+   "old": "_CF_SIG = rb\"Signature=",
+   "new": "_CF_SIG = rb\"(?i)Signature=",
+   "expected": "kill K1 cf-lowercase-names, K7 n2 extra",
+   "sha256": "53ca341f45c2bcb38d6d819b12de0da2d459f05ee76e3cf1e548a5b0e47360df",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K2",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_sig_name_typo",
+   "kind": "sub",
+   "old": "_CF_SIG = rb\"Signature=[",
+   "new": "_CF_SIG = rb\"Signatur=[",
+   "expected": "kill K1/K4",
+   "sha256": "41e6fcde57b269b54dc01ff94b9412991cbd7ea811eaf83fad288d6ff2315f12",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_len_8_8",
+   "kind": "sub",
+   "old": "[A-Z0-9]{8,32}",
+   "new": "[A-Z0-9]{8,8}",
+   "expected": "kill K1 cf-canned (KPI is 15)",
+   "sha256": "c333c0cde8cc777765f31f543ed83368405cb71bf1058c60c4cebb693fab4d92",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_len_8_64",
+   "kind": "sub",
+   "old": "[A-Z0-9]{8,32}",
+   "new": "[A-Z0-9]{8,64}",
+   "expected": "survive (no 33+ id fixture)",
+   "sha256": "56b92f720262853f6a54281a6d32427fb0c7a78824487378053790d98b3c5c62",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_len_1_32",
+   "kind": "sub",
+   "old": "[A-Z0-9]{8,32}",
+   "new": "[A-Z0-9]{1,32}",
+   "expected": "survive (no 1-7 id fixture; S010 value starts lower-case)",
+   "sha256": "e3b34ccc587938d0d768969215092d9e9d5877bb70fd88cb88105227a5505811",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_lowercase_admitted",
+   "kind": "sub",
+   "old": "[A-Z0-9]{8,32}",
+   "new": "[A-Za-z0-9]{8,32}",
+   "expected": "survive (no lower-case id value fixture)",
+   "sha256": "ee19927755b84f185123de623b4b4cb1994cf5f776414d75c1a8ddfdda23329b",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_no_lookahead",
+   "kind": "sub",
+   "old": "(?![A-Za-z0-9_-])",
+   "new": "",
+   "expected": "survive (no fixture has an alnum/dash run after the id)",
+   "sha256": "df0eb39bb49aa187e1df0635931e384ba3b235400bc3bd4cb94372a07478510a",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_lookahead_no_dash",
+   "kind": "sub",
+   "old": "(?![A-Za-z0-9_-])",
+   "new": "(?![A-Za-z0-9])",
+   "expected": "survive (no id followed by - or _)",
+   "sha256": "b9b15ddff5439be2616dcbb5d948ae6138eac6bd34990b49a07c2d5186b10a38",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_kpi_name_case",
+   "kind": "sub",
+   "old": "_CF_KPI = rb\"Key-Pair-Id=",
+   "new": "_CF_KPI = rb\"Key-Pair-ID=",
+   "expected": "kill K1/K4",
+   "sha256": "a08ee00d930f3d653740db0ace0863a3d64b4d08a4aa482be343d3bdedd1d0eb",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_alt_swap",
+   "kind": "sub",
+   "old": "_CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb\"|\" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG",
+   "new": "_CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb\"|\" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI",
+   "expected": "survive (equivalent: both branches tried at every start)",
+   "sha256": "217dbd4b13cba9bf1bfd23376808d0bdd5d0d6be62a49eb0d1d8ff671eb699a9",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "cf_alt_drop_sig_first",
+   "kind": "sub",
+   "old": "rb\"(?:\" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb\"|\" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb\")\"",
+   "new": "rb\"(?:\" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb\")\"",
+   "expected": "kill K1 cf-canned, K4 S008/S009",
+   "sha256": "db0f99386ae2a429d6eb948003113c05f0cdb140da200e10cd026c1b794e8b34",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "cf_alt_drop_kpi_first",
+   "kind": "sub",
+   "old": "rb\"(?:\" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb\"|\" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb\")\"",
+   "new": "rb\"(?:\" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb\")\"",
+   "expected": "kill K4 live-d, K7 g2",
+   "sha256": "2cb84cedcc52e3cd677778a54dc9db1c78e61acfcefaa5a5e8790a8d714d0e44",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "az_alt_swap",
+   "kind": "sub",
+   "old": "_SV + _PARAM + _SEP + _SIG + rb\"|\" + _SIG + _PARAM + _SEP + _SV",
+   "new": "_SIG + _PARAM + _SEP + _SV + rb\"|\" + _SV + _PARAM + _SEP + _SIG",
+   "expected": "survive (equivalent)",
+   "sha256": "d6cdb54df501099c441c32bd4d3ea6a895432b9058743ed4ff5f57a5783653d3",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "az_lb_drop_both_escapes",
+   "kind": "sub",
+   "old": "_LB = rb\"(?:(?<![A-Za-z0-9_])|(?<=\\\\u0026)|(?<=%26))\"",
+   "new": "_LB = rb\"(?<![A-Za-z0-9_])\"",
+   "expected": "kill K1 azure-json-escaped-s127-order, K4 E3, K7 g3",
+   "sha256": "20c37b0a6a142b2969ba7dbe0c403eb48dbf8fbc3002a4450a3a1a1d33060fb0",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "az_lb_drop_json_u0026",
+   "kind": "sub",
+   "old": "_LB = rb\"(?:(?<![A-Za-z0-9_])|(?<=\\\\u0026)|(?<=%26))\"",
+   "new": "_LB = rb\"(?:(?<![A-Za-z0-9_])|(?<=%26))\"",
+   "expected": "kill K1 azure-json-escaped-s127-order",
+   "sha256": "c199e143ef39875caf78a4a9ee07d84009c176077a894e60b10eaac998b758db",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "A",
+   "name": "az_lb_drop_pct26",
+   "kind": "sub",
+   "old": "|(?<=\\\\u0026)|(?<=%26))\"\n_CF_LB",
+   "new": "|(?<=\\\\u0026))\"\n_CF_LB",
+   "expected": "survive (no azure %26 fixture)",
+   "sha256": "37471a67b34fc0a0ceea6ad7c3da6f140afd3572987ef0e8cdeb11b00a0de827",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "az_lb_underscore_relaxed",
+   "kind": "sub",
+   "old": "_LB = rb\"(?:(?<![A-Za-z0-9_])",
+   "new": "_LB = rb\"(?:(?<![A-Za-z0-9])",
+   "expected": "survive (no _sv= negative)",
+   "sha256": "584c5a2c8607fc2be581ea8676347611667ba94fbc3043591b4764796179c9ae",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "az_case_insensitive_dropped",
+   "kind": "sub",
+   "old": "rb\"(?i)\" + _LB + rb\"(?:\"",
+   "new": "_LB + rb\"(?:\"",
+   "expected": "survive (every azure fixture is lower-case)",
+   "sha256": "f76c10ad9120f2275df9275c2f34d6de5569189f4a7c3801ef5555f3271206df",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_cases_zero",
+   "kind": "sub",
+   "old": "len(cases) + len(paths) + len(checks)",
+   "new": "0",
+   "expected": "survive (K1 checks only the substring SELFTEST-RESULT pass)",
+   "sha256": "9775ab79e8ab7527e7ac433cb66b8bf0731858258e369415d7d72dd0c9aebf20",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_drop_cf_canned",
+   "kind": "drop",
+   "old": "line starting with (\"cf-canned\",",
+   "new": "(line deleted)",
+   "expected": "survive (K4 S008 keeps behavioural ground)",
+   "sha256": "980b1960e8dd99a638fd3880e7bd99e1e085818dc5a451efefef845f4d384e6a",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_drop_cf_amz_beside_kpi",
+   "kind": "drop",
+   "old": "line starting with (\"cf-amz-signature-beside-kpi\",",
+   "new": "(line deleted)",
+   "expected": "survive (K4 S011 keeps behavioural ground)",
+   "sha256": "939858818b73a733b830a5ee6ba1538c11e30c597c09b8fa42b13b288e615894",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_drop_cf_lowercase_names",
+   "kind": "drop",
+   "old": "line starting with (\"cf-lowercase-names\",",
+   "new": "(line deleted)",
+   "expected": "survive (K7 n2 keeps behavioural ground)",
+   "sha256": "0aa33ce6235d3d9e38d727d9cfb96a57542e8d92b8547b31d7d89d18d3c0d4d5",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_drop_cf_short_sig",
+   "kind": "drop",
+   "old": "line starting with (\"cf-short-sig\",",
+   "new": "(line deleted)",
+   "expected": "survive (K4 S013 keeps behavioural ground)",
+   "sha256": "7cb1670336b92ffdade696863d2ad17408f90ff55c7ea48040d59b45f8995fb0",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_drop_az_s127_order",
+   "kind": "drop",
+   "old": "line starting with (\"azure-json-escaped-s127-order\",",
+   "new": "(line deleted)",
+   "expected": "survive (K4 E3 + K8 keep ground)",
+   "sha256": "28fc0403ae5e1c655371fdffb816fce6c87330995942ae3ef50ee90df3de4f11",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A",
+   "name": "st_flip_cf_short_sig",
+   "kind": "sub",
+   "old": "cf-short-sig selftest case expected set ()",
+   "new": "expected set (cloudfront-signed-url-signature)",
+   "expected": "kill K1 (selftest FAIL)",
+   "sha256": "ad8eca845d8b2df5de86e128bd5f84d9548f170722497c991d2e35d158c4ac8c",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1"
+   ],
+   "fail_1": [
+    "K1"
+   ]
+  },
+  {
+   "section": "B",
+   "name": "r88_azure_param_window_1",
+   "kind": "sub",
+   "old": "_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z]{2,6}=[^&\\s\\\"'<>\\\\]*){0,20}?\"",
+   "new": "_PARAM = rb\"(?:\" + _SEP + rb\"[A-Za-z]{2,6}=[^&\\s\\\"'<>\\\\]*){0,1}?\"",
+   "expected": "r88 #3: survive if no azure fixture has 2+ intervening params",
+   "sha256": "9ad6420d5bee0710791dc4f1573465a477f0dcdc345dc30de57acb8fc43161cf",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_azure_param_name_max3",
+   "kind": "sub",
+   "old": "rb\"[A-Za-z]{2,6}=",
+   "new": "rb\"[A-Za-z]{2,3}=",
+   "expected": "r88 #4: survive if every azure param name is <=3",
+   "sha256": "26f00e5658dda7c191082f433866a6c39fc9a45c8080b74df9ce5dc2c8af3499",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_azure_sig_floor_32",
+   "kind": "sub",
+   "old": "_SIG = rb\"sig=[A-Za-z0-9%+/]{40,}",
+   "new": "_SIG = rb\"sig=[A-Za-z0-9%+/]{32,}",
+   "expected": "r88 #6: survive if no 32-39 char sig negative",
+   "sha256": "89166af7f5bf7f97e8fa6f91f1a7e166657b4c5127fbb22dbfb48f61604d79b9",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_azure_sv_hardcode",
+   "kind": "sub",
+   "old": "_SV = rb\"sv=\\d{4}-\\d{2}-\\d{2}\"",
+   "new": "_SV = rb\"sv=2022-11-02\"",
+   "expected": "r88 #8: survive if every azure fixture uses 2022-11-02",
+   "sha256": "1439a2055e9eb7a41bc292be6130211a9a26fcee3903bc6855e305f952311878",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_azure_sig_floor_64",
+   "kind": "sub",
+   "old": "_SIG = rb\"sig=[A-Za-z0-9%+/]{40,}",
+   "new": "_SIG = rb\"sig=[A-Za-z0-9%+/]{64,}",
+   "expected": "r88 #5: kill (ASIG is 51 chars)",
+   "sha256": "9baa5135ecde3e3d9773286dedc83bb8d6ff7083146bad43d0921c7ebeaaff8f",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "B",
+   "name": "r88_gcs_floor_128",
+   "kind": "sub",
+   "old": "rb\"(?i)X-Goog-Signature(?:=|\\\\?[\\\"']?\\s*:\\s*\\\\?[\\\"']?)[0-9a-f]{64,}\"",
+   "new": "rb\"(?i)X-Goog-Signature(?:=|\\\\?[\\\"']?\\s*:\\s*\\\\?[\\\"']?)[0-9a-f]{128,}\"",
+   "expected": "r88 #14: survive if no 64-127 hex positive",
+   "sha256": "152d02c4ca75aeb879c32c6bf463031089fb00773d625d972b078a32663cb24d",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_gcs_floor_80",
+   "kind": "sub",
+   "old": "rb\"(?i)X-Goog-Signature(?:=|\\\\?[\\\"']?\\s*:\\s*\\\\?[\\\"']?)[0-9a-f]{64,}\"",
+   "new": "rb\"(?i)X-Goog-Signature(?:=|\\\\?[\\\"']?\\s*:\\s*\\\\?[\\\"']?)[0-9a-f]{80,}\"",
+   "expected": "r88 #15: survive if no 64-79 hex positive",
+   "sha256": "824fadf85d1ffdb717ed640c3d35a78f56b0f14a872b61cef3740283209b87c0",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_gcs_nocase",
+   "kind": "sub",
+   "old": "rb\"(?i)X-Goog-Signature(",
+   "new": "rb\"X-Goog-Signature(",
+   "expected": "r88 #16: survive if no lower-case gcs name",
+   "sha256": "0af14c5c26b6e331eeda283e70f53ebfc5d122fccac6d4bb993b1f5a4c4972aa",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_scope_prefix_loose",
+   "kind": "sub",
+   "old": "(len(parts) >= 5 and parts[:2] == [\"corpus\", \"practice\"] and parts[3] == \"evidence\")",
+   "new": "(len(parts) >= 5 and parts[0] == \"corpus\" and parts[3] == \"evidence\")",
+   "expected": "r88 #20: survive (no out-of-scope sibling-tree negative)",
+   "sha256": "ed4b5e8e0202cbd0a34a82f284c97b225b02380dc0879d56d1d82bfc2f4decea",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_scope_evidence_at_end",
+   "kind": "sub",
+   "old": "parts[3] == \"evidence\"",
+   "new": "parts[-2] == \"evidence\"",
+   "expected": "r88 #21: survive (no deeper-than-evidence negative)",
+   "sha256": "50ed9b013e909cd0fcaf961889927851fcfeaac34bb8e11aa4f7d01af8c5b341",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_st_drop_gcs_json_key",
+   "kind": "drop",
+   "old": "line starting with (\"gcs-json-key\",",
+   "new": "(line deleted)",
+   "expected": "r88 #22: survive",
+   "sha256": "715ef5da8dce77625c20cc8342ce2177df777cc8d8d48174904c6233998c26b3",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_st_drop_azure_html_amp",
+   "kind": "drop",
+   "old": "line starting with (\"azure-html-amp\",",
+   "new": "(line deleted)",
+   "expected": "r88 #23: survive",
+   "sha256": "1555b93f00b4cf1dcc559cd36dc6afd817174bdf09a75e9afe1ddb4636de7e6f",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "B",
+   "name": "r88_st_cases_zero",
+   "kind": "sub",
+   "old": "print(\"SELFTEST-RESULT %s cases=%d\" % (\"pass\" if not bad else \"fail\", len(cases) + len(paths) + len(checks)))",
+   "new": "print(\"SELFTEST-RESULT %s cases=%d\" % (\"pass\" if not bad else \"fail\", 0))",
+   "expected": "r88 #24: survive",
+   "sha256": "9775ab79e8ab7527e7ac433cb66b8bf0731858258e369415d7d72dd0c9aebf20",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A-extra",
+   "name": "cf_sig_class_widen_keep_hyphen",
+   "kind": "sub",
+   "old": "pure widening: + and / admitted, all original members kept",
+   "new": "",
+   "expected": "survive if no fixture has + or / adjacent",
+   "sha256": "8d8323348f832da2489024ae4a5c7b5fa5c2b1e238516d38c1d4e0a563d0a77c",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  },
+  {
+   "section": "A-extra",
+   "name": "cf_nocase_at_pattern_start",
+   "kind": "sub",
+   "old": "control cfcase in c2-controls-r89.sh",
+   "new": "",
+   "expected": "kill K1 cf-lowercase-names, K7 n2 extra",
+   "sha256": "8fc765b752b0c455c16843b585dd2747bfc52325a9798e54ae48577d9be737cb",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K7"
+   ],
+   "fail_1": [
+    "K1",
+    "K7"
+   ]
+  },
+  {
+   "section": "A-extra",
+   "name": "cf_lb_escape_only",
+   "kind": "sub",
+   "old": "boundary too strict: only escape-preceded starts allowed",
+   "new": "",
+   "expected": "kill K1 cf-canned (starts at '?'), K4",
+   "sha256": "3c8256caba6cee0663058da87251ec49c0657c4abeb60f9a68d389eb3092f91b",
+   "verdict": "KILLED",
+   "fail_8989": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ],
+   "fail_1": [
+    "K1",
+    "K3",
+    "K4",
+    "K7",
+    "K8"
+   ]
+  },
+  {
+   "section": "B",
+   "name": "r88_azure_sig_padding_drop",
+   "kind": "sub",
+   "old": "_SIG = rb\"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}\"",
+   "new": "_SIG = rb\"sig=[A-Za-z0-9%+/]{40,}\"",
+   "expected": "r88 #7 equivalent-mutant re-run",
+   "sha256": "42a04fd12eb71f9fc4e373da054135ddf46c7c07d21576ad78766617792a4dda",
+   "verdict": "SURVIVED",
+   "fail_8989": [],
+   "fail_1": []
+  }
+ ],
+ "probes": {
+  "probes": [
+   {
+    "name": "cf_lb_drop_pct26",
+    "sha": "f174710b0ea6b0df7ac4e6d5c2d8cac6d83a978c40a5346a2e49df42dd24d798",
+    "note": "CF match starts right after a %26 separator",
+    "frozen": [
+     "cloudfront-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "cf_lb_drop_json_u0026",
+    "sha": "60357e268b75ce10b8c91783f816d8fa3e393df6656692d1888bbdea7bc24b40",
+    "note": "CF match starts right after a \\u0026 separator",
+    "frozen": [
+     "cloudfront-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "cf_param_window_0_1",
+    "sha": "9544416dfa9bb89ffe40345352e854bc54a9559890a9871a14caa6851f0cbd48",
+    "note": "two intervening parameters between Signature and Key-Pair-Id",
+    "frozen": [
+     "cloudfront-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "cf_param_name_letters_only",
+    "sha": "4f6cde1395d5c693f78bb5938b427dc9496e69fe67c28435852f9dceb415adac",
+    "note": "intervening name with a hyphen (Hash-Algorithm)",
+    "frozen": [
+     "cloudfront-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "cf_param_name_upper_first",
+    "sha": "a7a29484de98b089b37dbd42688af6e8f698ba5642ac26a9f6213e0885d91a49",
+    "note": "intervening name starting lower-case (expires)",
+    "frozen": [
+     "cloudfront-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "cf_sig_floor_64",
+    "sha": "525ecb167ddeaebb254fb9f31acd4c345ebda5f0855197ae5ea7ee4d96983de8",
+    "note": "positive with a 48-character signature",
+    "frozen": [
+     "cloudfront-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "cf_kpi_len_8_64",
+    "sha": "56b92f720262853f6a54281a6d32427fb0c7a78824487378053790d98b3c5c62",
+    "note": "40-character key-pair-id (frozen: no hit, mutant: hit)",
+    "frozen": [],
+    "mutant": [
+     "cloudfront-signed-url-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "cf_kpi_len_1_32",
+    "sha": "e3b34ccc587938d0d768969215092d9e9d5877bb70fd88cb88105227a5505811",
+    "note": "6-character key-pair-id (frozen: no hit, mutant: hit)",
+    "frozen": [],
+    "mutant": [
+     "cloudfront-signed-url-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "cf_kpi_lowercase_admitted",
+    "sha": "ee19927755b84f185123de623b4b4cb1994cf5f776414d75c1a8ddfdda23329b",
+    "note": "lower-case letters in the key-pair-id value",
+    "frozen": [],
+    "mutant": [
+     "cloudfront-signed-url-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "cf_kpi_no_lookahead",
+    "sha": "df0eb39bb49aa187e1df0635931e384ba3b235400bc3bd4cb94372a07478510a",
+    "note": "key-pair-id followed by -EXTRA (frozen: no hit, mutant: hit)",
+    "frozen": [],
+    "mutant": [
+     "cloudfront-signed-url-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "cf_kpi_lookahead_no_dash",
+    "sha": "b9b15ddff5439be2616dcbb5d948ae6138eac6bd34990b49a07c2d5186b10a38",
+    "note": "key-pair-id followed by -EXTRA (frozen: no hit, mutant: hit)",
+    "frozen": [],
+    "mutant": [
+     "cloudfront-signed-url-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "az_lb_drop_pct26",
+    "sha": "37471a67b34fc0a0ceea6ad7c3da6f140afd3572987ef0e8cdeb11b00a0de827",
+    "note": "azure match starts right after a %26 separator",
+    "frozen": [
+     "azure-sas-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "az_lb_underscore_relaxed",
+    "sha": "584c5a2c8607fc2be581ea8676347611667ba94fbc3043591b4764796179c9ae",
+    "note": "negative: _sv= is not an sv parameter (frozen: no hit, mutant: hit)",
+    "frozen": [],
+    "mutant": [
+     "azure-sas-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "az_case_insensitive_dropped",
+    "sha": "f76c10ad9120f2275df9275c2f34d6de5569189f4a7c3801ef5555f3271206df",
+    "note": "upper-case parameter names",
+    "frozen": [
+     "azure-sas-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "r88_azure_param_window_1",
+    "sha": "9ad6420d5bee0710791dc4f1573465a477f0dcdc345dc30de57acb8fc43161cf",
+    "note": "two intervening azure parameters",
+    "frozen": [
+     "azure-sas-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "r88_azure_param_name_max3",
+    "sha": "26f00e5658dda7c191082f433866a6c39fc9a45c8080b74df9ce5dc2c8af3499",
+    "note": "five-letter intervening name (skoid)",
+    "frozen": [
+     "azure-sas-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "r88_azure_sig_floor_32",
+    "sha": "89166af7f5bf7f97e8fa6f91f1a7e166657b4c5127fbb22dbfb48f61604d79b9",
+    "note": "negative: 35-character sig (frozen: no hit, mutant: hit)",
+    "frozen": [],
+    "mutant": [
+     "azure-sas-signature"
+    ],
+    "separate": true
+   },
+   {
+    "name": "r88_azure_sv_hardcode",
+    "sha": "1439a2055e9eb7a41bc292be6130211a9a26fcee3903bc6855e305f952311878",
+    "note": "a second service version (2024-11-04)",
+    "frozen": [
+     "azure-sas-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "r88_gcs_floor_128",
+    "sha": "152d02c4ca75aeb879c32c6bf463031089fb00773d625d972b078a32663cb24d",
+    "note": "96 hex digits",
+    "frozen": [
+     "gcs-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "r88_gcs_floor_80",
+    "sha": "824fadf85d1ffdb717ed640c3d35a78f56b0f14a872b61cef3740283209b87c0",
+    "note": "72 hex digits",
+    "frozen": [
+     "gcs-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   },
+   {
+    "name": "r88_gcs_nocase",
+    "sha": "0af14c5c26b6e331eeda283e70f53ebfc5d122fccac6d4bb993b1f5a4c4972aa",
+    "note": "lower-case gcs name",
+    "frozen": [
+     "gcs-signed-url-signature"
+    ],
+    "mutant": [],
+    "separate": true
+   }
+  ],
+  "equiv": [
+   {
+    "name": "cf_alt_swap",
+    "sha": "217dbd4b13cba9bf1bfd23376808d0bdd5d0d6be62a49eb0d1d8ff671eb699a9",
+    "fixtures": 6,
+    "separated": []
+   },
+   {
+    "name": "az_alt_swap",
+    "sha": "d6cdb54df501099c441c32bd4d3ea6a895432b9058743ed4ff5f57a5783653d3",
+    "fixtures": 6,
+    "separated": []
+   }
+  ],
+  "selftest": [
+   {
+    "name": "st_cases_zero",
+    "sha": "9775ab79e8ab7527e7ac433cb66b8bf0731858258e369415d7d72dd0c9aebf20",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=0",
+     35
+    ],
+    "dropped": []
+   },
+   {
+    "name": "st_drop_cf_canned",
+    "sha": "980b1960e8dd99a638fd3880e7bd99e1e085818dc5a451efefef845f4d384e6a",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "cf-canned"
+    ]
+   },
+   {
+    "name": "st_drop_cf_amz_beside_kpi",
+    "sha": "939858818b73a733b830a5ee6ba1538c11e30c597c09b8fa42b13b288e615894",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "cf-amz-signature-beside-kpi"
+    ]
+   },
+   {
+    "name": "st_drop_cf_lowercase_names",
+    "sha": "0aa33ce6235d3d9e38d727d9cfb96a57542e8d92b8547b31d7d89d18d3c0d4d5",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "cf-lowercase-names"
+    ]
+   },
+   {
+    "name": "st_drop_cf_short_sig",
+    "sha": "7cb1670336b92ffdade696863d2ad17408f90ff55c7ea48040d59b45f8995fb0",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "cf-short-sig"
+    ]
+   },
+   {
+    "name": "st_drop_az_s127_order",
+    "sha": "28fc0403ae5e1c655371fdffb816fce6c87330995942ae3ef50ee90df3de4f11",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "azure-json-escaped-s127-order"
+    ]
+   },
+   {
+    "name": "r88_st_drop_gcs_json_key",
+    "sha": "715ef5da8dce77625c20cc8342ce2177df777cc8d8d48174904c6233998c26b3",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "gcs-json-key"
+    ]
+   },
+   {
+    "name": "r88_st_drop_azure_html_amp",
+    "sha": "1555b93f00b4cf1dcc559cd36dc6afd817174bdf09a75e9afe1ddb4636de7e6f",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=42",
+     34
+    ],
+    "dropped": [
+     "azure-html-amp"
+    ]
+   },
+   {
+    "name": "r88_st_cases_zero",
+    "sha": "9775ab79e8ab7527e7ac433cb66b8bf0731858258e369415d7d72dd0c9aebf20",
+    "frozen": [
+     0,
+     "SELFTEST-RESULT pass cases=43",
+     35
+    ],
+    "mutant": [
+     0,
+     "SELFTEST-RESULT pass cases=0",
+     35
+    ],
+    "dropped": []
+   }
+  ],
+  "scope": [
+   {
+    "name": "r88_scope_prefix_loose",
+    "sha": "ed4b5e8e0202cbd0a34a82f284c97b225b02380dc0879d56d1d82bfc2f4decea",
+    "path": "corpus/practice2/p/evidence/F.txt",
+    "frozen": false,
+    "mutant": true,
+    "separate": true
+   },
+   {
+    "name": "r88_scope_evidence_at_end",
+    "sha": "50ed9b013e909cd0fcaf961889927851fcfeaac34bb8e11aa4f7d01af8c5b341",
+    "path": "corpus/practice/p/sub/evidence/F.txt",
+    "frozen": false,
+    "mutant": true,
+    "separate": true
+   }
+  ]
+ }
+}

@@ -1,0 +1,30 @@
+# mutant st_drop_cf_amz_beside_kpi  section=A
+# sha256(mutated instrument)=939858818b73a733b830a5ee6ba1538c11e30c597c09b8fa42b13b288e615894
+# why=case presence unpinned
+# expected=survive (K4 S011 keeps behavioural ground)
+# selftest rc=0
+# SELFTEST-RESULT pass cases=42
+# ---- seed 8989
+CAPABILITY-CHECK rev=25e51bfc49fcdce2e5b52917e62a9abf05746831 instrument_present=True seed=8989
+LIMB K1 pass selftest_rc=0 instrument_sha256=939858818b73a733b830a5ee6ba1538c11e30c597c09b8fa42b13b288e615894 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=8989 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+# counter rc=0
+# ---- seed 1
+CAPABILITY-CHECK rev=25e51bfc49fcdce2e5b52917e62a9abf05746831 instrument_present=True seed=1
+LIMB K1 pass selftest_rc=0 instrument_sha256=939858818b73a733b830a5ee6ba1538c11e30c597c09b8fa42b13b288e615894 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=1 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+# counter rc=0

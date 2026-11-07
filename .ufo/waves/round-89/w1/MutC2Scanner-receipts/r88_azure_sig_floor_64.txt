@@ -1,0 +1,35 @@
+# mutant r88_azure_sig_floor_64  section=B
+# sha256(mutated instrument)=9baa5135ecde3e3d9773286dedc83bb8d6ff7083146bad43d0921c7ebeaaff8f
+# why=re-run of a killed mutant for contrast
+# expected=r88 #5: kill (ASIG is 51 chars)
+# selftest rc=1
+# SELFTEST azure-sv-first FAIL got=none
+# SELFTEST azure-sig-first FAIL got=none
+# SELFTEST azure-json-escaped FAIL got=none
+# SELFTEST azure-html-amp FAIL got=none
+# SELFTEST azure-json-escaped-s127-order FAIL got=none
+# SELFTEST-RESULT fail cases=43
+# ---- seed 8989
+CAPABILITY-CHECK rev=dd6f205cd60e7aa69b5c73011d77d5711ab4ca75 instrument_present=True seed=8989
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=9baa5135ecde3e3d9773286dedc83bb8d6ff7083146bad43d0921c7ebeaaff8f gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E3.json|azure-sas-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=8989 rc=1 missing=g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
+# ---- seed 1
+CAPABILITY-CHECK rev=dd6f205cd60e7aa69b5c73011d77d5711ab4ca75 instrument_present=True seed=1
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=9baa5135ecde3e3d9773286dedc83bb8d6ff7083146bad43d0921c7ebeaaff8f gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E1.txt|azure-sas-signature,corpus/practice/p/evidence/E3.json|azure-sas-signature,w/z-receipts/live-c.json|azure-sas-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=False
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 FAIL seed=1 rc=1 missing=g/x-receipts/live-g3.json|azure-sas-signature extra=none
+LIMB K8 FAIL clauses=10 failing=azure: \u0026 separator, sv sixth (S127 line 605 order), JSON-escaped
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# counter rc=1
