@@ -1,0 +1,33 @@
+# C1 landing receipt: counter run base->landing
+KNOWLEDGE-METER base=1007/1998 after=1008/1994 base_target=1007/1998 target=1008/1994 sites=16 labels=16 after_rev=53ec479d71d25cf5be052db794a548a5904564b8 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1007/1998
+LIMB M1 pass after=1008/1994
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=16 unbound=none
+LIMB M10 pass labelled=16 want=16 mapped=16 kinds=cell-repair=4,part=5,range=7 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=8545eba2c39a1fed66b5d6eba59de973c182208aa8b06d28013417821359beb6
+KNOWLEDGE-METER-RESULT pass rc=0
+rc=0
+
+# C1 path set
+corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+corpus/knowledge/triage-thresholds.md
+
+# C2 path set
+SCORECARD.md
+corpus/instruments/capture-secret-allow.tsv
+corpus/instruments/capture-secret-scan.py
+# C2 gate at the landing
+CAPABILITY-CHECK-REV rev=38e7319f44a9fab2978b59ffd43faf207cf62b32 seed=9191
+LIMB K1 ok inst_sha=pin-ok gate_sha=pin-ok selftest=pass cases=115
+LIMB K2 ok rc=0 scanned=2477 hits=0 allowed=26 unused_allow=0
+LIMB K3 ok rc=1 hits=6 missing=none extra=none
+LIMB K4 ok base_new_shape_hits=0 old_shapes_missing=none
+LIMB K5 ok rows=1 last=87
+LIMB K6 ok rc=1 shapes=aws-access-key-id,aws-sts-session-token,credential
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
