@@ -72,7 +72,7 @@ Redaction is the second half of the rule, and it has two parts: strip the query 
 
 The allowlist is the third part, and it is narrow by design: a row is `path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason`, one exact value at one path (instrument lines 33-36), and
 
-> "Rows for aws-sts-session-token are refused (a session token is never a false positive)" — `corpus/instruments/capture-secret-scan.py:110-111`
+> "Rows for aws-sts-session-token are refused (a session token is never a false positive)" — `corpus/instruments/capture-secret-scan.py:123-124`
 
 so no row can quiet a session-token hit, and a refused or malformed row is a read error (exit 2) — an attempt to allow a token becomes a loud failure, not a silent pass. An unused row is reported (`unused_allow=` counts rows no scanned match consumed, "reported, not an error" at `corpus/instruments/capture-secret-scan.py:44-45`), so a stale row is visible without blocking a run.
 
