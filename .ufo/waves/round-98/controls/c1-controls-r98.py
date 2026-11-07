@@ -95,6 +95,10 @@ def main(argv):
     if r.returncode != 0:
         print("C1-CONTROLS-RESULT error reason=clone rc=2")
         return 2
+    r = git(fixture, "checkout", "-q", a.base)
+    if r.returncode != 0:
+        print("C1-CONTROLS-RESULT error reason=base-checkout rc=2")
+        return 2
     head = git(fixture, "rev-parse", "HEAD").stdout.strip()
     if head != a.base:
         print("C1-CONTROLS-RESULT error reason=base-mismatch head=%s rc=2" % head)
