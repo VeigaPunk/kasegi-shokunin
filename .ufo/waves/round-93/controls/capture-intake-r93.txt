@@ -1,0 +1,33 @@
+# Round-93 S139 capture intake receipt (before the freeze)
+
+## 1. Intake gate refusal of the page as served (no allowlist rows yet)
+
+$ python3 -B corpus/instruments/capture-source.py --id S139 \
+    --url https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/ \
+    --out corpus/source-snapshots/round-93/S139.txt --kind html
+INTAKE-REFUSED S139 shape=bearer line=124 out=corpus/source-snapshots/round-93/S139.txt written=no
+INTAKE-REFUSED S139 shape=credential line=116 out=corpus/source-snapshots/round-93/S139.txt written=no
+rc=3
+
+## 2. All matches on the converted page (scan_bytes over the pre-capture bytes)
+
+bearer      124  115  04c6633e53f1ad24e844c2df962767cf4ec9234c357ee428997e7f29d21b94dc
+credential  116   25  41d722d8e25112ee41a6bad1ed0b51d1ae1b47208bffb4576c79eea235c8d7ea
+credential  126   22  2b651dfaddc5b6a628928a2cc1b8a564988790588f2e019089b003a2f7530ddb
+credential  139   24  2e568d85c816467d7ca2025d8d8bd2281649de0f178051f21b159c02e2d52aa1
+
+Lines 116, 126 and 124 are the page's generic-detection teaching samples (api_key query
+sample, --api-token sample, Bearer JWT sample); line 139 is the finding-type list prose.
+All four were read in context by the L1 before the rows were written; four digest-bound
+rows for path corpus/source-snapshots/round-93/S139.txt were appended to
+corpus/instruments/capture-secret-allow.tsv (each row binds one exact matched value).
+
+## 3. Capture through the gate with those rows
+
+S139 status=200 fetched_bytes=156159 snapshot_bytes=25370 sha256=154a7e1535b4a245e45e3f82705c271344f59aa6c344807645fa0bc4d1e1b188 utc=2026-11-07T13:55:21Z
+
+## 4. Candidate scan of the committed capture and manifest
+
+$ python3 -B <candidate>/capture-secret-scan.py --files \
+    corpus/source-snapshots/round-93/S139.txt corpus/source-snapshots/round-93/manifest.json
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=4 unused_allow=19 rc=0

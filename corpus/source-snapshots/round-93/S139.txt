@@ -1,0 +1,414 @@
+Detected secrets | GitLab Docs Skip to main content
+Go to GitLab Docs homepage
+What's new?
+What's new?
+Get free trial
+Toggle menu
+Use GitLab
+GitLab Duo
+GitLab Orbit
+Extend
+Install
+Administer
+Subscribe
+Contribute
+Solutions
+Getting started
+Tutorials
+Manage your organization
+Organize work with projects
+Plan and track work
+Manage authentication and authorization
+Use Git
+Manage your code
+Use CI/CD to build your application
+Secure your application
+Getting started
+Tutorials
+AI Governance
+Application security
+Compliance
+Detect
+Security configuration
+Roll out security scanning
+SARIF reports
+Security scanning results
+Package Metadata Database
+Container scanning
+Dependency scanning
+Comparison: Dependency scanning and container scanning
+Dependency list
+Continuous vulnerability scanning
+Static application security testing (SAST)
+Infrastructure as Code (IaC) scanning
+Secret detection
+Detected secrets
+Exclusions
+Pipeline secret detection
+GitLab Secret Scanner for Source Code
+Secret push protection
+Client-side secret detection
+Business logic scanning
+Dynamic Application Security Testing (DAST)
+API security
+Web API fuzz testing
+Coverage-guided fuzz testing (deprecated)
+Offline environments
+Scanner maintenance
+Triage
+Analyze
+Remediate
+GitLab advisory database
+CVE ID requests
+Policies
+Security glossary
+Deploy and release your application
+Manage your infrastructure
+Monitor your application
+Analyze GitLab usage
+Release notes
+Feature support
+Find your GitLab version
+/
+GitLab Docs
+Use GitLab
+Secure your application
+Detect
+Secret detection
+Detected secrets
+Detected secrets
+Tier: Free, Premium, Ultimate
+Offering: GitLab.com, GitLab Self-Managed, GitLab Dedicated
+Secret categories
+GitLab Secret Detection identifies secrets using two approaches: rule-based detection and generic detection.
+Rule-based detection
+Rule-based detection identifies secrets by matching scanned content against a known pattern for each
+credential type, called a rule. For example, a GitLab personal access token is identified by the pattern
+glpat- followed by a 20-character string. GitLab supports
+200+ rules covering popular vendors by default.
+Rule-based detection’s coverage is limited to the rules the analyzer supports.
+Secrets that don’t match a supported rule aren’t detected. Both the Gitleaks-based analyzer
+and GitLab Secret Scanning for Source Code
+support rule-based detection.
+Generic detection
+Tier: Ultimate
+Offering: GitLab.com, GitLab Self-Managed, GitLab Dedicated
+Status: Beta
+Rule-based detection can only find secrets that match a pattern it already knows about.
+Many credentials don’t follow a published or consistent format, so no rule can match them.
+For example, a password for an internal service, a database connection string, or an API key
+with no distinguishing prefix.
+Generic detection targets these secrets.
+Instead of matching a fixed pattern, generic detection examines the context around a value and the properties
+of the value itself. Both signals determine whether the value is likely to be a credential.
+Because generic detection doesn’t depend on a known pattern, it can catch secrets that rule-based
+detection misses. It’s also more prone to false positives, so GitLab Secret Scanning for Source Code
+includes false positive reduction to reduce noise.
+GitLab Secret Scanning for Source Code is the only GitLab analyzer that supports generic detection.
+For more information, see generic secrets.
+Generic detection isn’t limited to an obvious secret = "value" assignment.
+The following snippet shows less obvious values it identifies, and the finding each one produces:
+# Secret assigned in a Perl hash, not a plain key-value pair
+$config{'webhook_token'} = "Of0Pg2Qh4Ri6Sj8Tk";
+# Password stored as the content of an XML element, not an attribute
+<db_password>Ct8Du0Ev2Fw4Gx6Hy</db_password>
+# API key passed as a URL query parameter
+https://app.gitlab.com?api_key=Of3Pg5Qh7Ri9Sj1Tk
+# Token embedded as a literal value in a SQL statement
+INSERT INTO secrets (key, value) VALUES ('api_token', 'Kb1Lc3Md5Ne7Of9Pg');
+# Password assigned through an environment variable lookup, not a plain variable
+ENV["redis_pass"] = "Tt7Yy9Uu1Ii3OoPp5"
+# Token passed as an argument to a setter method, not a direct assignment
+config.put("dbToken", "Kb8Lc0Md2Ne4Of6Pg");
+# Bearer token embedded in an XML configuration property
+<property name="authorizationHeader" value="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"/>
+# Secret passed as a CLI flag, not a variable assignment
+curl "https://api.example.com/v1/deploy" --api-token=7bN2vLpQ9wXzKfM4
+# Credential left behind in a comment
+# old admin password was T3mpP@ssw0rd2023XyZ1, rotate before removing this line
+# UUID-formatted secret
+client_secret: 123e4567-e89b-12d3-a456-426614174000
+# Secret disguised by Base64 encoding
+auth_token = "c2VjcmV0LWFwaS1rZXktdmFsdWU="
+# Secret disguised by hex encoding
+signing_key = "4f3c2b1a9e8d7c6b5a4938271605f4e3d2c1b0a"
+Generic secret findings
+When a generic secret is found, GitLab labels the finding in the vulnerability report based on the type of value it detected:
+Generic Password: A human-defined password, such as a database password or a service password.
+Generic Secret: A machine-generated credential, such as an API key or access token, that doesn’t match a known vendor format.
+Generic UUID Secret, Generic Base64-Encoded Secret, Generic Base64URL-Encoded Secret, Generic Hex-Encoded Secret, Generic JWT Token, and Generic Paseto Token: Machine-generated credentials that GitLab further classified by their format.
+Each finding includes a description that explains why the value was flagged. The description provides
+guidance on how to confirm whether the value is a real secret, rotate a confirmed secret, or
+dismiss a false positive.
+Secrets generic detection might miss
+Generic detection identifies a secret from its surroundings, such as a keyword or the format of the value,
+not from confirming what the value does. This approach has trade-offs. Even with false positive reduction in
+place, some non-secret values can show up as findings. For example:
+A secret built through concatenation or string interpolation, such as full_key = prefix + secret_suffix.
+A secret with no recognizable keyword nearby, such as a hardcoded value with no label like key, secret, token, or password next to it.
+A secret in a file or path that generic detection excludes, such as a vendored dependency, a generated file, or documentation.
+A value that’s shorter than the minimum length generic detection expects for that type of secret.
+A secret reported at medium or low confidence. By default, GitLab Secret Scanning for Source Code shows only high-confidence findings in the vulnerability report. To change this, see confidence level.
+Supported rules for rule-based detection
+This table lists the rules used for rule-based detection.
+Both the Gitleaks-based analyzer and GitLab Secret Scanning for Source Code analyzers use the same ruleset,
+but a validity check might run only on findings from one analyzer.
+For each rule, the table shows:
+Pipeline secret detection, client-side secret detection, and secret push protection:
+Whether that type of secret detection supports the rule.
+Validity check: Whether GitLab can check if a secret detected by the rule is active.
+Validity check analyzer: Which analyzer findings GitLab checks for validity:Both: Findings from both analyzers.
+GitLab Secret Scanning for Source Code: Findings from GitLab Secret Scanning for Source Code only.
+None: The rule has no validity check.
+For more information, see validity checks.
+Secret detection rules are updated in the default ruleset.
+Detected secrets with patterns that have been removed or updated remain open so you can triage them.
+If you want to add a new secret detection rule, you can propose new detection rules for all GitLab users, or customize rulesets for your specific project.
+DescriptionIDPipeline secret detectionClient-side secret detectionSecret push protectionValidity checkValidity check analyzer
+Adafruit IO KeyAdafruitIOKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Adobe Client ID (OAuth Web)Adobe Client ID (Oauth Web)check-smNoNoNoNone
+Adobe client secretAdobe Client Secretcheck-smNocheck-smNoNone
+Adobe IMS Access TokenAdobeIMSAccessTokencheck-smNoNoNoNone
+Age secret keyAge secret keycheck-smNoNoNoNone
+Aiven Service PasswordAivenServicePasswordcheck-smNocheck-smNoNone
+Alibaba AccessKey IDAlibaba AccessKey IDcheck-smNoNoNoNone
+Alibaba Secret KeyAlibaba Secret Keycheck-smNoNoNoNone
+Amazon OAuth Client IDAmazonOAuthClientIDcheck-smNocheck-smNoNone
+Anthropic API keyanthropic_keycheck-smcheck-smcheck-smcheck-smGitLab Secret Scanning for Source Code
+Artifactory API KeyArtifactoryApiKeycheck-smNocheck-smNoNone
+Artifactory Identity TokenArtifactoryIdentityTokencheck-smNocheck-smNoNone
+Asana client IDAsana Client IDcheck-smNoNoNoNone
+Asana client secretAsana Client Secretcheck-smNoNoNoNone
+Asana Personal Access Token V1AsanaPersonalAccessTokenV1check-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Asana Personal Access Token V2AsanaPersonalAccessTokenV2check-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Atlassian API KeyAtlassianApiKeycheck-smNocheck-smNoNone
+Atlassian API tokenAtlassian API tokencheck-smNoNoNoNone
+Atlassian User API TokenAtlassianUserApiTokencheck-smNocheck-smNoNone
+Auth0 Client SecretAuth0ClientSecretcheck-smNoNoNoNone
+AWS Access Key IDAWScheck-smNocheck-smcheck-smBoth
+AWS Access Secret KeyAWSSecretAccessKeycheck-smNoNoNoNone
+AWS Session TokenAWSSessionTokencheck-smNocheck-smNoNone
+AWS Cognito Identity Pool IDAWSCognitoIdentityPoolIDcheck-smNoNoNoNone
+AWS Bedrock KeyAWSBedrockKeycheck-smNoNoNoNone
+AWS Bedrock Short-lived KeyAWSBedrockShortLivedKeycheck-smNocheck-smNoNone
+Azure API Management Gateway KeyAzureAPIManagementGatewayKeycheck-smNocheck-smNoNone
+Azure API Management Direct KeyAzureAPIManagementDirectKeycheck-smNoNoNoNone
+Azure App ConfigAzureAppConfigConnectionStringcheck-smNocheck-smNoNone
+Azure Communication ServicesAzureCommServicesConnectionStringcheck-smNocheck-smNoNone
+Azure Cosmos DB CredentialsAzureCosmosDBCredentialscheck-smNoNoNoNone
+Azure Entra Client SecretAzureEntraClientSecretcheck-smNocheck-smNoNone
+Azure Entra Client ID TokenAzureEntraIDTokencheck-smNocheck-smNoNone
+Azure EventGrid Access KeyAzureEventGridAccessKeycheck-smNoNoNoNone
+Azure Functions API KeyAzureFunctionsAPIKeycheck-smNocheck-smNoNone
+Azure Logic App SASAzureLogicAppSAScheck-smNocheck-smNoNone
+Azure OpenAI API KeyAzureOpenAIAPIKeycheck-smNoNoNoNone
+Azure Personal Access TokenAzurePersonalAccessTokencheck-smNoNoNoNone
+Azure SignalR Access KeyAzureSignalRAccessKeycheck-smNocheck-smNoNone
+Beamer API tokenBeamer API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Bitbucket client IDBitbucket client IDcheck-smNoNoNoNone
+Bitbucket client secretBitbucket client secretcheck-smNoNoNoNone
+Brevo API tokenSendinblue API tokencheck-smNocheck-smNoNone
+Brevo SMTP tokenSendinblue SMTP tokencheck-smNocheck-smNoNone
+Canada Digital Service Notify API KeyCDSCanadaNotifyAPIKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+CircleCI access tokenCircleCI access tokenscheck-smNocheck-smNoNone
+Clojars deploy tokenClojars API tokencheck-smNoNoNoNone
+Contentful delivery API tokenContentful delivery API tokencheck-smNoNoNoNone
+Contentful personal access tokenContentfulPersonalAccessTokencheck-smNocheck-smNoNone
+Contentful preview API tokenContentful preview API tokencheck-smNoNoNoNone
+Databricks API tokenDatabricks API tokencheck-smNoNoNoNone
+DataDog API KeyDataDogAPIKeycheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+DigitalOcean OAuth access tokendigitalocean-access-tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+DigitalOcean personal access tokendigitalocean-patcheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+DigitalOcean refresh tokendigitalocean-refresh-tokencheck-smNoNoNoNone
+Discord API keyDiscord API keycheck-smNoNoNoNone
+Discord client IDDiscord client IDcheck-smNoNoNoNone
+Discord client secretDiscord client secretcheck-smNoNoNoNone
+Docker Personal Access TokenDockerPersonalAccessTokencheck-smNocheck-smNoNone
+Doppler API tokenDoppler API tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Doppler Service tokenDoppler Service tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Dropbox API secret/keyDropbox API secret/keycheck-smNoNoNoNone
+Dropbox App Access TokenDropboxAppAccessTokencheck-smNocheck-smNoNone
+Dropbox long lived API tokenDropbox long lived API tokencheck-smNoNoNoNone
+Dropbox short lived API tokenDropbox short lived API tokencheck-smNocheck-smNoNone
+Duffel API tokenDuffel API tokencheck-smNoNoNoNone
+Dynatrace Platform TokenDynatracePlatformTokencheck-smNoNoNoNone
+EasyPost production API keyEasyPost API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+EasyPost test API keyEasyPost test API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Facebook tokenFacebook tokencheck-smNoNoNoNone
+Fastly API user or automation tokenFastly API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Figma Personal Access TokenFigmaPersonalAccessTokencheck-smNocheck-smNoNone
+Finicity API tokenFinicity API tokencheck-smNoNoNoNone
+Finicity client secretFinicity client secretcheck-smNoNoNoNone
+Flutterwave Prod Encrypted KeyFlutterwaveProdEncryptedKeycheck-smNocheck-smNoNone
+Flutterwave test encrypted keyFlutterwave encrypted keycheck-smNoNoNoNone
+Flutterwave Prod Public KeyFlutterwaveProdPublicKeycheck-smNocheck-smNoNone
+Flutterwave test public keyFlutterwave public keycheck-smNoNoNoNone
+Flutterwave Prod Secret KeyFlutterwaveProdSecretKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Flutterwave test secret keyFlutterwave secret keycheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Frame.io API tokenFrame.io API tokencheck-smNoNoNoNone
+GCP API key or Google API keyGCP API keycheck-smNoNocheck-smBoth
+GCP OAuth client secretGCP OAuth client secretcheck-smNocheck-smNoNone
+GCP service account (Google)Google (GCP) Service-accountcheck-smNocheck-smNoNone
+GCP Vertex Express Mode KeyGCPVertexExpressModeKeycheck-smNocheck-smNoNone
+GitHub app tokenGithub App Tokencheck-smNocheck-smNoNone
+GitHub App Installation TokenGithubAppInstallationTokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+GitHub Fine Grained Personal Access TokenGithubFineGrainedPersonalAccessTokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+GitHub OAuth Access TokenGithub OAuth Access Tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+GitHub personal access token (classic)Github Personal Access Tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+GitHub refresh tokenGithub Refresh Tokencheck-smNocheck-smNoNone
+GitLab CI/CD job tokengitlab_ci_build_tokencheck-smcheck-smNocheck-smBoth
+GitLab deploy tokengitlab_deploy_tokencheck-smcheck-smNocheck-smBoth
+GitLab Feature Flags Client TokenNoneNocheck-smNoNoNone
+GitLab feed tokengitlab_feed_tokencheck-smcheck-smNoNoNone
+GitLab feed token v2gitlab_feed_token_v2check-smcheck-smcheck-smcheck-smBoth
+GitLab incoming email tokengitlab_incoming_email_tokencheck-smcheck-smcheck-smcheck-smBoth
+GitLab Kubernetes agent tokengitlab_kubernetes_agent_tokencheck-smcheck-smcheck-smcheck-smBoth
+GitLab OAuth application secretgitlab_oauth_app_secretcheck-smcheck-smcheck-smcheck-smBoth
+GitLab personal access tokengitlab_personal_access_tokencheck-smcheck-smcheck-smcheck-smBoth
+GitLab Personal Access Token (routable)gitlab_personal_access_token_routablecheck-smcheck-smcheck-smcheck-smBoth
+GitLab Personal Access Token (routable, versioned)gitlab_personal_access_token_routable_versionedcheck-smcheck-smcheck-smcheck-smBoth
+GitLab pipeline trigger tokengitlab_pipeline_trigger_tokencheck-smcheck-smcheck-smcheck-smBoth
+GitLab runner authentication tokengitlab_runner_auth_tokencheck-smcheck-smcheck-smcheck-smBoth
+GitLab runner authentication token (routable)gitlab_runner_auth_token_routablecheck-smcheck-smcheck-smcheck-smBoth
+GitLab runner registration tokengitlab_runner_registration_tokencheck-smNocheck-smNoNone
+GitLab SCIM OAuth tokengitlab_scim_oauth_tokencheck-smcheck-smNocheck-smBoth
+GoCardless API tokenGoCardless API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Grafana Service Account TokenGrafanaServiceAccountTokencheck-smNocheck-smNoNone
+Grafana Cloud Access Policy TokenGrafanaCloudAccessPolicyTokencheck-smNocheck-smNoNone
+HashiCorp Terraform API tokenHashicorp Terraform user/org API tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+HashiCorp Vault batch tokenHashicorp Vault batch tokencheck-smNocheck-smNoNone
+HashiCorp Vault Service TokenHashicorpVaultServiceTokencheck-smNocheck-smNoNone
+Heroku API key or application authorization tokenHeroku API Keycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Highnote Live Secret KeyHighnoteLiveSecretKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Highnote Test Secret KeyHighnoteTestSecretKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+HubSpot private app API tokenHubspot API tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Hugging Face User Access TokenHuggingFaceUserAccessTokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Instagram access tokenInstagram access tokencheck-smNoNoNoNone
+Intercom API tokenIntercom API tokencheck-smNoNoNoNone
+Intercom App Access TokenIntercomAppAccessTokencheck-smNocheck-smNoNone
+Intercom client secret or client IDIntercom client secret/IDcheck-smNoNoNoNone
+Ionic personal access tokenIonic API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+JFrog Platform Access TokensJfrogPlatformAccessTokencheck-smNoNoNoNone
+Kubernetes Service Account TokenKubernetesServiceAccTokencheck-smNocheck-smNoNone
+LangChain API KeyLangChainAPIKeycheck-smNocheck-smNoNone
+Linear API tokenLinear API tokencheck-smNocheck-smNoNone
+Linear client secret or ID (OAuth 2.0)Linear client secret/IDcheck-smNoNoNoNone
+LinkedIn client IDLinkedin Client IDcheck-smNoNoNoNone
+LinkedIn client secretLinkedin Client secretcheck-smNoNoNoNone
+Lob API keyLob API Keycheck-smNoNoNoNone
+Lob publishable API keyLob Publishable API Keycheck-smNoNoNoNone
+Mailchimp API keyMailchimp API keycheck-smNocheck-smNoNone
+Mailgun private API tokenMailgun private API tokencheck-smNocheck-smNoNone
+Mailgun public verification keyMailgun public validation keycheck-smNoNoNoNone
+Mailgun webhook signing keyMailgun webhook signing keycheck-smNocheck-smNoNone
+Mapbox API tokenMapbox API tokencheck-smNoNoNoNone
+Mapbox Secret API TokenMapboxSecretApiTokencheck-smNoNoNoNone
+MaxMind License KeyMaxMind License Keycheck-smNocheck-smNoNone
+MessageBird access keymessagebird-api-tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+MessageBird API client IDMessageBird API client IDcheck-smNoNoNoNone
+Meta access tokenMeta access tokencheck-smNoNoNoNone
+New Relic ingest browser API tokenNew Relic ingest browser API tokencheck-smNoNoNoNone
+New Relic ingest browser API token v2New Relic ingest browser API token v2check-smNocheck-smNoNone
+New Relic REST API KeyNew Relic REST API Keycheck-smNocheck-smNoNone
+New Relic user API IDNew Relic user API IDcheck-smNocheck-smNoNone
+New Relic user API keyNew Relic user API Keycheck-smNocheck-smNoNone
+npm access tokennpm access tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Oculus access tokenOculus access tokencheck-smNoNoNoNone
+Okta API TokenOktaAPITokencheck-smNocheck-smNoNone
+Okta Client SecretOktaClientSecretcheck-smNoNoNoNone
+Onfido Live API TokenOnfido Live API Tokencheck-smNocheck-smNoNone
+OpenAI API keyopen ai tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+OpenAI Project KeyOpenAiProjectKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+OpenAI Service Account KeyOpenAiServiceAccountKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+OpenAI Service Admin KeyOpenAiServiceAdminKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Password in URLPassword in URLcheck-smNoNoNoNone
+PGP private keyPGP private keycheck-smNoNoNoNone
+PKCS8 private keyPKCS8 private keycheck-smNoNoNoNone
+PlanetScale API tokenPlanetscale API tokencheck-smNocheck-smNoNone
+PlanetScale App SecretPlanetscaleAppSecretcheck-smNocheck-smNoNone
+PlanetScale OAuth SecretPlanetscaleOAuthSecretcheck-smNocheck-smNoNone
+PlanetScale passwordPlanetscale passwordcheck-smNocheck-smNoNone
+PostHog Personal API keyPostHogPersonalAPIkeycheck-smNocheck-smNoNone
+PostHog Project API keyPostHogProjectAPIkeycheck-smNocheck-smNoNone
+Postman API tokenPostman API tokencheck-smNoNocheck-smBoth
+Postman Collection Access KeyPostmanCollectionAccessKeycheck-smNocheck-smNoNone
+Pulumi API tokenPulumi API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+PyPi upload tokenPyPI upload tokencheck-smNocheck-smNoNone
+RSA private keyRSA private keycheck-smNoNoNoNone
+RubyGems API tokenRubygem API tokencheck-smNocheck-smNoNone
+Segment public API tokenSegment Public API tokencheck-smNocheck-smNoNone
+SendGrid API tokenSendgrid API tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Shippo API tokenShippo API tokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Shippo Test API tokenShippo Test API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Shopify Partner API TokenShopifyPartnerAPITokencheck-smNocheck-smNoNone
+Shopify personal access tokenShopify access tokencheck-smNocheck-smNoNone
+Shopify private app access tokenShopify private app access tokencheck-smNocheck-smNoNone
+Shopify Custom App Access TokenShopify custom app access tokencheck-smNocheck-smNoNone
+Shopify shared secretShopify shared secretcheck-smNocheck-smNoNone
+Slack App Configuration TokenSlackAppConfigurationTokencheck-smNocheck-smNoNone
+Slack App Configuration Refresh TokenSlackAppConfigurationRefreshTokencheck-smNocheck-smNoNone
+Slack app level tokenSlackAppLevelTokencheck-smNocheck-smNoNone
+Slack bot user OAuth tokenSlack tokencheck-smNocheck-smNoNone
+Slack webhookSlack Webhookcheck-smNoNoNoNone
+SonarQube Global Analysis TokenSonarQubeGlobalAnalysisTokencheck-smNocheck-smNoNone
+SonarQube Project Analysis TokenSonarQubeProjectAnalysisTokencheck-smNocheck-smNoNone
+SonarQube User TokenSonarQubeUserTokencheck-smNocheck-smNoNone
+Splunk Authentication TokenSplunkAuthTokencheck-smNocheck-smNoNone
+Splunk HTTP Event Collector (HEC) TokenSplunkHECTokencheck-smNoNoNoNone
+SSH (DSA) private keySSH (DSA) private keycheck-smNoNoNoNone
+SSH (EC) private keySSH (EC) private keycheck-smNoNoNoNone
+SSH private keySSH private keycheck-smNoNoNoNone
+Stripe live restricted keyStripeLiveRestrictedKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Stripe live secret keyStripeLiveSecretKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Stripe Live Short Secret KeyStripeLiveShortSecretKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Stripe publishable live keyStripeLivePublishableKeycheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Stripe publishable test keyStripeTestPublishableKeycheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Stripe restricted test keyStripeTestRestrictedKeycheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Stripe secret test keyStripeTestSecretKeycheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Stripe Test Short Secret KeyStripeTestShortSecretKeycheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Tailscale OAuth Client SecretTailscaleOauthClientSecretcheck-smNocheck-smNoNone
+Tailscale API Access TokenTailscaleApiAccessTokencheck-smNocheck-smcheck-smGitLab Secret Scanning for Source Code
+Tailscale Personal Auth KeyTailscalePersonalAuthKeycheck-smNocheck-smNoNone
+Tencent Cloud Secret IDTencentCloudSecretIDcheck-smNocheck-smNoNone
+Twilio Account SIDTwilio Account SIDcheck-smNocheck-smNoNone
+Twilio API keyTwilio API Keycheck-smNocheck-smNoNone
+Twitch OAuth client secretTwitch API tokencheck-smNoNoNoNone
+Typeform personal access tokenTypeform API tokencheck-smNoNocheck-smGitLab Secret Scanning for Source Code
+Volcengine Access Key IDVolcengineAccessKeyIDcheck-smNocheck-smNoNone
+WakaTime API KeyWakaTimeAPIKeycheck-smNocheck-smNoNone
+X tokenTwitter tokencheck-smNoNoNoNone
+Yandex.Cloud AWS API compatible access secretYandex.Cloud AWS API compatible Access Secretcheck-smNoNoNoNone
+Yandex.Cloud API KeyYandex.Cloud API Keycheck-smNoNoNoNone
+Yandex.Cloud IAM cookie v1-1Yandex.Cloud IAM Cookie v1 - 1check-smNoNoNoNone
+Yandex.Cloud IAM cookie v1-3Yandex.Cloud IAM Cookie v1 - 3check-smNoNoNoNone
+Was this page helpful?
+Yes
+No
+Secret categories
+Rule-based detection
+Generic detection
+Generic secret findings
+Secrets generic detection might miss
+Supported rules for rule-based detection
+Facebook
+LinkedIn
+Twitter
+YouTube
+Company
+About GitLab
+View pricing
+Try GitLab for free
+Feedback
+View page source
+Edit in Web IDE
+Contribute to GitLab
+Suggest updates
+Help & Community
+Get certified
+Get support
+Post on the GitLab forum
+Resources
+Terms
+Privacy statement
+Use of generative AI
+Acceptable use of user licenses
