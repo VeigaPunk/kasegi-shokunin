@@ -1,0 +1,49 @@
+{
+ "round": 91,
+ "lane": "kasegi",
+ "base": "bb4309fffbe9bf98153a2933af72c8f2c3f4b5b1",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability (lowest non-retired axis, score 4; internal-citation repair, score not claimed to move)",
+   "surface": "corpus/knowledge/triage-thresholds.md citation sites 141, 142, 226, 368, 454, 457; counter successor adds the completeness limb M10 (r90 closure routed defect 1) and binds each edit to the edit its label names (M9)",
+   "statement": "Tranche 6: every site the round-90 non-author seat ReviewC1Sites labelled for round 91 (round91-labels.tsv at e993fd18, 6 rows) gets exactly the edit its label names: sites 141, 142, 226, 368 lose a MATCHES tie no range of the cited entry supports (replaced by the table's em dash), site 454 is repointed to corpus/knowledge/ev-model.md:13-25, site 457's composite token is replaced by corpus/knowledge/claim-package-contract.md:9-16. Pinned knowledge-scope meter 890/1883 at base -> exactly 891/1880 at the landing commit.",
+   "predicate": "P1: knowledge-meter.py over --base-rev BASE --after-rev LANDING prints KNOWLEDGE-METER-RESULT pass rc=0 with M0 base=890/1883, M1 after=891/1880, M3, M4, M5, M6 (map sha), M9 (6/6 rows bound to the label-named edit), M10 (labelled=6 mapped=6) all pass. P2: pins below equal. P3: the landing commit changes exactly corpus/knowledge/triage-thresholds.md (git diff-tree --no-commit-id --name-only -r LANDING prints 1 path).",
+   "counter": ".ufo/waves/round-91/c1/knowledge-meter.py",
+   "counter_sha256": "be7a100bdf8cd71f75e7bc62b9eb3d548634a46446dec4149d1f5ef48a38b1c1",
+   "map": ".ufo/waves/round-91/c1/repair-map.tsv",
+   "map_sha256": "55d50b661bcf79ad5a435c7d7bc86e3954e9910f7dabc480236224170c8c0a7a",
+   "labels": ".ufo/waves/round-90/w1/ReviewC1Sites-receipts/round91-labels.tsv@e993fd181e320f1f21e06b05e16c68b0f07cff76",
+   "command": "python3 -B .ufo/waves/round-91/c1/knowledge-meter.py --lane <lane> --base-rev bb4309fffbe9bf98153a2933af72c8f2c3f4b5b1 --after-rev <landing> --map .ufo/waves/round-91/c1/repair-map.tsv --labels-rev e993fd181e320f1f21e06b05e16c68b0f07cff76 --base-target 890/1883 --target 891/1880 --map-sha256 55d50b661bcf79ad5a435c7d7bc86e3954e9910f7dabc480236224170c8c0a7a --work <scratch>",
+   "kill": "Any limb FAIL at the landing, or P3 names a second path: C1 NOT VERIFIED; no target narrowing, no re-labelling after landing.",
+   "controls": ".ufo/waves/round-91/controls/c1-controls-r91.txt (candidate PASS; no-work, partial 5/6 with the frozen map and with its own map, superset with an unlabelled edit, wrong range at 454, label ignored at 457, working-tree-only all FAIL)",
+   "do_nothing": "no-work control: after=890/1883, M1 and M3 FAIL"
+  },
+  {
+   "id": "C2",
+   "axis": "coverage (score 8 held); capability extension capture-secret-scan (sourced: S133, S134)",
+   "surface": "new edge classes for the capture scanner: Amazon CloudFront signed cookies (cookie-borne signature, a documented known limit until now) and Azure user-delegation SAS tokens carrying the 7-letter skdutid field",
+   "statement": "At the landing commit corpus/instruments/capture-secret-scan.py (a) reports shape cloudfront-signed-cookie-signature for a CloudFront-Signature=<value> cookie pair whose value is 40+ URL-safe base64 characters, name case-sensitive, not preceded by a letter, digit, _ or - (except the n of a JSON \\n join, or a \\u0026 / %26 separator), in Set-Cookie, Cookie or JSON-escaped header text inside capture scope; the documentation's 28-character example and prose placeholder are not hits; (b) detects an Azure SAS signature whose sv..sig window holds parameter names of 2-7 letters, so skdutid between them (either order) no longer hides the token, while an 8-letter name still ends the window; every round-89 shape behaves as before.",
+   "predicate": "P1: capability-check.py --rev LANDING prints CAPABILITY-CHECK-RESULT pass rc=0 with K1-K8 pass, with --instrument-sha256 and --gate-sha256 below, at a printed run-time seed and at seeds 9191 and 1. P2: landed capture-secret-scan.py sha256 equals the frozen candidate sha256. P3: the landing commit changes only corpus/instruments/capture-secret-scan.py and SCORECARD.md (the capture-secret-scan capability row replaced by the frozen candidate row).",
+   "counter": ".ufo/waves/round-91/c2/capability-check.py",
+   "counter_sha256": "39deae670c72f52641b98a8a4dd1c877a4f1747ed6fe9138963ece3d1e37b6f0",
+   "candidate": ".ufo/waves/round-91/c2/candidate/capture-secret-scan.py",
+   "candidate_sha256": "89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7",
+   "gate_sha256": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+   "scorecard_row": ".ufo/waves/round-91/c2/candidate/scorecard-row.txt",
+   "command": "python3 -B .ufo/waves/round-91/c2/capability-check.py --lane <lane> --rev <landing> --work <scratch> --instrument-sha256 89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7 --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 [--seed N]",
+   "kill": "Any limb FAIL at the landing at any of the three seeds, or P3 names another path: C2 NOT VERIFIED.",
+   "controls": ".ufo/waves/round-91/controls/c2-controls-r91.txt (candidate PASS pinned and unpinned; no-work base instrument FAIL on K4/K7/K8; forgeries F1 cookie-only, F2 skdutid-only, F3 no floor, F4 case-insensitive, F5 8-letter names, F6 no left boundary, F7 fixture-literal keyed, F8 no JSON newline join all FAIL on K4 and K8 (and K7 or K3 where the forgery touches them), run unpinned so the sha pin is not what rejects them)",
+   "do_nothing": "no-work control: base instrument misses all 6 round-91 plant entries (K4) and the 3 generated positives (K7); 6 positive clauses fail (K8)"
+  }
+ ],
+ "frontier": {
+  "sourced_claim": "C2 on S133 and S134 (opened 2026-11-07, captures corpus/source-snapshots/round-91/S133.txt, S134.txt; manifest source-recheck rc 0)",
+  "rejected": "S135 (canned-policy signed cookies: same signature cookie form as S134)",
+  "census_start": ".ufo/waves/round-91/controls/census-start-r91.txt"
+ },
+ "declined": {
+  "capture-source.py file:// status=None crash (M90-2) and missing --allow file loads as empty (C2-F4)": "routed to round 92: P3 binds C2 to the scanner; a capture-source.py change is a separate surface",
+  "r90 C2 counter clauses line=/whole-bytes/--kind text (C2-F1..F3)": "routed to round 92 with the capture-source.py successor"
+ }
+}

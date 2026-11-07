@@ -1,0 +1,954 @@
+Create a user delegation SAS - Azure Storage | Microsoft Learn
+Skip to main content
+Skip to Ask Learn chat experience
+This browser is no longer supported.
+Upgrade to Microsoft Edge to take advantage of the latest features, security updates, and technical support.
+Download Microsoft Edge
+More info about Internet Explorer and Microsoft Edge
+Table of contents
+Exit editor mode
+Ask Learn
+Ask Learn
+Reading mode
+Table of contents
+Read in English
+Add
+Add to Plans
+Edit
+Copy Markdown
+Print
+Note
+Access to this page requires authorization. You can try signing in or changing directories.
+Access to this page requires authorization. You can try changing directories.
+Create a user delegation SAS
+Feedback
+Summarize this article for me
+In this article
+Important
+For optimal security, Microsoft recommends using Microsoft Entra ID with managed identities to authorize requests against blob, queue, and table data, whenever possible. Authorization with Microsoft Entra ID and managed identities provides superior security and ease of use over Shared Key authorization. To learn more, see Authorize with Microsoft Entra ID. To learn more about managed identities, see What are managed identities for Azure resources.
+For resources hosted outside of Azure, such as on-premises applications, you can use managed identities through Azure Arc. For example, apps running on Azure Arc-enabled servers can use managed identities to connect to Azure services. To learn more, see Authenticate against Azure resources with Azure Arc-enabled servers.
+You can secure a shared access signature (SAS) token for access to a container, directory, or blob by using either Microsoft Entra credentials or an account key. A SAS secured with Microsoft Entra credentials is called a user delegation SAS. As a security best practice, we recommend that you use Microsoft Entra credentials when possible, rather than the account key, which can be more easily compromised. When your application design requires shared access signatures, use Microsoft Entra credentials to create a user delegation SAS to help ensure better security.
+Every SAS is signed with a key. To create a user delegation SAS, you must first request a user delegation key, which you then use to sign the SAS. The user delegation key is analogous to the account key used to sign a service SAS or an account SAS, except that it relies on your Microsoft Entra credentials. To request the user delegation key, call the Get User Delegation Key operation. You can then use the user delegation key to create the SAS, and you can restrict the usage of the SAS token to an end user identity.
+A user delegation SAS is supported for Blob Storage, Data Lake Storage, Queue Storage, Table Storage, or Azure Files. Stored access policies aren't supported for a user delegation SAS.
+Caution
+Shared access signatures are keys that grant permissions to storage resources, and you should protect them just as you would protect an account key. It's important to protect a SAS from malicious or unintended use. Use discretion in distributing a SAS, and have a plan in place for revoking a compromised SAS. Operations that use shared access signatures should be performed only over an HTTPS connection, and shared access signature URIs should only be distributed on a secure connection such as HTTPS.
+For information about using your account key to secure a SAS, see Create a service SAS and Create an account SAS.
+User delegation SAS support for prefix-scoped or directory-scoped access (Blob Storage and Data Lake Storage only)
+A user delegation SAS supports prefix or directory scope (sr=d) when the authorization version (sv) is 2020-02-10 or later. The semantics for prefix or directory scope (sr=d) are similar to container scope (sr=c), except that access is restricted to a prefix or directory and any files and subdirectories within it. When sr=d is specified, the sdd query parameter is also required.
+The string-to-sign format for authorization version 2020-02-10 is unchanged.
+User delegation SAS support for a user OID (Blob Storage and Data Lake Storage only)
+User delegation SAS supports an optional user object identifier (OID) that's carried in either the saoid or suoid parameter when the authorization version (sv) is 2020-02-10 or later. The saoid and suoid parameters correspond to the security principal for the end user who is using the SAS, and provide an enhanced authorization model for multi-user cluster workloads such as Hadoop and Spark.
+SAS tokens can be constrained to a specific filesystem operation and user, which provides a less vulnerable access token that's safer to distribute across a multi-user cluster. One use case for these features is the integration of the Hadoop ABFS driver with Apache Ranger.
+To learn more about the optional saoid and suoid parameters, see Specify a signed user object ID.
+Authorize a user delegation SAS
+When a client accesses a Blob Storage resource with a user delegation SAS, the request to Azure Storage is authorized with the Microsoft Entra credentials that were used to create the SAS. The client's access to the resource is determined by the following permissions:
+The role-based access control (RBAC) permissions that are granted to the Microsoft Entra security principal that requested the user delegation key.
+The POSIX access control list (ACL) permissions that are granted to the security principal that requested the user delegation key. This additional check only happens when RBAC permissions can't grant access, and only when hierarchical namespace is enabled on the storage account.
+The permissions that are explicitly granted on the SAS token.
+This approach provides an additional level of security and helps you avoid having to store your account access key with your application code. For these reasons, creating a SAS by using Microsoft Entra credentials is a security best practice.
+The permissions granted to a client who possesses the SAS are the intersection of the permissions that were granted to the security principal that requested the user delegation key and the permissions that were granted to the resource on the SAS token using the signedPermissions (sp) field. If a permission granted to the security principal via RBAC or POSIX ACLs isn't also granted on the SAS token, that permission isn't granted to the client who attempts to use the SAS to access the resource. When you're creating a user delegation SAS, make sure that the permissions granted via RBAC and POSIX ACLs and the permissions granted via the SAS token both align to the level of access that's required by the client.
+To create a user delegation SAS, do the following:
+Use RBAC or POSIX ACLs to grant the desired permissions to the security principal who will request the user delegation key.
+Acquire an OAuth 2.0 token from Microsoft Entra ID.
+Use the token to request the user delegation key by calling the Get User Delegation Key operation.
+Use the user delegation key to construct the SAS token with the appropriate fields.
+User-bound user delegation SAS
+For added security, you can specify that the SAS token be bound to the end user when the authorization version (sv) is 2025-07-05 or later. When creating the SAS token, you will need to input the end user’s Entra object ID using the signedDelegatedUserObjectId (sduoid) field, and they will be required to verify their identity with an Entra login (bearer token). No one other than this user will be able to use the SAS token. The end user can also be in a different tenant, which can be specified during the creation of the SAS token with the signedKeyDelegatedUserTenantId (skdutid ) field. Cross-tenant user-bound user delegation SAS tokens are not allowed by default. To allow cross-tenant user-bound user delegation SAS tokens, set the allowCrossTenantDelegationSas storage account property state to true.
+There are two other available account level properties applicable to this feature that work in tandem with each other: requireUserBoundUserDelegationSas, which can be set to true or false, and requireUserBoundUserDelegationSasAction, which can be set to block or log. The default is to have requireUserBoundUserDelegationSas set to false and requireUserBoundUserDelegationSasAction set to log. Here is how the two properties work together:
+requireUserBoundUserDelegationSas = false (default)
+requireUserBoundUserDelegationSas = true
+requireUserBoundUserDelegationSasAction = log (default)
+You can use any type of SAS token and it will not be blocked or logged.
+If you try to use a SAS token that is not user-bound user delegated, the request will be logged but will succeed.
+requireUserBoundUserDelegationSasAction = block
+You can use any type of SAS token and it will not be blocked.
+If you try to use a SAS token that is not user-bound user delegated, the request will fail.
+Assign permissions with RBAC
+The security principal that requests the user delegation key needs to have the appropriate permissions to do so. A Microsoft Entra ID security principal can be a user, a group, a service principal, or a managed identity.
+To request the user delegation key, you must assign to a security principal the Microsoft.Storage/storageAccounts/{serviceType}/generateUserDelegationKey action. The following built-in RBAC roles include the Microsoft.Storage/storageAccounts/{serviceType}/generateUserDelegationKey action, either explicitly or as part of a wildcard definition:
+Contributor
+Storage Account Contributor
+Storage Blob Data Contributor
+Storage Blob Data Owner
+Storage Blob Data Reader
+Storage Blob Delegator
+Storage Queue Delegator
+Storage Table Delegator
+Storage File Delegator
+Because the Get User Delegation Key operation acts at the level of the storage account, the Microsoft.Storage/storageAccounts/blobServices/generateUserDelegationKey action must be scoped at the level of the storage account, the resource group, or the subscription. If the security principal is assigned any of the previously listed, built-in roles or a custom role that includes the Microsoft.Storage/storageAccounts/blobServices/generateUserDelegationKey action, at the level of the storage account, the resource group, or the subscription, the security principal can then request the user delegation key.
+If the security principal is assigned a role that permits data access but is scoped to the level of a container, you can additionally assign the Storage Delegator role(Such as Storage Blob Delegator) to the security principal at the level of the storage account, resource group, or subscription. The Storage Delegator role grants the security principal permissions to request the user delegation key.
+For more information about RBAC roles for Azure Storage, see Authorize with Microsoft Entra.
+Acquire an OAuth 2.0 token
+To get the user delegation key, first request an OAuth 2.0 token from Microsoft Entra ID. Provide the token with the Bearer scheme to authorize the call to the Get User Delegation Key operation. For more information about requesting an OAuth token from Microsoft Entra ID, see Authentication flows and application scenarios.
+Request the user delegation key
+A call to the Get User Delegation Key operation returns the key as a set of values that are used as parameters on the user delegation SAS token. These parameters are described in the Get User Delegation Key reference and in the next section, Construct a user delegation SAS.
+When a client requests a user delegation key by using an OAuth 2.0 token, Azure Storage returns the user delegation key on behalf of the security principal. The SAS created with the user delegation key is granted the permissions that are granted to the security principal.
+After you have the user delegation key, you can use it to create any number of user delegation shared access signatures over the lifetime of the key. The user delegation key is independent of the OAuth 2.0 token that you use to acquire it, so the token doesn't need to be renewed as long as the key is still valid. You can specify that the key is valid for a period of up to seven days.
+Construct a user delegation SAS
+The following table summarizes the fields that are supported for a user delegation SAS token. Subsequent sections provide additional detail about how to specify these parameters.
+SAS field name
+SAS token parameter
+Required or optional
+Version support
+Description
+signedVersion
+sv
+Required
+2018-11-09 and later
+Indicates the version of the service that's used to construct the signature field. It also specifies the service version that handles requests that are made with this SAS.
+signedResource
+sr
+Required
+All
+Blob Storage or Azure Files only. Specifies which resources are accessible via the shared access signature.
+signedStart
+st
+Optional
+All
+Optional. The time when the shared access signature becomes valid, expressed in one of the accepted ISO 8601 UTC formats. If this value is omitted, the current UTC time is used as the start time. For more information about accepted UTC formats, see Format DateTime values.
+signedExpiry
+se
+Required
+All
+The time when the shared access signature becomes invalid, expressed in one of the accepted ISO 8601 UTC formats. For more information about accepted UTC formats, see Format DateTime values.
+signedPermissions
+sp
+Required
+All
+Indicates which operations that a client who possesses the SAS may perform on the resource. Permissions may be combined.
+signedIp
+sip
+Optional
+2015-04-05 and later
+Specifies an IP address or an inclusive range of IP addresses from which to accept requests. When you specify a range, keep in mind that the range is inclusive. Only IPv4 addresses are supported.
+For example, sip=198.51.100.0 or sip=198.51.100.10-198.51.100.20.
+signedProtocol
+spr
+Optional
+2015-04-05 and later
+Specifies the protocol that's permitted for a request made with the SAS. Include this field to require that requests made with the SAS token use HTTPS.
+signedObjectId
+skoid
+Required
+2018-11-09 and later
+Specifies the object ID for a Microsoft Entra security principal. This object ID corresponds to the security principal that requested the user delegation key.
+Before authorizing the operation, Azure Storage checks RBAC permissions against the object ID. If RBAC permissions can't grant access, then Azure Storage checks POSIX ACL permissions against the object ID.
+signedTenantId
+sktid
+Required
+2018-11-09 and later
+Specifies the Microsoft Entra tenant in which a security principal is defined.
+signedKeyStartTime
+skt
+Required.
+2018-11-09 and later
+The value is returned by the Get User Delegation Key operation. Indicates the start of the lifetime of the user delegation key, expressed in one of the accepted ISO 8601 UTC formats. For more information about accepted UTC formats, see Format DateTime values.
+signedKeyExpiryTime
+ske
+Required
+2018-11-09 and later
+The value is returned by the Get User Delegation Key operation. Indicates the end of the lifetime of the user delegation key, expressed in one of the accepted ISO 8601 UTC formats. For more information about accepted UTC formats, see Format DateTime values.
+signedKeyVersion
+skv
+Required
+2018-11-09 and later
+The value is returned by the Get User Delegation Key operation. Specifies the storage service version that was used to get the user delegation key. This field must specify version 2018-11-09 or later.
+signedKeyService
+sks
+Required
+2018-11-09 and later
+Indicates the service for which the user delegation key is valid. Currently, only Blob Storage is supported.
+signedAuthorizedObjectId
+saoid
+Optional
+2020-02-10 and later
+Blob Storage only. Specifies the object ID of a Microsoft Entra security principal authorized by the owner of the user delegation key to perform the action granted by the SAS token. This object ID corresponds to the security principal for the end user of the SAS. No additional permission check on POSIX access control lists (ACLs) is performed.
+signedUnauthorizedObjectId
+suoid
+Optional
+2020-02-10 and later
+Blob Storage only. Specifies the object ID for a Microsoft Entra security principal when a hierarchical namespace is enabled. This object ID corresponds to the security principal for the end user of the SAS. Azure Storage performs a POSIX ACL check against the object ID before it authorizes the operation.
+signedCorrelationId
+scid
+Optional
+2020-02-10 and later
+Blob Storage only. Correlate the storage audit logs with the audit logs that are used by the principal that generates and distributes the SAS.
+signedKeyDelegatedUserTenantId
+skdutid
+Optional
+2025-07-05 and later
+The delegated end-user tenant id in Microsoft Entra. This is the "tid" claim in Microsoft Entra bearer token. This is only required for user-bound user-delegation SAS tokens. Only when DelegatedUserTid is specified in UserDelegationKey, this field is required.
+signedDelegatedUserObjectId
+sduoid
+Optional
+2025-07-05 and later
+The delegated end-user object id in Microsoft Entra. This is the "oid" claim in Microsoft Entra bearer token. This is only required for user-bound user-delegation SAS tokens.
+signedRequestHeaders
+srh
+Optional
+2026-04-06 and later
+Blob Storage only. Lists the comma-separated header names that must be present on the request when the SAS is used. Azure Storage validates the header values by using the canonicalized form in the string-to-sign.
+signedRequestQueryParameters
+srq
+Optional
+2026-04-06 and later
+Blob Storage only. Lists the comma-separated query parameter names that must be present on the request when the SAS is used. Azure Storage validates the parameter values by using the canonicalized form in the string-to-sign.
+signedDirectoryDepth
+sdd
+Required when sr=d
+2020-02-10 and later
+Blob Storage only. Indicates the number of directories within the root folder of the directory specified in the canonicalizedResource field of the string-to-sign.
+signedEncryptionScope
+ses
+Optional
+2020-12-06 and later
+Blob Storage only. Indicates the encryption scope to use to encrypt the request contents.
+tableName
+tn
+Required
+2025-07-05 and later
+Table only. The name of the table to share.
+startPk2
+startRk2
+spk
+srk
+Optional
+2025-07-05 and later
+Table Storage only.
+Optional, but startPk must accompany startRk. The minimum partition and row keys that are accessible with this shared access signature. Key values are inclusive. If they're omitted, there's no lower bound on the table entities that can be accessed.
+endPk2
+endRk2
+epk
+erk
+Optional
+2025-07-05 and later
+Table Storage only.
+Optional, but endPk must accompany endRk. The maximum partition and row keys that are accessible with this shared access signature. Key values are inclusive. If they're omitted, there's no upper bound on the table entities that can be accessed.
+signature
+sig
+Required
+All
+The signature is a hash-based message authentication code (HMAC) that's computed over the string-to-sign and key by using the SHA256 algorithm, and then encoded by using Base64 encoding.
+Cache-Control response header
+rscc
+Optional
+2013-08-15 and later
+Blob Storage or Azure Files only. Azure Storage sets the Cache-Control response header to the value that's specified on the SAS token.
+Content-Disposition response header
+rscd
+Optional
+2013-08-15 and later
+Blob Storage or Azure Files only. Azure Storage sets the Content-Disposition response header to the value that's specified on the SAS token.
+Content-Encoding response header
+rsce
+Optional
+2013-08-15 and later
+Blob Storage or Azure Files only. Azure Storage sets the Content-Encoding response header to the value that's specified on the SAS token.
+Content-Language response header
+rscl
+Optional
+2013-08-15 and later
+Blob Storage or Azure Files only. Azure Storage sets the Content-Language response header to the value that's specified on the SAS token.
+Content-Type response header
+rsct
+Optional
+2013-08-15 and later
+Blob Storage or Azure Files only. Azure Storage sets the Content-Type response header to the value that's specified on the SAS token.
+Specify the signed version field
+The required signedVersion (sv) field specifies the service version for the shared access signature. This value indicates the version of the service that's used to construct the signature field, and it specifies the service version that handles a request made with this shared access signature. The value of the sv field must be version 2018-11-09 or later.
+Specify the signed resource field (Blob Storage only)
+The required signedResource (sr) field specifies which resources are accessible via the shared access signature. The following table describes how to refer to a blob, container, or directory resource in the SAS token:
+Resource
+Parameter value
+Supported versions
+Description
+Blob
+b
+All
+Grants access to the content and metadata of the blob.
+Blob version
+bv
+2018-11-09 and later
+Grants access to the content and metadata of the blob version, but not the base blob.
+Blob snapshot
+bs
+2018-11-09 and later
+Grants access to the content and metadata of the blob snapshot, but not the base blob.
+Container
+c
+All
+Grants access to the content and metadata of any blob in the container, and to the list of blobs in the container. Does not grant access to CRUD operations on containers themselves.
+Directory
+d
+2020-02-10 and later
+Grants access to the content and metadata of any blob in the directory, and to the list of blobs in the directory. If a directory is specified for the signedResource field, the signedDirectoryDepth (sdd) parameter is also required. A directory is always within a container.
+Specify the signed resource field (Azure Files only)
+The required signedResource (sr) field specifies which resources are accessible via the shared access signature. The following table describes how to refer to a file or share resource on the URI.
+Field name
+Query parameter
+Description
+signedResource
+sr
+Required.
+Specify f if the shared resource is a file. Doing so grants access to the content and metadata of the file.
+Specify s if the shared resource is a share. Doing so grants access to the content and metadata of any file in the share, and to the list of directories and files in the share.
+Specify query parameters to override response headers (Blob Storage and Azure Files only)
+To define values for certain response headers to be returned when the shared access signature is used in a request, you can specify response headers in query parameters. This feature is supported as of version 2013-08-15 for Blob Storage and version 2015-02-21 for Azure Files. Shared access signatures that use this feature must include the sv parameter set to 2013-08-15 or later for Blob Storage, or to 2015-02-21 or later for Azure Files.
+The response headers and corresponding query parameters are listed in the following table:
+Response header name
+Corresponding SAS query parameter
+Cache-Control
+rscc
+Content-Disposition
+rscd
+Content-Encoding
+rsce
+Content-Language
+rscl
+Content-Type
+rsct
+For example, if you specify the rsct=binary query parameter on a shared access signature that's created with version 2013-08-15 or later, the Content-Type response header is set to binary. This value overrides the Content-Type header value that's stored for the blob for a request that uses this shared access signature only.
+If you create a shared access signature that specifies response headers as query parameters, you must include them in the string-to-sign that's used to construct the signature string. For more information, see the Specify the signature section later in this article. For additional examples, see Service SAS examples.
+Specify the duration of signature validity
+The signedStart (st) and signedExpiry (se) fields indicate the start and expiration times for the SAS. The signedExpiry field is required. The signedStart field is optional. If it's omitted, the current UTC time is used as the start time.
+For a user delegation SAS, the start and expiration times for the SAS should be within the interval that's defined for the user delegation key. If a client attempts to use a SAS after the user delegation key has expired, the SAS will fail with an authorization error, regardless of whether the SAS itself is still valid.
+For more information about accepted UTC formats, see Format DateTime values.
+Specify the table name (Table Storage only)
+The tableName field specifies the name of the table to share.
+Field name
+Query parameter
+Description
+tableName
+tn
+Required. The name of the table to share.
+Specify permissions
+The permissions that are specified for the signedPermissions (sp) field on the SAS token indicate which operations a client who possesses the SAS may perform on the resource.
+Permissions can be combined to permit a client to perform multiple operations with the same SAS. When you construct the SAS, you must include permissions in the following order:
+racwdxltmeop
+Examples of valid permissions settings for a container include rw, rd, rl, wd, wl, and rl. Examples of invalid settings include wr, dr, lr, and dw. Specifying a permission designation more than once isn't permitted.
+A user delegation SAS can't grant access to certain operations:
+Containers, queues, and tables can't be created, deleted, or listed.
+Container metadata and properties can't be read or written.
+Queues can't be cleared, and their metadata can't be written.
+Containers can't be leased.
+To construct a SAS that grants access to these operations, use an account SAS. For more information, see Create an account SAS.
+Permissions for a directory, container, or blob
+The permissions that are supported for each resource type are described in the following table:
+Permission
+URI symbol
+Resource
+Version support
+Allowed operations
+Read
+r
+Container
+Directory
+Blob
+All
+Read the content, blocklist, properties, and metadata of any blob in the container or directory. Use a blob as the source of a copy operation.
+Add
+a
+Container
+Directory
+Blob
+All
+Add a block to an append blob.
+Create
+c
+Container
+Directory
+Blob
+All
+Write a new blob, snapshot a blob, or copy a blob to a new blob.
+Write
+w
+Container
+Directory
+Blob
+All
+Create or write content, properties, metadata, or blocklist. Snapshot or lease the blob. Resize the blob (page blob only). Use the blob as the destination of a copy operation.
+Delete
+d
+Container
+Directory
+Blob
+All
+Delete a blob. For version 2017-07-29 and later, the Delete permission also allows breaking a lease on a blob. For more information, see the Lease Blob operation.
+Delete version
+x
+Container
+Blob
+2019-12-12 and later
+Delete a blob version.
+Permanent Delete
+y
+Blob
+2020-02-10 and later
+Permanently delete a blob snapshot or version.
+List
+l
+Container
+Directory
+All
+List blobs non-recursively.
+Tags
+t
+Blob
+2019-12-12 and later
+Read or write the tags on a blob.
+Move
+m
+Container
+Directory
+Blob
+2020-02-10 and later
+Move a blob or a directory and its contents to a new location. This operation can optionally be restricted to the owner of the child blob, directory, or parent directory if the saoid parameter is included on the SAS token and the sticky bit is set on the parent directory.
+Execute
+e
+Container
+Directory
+Blob
+2020-02-10 and later
+Get the system properties and, if the hierarchical namespace is enabled for the storage account, get the POSIX ACL of a blob. If the hierarchical namespace is enabled and the caller is the owner of a blob, this permission grants the ability to set the owning group, POSIX permissions, and POSIX ACL of the blob. It doesn't permit the caller to read user-defined metadata.
+Ownership
+o
+Container
+Directory
+Blob
+2020-02-10 and later
+When the hierarchical namespace is enabled, this permission enables the caller to set the owner or the owning group, or to act as the owner when the caller renames or deletes a directory or blob within a directory that has the sticky bit set.
+Permissions
+p
+Container
+Directory
+Blob
+2020-02-10 and later
+When the hierarchical namespace is enabled, this permission allows the caller to set permissions and POSIX ACLs on directories and blobs.
+Set Immutability Policy
+i
+Container
+Blob
+2020-06-12 and later
+Set or delete the immutability policy or legal hold on a blob.
+Permissions for a file
+Permission
+URI symbol
+Allowed operations
+Read
+r
+Read the content, properties, metadata. Use the file as the source of a copy operation.
+Write
+w
+Create a new file or copy a file to a new file.
+Create or write content, properties, metadata. Resize the file. Use the file as the destination of a copy operation.
+Delete
+d
+Delete the file.
+Permissions for a share
+Permission
+URI symbol
+Allowed operations
+Read
+r
+Read the content, properties, or metadata of any file in the share. Use any file in the share as the source of a copy operation.
+Write
+w
+Create a new file in the share, or copy a file to a new file in the share.
+For any file in the share, create or write content, properties, or metadata. Resize the file. Use the file as the destination of a copy operation. Note: You can't grant permissions to read or write share properties or metadata by using a service SAS. Use an account SAS instead.
+Delete
+d
+Delete any file in the share. Note: You can't grant permissions to delete a share by using a service SAS. Use an account SAS instead.
+List
+l
+List files and directories in the share.
+Permissions for a queue
+Permission
+URI symbol
+Allowed operations
+Read
+r
+Read metadata and properties, including message count. Peek at messages.
+Add
+a
+Add messages to the queue.
+Update
+u
+Update messages in the queue. Note: Use the Process permission with Update so that you can first get the message that you want to update.
+Process
+p
+Get and delete messages from the queue.
+Permissions for a table
+Permission
+URI symbol
+Allowed operations
+Query
+r
+Get entities and query entities.
+Add
+a
+Add entities. Note: Add and Update permissions are required for upsert operations.
+Update
+u
+Update entities. Note: Add and Update permissions are required for upsert operations.
+Delete
+d
+Delete entities.
+Specify an IP address or IP range
+The optional signedIp (sip) field specifies a public IP address or a range of public IP addresses from which to accept requests. If the IP address from which the request originates doesn't match the IP address or address range that's specified on the SAS token, the request isn't authorized. Only IPv4 addresses are supported.
+When you specify a range of IP addresses, the range is inclusive. For example, specifying sip=198.51.100.0 or sip=198.51.100.10-198.51.100.20 on the SAS restricts the request to those IP addresses.
+The following table describes whether to include the signedIp field on a SAS token for a given scenario, based on the client environment and the location of the storage account.
+Client environment
+Storage account location
+Recommendation
+Client running in Azure
+In the same region as the client
+A SAS that's provided to the client in this scenario shouldn't include an outbound IP address for the signedIp field. Requests that you make from within the same region by using a SAS with a specified outbound IP address fail.
+Instead, use an Azure virtual network to manage network security restrictions. Requests to Azure Storage from within the same region always take place over a private IP address. For more information, see Configure Azure Storage firewalls and virtual networks.
+Client running in Azure
+In a different region from the client
+A SAS that's provided to the client in this scenario might include a public IP address or range of addresses for the signedIp field. Requests that you make with the SAS must originate from the specified IP address or range of addresses.
+Client running on-premises or in a different cloud environment
+In any Azure region
+A SAS that's provided to the client in this scenario might include a public IP address or range of addresses for the signedIp field. Requests that you make with the SAS must originate from the specified IP address or range of addresses.
+If the request passes through a proxy or gateway, provide the public outbound IP address of that proxy or gateway for the signedIp field.
+Specify the HTTP protocol
+The optional signedProtocol (spr) field specifies the protocol that's permitted for requests that are made with the SAS. Possible values are both HTTPS and HTTP (https,http) or HTTPS only (https). The default value is https,http.
+Note
+It isn't possible to specify HTTP for the spr field.
+Specify table access ranges
+The startPk, startRk, endPk, and endRk fields define a range of table entities that are associated with a shared access signature. Table queries return only results that are within the range, and attempts to use the shared access signature to add, update, or delete entities outside this range will fail.
+If startPk equals endPk, the shared access signature authorizes access to entities in only one partition in the table.
+If startPk equals endPk and startRk equals endRk, the shared access signature can access only one entity in one partition.
+To understand how these fields constrain access to entities in a table, refer to the following table:
+Fields present
+Scope of constraint
+startPk
+partitionKey >= startPk
+endPk
+partitionKey <= endPk
+startPk, startRk
+(partitionKey > startPk) || (partitionKey == startPk && rowKey >= startRk)
+endPk, endRk
+(partitionKey < endPk) || (partitionKey == endPk && rowKey <= endRk)
+Specify the signed object ID
+The signedObjectId (skoid) field is required for a user delegation SAS. The Get User Delegation Key operation returns this value as part of the response. The signed object ID is a GUID value that serves the immutable identifier for a security principal in the Microsoft identity platform.
+Specify the signed tenant ID
+The signedTenantId (sktid) field is required for a user delegation SAS. The Get User Delegation Key operation returns this value as part of the response. The signed tenant ID is a GUID value that represents the Microsoft Entra tenant in which a security principal is defined.
+Specify the signed key start time
+The required signedKeyStartTime (skt) field indicates the start of the lifetime of the user delegation key in ISO Date format. The Get User Delegation Key operation returns this value as part of the response.
+Specify the signed key expiration time
+The signedKeyExpiryTime (ske) field is required for a user delegation SAS in ISO Date format. The Get User Delegation Key operation returns this value as part of the response. The signed key expiration time indicates the end of the lifetime of the user delegation key. The value of the expiration time may be a maximum of seven days from the start time of the SAS.
+Specify the signed key service
+The signedKeyService (sks) field is required for a user delegation SAS. The Get User Delegation Key operation returns this value as part of the response. The signed key service field indicates the service for which the user delegation key is valid. The value for the signed key service field for Blob Storage is b.
+Specify the signed key version
+The signedkeyversion (skv) field is required for a user delegation SAS. The Get User Delegation Key operation returns this value as part of the response. The signedkeyversion field specifies the storage service version that's used to get the user delegation key. This field must specify version 2018-11-09 or later.
+Specify a signed user object ID for a security principal
+The optional signedAuthorizedObjectId (saoid) and signedUnauthorizedObjectId (suoid) fields enable integration with Apache Hadoop and Apache Ranger for Azure Data Lake Storage workloads. Use one of these fields on the SAS token to specify the object ID for a security principal:
+The saoid field specifies the object ID for a Microsoft Entra security principal that's authorized by the owner of the user delegation key to perform the action granted by the SAS token. Azure Storage validates the SAS token and ensures that the owner of the user delegation key has the required permissions before Azure Storage grants access. No additional permission check on POSIX ACLs is performed.
+The suoid field specifies the object ID for a Microsoft Entra security principal when a hierarchical namespace is enabled for a storage account. The suoid field is valid only for accounts that have a hierarchical namespace. When the suoid field is included on the SAS token, Azure Storage performs a POSIX ACL check against the object ID before it authorizes the operation. If this ACL check doesn't succeed, the operation fails. A hierarchical namespace must be enabled for the storage account if the suoid field is included on the SAS token. Otherwise, the permission check will fail with an authorization error.
+The object ID for the security principal who requests the user delegation key is captured in the required skoid field. To specify an object ID on the SAS token with the saoid or suoid field, the security principal that's identified in the skoid field must be assigned an RBAC role that includes Microsoft.Storage/storageAccounts/blobServices/containers/blobs/runAsSuperUser/action or Microsoft.Storage/storageAccounts/blobServices/containers/blobs/manageOwnership/action. For more information about these actions, see Azure resource provider operations.
+By specifying the object ID in the saoid or suoid field, you also restrict operations that are related to directory or blob ownership, in the following ways:
+If an operation creates a directory or blob, Azure Storage sets the owner of the directory or blob to the value that's specified by the object ID. If the object ID isn't specified, Azure Storage sets the owner of the directory or blob to the value that's specified by the skoid parameter.
+If the sticky bit is set on the parent directory and the operation deletes or renames a directory or blob, the object ID of the owner of the parent directory or the owner of the resource must match the value specified by the object ID.
+If an operation sets the owner for a directory or blob and the x-ms-owner header is specified, the value specified by the object ID must match the value specified by the x-ms-owner header.
+If an operation sets the group for a directory or blob and the x-ms-group header is specified, the value specified by the object ID must be a member of the group specified by the x-ms-group header.
+If an operation sets the permissions or ACL for a directory or blob, one of the following two conditions must also be met:
+The value specified for the object ID must be the owner of the directory or blob.
+The value of the signedPermissions (sp) field must include the Ownership (o) permission in addition to the Permissions (p) permission.
+The object ID specified in the saoid or suoid field is included in diagnostic logs when you make requests by using the SAS token.
+The saoid or suoid field is supported only if the signedVersion (sv) field is set to version 2020-02-10 or later. Only one of these fields may be included on the SAS token.
+Specify a correlation ID
+The signedCorrelationId (scid) field specifies a correlation ID that may be used to correlate the storage audit logs with the audit logs that are used by the principal that generates and distributes the SAS. For example, a trusted authorization service ordinarily has a managed identity that authenticates and authorizes users, generates a SAS, adds an entry to the local audit log, and returns the SAS to a user, who can then use the SAS to access Azure Storage resources. By including a correlation ID in both the local audit log and the storage audit log, you allow these events to be correlated later. The value is a GUID without braces and with lowercase characters.
+This field is supported with version 2020-02-10 and later.
+Specify the delegated user
+The optional sduoid field ensures that only the specified user can access resources with the SAS token.
+The sduoid field specifies the object ID for a Microsoft Entra security principal which belongs to the intended end user. When specified, the caller must also send a Bearer token; its oid claim must match sduoid. Also, the end user should be in the same entra tenant as the storage account.
+The optional skdutid field is required only when the Microsoft Entra tenant of the specified sduoid user is different from the tenant of the storage account. Before using this field, you must also provide DelegatedUserTid when calling Get User Delegation Key API.
+The skdutid field represents the tenant ID (tid) of the Microsoft Entra security principal that will use the SAS token. When skduti is included:
+The caller must present a Bearer token whose tid claim matches the value of skdutid.
+The DelegatedUserTid value in the returned UserDelegationKey must also match skdutid.
+These checks ensure that the SAS token is usable only by identities from the correct Microsoft Entra tenant, maintaining strong tenant‑level isolation for delegated access.
+The sduoid and skdutid fields are supported with version 2025-07-05 and later.
+Specify the directory depth
+If the signedResource field specifies a directory (sr=d), you must also specify the signedDirectoryDepth (sdd) field to indicate the number of subdirectories under the root directory. The value of the sdd field must be a non-negative integer.
+For example, the root directory https://{account}.blob.core.windows.net/{container}/ has a depth of 0. Each subdirectory within the root directory adds to the depth by 1. The directory https://{account}.blob.core.windows.net/{container}/d1/d2 has a depth of 2.
+This field is supported with version 2020-02-10 and later.
+Specify signed request headers and query parameters
+Important
+The srh and srq query parameters are available when the signedVersion (sv) field is set to 2026-04-06 or later. These parameters let you require specific headers and query parameters on any request that uses the SAS. Azure Storage validates the supplied values against canonicalized strings that are now part of the string-to-sign.
+Use srh (signedRequestHeaders) to enumerate the headers that must be present on the request. Provide the header names as a comma-separated list. Every header named in srh must appear in the request, and the canonicalized values must match those that were included when the SAS was created. Duplicate or empty header names are rejected.
+Use srq (signedRequestQueryParameters) to enumerate the query parameters that must be present on the request. Provide the parameter names as a comma-separated list. Every parameter named in srq must appear on the request URI, and Azure Storage validates the canonicalized name and value pairs when the SAS token is evaluated.
+When srh or srq is specified, populate the canonicalized fields that are added to the string-to-sign at authorization version 2026-04-06 and later:
+Generate canonicalizedSignedRequestHeaders
+Collect the headers listed in srh in the same order that they appear in srh.
+Normalize each header to headerName:headerValue and terminate each pair with a newline (\n).
+If the request contains multiple values for the same header, join the values with commas in the order received before appending the newline. Header names must appear only once.
+Do not include empty header names. Requests that omit any listed header fail authorization.
+Generate canonicalizedSignedRequestQueryParameters
+Collect the query parameters listed in srq in the same order that they appear in srq.
+Normalize each parameter to parameterName=parameterValue and prefix each pair with a newline (\n).
+If the request supplies multiple values for a parameter, join the values with commas in the order received before prefixing each newline.
+Parameter names must not be empty. If a parameter name contains a comma, encode the comma in the request URI (for example, %2C) but use the unencoded name in the canonicalized string.
+Parameter names and values must not include \n.
+These canonicalized strings are inserted into the string-to-sign so that only requests that recreate the same header and query parameter values succeed. If srh or srq is omitted, the associated canonicalized string is treated as an empty string.
+Example: Basic dynamic SAS use case
+The following SAS snippet requires one custom header and one query parameter:
+sp=rw&sv=2026-04-06&sr=b&srh=foo,bar&srq=operation,identifier&operation=update&identifier=abcd&sig=<signature>
+Headers:
+foo:123
+bar:456
+When the client issues a request, the dynamic portions that are added to the string-to-sign must look like this (without the double quotes)
+canonicalizedSignedRequestHeaders = "foo:123\nbar:456\n"
+canonicalizedSignedRequestQueryParameters = "\noperation=update\nidentifier=abcd"
+Any request that omits the headers srh headers or srq query parameters, or uses a different value for these, will fail authorization because the canonicalized strings will no longer match the signature.
+Example: Edge cases with repeated values and encoded names
+Consider a SAS that enforces two headers and a query parameter whose name contains a comma:
+sp=r&sv=2026-04-06&sr=b&srh=foo,bar&srq=day%2Cid&sig=<signature>
+If the client sends the following request metadata:
+foo:123
+bar:456
+foo:789
+...?day%2Cid=mon123&...
+Then the canonicalized strings that must be incorporated into the signature evaluation are:
+canonicalizedSignedRequestHeaders = foo:123,789\nbar:456
+canonicalizedSignedRequestQueryParameters = \nday,id=mon123
+Note that header values are joined with commas in the order received, while the query parameter keeps its unencoded name (day,id) inside the canonicalized string even though the request URL encodes the comma as %2C.
+Specify query parameters to override response headers
+To define values for certain response headers to be returned when the shared access signature is used in a request, you can specify response headers in query parameters. The response headers and corresponding query parameters are as follows:
+Response header name
+Corresponding SAS query parameter
+Cache-Control
+rscc
+Content-Disposition
+rscd
+Content-Encoding
+rsce
+Content-Language
+rscl
+Content-Type
+rsct
+For example, if you specify the rsct=binary query parameter on a SAS token, the Content-Type response header is set to binary. This value overrides the Content-Type header value stored for the blob for a request using this shared access signature only.
+If you create a shared access signature that specifies response headers as query parameters, you must include those response headers in the string-to-sign that's used to construct the signature string. For more information, see the "Specify the signature" section.
+Specify the encryption scope
+The signed encryption scope (ses) field specifies an encryption scope that the client application uses when you upload blobs by using the SAS token via the Put Blob operation. The signed encryption scope field is supported when the signed version (sv) field on the SAS token is version 2020-12-06 or later. If the signed version field specifies a version that's earlier than the supported version, the service returns error response code 403 (Forbidden).
+If the default encryption scope is set for the container or filesystem, the ses field respects the container encryption policy. If there's a mismatch between the ses query parameter and x-ms-default-encryption-scope header, and the x-ms-deny-encryption-scope-override header is set to true, the service returns error response code 403 (Forbidden).
+If the x-ms-encryption-scope header and the ses query parameter are both provided in the PUT request and there's a mismatch, the service returns error response code 400 (Bad Request).
+Specify the signature
+The signature (sig) field is used to authorize a request made by a client with the shared access signature. The string-to-sign is a unique string that's constructed from the fields that must be verified to authorize the request. The signature is an HMAC that's computed over the string-to-sign and key by using the SHA256 algorithm, and then encoded by using Base64 encoding.
+To construct the signature string of a user delegation SAS, create the string-to-sign from the fields that make up the request, encode the string as UTF-8, and then compute the signature by using the HMAC-SHA256 algorithm. The fields that are included in the string-to-sign must be URL-decoded.
+The fields that are required in the string-to-sign depend on the service version that's used for authorization (sv field). The following sections describe the string-to-sign configuration for versions that support the user delegation SAS.
+Version 2026-04-06 and later (Blob Storage and Data Lake Storage)
+Authorization version 2026-04-06 introduces the canonicalized strings for srh and srq. Populate these values as described in the Specify signed request headers and query parameters section. Use empty strings when srh or srq is omitted.
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedAuthorizedUserObjectId + "\n" +
+signedUnauthorizedUserObjectId + "\n" +
+signedCorrelationId + "\n" +
+signedKeyDelegatedUserTenantId + "\n" +
+signedDelegatedUserObjectId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+signedResource + "\n" +
+signedSnapshotTime + "\n" +
+signedEncryptionScope + "\n" +
+canonicalizedSignedRequestHeaders + "\n" +
+canonicalizedSignedRequestQueryParameters + "\n" +
+rscc + "\n" +
+rscd + "\n" +
+rsce + "\n" +
+rscl + "\n" +
+rsct
+Version 2025-07-05 and later
+The string-to-sign for Blob Storage with authorization version 2025-07-05 and later has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedAuthorizedUserObjectId + "\n" +
+signedUnauthorizedUserObjectId + "\n" +
+signedCorrelationId + "\n" +
+signedKeyDelegatedUserTenantId + "\n" +
+signedDelegatedUserObjectId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+signedResource + "\n" +
+signedSnapshotTime + "\n" +
+signedEncryptionScope + "\n" +
+rscc + "\n" +
+rscd + "\n" +
+rsce + "\n" +
+rscl + "\n" +
+rsct
+The string-to-sign for Table Storage with authorization version 2025-07-05 and later has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedKeyDelegatedUserTenantId + "\n" +
+signedDelegatedUserObjectId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+startingPartitionKey + "\n"
+startingRowKey + "\n"
+endingPartitionKey + "\n"
+endingRowKey
+The string-to-sign for Queue Storage with authorization version 2025-07-05 and later has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedKeyDelegatedUserTenantId + "\n" +
+signedDelegatedUserObjectId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion
+The string-to-sign for Azure Files with authorization version 2025-07-05 and later has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedKeyDelegatedUserTenantId + "\n" +
+signedDelegatedUserObjectId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+rscc + "\n" +
+rscd + "\n" +
+rsce + "\n" +
+rscl + "\n" +
+rsct
+Version 2020-12-06 and later
+The string-to-sign for authorization version 2020-12-06 and later has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedAuthorizedUserObjectId + "\n" +
+signedUnauthorizedUserObjectId + "\n" +
+signedCorrelationId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+signedResource + "\n" +
+signedSnapshotTime + "\n" +
+signedEncryptionScope + "\n" +
+rscc + "\n" +
+rscd + "\n" +
+rsce + "\n" +
+rscl + "\n" +
+rsct
+Version 2020-02-10
+The string-to-sign for authorization version 2020-02-10 has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedAuthorizedUserObjectId + "\n" +
+signedUnauthorizedUserObjectId + "\n" +
+signedCorrelationId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+signedResource + "\n" +
+signedSnapshotTime + "\n" +
+rscc + "\n" +
+rscd + "\n" +
+rsce + "\n" +
+rscl + "\n" +
+rsct
+Versions earlier than 2020-02-10
+The string-to-sign for authorization versions that are earlier than 2020-02-10 has the following format:
+StringToSign = signedPermissions + "\n" +
+signedStart + "\n" +
+signedExpiry + "\n" +
+canonicalizedResource + "\n" +
+signedKeyObjectId + "\n" +
+signedKeyTenantId + "\n" +
+signedKeyStart + "\n" +
+signedKeyExpiry + "\n" +
+signedKeyService + "\n" +
+signedKeyVersion + "\n" +
+signedAuthorizedUserObjectId + "\n" +
+signedUnauthorizedUserObjectId + "\n" +
+signedCorrelationId + "\n" +
+signedIP + "\n" +
+signedProtocol + "\n" +
+signedVersion + "\n" +
+signedResource + "\n" +
+rscc + "\n" +
+rscd + "\n" +
+rsce + "\n" +
+rscl + "\n" +
+rsct
+Canonicalized resource
+The canonicalizedResource portion of the string is a canonical path to the signed resource. It must include the Blob Storage endpoint (either blob or dfs) and the resource name, and it must be URL-decoded. A blob path must include its container. A directory path must include the number of subdirectories that correspond to the sdd parameter.
+The canonicalized resource string for a container must omit the trailing slash (/) for a SAS that provides access to that container.
+The following examples show how to construct the canonicalizedResource portion of the string, depending on the type of resource.
+Container example (Azure Blob Storage)
+URL = https://myaccount.blob.core.windows.net/music
+canonicalizedResource = "/blob/myaccount/music"
+Blob example (Azure Blob Storage)
+URL = https://myaccount.blob.core.windows.net/music/intro.mp3
+canonicalizedResource = "/blob/myaccount/music/intro.mp3"
+Container example (Azure Data Lake Storage)
+URL = https://myaccount.dfs.core.windows.net/music
+canonicalizedResource = "/blob/myaccount/music"
+Directory example (Azure Data Lake Storage)
+URL = https://myaccount.dfs.core.windows.net/music/instruments/guitar/
+canonicalizedResource = "/blob/myaccount/music/instruments/guitar/"
+Blob example (Azure Data Lake Storage)
+URL = https://myaccount.dfs.core.windows.net/music/intro.mp3
+canonicalizedResource = "/blob/myaccount/music/intro.mp3"
+File Shares
+For version 2025-07-05 and later:
+URL = https://myaccount.file.core.windows.net/music
+canonicalizedResource = "/file/myaccount/music"
+Files
+For version 2025-07-05 and later:
+URL = https://myaccount.file.core.windows.net/music/intro.mp3
+canonicalizedResource = "/file/myaccount/music/intro.mp3"
+Queues
+For version 2025-07-05 and later:
+URL = https://myaccount.queue.core.windows.net/thumbnails
+canonicalizedResource = "/queue/myaccount/thumbnails"
+Tables
+If the signed resource is a table, ensure that the table name is lowercase in the canonicalized format.
+For version 2025-07-05 and later:
+URL = https://myaccount.table.core.windows.net/Employees(PartitionKey='Jeff',RowKey='Price')
+canonicalizedResource = "/table/myaccount/employees"
+Optional fields
+If a field is optional and not provided as part of the SAS token, specify an empty string for the field. Be sure to include the newline character (\n) after the empty string.
+User delegation SAS example
+The following example shows a blob URI with a user delegation SAS token appended to it. The user delegation SAS token provides read and write permissions to the blob.
+https://myaccount.blob.core.windows.net/sascontainer/blob1.txt?sp=rw&st=2023-05-24T01:13:55Z&se=2023-05-24T09:13:55Z&skoid=<object-id>&sktid=<tenant-id>&skt=2023-05-24T01:13:55Z&ske=2023-05-24T09:13:55Z&sks=b&skv=2022-11-02&sip=198.51.100.10-198.51.100.20&spr=https&sv=2022-11-02&sr=b&sig=<signature>
+Each part of the URI is described in the following table:
+Name
+SAS portion
+Description
+Resource URI
+https://myaccount.blob.core.windows.net/sascontainer/blob1.txt
+The address of the blob. We highly recommend that you use HTTPS.
+Delimiter
+?
+The delimiter that precedes the query string. The delimiter is not part of the SAS token.
+Permissions
+sp=rw
+The permissions granted by the SAS include Read (r) and Write (w).
+Start time
+st=2023-05-24T01:13:55Z
+Specified in UTC time. If you want the SAS to be valid immediately, omit the start time.
+Expiration time
+se=2023-05-24T09:13:55Z
+Specified in UTC time.
+Object ID
+skoid=<object-id>
+A Microsoft Entra security principal.
+Tenant ID
+sktid=<tenant-id>
+The Microsoft Entra tenant where the security principal is registered.
+Key start time
+skt=2023-05-24T01:13:55Z
+The start of the lifetime of the user delegation key.
+Key expiry time
+ske=2023-05-24T09:13:55Z
+The end of the lifetime of the user delegation key.
+Key service
+sks=b
+Only the Blob service is supported for the service value.
+Key version
+skv=2022-11-02
+The storage service version that was used to get the user delegation key.
+IP range
+sip=198.51.100.10-198.51.100.20
+The range of IP addresses from which a request will be accepted.
+Protocol
+spr=https
+Only requests that use HTTPS are permitted.
+Blob service version
+sv=2022-11-02
+For Azure Storage version 2012-02-12 and later, this parameter indicates the version to use.
+Resource
+sr=b
+The resource is a blob.
+Signature
+sig=<signature>
+Used to authorize access to the blob. The signature is an HMAC that's computed over a string-to-sign and key by using the SHA256 algorithm, and then encoded by using Base64 encoding.
+Revoke a user delegation SAS
+If you believe that a SAS has been compromised, you should revoke it. You can revoke a user delegation SAS either by revoking the user delegation key, or by changing or removing RBAC role assignments and POSIX ACLs for the security principal that's used to create the SAS.
+Important
+Both the user delegation key and RBAC role assignments are cached by Azure Storage, so there may be a delay between when you initiate the process of revocation and when an existing user delegation SAS becomes invalid.
+Revoke the user delegation key
+You can revoke the user delegation key by calling the Revoke User Delegation Keys operation. When you revoke the user delegation key, any shared access signatures that rely on that key become invalid. You can then call the Get User Delegation Key operation again and use the key to create new shared access signatures. This is the quickest way to revoke a user delegation SAS.
+Change or remove role assignments or ACLs
+You can change or remove the RBAC role assignment and POSIX ACLs for the security principal that's used to create the SAS. When a client uses the SAS to access a resource, Azure Storage verifies that the security principal whose credentials were used to secure the SAS has the required permissions to the resource.
+See also
+Delegate access with a shared access signature
+Create a service SAS
+Create an account SAS
+SAS error codes
+Additional resources
+Last updated on
+2026-10-30
+In this article
+en-us
+Your Privacy Choices
+Theme
+Light
+Dark
+High contrast
+AI Disclaimer
+Previous Versions
+Blog
+Contribute
+Privacy
+Consumer Health Privacy
+Terms of Use
+Trademarks
+© Microsoft 2026

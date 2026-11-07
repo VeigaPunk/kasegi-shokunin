@@ -1,0 +1,62 @@
+{
+ "schema_version": 1,
+ "note": "Round-91 C2 manifest: the two first-party sources of the capture-secret-scan round-91 extension (Azure user-delegation SAS field skdutid; Amazon CloudFront signed cookies). Captured 2026-11-07 by capture-source.py at the round-91 base (intake gate active, default allowlist; both captures passed the gate) and re-scanned with the frozen round-91 candidate scanner --files before the freeze: hits=0 (.ufo/waves/round-91/controls/capture-scan-r91.txt).",
+ "sources": [
+  {
+   "id": "S133",
+   "url": "https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas",
+   "capture_url": "https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas",
+   "http": {
+    "status": 200,
+    "final_url": "https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas"
+   },
+   "kind": "html",
+   "fetch_method": "capture-source.py --kind html, default instrument UA; raw 118382 bytes, snapshot 60089 bytes",
+   "fetched_utc": "2026-11-07T07:48:19Z",
+   "path": "S133.txt",
+   "sha256": "56d858ac8c2988fdf95a045b5a75f13cc5a28a1f71b3786638522775b1786cd6",
+   "bytes": 60089,
+   "lines": 954,
+   "quotes": [
+    {
+     "id": "Q01-skdutid-version",
+     "quote": "The sduoid and skdutid fields are supported with version 2025-07-05 and later.",
+     "anchor": 571
+    },
+    {
+     "id": "Q02-skdutid-tenant",
+     "quote": "The skdutid field represents the tenant ID (tid) of the Microsoft Entra security principal that will use the SAS token.",
+     "anchor": 567
+    }
+   ]
+  },
+  {
+   "id": "S134",
+   "url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html",
+   "capture_url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html",
+   "http": {
+    "status": 200,
+    "final_url": "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html"
+   },
+   "kind": "html",
+   "fetch_method": "capture-source.py --kind html, default instrument UA; raw 51673 bytes, snapshot 21243 bytes",
+   "fetched_utc": "2026-11-07T07:48:20Z",
+   "path": "S134.txt",
+   "sha256": "ddf45b805c7f67f29cf15f60f805fd636968f14734f4e342c697760f8b49f1cc",
+   "bytes": 21243,
+   "lines": 441,
+   "quotes": [
+    {
+     "id": "Q01-signature-cookie",
+     "quote": "A hashed, signed, and base64-encoded version of the JSON",
+     "anchor": 97
+    },
+    {
+     "id": "Q02-three-pairs",
+     "quote": "and a CloudFront signed cookie requires three name-value pairs.",
+     "anchor": 17
+    }
+   ]
+  }
+ ]
+}
