@@ -186,17 +186,22 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          (S140 line 480), right boundary `[^0-9a-zA-Z_-]`/EOL.
   gitlab-iam-authorization-code (round 98) `gliamac-` + 43 + `.` + 43 of
                          `A-Za-z0-9_-` (S140 line 497), same right boundary.
-  gitlab-session-cookie  (round 98; separator model round 99) the session
+  gitlab-session-cookie  (round 98; separator model rounds 99-100) the session
                          cookie value: the assignmentContext keyword
                          `_gitlab_session` (optionally `_geo_` + 64 hex) then
-                         S140's assignment-context separator class
-                         `[^\n]{0,8}[:=][^\n]{0,8}` (up to 8 non-newline bytes,
-                         an operator, up to 8 more), an optional `cell-<N>-`
-                         prefix and 64 lower-case hex characters (S140 lines
-                         549-551). Round 98 used a whitespace/quote/operator class, which refused
-                         the twelve real session values the round-98 sentinel
-                         measured (`_gitlab_session => H`, `%20=%20`, `,=`,
-                         `|=`, `+=`, `(=`, ` ( = ) `, `=> `, `cell--`).
+                         the BOUNDED UNION of S140's assignment-context
+                         separator class `[^\n]{0,8}[:=][^\n]{0,8}` and a
+                         whitespace run `[^\\S\\n]{1,8}` (S140 lines 549-551,
+                         S152), an optional `cell-<N>-` prefix and 64
+                         lower-case hex characters. Round 99 used the strict
+                         S140 window alone, which dropped 23 classes the
+                         round-98 whitespace/quote/operator class hit — the
+                         Netscape cookie jar (tab and space) among them; the
+                         union recovers the jar and the `_geo_` space form
+                         while keeping S140's gap bound. Residual (documented,
+                         not detected): a newline between keyword and operator,
+                         and gaps of 9-12 bytes, are refused by S140's own
+                         bound and by the frozen negatives.
   gitlab-jwt-token       (round 95) the GitLab JWT-form tokens: `glcbt-` or
                          `glsat-` (optional 1-20 character instance prefix) or
                          `gliamat-`, then `eyJ` + 10-1000 characters, `.eyJ` +
@@ -316,7 +321,8 @@ GITLAB_PATTERNS = (
     ("gitlab-iam-authorization-code", re.compile(
         _GL_LB + rb"gliamac-[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])")),
     ("gitlab-session-cookie", re.compile(
-        _GL_LB + rb"_gitlab_session(?:_geo_[0-9a-f]{64})?[^\n]{0,8}[:=][^\n]{0,8}"
+        _GL_LB + rb"_gitlab_session(?:_geo_[0-9a-f]{64})?"
+        rb"(?:[^\S\n\"'=:;]{1,8}|[^\n]{0,8}[:=][^\n]{0,8})"
         rb"(?:cell-[0-9]+-)?[0-9a-f]{64}(?![0-9a-f])")),
     ("gitlab-runner-registration-token", re.compile(
         _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
@@ -654,6 +660,12 @@ def selftest(pats):
         ("gl-session-ck-paren-eq", b"_gitlab_session(=(" + b"0a" * 32 + b")\n", {"gitlab-session-cookie"}),
         ("gl-session-ck-paren-gap", b"_gitlab_session ( = ) " + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
         ("gl-session-ck-cell-gap", b"_gitlab_session=cell--" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        # round 100: the bounded union restores the no-operator forms round 99
+        # dropped — the Netscape cookie jar (tab- and space-separated) and the
+        # `_geo_` space form (S152, curl's jar format).
+        ("gl-session-ck-jar-tab", b".gitlab.com\tTRUE\t/\tTRUE\t0\t_gitlab_session\t" + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-jar-space", b".gitlab.com TRUE / TRUE 0 _gitlab_session " + b"0a" * 32 + b"\n", {"gitlab-session-cookie"}),
+        ("gl-session-ck-geo-space", b"_gitlab_session_geo_" + b"0a" * 32 + b" " + b"1b" * 32 + b"\n", {"gitlab-session-cookie"}),
         ("gl-session-ck-63-hex", b"_gitlab_session=" + b"0a" * 31 + b"0\n", set()),
         ("gl-session-ck-geo-short", b"_gitlab_session_geo_" + b"0a" * 31 + b"0=" + b"1b" * 32 + b"\n", set()),
         ("gl-session-ck-upper-hex", b"_gitlab_session=" + b"0A" * 32 + b"\n", set()),

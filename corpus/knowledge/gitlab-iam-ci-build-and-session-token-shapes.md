@@ -1,6 +1,6 @@
 # GitLab's IAM, CI-build and session-cookie token shapes — four rules S140 publishes
 
-source: S140 — GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, lines 291-294, 478-481, 495-498 and 547-551 (capture `corpus/source-snapshots/round-94/S140.txt`, sha256 `f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c`, 563 lines, example values structurally redacted, line numbering preserved); S144 — GitLab Docs, Security — Tokens, https://docs.gitlab.com/security/tokens/ (capture `corpus/source-snapshots/round-96/S144.txt:356` and `:362`, the prefix table's `glcbt-` and `_gitlab_session=` rows); S151 — GitLab secret-detection-rules, the assignment-context generator `pkg/rules/assignment_regex.go` at commit 59ada1f4 (the `assignmentOperand` constant, HTTP 200, 9,776 bytes, sha256 `91519731800ab8d96a00a03fff44e72c1c16a3bad12c9e017d7d679a8fad756d`, byte-identical across three fetches); S150 — GitLab secret-detection-rules merge request !151, the assignment-context generator, https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/merge_requests/151 (the MR description's "Generated Regex" block, HTTP 200, 128,120 bytes, sha256 `aa60d7af465cad03b64259362dfa862a8d5c3176ebc2e6b5909a38daddea11e8`); S148 — GitLab secret-detection rule prose, `rules/mit/gitlab/gitlab_session_cookie.md` at commit 59ada1f4 (https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab_session_cookie.md/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39, 1,028 bytes / 23 lines / sha256 `b50856e4…`, line 6); S149 — the same repository's per-rule prose for the two IAM forms, `gitlab_iam_refresh_token.md` (1,190 bytes / 26 lines / sha256 `9b37df1e…`, line 5) and `gitlab_iam_authorization_code.md` (1,322 bytes / 27 lines / sha256 `52348dd6…`, line 5)
+source: S140 — GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, lines 291-294, 478-481, 495-498 and 547-551 (capture `corpus/source-snapshots/round-94/S140.txt`, sha256 `f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c`, 563 lines, example values structurally redacted, line numbering preserved); S144 — GitLab Docs, Security — Tokens, https://docs.gitlab.com/security/tokens/ (capture `corpus/source-snapshots/round-96/S144.txt:356` and `:362`, the prefix table's `glcbt-` and `_gitlab_session=` rows); S151 — GitLab secret-detection-rules, the assignment-context generator `pkg/rules/assignment_regex.go` at commit 59ada1f4 (the `assignmentOperand` constant, HTTP 200, 9,776 bytes, sha256 `91519731800ab8d96a00a03fff44e72c1c16a3bad12c9e017d7d679a8fad756d`, byte-identical across three fetches); S150 — GitLab secret-detection-rules merge request !151, the assignment-context generator, https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/merge_requests/151 (the MR description's "Generated Regex" block, HTTP 200, 128,120 bytes, sha256 `aa60d7af465cad03b64259362dfa862a8d5c3176ebc2e6b5909a38daddea11e8`); S148 — GitLab secret-detection rule prose, `rules/mit/gitlab/gitlab_session_cookie.md` at commit 59ada1f4 (https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab_session_cookie.md/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39, 1,028 bytes / 23 lines / sha256 `b50856e4…`, line 6); S149 — the same repository's per-rule prose for the two IAM forms, `gitlab_iam_refresh_token.md` (1,190 bytes / 26 lines / sha256 `9b37df1e…`, line 5) and `gitlab_iam_authorization_code.md` (1,322 bytes / 27 lines / sha256 `52348dd6…`, line 5) ; S152 — curl, HTTP cookies — the cookie jar file format, https://curl.se/docs/http-cookies.html (the seven TAB-separated fields, HTTP 200, 13,717 bytes, sha256 `c202d81f7b37d049e3aaa7b9e3ef781cb0658bbc5cf89716f2b213278442c59a`, opened 2026-11-07)
 verified-at: 2026-11-07 (both captures re-read at their pinned digests; the S140 live `/-/raw/` fetch answered HTTP 403 again this round — a Cloudflare challenge page, 6,078 bytes, 2026-11-07T20:54:03Z, receipt `.ufo/waves/round-98/l1/source-reopen-r98.txt` — so the committed capture is the citation base; S148/S149 were fetched live via the repository-files API, HTTP 200, at their recorded digests)
 recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && sed -n '291,294p;478,481p;495,498p;547,551p' corpus/source-snapshots/round-94/S140.txt | grep -c 'regex' && sed -n '356p;362p' corpus/source-snapshots/round-96/S144.txt | grep -cE 'glcbt-|_gitlab_session=' && python3 -B corpus/instruments/capture-secret-scan.py --selftest >/dev/null && echo RECHECK-OK
 
@@ -23,7 +23,11 @@ boundary that decides whether a real token is seen at all:
   `_gitlab_session => H`, `_gitlab_session%20=%20H`, `_gitlab_session,=H` and
   `_gitlab_session=cell--H` are all the shape. A matcher built on a
   whitespace/quote/operator class refuses eight of the twelve real session
-  values the round-98 sentinel measured (round 99).
+  values the round-98 sentinel measured (round 99). The inverse also holds: a
+  matcher built on the window alone refuses the no-operator forms a capture
+  actually carries — a Netscape cookie jar separates name and value with a TAB
+  and no operator at all (S152), so the landed shape is the BOUNDED UNION of
+  the window and a 1-8 byte whitespace run (round 100).
 - **the pinned commit supersedes that form (round 99 correction).** At commit
   59ada1f4 the generator's own source carries
   `assignmentOperand = [="' :>\],\t.()\\?|]{1,10}` (S151, lines 27-29): the
@@ -44,7 +48,7 @@ token followed by either character.
 | `gitlab-ci-build-token` | `glcbt-` + 1-5 `A-Za-z0-9` + `_` + 20 `A-Za-z0-9_-` | 293 | S144:356 (`glcbt-`) |
 | `gitlab-iam-refresh-token` | `gliamrt-` + 43 `A-Za-z0-9_-` + `.` + 43 | 480 | S149:5 (`gliamrt-`) |
 | `gitlab-iam-authorization-code` | `gliamac-` + 43 `A-Za-z0-9_-` + `.` + 43 | 497 | S149:5 (`gliamac-`) |
-| `gitlab-session-cookie` | `_gitlab_session` context, S140's assignment-context separator `<keyword>.{0,8}[:=].{0,8}`, optional `cell-<N>-`, 64 lower-case hex | 549-551 | S144:362 (`_gitlab_session=`), S148:6 (the value's length and alphabet), S150 (the separator window) |
+| `gitlab-session-cookie` | `_gitlab_session` context, the bounded union of S140's assignment-context window `<keyword>.{0,8}[:=].{0,8}` and a 1-8 byte whitespace run (the cookie-jar form), optional `cell-<N>-`, 64 lower-case hex | 549-551 | S144:362 (`_gitlab_session=`), S148:6 (the value's length and alphabet), S150 (the separator window), S152 (the jar's TAB-separated fields) |
 
 ## The four published rules, verbatim
 
@@ -72,11 +76,13 @@ forms, so S140 is their only source here.
 A capture that contains `glcbt-` + 1-5 alphanumerics + `_` + 20 characters,
 `gliamrt-`/`gliamac-` + 43 + `.` + 43, or a `_gitlab_session` assignment whose
 value is 64 lower-case hex (optionally `cell-<N>-`-prefixed) with at most eight
-non-newline bytes on either side of a `:` or `=` operator is a credential
-capture and must be redacted before commit; a 64-hex string with no
+non-newline bytes on either side of a `:` or `=` operator, **or** a 1-8 byte
+whitespace run between the keyword and the value (the cookie-jar line), is a
+credential capture and must be redacted before commit; a 64-hex string with no
 `_gitlab_session` context is not. Check: `python3 -B
-corpus/instruments/capture-secret-scan.py --selftest` covers twelve separator
-positives and ten boundary negatives for the session cookie, and one positive
+corpus/instruments/capture-secret-scan.py --selftest` covers fifteen separator
+positives (twelve window forms, the jar's TAB and space forms, the `_geo_`
+space form) and ten boundary negatives for the session cookie, and one positive
 and one boundary negative per other shape.
 
 ## Limits
@@ -88,9 +94,13 @@ and one boundary negative per other shape.
   `[^\n]{0,8}[:=][^\n]{0,8}`; a value on the next line is out of scope, and a
   gap wider than eight bytes before the operator is a miss. The pinned commit's
   `assignmentOperand` (S151) is a different class: the scanner does not
-  implement it, so a TAB-separated Netscape cookie jar is a miss (measured by
-  the round-99 sentinel: 23 payload classes the round-98 scanner hit are no
-  longer hit, the jar among them). The instrument keeps a left boundary
+  implement it. Round 100 took the bounded union instead, which recovers the
+  Netscape cookie jar (TAB and space) and the `_geo_` space form — the three
+  high-realism classes round 99 dropped — and leaves twenty S140-faithful
+  classes a documented miss: a newline between keyword and operator, and gaps
+  of 9-12 bytes (measured: `regression_r98` 23 -> 20, `scanner_only` 0 -> 3,
+  `.ufo/waves/round-100/controls/c2-check-before-after-r100.txt`). The
+  instrument keeps a left boundary
   (`_GL_LB`) that S140's raw keyword group does not have, so a prefixed name
   (`x_gitlab_session=`) is a deliberate miss (the round-98 sentinel's Q1: S140
   over-detects there). The value-before-keyword form stays a miss.
