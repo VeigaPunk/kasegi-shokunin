@@ -304,7 +304,7 @@ new-entry corrections: `corpus/lessons/round-21-routing-blocked.md`.
 |---|---|---|---|
 | sources-registry | Curates where kasegi learns: `corpus/SOURCES.md` (contract v1) — opened, scope-tiered rows with anchors, rejected rows with flips, study paths and a search log; all seven contract census commands run clean | `corpus/SOURCES.md`; seven contract census outputs recorded in `corpus/lessons/round-22.md` § Gate (Census block); 27 rows (A=25 C=2; mined=15 queued=10 rejected=2), malformed 0, dup/enum/missing-used-by empty | 22 |
 | priced-claim-package | Builds a six-file claim package for one public disclosed report and prices it from the platform record, the vendor advisory, the vendor's current policy and the KEV capture, keeping conflicting reward records as separate fields | `python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane . --pkg corpus/practice/curl-h1-1913733` (E1–E5 pass) and `python3 corpus/instruments/claim-package-check.py corpus/practice/curl-h1-1913733` (WELL-FORMED); limits: the frozen counter does not bind the subject (lesson M85-2) | 85 |
-| capture-secret-scan | Scans captured evidence (source snapshots, seat receipts, live- captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns plus AWS STS session tokens and AWS key ids, with a digest-bound allowlist | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5 pass) | 87 |
+| capture-secret-scan | Scans captured evidence (source snapshots, seat receipts, `live-*` captures) at a git revision or a file list for credential shapes before commit: the claim-package gate patterns plus AWS STS session tokens and AWS key ids, with a digest-bound allowlist | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev master --work <scratch>` (K1-K5 pass) | 87 |
 
 The `sources-registry` capability entered in round 22; the preceding row replaces the rollout's empty repertoire placeholder. New rows require an exercised round demonstration (`AXES.md` §Capabilities).
 
@@ -3165,3 +3165,18 @@ Planned round 87 (not frozen):
 - Re-freeze the C2 package claim with a full-package positive control run before the freeze (M86-3) over the redacted S122.
 - Knowledge-scope tranche 2: the ~86 excluded tokens whose real snapshot is unique once `.ufo/` copies are discounted (ReviewC1Semantics routed candidate 1); exclude quoted manifest fields (M86-1/F1 class).
 - MutC1/MutC2 survivors (see `.ufo/waves/round-86/w1/MutC1Counter.md`, `MutC2Counter.md`).
+
+## Round 87 — C1 NOT VERIFIED (counter passes 596/1720 → 678/1719 at landing `d87b1b55`, but frozen P3 fails: 3 wave-scaffold files in the landing commit); C2 VERIFIED-pending-closure (capability `capture-secret-scan` enters, K1–K5 pass at `132e16c5`)
+
+Frozen claims: `.ufo/waves/round-87/claims.json` (freeze `afb13a88e6fbc8e2f8a0c11f9cfbfde77e907e69`, base `cd1f568a6be2656b5f5dc479eb90ef99b91131b5`). Every listed control was executed and committed in the freeze (`.ufo/waves/round-87/controls/`).
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest) | score 4; knowledge-scope meter 596/1720 (scratch-clone root) | score 4 held; 678/1719 at `d87b1b55` (M1–M7 pass, 83 keys) | NOT VERIFIED: P1 and P2 pass, P3 false (`git diff --name-only afb13a88 d87b1b55` lists `.ufo/waves/round-87/w1-spec.json`, `w1-dispatch.json`, `w1/swarm-registry.json` beside the 5 knowledge files; lesson M87-2) | `python3 -B .ufo/waves/round-87/c1/knowledge-meter.py --lane <clone of d87b1b55> --base-rev cd1f568a6be2656b5f5dc479eb90ef99b91131b5 --map .ufo/waves/round-87/c1/repair-map.json --target 678/1719 --map-sha256 7db928c77efe2f594c0fcbc26174b79db1f60f7a1d244055b679512c778f1eaa` | `.ufo/waves/round-87/l1/c1-landing-r87.txt`; `.ufo/waves/round-87/l1/r139-check-r87.txt` |
+| C2 | coverage 8 held; capability acquisition | no committed check scanned a capture before commit (r86 M86-2; spot-check routed defect 1) | `capture-secret-scan` K1–K5 pass at `132e16c5`: r86 freeze `252df0c9` flags exactly the 2 STS files the oracle finds; landing hits=0, allowed=18, unused_allow=0; planted set exact; STS allowlist row refused | VERIFIED-pending-closure; sourced on S124, S125 | `python3 -B .ufo/waves/round-87/c2/capability-check.py --lane . --rev 132e16c588a2424c06b5ca15ea01fce1ee9a396d --work <scratch> --instrument-sha256 b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` | `.ufo/waves/round-87/l1/c2-landing-r87.txt`; `.ufo/waves/round-87/controls/c2-controls-r87.txt` |
+| — | depth:density | 273.2 | 273.2 | unchanged (SKILL.md untouched) | `python3 corpus/instruments/density.py SKILL.md --label x` | `.ufo/waves/round-87/w1/CriticHarm.md` |
+
+- **Capabilities:** `capture-secret-scan` enters (first working round 87).
+- **Quality criteria added:** R138 (scan every capture before its first commit), R139 (landing path list from the claim scope; landing-scope check).
+- **Saturation / retired:** unchanged / none.
+- **Census of record:** `corpus/instruments/citation-survival.md` still reads 132/701; not regenerated. Carried.

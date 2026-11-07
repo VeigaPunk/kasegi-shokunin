@@ -2964,3 +2964,14 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Sources: S122 and S123 opened 2026-11-07, now `mined` (registry 121 → 123).
 - Mistakes: M86-1 (planned tranche of non-citations; QUALITY R137), M86-2 (credential material captured and pushed), M86-3 (no full-package positive control before freeze). Lesson: `corpus/lessons/round-86.md`.
 - Assimilation: none (93 staged-id collisions). considerthese: no new proposal adopted.
+
+## Round 87 — C1 (knowledge-scope tranche 2, 83-key map, meter 596/1720 → 678/1719; NOT VERIFIED on frozen P3), C2 (capability capture-secret-scan, sourced on S124/S125; verified at landing)
+
+- Read first: the r86 closure and `corpus/lessons/round-86-verifier-spotcheck.md` (routed defects 1–6; operator note on the pushed STS token). The planned r87 package re-freeze was not taken: the r86 package already passes its counter at the tip, so a do-nothing control would meet it (prompt §9). Freeze `afb13a88` holds the claims, counters, map, candidates and executed controls (`.ufo/waves/round-87/controls/`):
+  - C1 controls: do-nothing 596/1720, partial 636/1719, pad 679/1720, `.ufo/` fixture copy (M4), ambiguous S041 key (M4+M1), quoted manifest-field key (M7) and wrong map sha (M6) each rc 1; positive 678/1719 rc 0.
+  - C2 controls: do-nothing (no instrument), always-clean, gate-only, path-bound allowlist, corpus-wide scope, whole-tree scope, allowlist refusal disabled, empty allowlist, stale allowlist row, missing SCORECARD row and wrong sha pin each rc 1; positive rc 0. Two earlier batteries hung on the scope-widening controls: the first candidate deadlocked on `git cat-file --batch` past ~1,560 blobs (lesson M87-1); fixed before the freeze.
+- C1 landing `d87b1b55`: counter `KNOWLEDGE-METER-RESULT pass rc=0` (after 678/1719, M1–M7), 13/13 pins; but the commit also carries three untracked wave files swept in by an unscoped path list, so frozen P3 is false (lesson M87-2; QUALITY R139). ExecC1Indep re-derived the map independently: 83/83 identical.
+- C2 landing `132e16c5`: `corpus/instruments/capture-secret-scan.py` + `capture-secret-allow.tsv` byte-equal to the frozen candidates; counter K1–K5 pass (r86 freeze flags exactly the 2 STS files; landing hits=0, 18 allowed matches, 0 stale rows). Capability `capture-secret-scan` enters; QUALITY R138.
+- Sources: S124 (AWS SigV4 signed-request page) and S125 (IAM unique-ID prefixes) opened 2026-11-07, captured, `mined` (registry 123 → 125). Rejected: the S3 SigV4 query-auth URL (meta-refresh shell, no capturable text).
+- r86 routed defects: 1 answered (C2), 2 recorded as a named rule-2 correction in `corpus/SOURCES.md`, 3 corrected in the lesson, 4 avoided, 5 prose rule stated, 6 carried.
+- Mistakes: M87-1 (pipe deadlock in the candidate, caught by forgery controls), M87-2 (unscoped landing path list). Lesson: `corpus/lessons/round-87.md`.
