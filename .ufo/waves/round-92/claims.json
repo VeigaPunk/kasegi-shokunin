@@ -1,0 +1,51 @@
+{
+ "round": 92,
+ "lane": "kasegi",
+ "base": "0628fd247914555838a42c02ba5d4ac08b7e095d",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability (lowest non-retired axis, score 4; internal-citation repair, score not claimed to move)",
+   "surface": "corpus/knowledge/triage-thresholds.md (24 sites) and corpus/knowledge/root-loss-2026-10-12.md:68; counter successor binds the map on (site, key) pairs (r91 closure routed defect 2) and makes a CORRECT label's qualification edit, a drop-token edit and a whole-cell content repair expressible (r91 routed)",
+   "statement": "Tranche 7: of the 30 (site, key) pairs the round-91 non-author seat ReviewC1Labels labelled for round 92 (round92-labels.tsv at d0bd4758), the 25 whose label names an edit get exactly that edit (10 range repoints, 7 CORRECT qualifications to corpus/knowledge/<key>, 2 single-token MATCHES cells replaced by the table's em dash at 369/370, 2 token drops that keep the cell's other tie at 58/144, 2 named repoints at 150/152, 2 whole-cell repairs at 155/249 to MATCHES: `corpus/knowledge/<named range>`); the 3 no-edit CORRECT pairs (citation-bases.md:14 x2, japanese-domestic-disclosure-workflow.md:7) and the 2 EXCLUDED errata pairs (437, 438: the cell quotes the superseded text, so the label's repoint would make the quote false) stay unchanged. Pinned knowledge-scope meter 947/1947 at base -> exactly 960/1944 at the landing commit.",
+   "predicate": "P1: knowledge-meter.py over --base-rev BASE --after-rev LANDING prints KNOWLEDGE-METER-RESULT pass rc=0 with M0 base=947/1947, M1 after=960/1944, M3, M4, M5, M6 (map sha), M9 (25/25 rows bound to the label-named edit), M10 (want=25 mapped=25, no unknown, no unapplied, no unlabelled pair) all pass. P2: counter and map sha256 below equal. P3: the landing commit changes exactly corpus/knowledge/triage-thresholds.md and corpus/knowledge/root-loss-2026-10-12.md (git diff-tree --no-commit-id --name-only -r LANDING prints 2 paths).",
+   "counter": ".ufo/waves/round-92/c1/knowledge-meter.py",
+   "counter_sha256": "631ad3dc291886dedd5e168f4ed05ff9e87af171f97b30deb88ee5093c0a2399",
+   "map": ".ufo/waves/round-92/c1/repair-map.tsv",
+   "map_sha256": "6d87cafaec99961a15c00967d30c2bb164ed480d8b3fbaeadccd55b048d9b772",
+   "labels": ".ufo/waves/round-91/w1/ReviewC1Labels-receipts/round92-labels.tsv@d0bd4758a41919b2c86c079f3a1a2dfb392dcd8d",
+   "command": "python3 -B .ufo/waves/round-92/c1/knowledge-meter.py --lane <lane> --base-rev 0628fd247914555838a42c02ba5d4ac08b7e095d --after-rev <landing> --map .ufo/waves/round-92/c1/repair-map.tsv --labels-rev d0bd4758a41919b2c86c079f3a1a2dfb392dcd8d --base-target 947/1947 --target 960/1944 --map-sha256 6d87cafaec99961a15c00967d30c2bb164ed480d8b3fbaeadccd55b048d9b772 --work <scratch>",
+   "kill": "Any limb FAIL at the landing, or P3 names another path set: C1 NOT VERIFIED; no target narrowing, no re-labelling, no change to EXCLUDED after landing.",
+   "controls": ".ufo/waves/round-92/controls/c1-controls-r92.txt (candidate PASS; no-work, partial 24/25 with the frozen map and with its own map, skip-qualify-59 own map, excluded-437 applied, no-edit pair qualified, named-cell 155 done token-only, drop-token 58 done as a dash cell, wrong key column at 86, working-tree-only all FAIL)",
+   "do_nothing": "no-work control: after=947/1947, M1 and M3 FAIL"
+  },
+  {
+   "id": "C2",
+   "axis": "coverage (score 8 held); capability extension capture-secret-scan (sourced: S136, S137)",
+   "surface": "new edge class for the capture scanner: provider-prefixed GitHub tokens with no adjacent key name (round-91 ScoutSources lead A: 8 bare-prefix fixtures all missed by the landed scanner)",
+   "statement": "At the landing commit corpus/instruments/capture-secret-scan.py reports shape github-token for (a) ghp_, gho_, ghu_, ghs_ or ghr_ (case-sensitive) followed by exactly 36 base62 characters, not preceded by a letter, digit or _ (except the n of a JSON \\n escape) and not followed by a letter, digit or _, inside capture scope; (b) the stateless installation form ghs_<digits>_<three dot-separated base64url segments of 10+ characters>. The documentation placeholder ghs_APPID_JWT, bare prefixes, 35- and 37-character tails, GHP_, ghx_, a letter-prefixed token, short JWT segments and fine-grained github_pat_ tokens (named known limit) are not hits; every round-91 shape behaves as before.",
+   "predicate": "P1: capability-check.py --rev LANDING prints CAPABILITY-CHECK-RESULT pass rc=0 with K1-K8 pass, with --instrument-sha256 and --gate-sha256 below, at a printed run-time seed and at seeds 9191 and 1. P2: landed capture-secret-scan.py sha256 equals the frozen candidate sha256. P3: the landing commit changes only corpus/instruments/capture-secret-scan.py and SCORECARD.md (the capture-secret-scan capability row replaced by the frozen candidate row).",
+   "counter": ".ufo/waves/round-92/c2/capability-check.py",
+   "counter_sha256": "3feed3b073194179b5542f91d7bba80f8d1fba1a3c3a3ec3d4587ce1c6baa847",
+   "candidate": ".ufo/waves/round-92/c2/candidate/capture-secret-scan.py",
+   "candidate_sha256": "04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e",
+   "gate_sha256": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+   "scorecard_row": ".ufo/waves/round-92/c2/candidate/scorecard-row.txt",
+   "scorecard_row_sha256": "9bd66c5c828886dbf2c201b6e024f3022d686b1bcf3a3176ebd968d6427ee832",
+   "command": "python3 -B .ufo/waves/round-92/c2/capability-check.py --lane <lane> --rev <landing> --work <scratch> --instrument-sha256 04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 [--seed N]",
+   "kill": "Any limb FAIL at the landing at any of the three seeds, or P3 names another path: C2 NOT VERIFIED.",
+   "controls": ".ufo/waves/round-92/controls/c2-controls-r92.txt (candidate PASS pinned and unpinned; no-work base instrument FAIL on K4/K7/K8; forgeries F1 classic-only, F2 stateless-only, F3 no length cap, F4 loose length, F5 case-insensitive, F6 no lookbehind, F7 any prefix, F8 literal-keyed, F9 no JSON newline join, F10 short JWT segments all FAIL on a behavioural limb (K4/K7/K8) besides K1, run unpinned)",
+   "do_nothing": "no-work control: base instrument misses all 6 round-92 plant entries (K4) and the 3 generated GitHub positives (K7); 6 positive clauses fail (K8)"
+  }
+ ],
+ "frontier": {
+  "sourced_claim": "C2 on S136 and S137 (opened 2026-11-07, captures corpus/source-snapshots/round-92/S136.txt, S137.txt; manifest source-recheck rc 0, .ufo/waves/round-92/controls/source-recheck-r92.txt)",
+  "rejected": "S138 (W3C HAR draft: abandoned, DO NOT USE; capture committed so anchors resolve)",
+  "census_start": ".ufo/waves/round-92/controls/census-start-r92.txt"
+ },
+ "declined": {
+  "r91 C2 K8 gaps FC1-FC4 and SentinelCookie F1-F3": "routed to round 93: C2 P3 binds this round's change to the github-token shape",
+  "triage-thresholds.md:454 second token SKILL.md:494-506 (r91 routed defect 1)": "no non-author label names its edit; routed to a labelling item in wave w1",
+  "capture-source.py file:// crash (M90-2), missing --allow file (C2-F4), r90 C2-F1..F3": "still routed; a capture-source.py change is a separate surface"
+ }
+}
