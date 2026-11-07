@@ -52,7 +52,7 @@ platform is currently operating or a direction to submit anything.
 | Article 71 | “This Regulation shall apply from 11 December 2027.” |
 
 The 24-hour phrase in the first exact-quote row is not unique in the document: the
-same words appear in the incident track at Article 14(4)(a) (`S029.txt:20`). The
+same words appear in the incident track at Article 14(4)(a) (`corpus/source-snapshots/round-23/S029.txt:20`). The
 location column carries the track attribution; a substring recheck cannot
 distinguish the two rows, so read the attribution with the table, not from the
 bare match.

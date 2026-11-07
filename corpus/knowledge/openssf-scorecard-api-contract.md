@@ -13,84 +13,84 @@ swagger 2.0 document, captured as one file; every quoted fragment below is locat
 (`S102.txt:LINE`). The capture keeps the served line structure with whitespace collapsed, so each JSON member
 sits on its own line.
 
-The document names itself and its purpose: `"title": "OpenSSF Scorecard API"` (`S102.txt:14`), described as
-"API to interact with a project's published Scorecard result" (`S102.txt:13`). It declares `"swagger": "2.0"`
-(`S102.txt:11`), `"version": "1.1.0"` (`S102.txt:15`), `"host": "api.scorecard.dev"` (`S102.txt:17`) and the
-single scheme `"https"` (`S102.txt:9`).
+The document names itself and its purpose: `"title": "OpenSSF Scorecard API"` (`corpus/source-snapshots/round-68/S102.txt:14`), described as
+"API to interact with a project's published Scorecard result" (`corpus/source-snapshots/round-68/S102.txt:13`). It declares `"swagger": "2.0"`
+(`corpus/source-snapshots/round-68/S102.txt:11`), `"version": "1.1.0"` (`corpus/source-snapshots/round-68/S102.txt:15`), `"host": "api.scorecard.dev"` (`corpus/source-snapshots/round-68/S102.txt:17`) and the
+single scheme `"https"` (`corpus/source-snapshots/round-68/S102.txt:9`).
 
 Decision rule for "what does a Scorecard API result carry, and how is it addressed?" — read the contract, not a
 served instance:
 
 1. **A result is addressed by platform, owner and repository.** The path is
-   `/projects/{platform}/{org}/{repo}` (`S102.txt:19`); its three path parameters are described as
-   "VCS platform. eg. github.com" (`S102.txt:139`), "Name of the owner/organization of the repository"
-   (`S102.txt:146`) and "Name of the repository" (`S102.txt:153`), each `"required": true` (`S102.txt:142`,
+   `/projects/{platform}/{org}/{repo}` (`corpus/source-snapshots/round-68/S102.txt:19`); its three path parameters are described as
+   "VCS platform. eg. github.com" (`corpus/source-snapshots/round-68/S102.txt:139`), "Name of the owner/organization of the repository"
+   (`corpus/source-snapshots/round-68/S102.txt:146`) and "Name of the repository" (`corpus/source-snapshots/round-68/S102.txt:153`), each `"required": true` (`corpus/source-snapshots/round-68/S102.txt:142`,
    `:149`, `:156`).
 2. **Reading is a GET that may pin a commit.** The GET's summary is "Get a repository's ScorecardResult"
-   (`S102.txt:24`), operationId `getResult` (`S102.txt:25`). Its one query parameter is `commit`
-   (`S102.txt:31-32`), "SHA1 commit hash expressed in hexadecimal format" (`S102.txt:30`), constrained by
-   `"pattern": "^[0-9a-fA-F]{40}$"` (`S102.txt:28`) — exactly 40 hex digits. The document does not mark
-   `commit` as required. A 200 returns "A JSON object of the repository's ScorecardResult" (`S102.txt:37`)
-   with `$ref` to `ScorecardResult`; a 400 is "The request provided to the server was invalid" (`S102.txt:53`)
-   with an `Error` schema; a 404 is "The content requested could not be found" (`S102.txt:69`) and declares no
+   (`corpus/source-snapshots/round-68/S102.txt:24`), operationId `getResult` (`corpus/source-snapshots/round-68/S102.txt:25`). Its one query parameter is `commit`
+   (`corpus/source-snapshots/round-68/S102.txt:31-32`), "SHA1 commit hash expressed in hexadecimal format" (`corpus/source-snapshots/round-68/S102.txt:30`), constrained by
+   `"pattern": "^[0-9a-fA-F]{40}$"` (`corpus/source-snapshots/round-68/S102.txt:28`) — exactly 40 hex digits. The document does not mark
+   `commit` as required. A 200 returns "A JSON object of the repository's ScorecardResult" (`corpus/source-snapshots/round-68/S102.txt:37`)
+   with `$ref` to `ScorecardResult`; a 400 is "The request provided to the server was invalid" (`corpus/source-snapshots/round-68/S102.txt:53`)
+   with an `Error` schema; a 404 is "The content requested could not be found" (`corpus/source-snapshots/round-68/S102.txt:69`) and declares no
    body schema.
 3. **Writing is a separate POST on the same path, and it is OIDC-verified.** The POST's summary is "Publish a
-   repository's OIDC verified ScorecardResult" (`S102.txt:93`), operationId `postResult` (`S102.txt:94`). Its
-   one parameter is the body parameter `publish` (`S102.txt:97`), `"required": true` (`S102.txt:99`), whose
-   schema is `#/definitions/VerifiedScorecardResult` (`S102.txt:101`). The 201 response is "Successfully
-   updated ScorecardResult" (`S102.txt:107`). `VerifiedScorecardResult` (`S102.txt:387`) has four properties:
-   `result` (string, `S102.txt:390-391`), `branch` (string, `S102.txt:394-395`), `accessToken` (string,
-   `S102.txt:398-399`) and `tlogIndex` (integer, `S102.txt:402-403`).
-4. **The server reports its own build on `/version`.** The route `/version` (`S102.txt:234`) is summarized
-   "Get the build this server is running" (`S102.txt:240`), operationId `getVersion` (`S102.txt:241`), and
+   repository's OIDC verified ScorecardResult" (`corpus/source-snapshots/round-68/S102.txt:93`), operationId `postResult` (`corpus/source-snapshots/round-68/S102.txt:94`). Its
+   one parameter is the body parameter `publish` (`corpus/source-snapshots/round-68/S102.txt:97`), `"required": true` (`corpus/source-snapshots/round-68/S102.txt:99`), whose
+   schema is `#/definitions/VerifiedScorecardResult` (`corpus/source-snapshots/round-68/S102.txt:101`). The 201 response is "Successfully
+   updated ScorecardResult" (`corpus/source-snapshots/round-68/S102.txt:107`). `VerifiedScorecardResult` (`corpus/source-snapshots/round-68/S102.txt:387`) has four properties:
+   `result` (string, `corpus/source-snapshots/round-68/S102.txt:390-391`), `branch` (string, `corpus/source-snapshots/round-68/S102.txt:394-395`), `accessToken` (string,
+   `corpus/source-snapshots/round-68/S102.txt:398-399`) and `tlogIndex` (integer, `corpus/source-snapshots/round-68/S102.txt:402-403`).
+4. **The server reports its own build on `/version`.** The route `/version` (`corpus/source-snapshots/round-68/S102.txt:234`) is summarized
+   "Get the build this server is running" (`corpus/source-snapshots/round-68/S102.txt:240`), operationId `getVersion` (`corpus/source-snapshots/round-68/S102.txt:241`), and
    described as "Reports the scorecard-infra release and commit this server was built from, and the workflow
-   parser that verifies uploads." (`S102.txt:236`). Its 200 is "The server's build information"
-   (`S102.txt:244`), a `VersionInfo` (`S102.txt:408`) whose properties `version`, `commit` and `parser` are
-   described at `S102.txt:412`, `:417` and `:422`.
+   parser that verifies uploads." (`corpus/source-snapshots/round-68/S102.txt:236`). Its 200 is "The server's build information"
+   (`corpus/source-snapshots/round-68/S102.txt:244`), a `VersionInfo` (`corpus/source-snapshots/round-68/S102.txt:408`) whose properties `version`, `commit` and `parser` are
+   described at `corpus/source-snapshots/round-68/S102.txt:412`, `:417` and `:422`.
 5. **A badge route exists beside the result route.** `/projects/{platform}/{org}/{repo}/badge`
-   (`S102.txt:160`), "Get a repository's Scorecard badge" (`S102.txt:168`), takes a `style` query parameter
-   (`S102.txt:181-183`) and answers 302 "Scorecard badge for the repository" (`S102.txt:209`). These three
+   (`corpus/source-snapshots/round-68/S102.txt:160`), "Get a repository's Scorecard badge" (`corpus/source-snapshots/round-68/S102.txt:168`), takes a `style` query parameter
+   (`corpus/source-snapshots/round-68/S102.txt:181-183`) and answers 302 "Scorecard badge for the repository" (`corpus/source-snapshots/round-68/S102.txt:209`). These three
    paths are the document's entire `paths` object (measured: `grep -c '^"/' S102.txt` = 3).
 
 ### The result object
 
-`ScorecardResult` (`S102.txt:336`) has six properties, in the document's own `x-order`:
+`ScorecardResult` (`corpus/source-snapshots/round-68/S102.txt:336`) has six properties, in the document's own `x-order`:
 
 | property | type in the contract | location |
 |---|---|---|
-| `date` | string; no `format` is declared | `S102.txt:339-340` |
-| `repo` | `$ref` `#/definitions/Repo` | `S102.txt:343-345` |
-| `scorecard` | object, `$ref` `#/definitions/ScorecardVersion` | `S102.txt:347-350` |
-| `score` | number, "Aggregate score of the repository", `"x-omitempty": false` | `S102.txt:352-355` |
-| `checks` | array of `#/definitions/ScorecardCheck` | `S102.txt:358-361` |
-| `metadata` | string | `S102.txt:365-366` |
+| `date` | string; no `format` is declared | `corpus/source-snapshots/round-68/S102.txt:339-340` |
+| `repo` | `$ref` `#/definitions/Repo` | `corpus/source-snapshots/round-68/S102.txt:343-345` |
+| `scorecard` | object, `$ref` `#/definitions/ScorecardVersion` | `corpus/source-snapshots/round-68/S102.txt:347-350` |
+| `score` | number, "Aggregate score of the repository", `"x-omitempty": false` | `corpus/source-snapshots/round-68/S102.txt:352-355` |
+| `checks` | array of `#/definitions/ScorecardCheck` | `corpus/source-snapshots/round-68/S102.txt:358-361` |
+| `metadata` | string | `corpus/source-snapshots/round-68/S102.txt:365-366` |
 
-`Repo` (`S102.txt:281`) has `name` — "respository that was analyzed" (`S102.txt:285`, the source's own
-spelling) — and `commit` — "SHA1 value of the analyzed commit expressed as hexadecimal" (`S102.txt:290`), with
-the same 40-hex pattern (`S102.txt:292`). `ScorecardVersion` (`S102.txt:371`) carries the analysing tool's
-`version`, "Scorecard version used for this analysis" (`S102.txt:375`), and its `commit`, "SHA1 value of the
-Scorecard commit used for analysis" (`S102.txt:380`).
+`Repo` (`corpus/source-snapshots/round-68/S102.txt:281`) has `name` — "respository that was analyzed" (`corpus/source-snapshots/round-68/S102.txt:285`, the source's own
+spelling) — and `commit` — "SHA1 value of the analyzed commit expressed as hexadecimal" (`corpus/source-snapshots/round-68/S102.txt:290`), with
+the same 40-hex pattern (`corpus/source-snapshots/round-68/S102.txt:292`). `ScorecardVersion` (`corpus/source-snapshots/round-68/S102.txt:371`) carries the analysing tool's
+`version`, "Scorecard version used for this analysis" (`corpus/source-snapshots/round-68/S102.txt:375`), and its `commit`, "SHA1 value of the
+Scorecard commit used for analysis" (`corpus/source-snapshots/round-68/S102.txt:380`).
 
-`ScorecardCheck` (`S102.txt:297`) has `name` (string, `S102.txt:300-301`), `score` (**integer**,
-`S102.txt:304-305`, `"x-omitempty": false` at `S102.txt:306`), `reason` (string, `S102.txt:309-310`),
-`documentation` (object, `S102.txt:313-314`) whose properties are `url` (string, `S102.txt:316-317`) and
-`short` (string, `S102.txt:320-321`), and `details` (array of strings, `S102.txt:327-330`). The aggregate
-`score` on the result is typed `number` (`S102.txt:354`) while each check's `score` is typed `integer`
-(`S102.txt:305`); the contract states the types and states nothing more about either value.
+`ScorecardCheck` (`corpus/source-snapshots/round-68/S102.txt:297`) has `name` (string, `corpus/source-snapshots/round-68/S102.txt:300-301`), `score` (**integer**,
+`corpus/source-snapshots/round-68/S102.txt:304-305`, `"x-omitempty": false` at `corpus/source-snapshots/round-68/S102.txt:306`), `reason` (string, `corpus/source-snapshots/round-68/S102.txt:309-310`),
+`documentation` (object, `corpus/source-snapshots/round-68/S102.txt:313-314`) whose properties are `url` (string, `corpus/source-snapshots/round-68/S102.txt:316-317`) and
+`short` (string, `corpus/source-snapshots/round-68/S102.txt:320-321`), and `details` (array of strings, `corpus/source-snapshots/round-68/S102.txt:327-330`). The aggregate
+`score` on the result is typed `number` (`corpus/source-snapshots/round-68/S102.txt:354`) while each check's `score` is typed `integer`
+(`corpus/source-snapshots/round-68/S102.txt:305`); the contract states the types and states nothing more about either value.
 
-`Error` (`S102.txt:268`) has two properties and no descriptions: `code` (integer, `S102.txt:271-272`) and
-`message` (string, `S102.txt:275-276`).
+`Error` (`corpus/source-snapshots/round-68/S102.txt:268`) has two properties and no descriptions: `code` (integer, `corpus/source-snapshots/round-68/S102.txt:271-272`) and
+`message` (string, `corpus/source-snapshots/round-68/S102.txt:275-276`).
 
 | id | observed question | ground |
 |---|---|---|
-| G1 | What is this API for? | "API to interact with a project's published Scorecard result" (`S102.txt:13`) |
-| G2 | What does the result route return? | "Get a repository's ScorecardResult" (`S102.txt:24`); "A JSON object of the repository's ScorecardResult" (`S102.txt:37`) |
-| G3 | How is a specific commit's result selected? | "SHA1 commit hash expressed in hexadecimal format" (`S102.txt:30`), pattern `^[0-9a-fA-F]{40}$` (`S102.txt:28`) |
-| G4 | Which commit did a result analyse? | "SHA1 value of the analyzed commit expressed as hexadecimal" (`S102.txt:290`) |
-| G5 | Which field is the repository-level score? | "Aggregate score of the repository" (`S102.txt:353`) |
-| G6 | How is a result published? | "Publish a repository's OIDC verified ScorecardResult" (`S102.txt:93`) |
-| G7 | How does a reader learn the server's build? | "Get the build this server is running" (`S102.txt:240`) |
-| G8 | Which tool version produced a result? | "Scorecard version used for this analysis" (`S102.txt:375`) |
+| G1 | What is this API for? | "API to interact with a project's published Scorecard result" (`corpus/source-snapshots/round-68/S102.txt:13`) |
+| G2 | What does the result route return? | "Get a repository's ScorecardResult" (`corpus/source-snapshots/round-68/S102.txt:24`); "A JSON object of the repository's ScorecardResult" (`corpus/source-snapshots/round-68/S102.txt:37`) |
+| G3 | How is a specific commit's result selected? | "SHA1 commit hash expressed in hexadecimal format" (`corpus/source-snapshots/round-68/S102.txt:30`), pattern `^[0-9a-fA-F]{40}$` (`corpus/source-snapshots/round-68/S102.txt:28`) |
+| G4 | Which commit did a result analyse? | "SHA1 value of the analyzed commit expressed as hexadecimal" (`corpus/source-snapshots/round-68/S102.txt:290`) |
+| G5 | Which field is the repository-level score? | "Aggregate score of the repository" (`corpus/source-snapshots/round-68/S102.txt:353`) |
+| G6 | How is a result published? | "Publish a repository's OIDC verified ScorecardResult" (`corpus/source-snapshots/round-68/S102.txt:93`) |
+| G7 | How does a reader learn the server's build? | "Get the build this server is running" (`corpus/source-snapshots/round-68/S102.txt:240`) |
+| G8 | Which tool version produced a result? | "Scorecard version used for this analysis" (`corpus/source-snapshots/round-68/S102.txt:375`) |
 
 ## What the document does NOT say
 
@@ -100,17 +100,17 @@ Each item was checked against the capture; a zero is a measured `grep -c -F` ove
   vocabulary (`weight` 0). The document does not say the aggregate is 0-10, how it is computed from the
   checks, or what a check `score` of any particular value means. Score semantics, risk tiers and the check
   list stay with F35/S086 (`corpus/knowledge/openssf-scorecard-checks.md`); this entry claims none of them.
-- **No check-name enumeration.** `ScorecardCheck.name` is a bare string (`S102.txt:300-301`); the only `enum`
+- **No check-name enumeration.** `ScorecardCheck.name` is a bare string (`corpus/source-snapshots/round-68/S102.txt:300-301`); the only `enum`
   in the document is the badge `style` list (`grep -c -F '"enum"'` = 1, at the badge route).
 - **No authentication scheme.** The document declares no `securityDefinitions` and no `security` member (0 and
-  0). The POST's summary says "OIDC verified" (`S102.txt:93`, the only `OIDC` occurrence), and the body names
+  0). The POST's summary says "OIDC verified" (`corpus/source-snapshots/round-68/S102.txt:93`, the only `OIDC` occurrence), and the body names
   an `accessToken` and a `tlogIndex`; the document does not say which token, which transparency log, or how
   verification is performed.
 - **No date format.** `ScorecardResult.date` is typed string with no `format` member (`"format"` 0).
 - **No meaning for `metadata`, `details`, `branch` or `result`.** They carry a type and no description.
 - **No error-code catalogue.** `Error.code` is an integer with no description and no enumerated values.
 - **Host mismatch is the document's, not the capture's.** The bytes were served at
-  api.securityscorecards.dev while the document declares `"host": "api.scorecard.dev"` (`S102.txt:17`). The
+  api.securityscorecards.dev while the document declares `"host": "api.scorecard.dev"` (`corpus/source-snapshots/round-68/S102.txt:17`). The
   document does not say whether the two hosts serve the same data; no such claim is made here.
 
 ## Overlap and novelty
@@ -138,7 +138,7 @@ this entry is a repository-health scoring service. Neither holds the other's gro
   dropping empty lines gave 429 lines with sha256
   `6ebb8552ac3e0c4085f4a9239e29551fa1be19cebbdf99ccabb96400d8c2caa0`, byte-identical to S102.txt
   (`diff -q` silent). Receipt: `.ufo/waves/round-68/w1/ScribeF46/reopen.txt`.
-- **Edition:** the document's own `"version": "1.1.0"` (`S102.txt:15`); it states no publication date.
+- **Edition:** the document's own `"version": "1.1.0"` (`corpus/source-snapshots/round-68/S102.txt:15`); it states no publication date.
 - **Located quotes (≤25 words each, verbatim at the anchor, word counts by `wc -w`):**
   1. "API to interact with a project's published Scorecard result" (L13, 9 words).
   2. "OpenSSF Scorecard API" (L14, 3 words).

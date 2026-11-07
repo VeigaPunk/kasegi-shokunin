@@ -128,7 +128,7 @@ itself a falsifiable rule (rule 4).
   so nothing here says what Cisco pays or that Cybozu's scheme pays anything.
 - Locations are capture line numbers in `corpus/source-snapshots/round-25/`, not upstream line
   numbers; the recheck line re-reads those bytes, not the live pages.
-- Capture hazard: `S040.txt` carries U+FFFD replacement characters at L108, L193, L203, L222 and
+- Capture hazard: `corpus/source-snapshots/round-25/S040.txt` carries U+FFFD replacement characters at L108, L193, L203, L222 and
   L479 (cp1252 bytes decoded with `errors=replace`). No quote in this entry crosses those lines, so
   no quote depends on a mangled byte; the coordination quote stops at the NPSA name (L190) and does
   not reach L193.
