@@ -1,0 +1,47 @@
+{
+ "round": 90,
+ "lane": "kasegi",
+ "base": "6088c3eb0c29040415c69e7b5fb91e110480ab26",
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability (lowest non-retired axis, score 4; internal-citation repoint, score not claimed to move)",
+   "surface": "corpus/knowledge/triage-thresholds.md citation sites; counter successor pins every reading to the measured revision (r89 closure routed defect 1)",
+   "statement": "Tranche 5: the 34 citing sites in corpus/knowledge/triage-thresholds.md that the round-89 non-author seat ReviewC1Labels labelled WRONG with a supported range (tranche5-labels.tsv at 02b6d88f), minus 4 sites whose label reason says the row content itself is stale or unsupported (lines 152,155,249,438; excluded.tsv), are repointed per site to the labelled range. Pinned knowledge-scope meter 812/1827 at base -> exactly 843/1829 at the landing commit.",
+   "predicate": "P1: knowledge-meter.py over --base-rev BASE --after-rev LANDING prints KNOWLEDGE-METER-RESULT pass rc=0 with M0 base=812/1827, M1 after=843/1829, M3, M4, M5, M6 (map sha), M9 (34/34 rows bound to WRONG labels) all pass. P2: pins below equal. P3: the landing commit changes exactly corpus/knowledge/triage-thresholds.md (git diff-tree --no-commit-id --name-only -r LANDING prints 1 path).",
+   "counter": ".ufo/waves/round-90/c1/knowledge-meter.py",
+   "counter_sha256": "8f4ac21823979adb4096977ede78140eeade19baaa9072f546a5d6dd703836d4",
+   "map": ".ufo/waves/round-90/c1/repair-map.tsv",
+   "map_sha256": "7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3",
+   "excluded": ".ufo/waves/round-90/c1/excluded.tsv",
+   "labels": ".ufo/waves/round-89/w1/ReviewC1Labels-receipts/tranche5-labels.tsv@02b6d88f1c059e2f881fd07c73834f502b4f212d",
+   "command": "python3 -B .ufo/waves/round-90/c1/knowledge-meter.py --lane <lane> --base-rev 6088c3eb0c29040415c69e7b5fb91e110480ab26 --after-rev <landing> --map .ufo/waves/round-90/c1/repair-map.tsv --labels-rev 02b6d88f1c059e2f881fd07c73834f502b4f212d --base-target 812/1827 --target 843/1829 --map-sha256 7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3 --work <scratch>",
+   "kill": "Any limb FAIL at the landing, or P3 names a second path: C1 NOT VERIFIED; no target narrowing, no re-labelling after landing.",
+   "controls": ".ufo/waves/round-90/controls/c1-controls-r90.txt (candidate PASS; no-work, shift+1, superset (excluded sites applied), unlabelled CORRECT site, working-tree-only all FAIL; env receipt r89 meter 815 live / 814 clone vs r90 meter 812 / 812)",
+   "do_nothing": "no-work control: after=812/1827, M1 and M3 FAIL"
+  },
+  {
+   "id": "C2",
+   "axis": "coverage (score 8 held); capability acquisition capture-intake-gate (sourced: S131)",
+   "surface": "new operation: capture-source.py refuses, before writing, a snapshot whose bytes carry credential material (the considerthese/2026-10-24.md:49-52 intake-gate proposal, routed four rounds)",
+   "statement": "At the landing commit corpus/instruments/capture-source.py scans every capture with capture-secret-scan (imported) under its lane-relative --out path before opening the file; a hit prints INTAKE-REFUSED (shape, line, never the value), writes nothing, leaves an existing file byte-identical and exits 3; an unloadable scanner or bad allowlist refuses (fail closed); an allowlist row lets one documented value through at one path; clean captures are byte-identical to the base instrument's.",
+   "predicate": "P1: capability-check.py --rev LANDING --base-rev BASE (no --instrument override) prints CAPABILITY-CHECK-RESULT pass rc=0 with G0-G6 and P (instrument sha256 = the frozen candidate's) pass, at a printed run-time seed and at seeds 9090 and 1. P2: landed capture-source.py sha256 equals the frozen candidate sha256. P3: the landing commit changes only corpus/instruments/capture-source.py, corpus/instruments/README.md and SCORECARD.md.",
+   "counter": ".ufo/waves/round-90/c2/capability-check.py",
+   "counter_sha256": "339c98019f3be9ed37c316025e9a05c749d0c997734a122ed434c9690c3e825d",
+   "candidate": ".ufo/waves/round-90/c2/candidate/capture-source.py",
+   "candidate_sha256": "0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf",
+   "command": "python3 -B .ufo/waves/round-90/c2/capability-check.py --lane <lane> --rev <landing> --base-rev 6088c3eb0c29040415c69e7b5fb91e110480ab26 --work <scratch> --instrument-sha256 0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf [--seed N]",
+   "kill": "Any limb FAIL at the landing at any of the three seeds, or P3 names another path: C2 NOT VERIFIED.",
+   "controls": ".ufo/waves/round-90/controls/c2-controls-r90.txt (candidate PASS; no-work base instrument and forgeries F1 blanket, F2 partial (AWS shapes only), F3 write-then-check, F4 allowlist ignored, F5 fail-open, F6 leaky refusal line all FAIL)",
+   "do_nothing": "no-work control: base instrument writes all 11 plants (G1), destroys the existing file (G2), has no --allow (G4), no gate to fail closed (G5)"
+  }
+ ],
+ "frontier": {
+  "sourced_claim": "C2 on S131 (opened 2026-11-07, capture corpus/source-snapshots/round-90/S131.txt)",
+  "rejected": "S132",
+  "census_start": ".ufo/waves/round-90/controls/census-start-r90.txt"
+ },
+ "declined": {
+  "capture-secret-scan counter successor (M89-2/M89-3), Azure skdutid, composite token triage-thresholds.md:457, R140 checker for 5-column labels": "routed to round 91; C2 takes the intake gate whose flip condition (a round without a capture-secret-scan claim) holds this round"
+ }
+}

@@ -1,0 +1,92 @@
+== candidate (expect PASS)
+APPLY corpus/knowledge/triage-thresholds.md sites=34
+KNOWLEDGE-METER base=812/1827 after=843/1829 base_target=812/1827 target=843/1829 sites=34 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 pass after=843/1829
+LIMB M3 pass same_files=True bad_lines=0 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=34 unbound=none
+LIMB M6 pass sha256=7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3
+KNOWLEDGE-METER-RESULT pass rc=0
+control_rc=0
+== no-work: after = base (expect FAIL)
+KNOWLEDGE-METER base=812/1827 after=812/1827 base_target=812/1827 target=843/1829 sites=34 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 FAIL after=812/1827
+LIMB M3 FAIL same_files=True bad_lines=32 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=34 unbound=none
+LIMB M6 pass sha256=7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3
+KNOWLEDGE-METER-RESULT fail rc=1
+control_rc=1
+== shift-forgery: every value anchor +1 (expect FAIL)
+APPLY corpus/knowledge/triage-thresholds.md sites=34
+KNOWLEDGE-METER base=812/1827 after=843/1829 base_target=812/1827 target=843/1829 sites=34 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 pass after=843/1829
+LIMB M3 pass same_files=True bad_lines=0 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 FAIL rows=34 unbound=triage-thresholds.md:236,triage-thresholds.md:251,triage-thresholds.md:261,triage-thresholds.md:262,triage-thresholds.md:263,triage-thresholds.md:264,triage-thresholds.md:265,triage-thresholds.md:266,triage-thresholds.md:267,triage-thresholds.md:268,triage-thresholds.md:269,triage-thresholds.md:270,triage-thresholds.md:278,triage-thresholds.md:279,triage-thresholds.md:261,triage-thresholds.md:443,triage-thresholds.md:270,triage-thresholds.md:313,triage-thresholds.md:371,triage-thresholds.md:372,triage-thresholds.md:310,triage-thresholds.md:311,triage-thresholds.md:312,triage-thresholds.md:456,triage-thresholds.md:90,triage-thresholds.md:148,triage-thresholds.md:143,triage-thresholds.md:145,triage-thresholds.md:442,triage-thresholds.md:147,triage-thresholds.md:158,triage-thresholds.md:439,triage-thresholds.md:157,triage-thresholds.md:156
+LIMB M6 FAIL sha256=e9dacbafff02c7bdc98283c74770ba6e95349082d097dd1f7279ac03d17573aa
+KNOWLEDGE-METER-RESULT fail rc=1
+control_rc=1
+== superset-forgery: the 4 excluded sites applied too (expect FAIL)
+APPLY corpus/knowledge/triage-thresholds.md sites=38
+KNOWLEDGE-METER base=812/1827 after=846/1829 base_target=812/1827 target=843/1829 sites=38 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 FAIL after=846/1829
+LIMB M3 pass same_files=True bad_lines=0 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=38 unbound=none
+LIMB M6 FAIL sha256=e5416b8b726e1a5c1d8a9d5f67f78857b23606ca0a4abc420f3cdf87443dadf2
+KNOWLEDGE-METER-RESULT fail rc=1
+control_rc=1
+== unlabelled-forgery: a CORRECT-labelled site repointed (expect FAIL)
+APPLY corpus/knowledge/triage-thresholds.md sites=35
+KNOWLEDGE-METER base=812/1827 after=844/1829 base_target=812/1827 target=843/1829 sites=35 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 FAIL after=844/1829
+LIMB M3 pass same_files=True bad_lines=0 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 FAIL rows=35 unbound=triage-thresholds.md:458
+LIMB M6 FAIL sha256=b25431cc9aad564f65c2a8c1310a6032dbf95c9aaf9d73dec47ca14dd77ed560
+KNOWLEDGE-METER-RESULT fail rc=1
+control_rc=1
+== working-tree-only: candidate edit left uncommitted, after = base (expect FAIL)
+APPLY corpus/knowledge/triage-thresholds.md sites=34
+KNOWLEDGE-METER base=812/1827 after=812/1827 base_target=812/1827 target=843/1829 sites=34 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=812/1827
+LIMB M1 FAIL after=812/1827
+LIMB M3 FAIL same_files=True bad_lines=32 key_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=34 unbound=none
+LIMB M6 pass sha256=7c420856c3347d362bfc419030aa474cbc253975f3026bc13355b654055fb8b3
+KNOWLEDGE-METER-RESULT fail rc=1
+control_rc=1
+== environment receipt (lesson M90-1): b9fcf005, live lane vs clean clone
+-- lane=live
+r89-meter KNOWLEDGE-METER rev=b9fcf005 rate=815/1827 pct=44.61 mirror_absent=True
+r90-meter KNOWLEDGE-METER rev=b9fcf005 rate=812/1827 pct=44.44 mirror_absent=True pinned=archive
+r90-meter HOST rev abs_tokens=127 abs_nongone=23
+-- lane=clean-clone
+r89-meter KNOWLEDGE-METER rev=b9fcf005 rate=814/1827 pct=44.55 mirror_absent=True
+r90-meter KNOWLEDGE-METER rev=b9fcf005 rate=812/1827 pct=44.44 mirror_absent=True pinned=archive
+r90-meter HOST rev abs_tokens=127 abs_nongone=23
