@@ -1,0 +1,182 @@
+Refreshing user access tokens - GitHub Docs Skip to main content
+Skip to content
+GitHub Docs
+Search or ask Copilot/
+Menu
+Collapse sidebar
+Expand sidebar
+Home
+Apps
+Creating GitHub Apps
+Authenticate with a GitHub App
+Refresh user access tokens
+Apps
+Overview
+Using GitHub Apps
+About using apps
+Install from Marketplace for user
+Install from Marketplace for org
+Install from third party
+Install your own app
+Request for org
+Authorize
+Approve new permissions
+Review your authorizations
+Review installations
+Privileged apps
+Creating GitHub Apps
+About creating GitHub Apps
+About creating apps
+GitHub App versus other options
+Best practices
+Migrate from OAuth apps
+Registering a GitHub App
+Register a GitHub App
+Callback URLs
+Setup URL
+Permissions
+Webhooks
+Visibility
+Rate limits
+Custom badge
+Authenticate with a GitHub App
+About authentication
+Authenticate as an app
+Authenticate as an installation
+Authenticate on behalf of users
+Manage private keys
+Generate a JWT
+Generate an installation access token
+Generate a user access token
+Refresh user access tokens
+Authenticate in Actions workflow
+Writing code for a GitHub App
+About writing GitHub App code
+Quickstart
+Respond to webhooks
+Build a "Login" button
+Build a CLI
+Build CI checks
+Sharing GitHub Apps
+Share your app
+Share with GHES
+App manifest
+App query parameters
+Maintaining GitHub Apps
+Modify app settings
+Activate optional features
+GitHub App managers
+Manage allowed IP addresses
+Suspend an installation
+Transfer ownership
+Delete your app
+GitHub Marketplace
+Overview
+About GitHub Marketplace for apps
+About marketplace badges
+Publisher verification
+Create Marketplace apps
+Listing requirements
+Security best practice
+Customer experience best practice
+View listing metrics
+View listing transactions
+Marketplace API usage
+REST API
+Webhook events
+Testing your app
+New purchases & free trials
+Handling plan changes
+Plan cancellations
+List an app on the Marketplace
+Draft an app listing
+Write listing descriptions
+Set listing pricing plans
+Webhooks for plan changes
+Submit your listing
+Delete your listing
+Sell apps on the Marketplace
+Pricing plans for apps
+Billing customers
+Receive payment
+OAuth apps
+Using OAuth apps
+Install app personal account
+Install app organization
+Authorizing OAuth apps
+Review OAuth apps
+Third-party applications
+Privileged apps
+Building OAuth apps
+GitHub Apps & OAuth apps
+Rate limits
+Creating an OAuth app
+Authenticate with an OAuth app
+Authorizing OAuth apps
+Scopes for OAuth apps
+Create custom badges
+Best practices
+Maintaining OAuth apps
+Modifying an OAuth app
+Activate optional features
+Transfer ownership
+Troubleshoot authorization
+Troubleshoot token request
+Deleting an OAuth app
+OAuth 2.0 and OIDC Discovery documents
+In this article
+Refreshing user access tokens
+To enforce regular token rotation and reduce the impact of a compromised token, you can configure your GitHub App to use user access tokens that expire.
+Copy markdown
+In this article
+About user access tokens that expire
+Configuring your app to use user access tokens that expire
+Refreshing a user access token with a refresh token
+About user access tokens that expire
+Note
+User access tokens that expire are currently an optional feature and are subject to change. For more information, see Expiring user-to-server access tokens for GitHub Apps.
+To enforce regular token rotation and reduce the impact of a compromised token, you can configure your GitHub App to use user access tokens that expire. If your app uses user access tokens that expire, then you will receive a refresh token when you generate a user access token. The user access token expires after eight hours, and the refresh token expires after six months. For more information, see Generating a user access token for a GitHub App.
+You can use the refresh token to generate a new user access token and a new refresh token. Once you use a refresh token, that refresh token and the old user access token will no longer work.
+If your refresh token expires before you use it, you can regenerate a user access token and refresh token by sending users through the web application flow or device flow. For more information, see Generating a user access token for a GitHub App.
+To test and gradually roll out support for expiring tokens, you can opt in for an individual user authorization by requesting the offline_access scope. When you request offline_access, you will receive an expiring user access token and a refresh token even if your app is configured not to use expiring user access tokens.
+The scope parameter does not grant permissions to a GitHub App. The only supported value is offline_access, which forces the user access token to expire.
+Configuring your app to use user access tokens that expire
+When you create your app, expiration of user access tokens is enabled unless you opt out. For more information, see Registering a GitHub App. You can also configure this setting after your app has been created.
+In the upper-right corner of any page on GitHub, click your profile picture.
+Navigate to your account settings.
+For an app owned by a personal account, click Settings.
+For an app owned by an organization:
+Click Your organizations.
+To the right of the organization, click Settings.
+In the left sidebar, click Developer settings.
+In the left sidebar, click GitHub Apps.
+Next to the GitHub App that you want to modify, click Edit.
+In the GitHub Apps settings sidebar, click Optional Features.
+Next to "User-to-server token expiration", click Opt-in or Opt-out. This setting may take a couple of seconds to apply.
+GitHub recommends that you opt in to this feature for improved security.
+If you re-enable expiring user access tokens after you've already signed in users and gotten their access token, those pre-existing user access tokens will not expire. You should delete these tokens by using the DELETE /applications/CLIENT_ID/token endpoint or have the users reauthenticate so that they get an expiring token. For more information, see REST API endpoints for OAuth authorizations.
+Refreshing a user access token with a refresh token
+Make a POST request to this URL, along with the following query parameters: https://github.com/login/oauth/access_token
+Query parameterTypeDescription
+client_idstringRequired. The client ID for your GitHub App. The client ID is different from the app ID. You can find the client ID on the settings page for your app.
+client_secretstringRequired unless the user access token was generated using the device flow. The client secret for your GitHub App.
+grant_typestringRequired. The value must be "refresh_token".
+refresh_tokenstringRequired. The refresh token that you received when you generated a user access token.
+GitHub will give a response that includes the following parameters:
+Response parameterTypeDescription
+access_tokenstringThe user access token. The token starts with ghu_.
+expires_inintegerThe number of seconds until access_token expires. If the token doesn't expire, this parameter will be omitted. The value will always be 28800 (8 hours).
+refresh_tokenstringThe refresh token. If the access token doesn't expire, this parameter will be omitted. The token starts with ghr_.
+refresh_token_expires_inintegerThe number of seconds until refresh_token expires. If the access token doesn't expire, this parameter will be omitted. The value will always be 15897600 (6 months).
+scopestringThe scopes that the token has. This value will always be an empty string. Unlike a traditional OAuth token, the user access token is limited to the permissions that both your app and the user have.
+token_typestringThe type of token. The value will always be bearer.
+Back to top
+Help and support
+Was this Doc helpful?
+YesNo
+Help us make GitHub Docs great!
+All Docs are open source. See something that's wrong or unclear? Submit a pull request.
+Make a contribution
+Still need help?
+Ask the GitHub communityContact supportExpert servicesBlog
+GitHub Inc. © 2026TermsPrivacyStatusPricing

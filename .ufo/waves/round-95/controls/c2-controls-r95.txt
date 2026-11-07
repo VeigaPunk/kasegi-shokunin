@@ -1,0 +1,19 @@
+# round-95 C2 controls: the do-nothing instrument (round-94 tip 0) vs the candidate
+# base rev 9ef0126cc60b7f62baafd04f3e52c45e2a8e2f10 (round-94 tip)
+CAPABILITY-CHECK-REV rev=9ef0126cc60b7f62baafd04f3e52c45e2a8e2f10 seed=4242
+LIMB K1 FAIL selftest=pass cases=101
+LIMB K2 ok rc=0 scanned=2476 hits=0 allowed=24 unused_allow=0
+LIMB K3 FAIL rc=0 hits=0 missing=[('2ib00wtm87b6-p1.txt', 'github-refresh-token'), ('2ib00wtm87b6-p2.json', 'gitlab-jwt-token'), ('2ib00wtm87b6-p3.txt', 'gitlab-jwt-token'), ('2ib00wtm87b6-p4.html', 'gitlab-jwt-token'), ('2ib00wtm87b6-p5.txt', 'gitlab-jwt-token'), ('2ib00wtm87b6-p6.txt', 'github-refresh-token')] extra=none
+LIMB K4 ok base_new_shape_hits=0 old_shapes_missing=none
+LIMB K5 FAIL rows=1 last=87
+LIMB K6 ok rc=1 shapes=aws-access-key-id,aws-sts-session-token,credential
+CAPABILITY-CHECK-RESULT fail rc=1
+# candidate rev f348c6fc708f47e492c74258330a05c157b661e1 (clone: candidate-scanner + candidate-row + allow row)
+CAPABILITY-CHECK-REV rev=f348c6fc708f47e492c74258330a05c157b661e1 seed=4242
+LIMB K1 ok inst_sha=pin-ok gate_sha=pin-ok selftest=pass cases=115
+LIMB K2 ok rc=0 scanned=2476 hits=0 allowed=26 unused_allow=0
+LIMB K3 ok rc=1 hits=6 missing=none extra=none
+LIMB K4 ok base_new_shape_hits=0 old_shapes_missing=none
+LIMB K5 ok rows=1 last=87
+LIMB K6 ok rc=1 shapes=aws-access-key-id,aws-sts-session-token,credential
+CAPABILITY-CHECK-RESULT pass rc=0
