@@ -12,7 +12,9 @@ claim-package gate's R-NOSECRET rule would have refused those bytes, but it
 scans packages, and nothing scanned a capture before its first commit.
 
 Scope. `--rev` reads the git tree at REV (no checkout) and scans only
-capture-class paths: anything under corpus/source-snapshots/, any path with a
+capture-class paths: anything under corpus/source-snapshots/, anything under a
+practice package's evidence directory `corpus/practice/<pkg>/evidence/` (round
+88: practice packages keep copies of their captures there), any path with a
 directory segment ending in `-receipts`, and any file whose name starts with
 `live-` (the shapes captures and seat receipts take in this lane). `--files`
 scans exactly the named working-tree files, whatever their path: run it on
@@ -27,6 +29,20 @@ claim-package-check.py beside this file, so the two never drift), plus:
   aws-access-key-id      `AKIA`/`ASIA` + 16 upper-case letters or digits: the IAM
                          unique-ID prefixes for an access key and a temporary
                          (AWS STS) access key (S125 lines 318-331).
+  gcs-signed-url-signature  (round 88) `X-Goog-Signature=<hex>` (query string)
+                         or `X-Goog-Signature: <hex>` with 64+ hex digits: a Cloud
+                         Storage V4 signed URL's signature; "Anyone in possession
+                         of the signed URL can use it while it's active" (S126
+                         lines 423-424; parameter, lines 487-488).
+  azure-sas-signature    (round 88) a `sig=<value>` query parameter of 40+
+                         base64/percent-encoded characters in the same query as
+                         an `sv=YYYY-MM-DD` storage-version parameter, either
+                         order, separated by `&`, `&amp;` or JSON `\\u0026`: an
+                         Azure Storage SAS signature, an HMAC-SHA256 "encoded by
+                         using Base64 encoding" (S127 lines 402-404, 605, 638-639).
+Known limits: GCS V2 `Signature=` and CloudFront `Signature=`/`Key-Pair-Id=`
+URLs, percent-encoded parameter names, and gzip/UTF-16/base64-wrapped captures
+are not detected.
 The documented example key id AKIAIOSFODNN7EXAMPLE (S124 line 409) is allowed.
 
 Allowlist. The gate's generic shapes also match non-secrets in captures (a
@@ -60,6 +76,16 @@ AWS_PATTERNS = (
         rb"(?i)X-Amz-Security-Token(?:=|\\?[\"']?\s*:\s*\\?[\"']?)[^&\s\"'<>\\]{20,}")),
     ("aws-access-key-id", re.compile(rb"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
 )
+_SEP = rb"(?:&amp;|&|\\u0026)"
+_PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,6}=[^&\s\"'<>\\]*){0,20}?"
+_SIG = rb"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}"
+_SV = rb"sv=\d{4}-\d{2}-\d{2}"
+CLOUD_PATTERNS = (
+    ("gcs-signed-url-signature", re.compile(
+        rb"(?i)X-Goog-Signature(?:=|\\?[\"']?\s*:\s*\\?[\"']?)[0-9a-f]{64,}")),
+    ("azure-sas-signature", re.compile(
+        rb"(?i)(?<![A-Za-z0-9_])(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
+)
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -92,12 +118,13 @@ def gate_patterns():
 
 
 def patterns():
-    return gate_patterns() + AWS_PATTERNS
+    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS
 
 
 def is_capture_path(rel):
     parts = rel.split("/")
     return (rel.startswith("corpus/source-snapshots/")
+            or (len(parts) >= 5 and parts[:2] == ["corpus", "practice"] and parts[3] == "evidence")
             or any(p.endswith("-receipts") for p in parts[:-1])
             or parts[-1].startswith("live-"))
 
@@ -189,6 +216,8 @@ def scan_files(paths, pats, allow):
 
 def selftest(pats):
     token = b"IQoJb3JpZ2luX2VjEXAMPLEFAKESESSIONTOKENVALUE0123456789abcdefABCDEF"
+    gsig = b"0123456789abcdef" * 8
+    asig = b"FAKEsasSIGNATUREfake0123456789abcdefABCDEFG%3D"
     cases = [
         ("presigned-sts", b'{"url":"https://x.s3.amazonaws.com/a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGYBPQ6EXAMPLE12%2F20261107%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Security-Token=' + token + b'&X-Amz-Signature=ab"}', {"aws-sts-session-token", "aws-access-key-id", "credential"}),
         ("json-escaped-sts", b'"X-Amz-Security-Token=' + token + b'\\u0026X-Amz-Signature=1"', {"aws-sts-session-token", "credential"}),
@@ -201,6 +230,17 @@ def selftest(pats):
         ("akid-too-long", b"AKIAZZZZZZZZZZZZZZZZZ", set()),
         ("gate-private-key", b"-----BEGIN OPENSSH PRIVATE KEY-----", {"private-key"}),
         ("plain-prose", b"The session token is required when temporary credentials are used.", set()),
+        ("gcs-v4-query", b"https://storage.googleapis.com/b/o.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=svc%40p.iam.gserviceaccount.com%2F20261107%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261107T000000Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=" + gsig + b'"', {"gcs-signed-url-signature"}),
+        ("gcs-json-key", b'{"X-Goog-Signature": "' + gsig + b'"}', {"gcs-signed-url-signature"}),
+        ("gcs-doc-wrapped", b"X-Goog-SignedHeaders=host&X-Goog-Signature=247a2aa45f16\n9edf4d187d54e7cc46e4731b1e6273242c4f4c39a1d2507a0e58706e25e3a85a7dbb891d62afa849", set()),
+        ("gcs-short", b"X-Goog-Signature=0123456789abcdef0123456789abcdef", set()),
+        ("azure-sv-first", b"https://a.blob.core.windows.net/c/b.txt?sp=r&st=2026-11-07T00:00:00Z&se=2026-11-08T00:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=" + asig, {"azure-sas-signature"}),
+        ("azure-sig-first", b"https://a.blob.core.windows.net/c/b.txt?sig=" + asig + b"&se=2026-11-08T00:00:00Z&sv=2022-11-02&sp=r", {"azure-sas-signature"}),
+        ("azure-json-escaped", b'"https://a.blob.core.windows.net/c/b.txt?sv=2022-11-02\\u0026sr=b\\u0026sig=' + asig + b'"', {"azure-sas-signature"}),
+        ("azure-html-amp", b'<a href="https://a.blob.core.windows.net/c/b.txt?sv=2022-11-02&amp;sr=b&amp;sig=' + asig + b'">', {"azure-sas-signature"}),
+        ("azure-doc-placeholder", b"https://myaccount.blob.core.windows.net/sascontainer/blob1.txt?sp=rw&spr=https&sv=2022-11-02&sr=b&sig=<signature>", set()),
+        ("azure-sig-without-sv", b"https://example.com/x?id=1&sig=" + asig, set()),
+        ("azure-short-sig", b"https://a.blob.core.windows.net/c?sv=2022-11-02&sig=abcdEFGH1234", set()),
     ]
     bad = 0
     for name, data, want in cases:
@@ -212,6 +252,9 @@ def selftest(pats):
              (".ufo/waves/round-85/w1/ScoutSources-receipts/live-LEAD-x.json", True),
              (".ufo/waves/round-87/w1/live-capture.html", True),
              (".ufo/waves/round-43/w1/SentSecrets.md", False),
+             ("corpus/practice/curl-ibb-h1-1997312/evidence/S122.txt", True),
+             ("corpus/practice/curl-ibb-h1-1997312/report.md", False),
+             ("corpus/practice/evidence/x.txt", False),
              ("corpus/knowledge/x.md", False)]
     for p, want in paths:
         ok = is_capture_path(p) == want
