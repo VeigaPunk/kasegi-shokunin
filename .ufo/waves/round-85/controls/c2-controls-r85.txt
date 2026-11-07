@@ -1,0 +1,62 @@
+counter_sha256=a6f238022d0d263403b46221fa9ca959b91c8941157c3275eb0ae5ae76a6814d gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+== control donothing: package path absent (expected fail)
+LIMB E1 FAIL gate_rc=2
+LIMB E2 FAIL read:FileNotFoundError
+LIMB E3 FAIL read:FileNotFoundError
+LIMB E4 FAIL read
+LIMB E5 FAIL rel=corpus/practice/curl-h1-1913733 log=False shonen=False
+E2E-RESULT fail limbs=5 rc=1
+rc=1
+== control exemplar-copy: r43 shape-valid curl exemplar (expected fail: E1 pass, E2/E3/E5 fail)
+LIMB E1 pass gate_rc=0
+LIMB E2 FAIL bound=none
+LIMB E3 FAIL section=False bad=severity,reward-at-disclosure,platform-bounty-flag,reward-current-policy,cvss,kev,cve
+LIMB E4 FAIL quotes=0 missing=0
+LIMB E5 FAIL rel=../../../../../fast/scratch/hyaku/kasegi-r85/l1/c2c/exemplar log=False shonen=False
+E2E-RESULT fail limbs=5 rc=1
+rc=1
+== pricing control positive-pricing (expected pass)
+LIMB E3 pass section=True bad=none
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT pass limbs=2 rc=0
+rc=0
+== pricing control forged-severity (expected fail)
+LIMB E3 FAIL section=True bad=severity
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-reward-exemplar (expected fail)
+LIMB E3 FAIL section=True bad=reward-at-disclosure
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-platform-flag (expected fail)
+LIMB E3 FAIL section=True bad=platform-bounty-flag
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-current-policy (expected fail)
+LIMB E3 FAIL section=True bad=reward-current-policy
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-cvss (expected fail)
+LIMB E3 FAIL section=True bad=cvss
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-kev (expected fail)
+LIMB E3 FAIL section=True bad=kev
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-cve (expected fail)
+LIMB E3 FAIL section=True bad=cve
+LIMB E4 pass quotes=3 missing=0
+E2E-RESULT fail limbs=2 rc=1
+rc=1
+== pricing control forged-quote (expected fail)
+LIMB E3 pass section=True bad=none
+LIMB E4 FAIL quotes=3 missing=1
+E2E-RESULT fail limbs=2 rc=1
+rc=1

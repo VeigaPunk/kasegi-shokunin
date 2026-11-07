@@ -1,0 +1,58 @@
+base_rev=bc722e540c93b48ff159454b65a0f9f4630db1ed map_sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944 skill_base_sha256=8df45d27e36e5dac62cdd7f56df6f6f2f85333d972be45fee0f751b8381b4104
+SKILL-METER rate=158/741 pct=21.32 gone=583 mirror_absent=True
+positive-derived target=167/732
+== control donothing (expected: fail)
+SKILL-METER base=158/741 after=158/741 target=167/732 mirror_absent=True
+LIMB M1 FAIL after=158/741
+LIMB M2 FAIL removed=0 keys=18 stray_removed=0 stray_added=0 unrepaired=18
+LIMB M3 FAIL linecount_equal=True bad_lines=17 keys_hit=18
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT fail rc=1
+rc=1
+== control pad-resolving-cites (expected: fail)
+SKILL-METER base=158/741 after=168/751 target=167/732 mirror_absent=True
+LIMB M1 FAIL after=168/751
+LIMB M2 FAIL removed=0 keys=18 stray_removed=0 stray_added=10 unrepaired=18
+LIMB M3 FAIL linecount_equal=False bad_lines=0 keys_hit=0
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT fail rc=1
+rc=1
+delete-gone de-cited 18
+== control delete-gone-cites (expected: fail)
+SKILL-METER base=158/741 after=158/723 target=167/732 mirror_absent=True
+LIMB M1 FAIL after=158/723
+LIMB M2 FAIL removed=18 keys=18 stray_removed=18 stray_added=0 unrepaired=18
+LIMB M3 FAIL linecount_equal=True bad_lines=35 keys_hit=18
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT fail rc=1
+rc=1
+== control wrong-target (expected: fail)
+SKILL-METER base=158/741 after=168/733 target=167/732 mirror_absent=True
+LIMB M1 FAIL after=168/733
+LIMB M2 FAIL removed=18 keys=18 stray_removed=0 stray_added=1 unrepaired=0
+LIMB M3 FAIL linecount_equal=True bad_lines=1 keys_hit=18
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT fail rc=1
+rc=1
+== control partial-9-of-18 (expected: fail)
+SKILL-METER base=158/741 after=164/738 target=167/732 mirror_absent=True
+LIMB M1 FAIL after=164/738
+LIMB M2 FAIL removed=9 keys=18 stray_removed=0 stray_added=0 unrepaired=9
+LIMB M3 FAIL linecount_equal=True bad_lines=7 keys_hit=18
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT fail rc=1
+rc=1
+== control positive (expected: pass)
+SKILL-METER base=158/741 after=167/732 target=167/732 mirror_absent=True
+LIMB M1 pass after=167/732
+LIMB M2 pass removed=18 keys=18 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass linecount_equal=True bad_lines=0 keys_hit=18
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT pass rc=0
+rc=0

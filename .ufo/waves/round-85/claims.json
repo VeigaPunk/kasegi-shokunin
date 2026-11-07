@@ -1,0 +1,70 @@
+{
+ "round": 85,
+ "lane": "kasegi",
+ "attempt": 1,
+ "base": "bc722e540c93b48ff159454b65a0f9f4630db1ed",
+ "history_read": [
+  "corpus/lessons/round-84-verifier-spotcheck.md (routed defects 1-6; defect 3: depth:verifiability nominal since r70, r85 must deliver a resolve.py/anchorcheck.py-read move or a recorded retire/split)",
+  "/home/vgpnk/Projects/shokunin/.ufo/reports/round-84/kasegi.md",
+  "corpus/lessons/round-84.md",
+  "SCORECARD.md Round 84 'Planned round 85'",
+  "considerthese/2026-10-26.md proposal 2"
+ ],
+ "controls": {
+  "census_start": ".ufo/waves/round-85/controls/census-start-r85.txt",
+  "c1": [
+   ".ufo/waves/round-85/controls/c1-controls-r85.sh",
+   ".ufo/waves/round-85/controls/c1-controls-r85.txt"
+  ],
+  "c2": [
+   ".ufo/waves/round-85/controls/c2-controls-r85.sh",
+   ".ufo/waves/round-85/controls/c2-controls-r85.txt"
+  ],
+  "base_census_of_record_rerun": ".ufo/waves/round-85/controls/census-of-record-base-r85.txt"
+ },
+ "instruments": {
+  ".ufo/waves/round-85/c1/skill-meter.py": "89c5d47b4dc04df90129d5a3bd443bb877f22ba9f1565008daa7024557634ed6",
+  ".ufo/waves/round-85/c1/apply-map.py": "8eb22d7db99b820ab8209106f9db634bf5ef88aeb6dbb271e3ec514122b98c93",
+  ".ufo/waves/round-85/c1/repair-map.json": "b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944",
+  ".ufo/waves/round-85/c2/e2e-check.py": "a6f238022d0d263403b46221fa9ca959b91c8941157c3275eb0ae5ae76a6814d",
+  "corpus/instruments/resolve.py": "db5e0767c60ce00ea6c9cfb4ddd3e159e9a86525e5c8417c4a0a73e2e6d45667",
+  "corpus/instruments/claim-package-check.py": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6"
+ },
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "axis_score": "4 (lowest non-retired; the claim reads the scored meter itself, resolve.py SKILL.md scope; the integer score is not claimed to move)",
+   "statement": "Repoint the 18 bare SKILL.md citations in .ufo/waves/round-85/c1/repair-map.json (each a basename that resolve.py classifies GONE on this host and that names exactly one tracked lane file outside .ufo/) to their full lane paths, so the resolve.py SKILL.md meter moves from 158/741 (21.32%) to exactly 167/732 (22.81%) with no other SKILL.md citation added, removed or changed.",
+   "counting_command": "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && git show bc722e540c93b48ff159454b65a0f9f4630db1ed:SKILL.md > $S/base.md && python3 -B .ufo/waves/round-85/c1/skill-meter.py --lane . --base $S/base.md --after SKILL.md --map .ufo/waves/round-85/c1/repair-map.json --target 167/732 --map-sha256 b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944 --work $S/w",
+   "predicate": {
+    "P1": "the counting command over the landing commit's SKILL.md, run in a lane checkout that has .git (the census-of-record root), prints 'SKILL-METER base=158/741 after=167/732 target=167/732', LIMB M1-M5 pass, 'SKILL-METER-RESULT pass rc=0', exit 0.",
+    "P2": "frozen instrument bytes at landing equal the sha256 values in this file's instruments block.",
+    "P3": "git diff <freeze> <landing> -- SKILL.md touches only the lines that hold a repair-map key (M3 is the machine form).",
+    "P4": "python3 corpus/instruments/density.py SKILL.md --label x mean density at landing is >= the base value (no depth:density harm)."
+   },
+   "kill_rule": "Any of P1-P4 false at the landing commit -> C1 fails; no target, map or limb is changed after the freeze.",
+   "do_nothing": "base SKILL.md as --after: 158/741, M1/M2/M3 FAIL, rc 1 (controls/c1-controls-r85.txt). Forgeries also fail rc 1: pad with 18 resolving cites (168/751), de-cite 18 lost-tree GONE tokens (158/723), wrong target resolve.py->density.py (168/733), partial 9/18 (164/738). Positive: the frozen map applied gives 167/732, rc 0.",
+   "host_note": "mirror roots ~/Projects/bounties and ~/Projects/the-bounty-hunter are absent on this Linux host (mirror_absent=True); classification is host-dependent and is measured here."
+  },
+  {
+   "id": "C2",
+   "axis": "coverage (capability acquisition: end-to-end priced claim package; SHONEN box 2)",
+   "axis_score": "8 (held; the coverage denominator is operator-owned)",
+   "source": "S119 https://hackerone.com/reports/1913733.json, S120 https://curl.se/docs/CVE-2023-28319.html, S121 https://curl.se/dev/vuln-disclosure.html, all opened 2026-11-07 HTTP 200; captures and manifest corpus/source-snapshots/round-85/ (S119 9e4fb52e7e7572482fa29fc268dddbf7e249dd94c6850d2e383241ae14bc6105, S120 65d6b230ad58e86517b1b0faddd800d6bcb111ed05e21e22752246f4b0913690, S121 9e346a4e579769aa4ac207b9f088e7194fe543efa12a98cd73ea2d262304f102); S052 KEV capture round-35 reused unchanged.",
+   "statement": "Execute one end-to-end domain task and log it: build the six-file claim package corpus/practice/curl-h1-1913733/ for disclosed HackerOne report 1913733 (curl, CVE-2023-28319) as a retrospective practice package (no submission, not claimable), priced from the platform record, the vendor advisory and the vendor's current policy plus the KEV capture; the package passes the r43 claim-package gate and the frozen e2e counter; LOG.md records the task and SHONEN.md box 2 cites the package path; S119-S121 move queued -> mined.",
+   "counting_command": "cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 -B .ufo/waves/round-85/c2/e2e-check.py --lane . --pkg corpus/practice/curl-h1-1913733",
+   "predicate": {
+    "P1": "the counting command at the landing commit prints LIMB E1-E5 pass and 'E2E-RESULT pass limbs=5 rc=0', exit 0.",
+    "P2": "python3 corpus/instruments/claim-package-check.py corpus/practice/curl-h1-1913733 prints 'rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0'.",
+    "P3": "source-recheck.py --manifest corpus/source-snapshots/round-85/manifest.json --source S119|S120|S121 each exit 0 at landing (sha256 OK, every quote occurrences=1).",
+    "P4": "git diff <freeze> <landing> -- corpus/SOURCES.md changes exactly the S119, S120, S121 rows (queued -> mined, used-by -> the package path); registry count 121 at freeze and landing.",
+    "P5": "sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 at landing.",
+    "P6": "SHONEN.md box 2 at landing is '[~]' (never '[x]': no non-author verifier yet) and its evidence line names corpus/practice/curl-h1-1913733."
+   },
+   "kill_rule": "Any of P1-P6 false at the landing commit -> C2 fails; the counter, gate and snapshots are not changed after the freeze.",
+   "do_nothing": "package absent: E1-E5 FAIL, rc 1. r43 exemplar copied as the package: E1 pass, E2/E3/E4/E5 FAIL, rc 1. Pricing forgeries (severity High, reward 505 USD, platform flag true, current policy 500 USD, cvss 6.3, kev listed, cve CVE-2025-9086, forged quote) each fail E3 or E4, rc 1; the positive pricing control passes rc 0 (controls/c2-controls-r85.txt).",
+   "sourced": "C2 is the round's sourced claim: it rests on S119, S120, S121, opened this round."
+  }
+ ]
+}
