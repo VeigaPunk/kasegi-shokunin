@@ -318,16 +318,16 @@ Nine independent L2 audits ran against this event (critic, sentinel, revenger,
 
 | instrument | before r15 | after r15 |
 |---|---|---|
-| `density.py` file mean over `SKILL.md` (18 blocks) | 142.5 | **152.9** |
-| `density.py` path-citation instances | 376 | **623** |
+| `corpus/instruments/density.py` file mean over `SKILL.md` (18 blocks) | 142.5 | **152.9** |
+| `corpus/instruments/density.py` path-citation instances | 376 | **623** |
 | block: Triage economics | 93.3 | **131.4** |
 | block: Ops integrity layer | 61.1 | **111.5** |
 | block: VDP disclosure packages | 81.8 | **117.4** |
 | block: Retirement lane | 62.5 | **93.0** |
-| `resolve.py` SKILL.md resolvability | 47/289 = 16.26 % | **222/486 = 45.68 %** |
-| `resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
-| `resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
-| `anchorcheck.py` over `SKILL.md` | n/a | 194 in-range mirror cite instances, **0 past-EOF**; 47 MISSING-FILE are the expected lost-tree and package-relative anchors (`docs/*`, `claims/*`, `status.json`, `INGESTION.md`, `fleets/*`), which the mirror never contained |
+| `corpus/instruments/resolve.py` SKILL.md resolvability | 47/289 = 16.26 % | **222/486 = 45.68 %** |
+| `corpus/instruments/resolve.py` corpus resolvability | 129/971 = 13.29 % | **396/1297 = 30.53 %** |
+| `corpus/instruments/resolve.py` lane total | 156/1107 = 14.09 % | **410/1437 = 28.53 %** |
+| `corpus/instruments/anchorcheck.py` over `SKILL.md` | n/a | 194 in-range mirror cite instances, **0 past-EOF**; 47 MISSING-FILE are the expected lost-tree and package-relative anchors (`docs/*`, `claims/*`, `status.json`, `INGESTION.md`, `fleets/*`), which the mirror never contained |
 
 Measured at round-15 close from the committed tree, re-runnable with
 `python3 corpus/instruments/resolve.py <lane-repo>` and

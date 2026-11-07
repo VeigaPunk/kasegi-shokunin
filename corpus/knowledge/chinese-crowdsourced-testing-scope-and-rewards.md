@@ -297,7 +297,7 @@ metric vocabulary appears exactly once,
   drift check on the extracted text: it says nothing about either page before the capture or
   after that fetch, and it did not compare the raw HTML/PDF bodies.
 - The `recheck:` line verifies the pin and the exactly-once presence of fourteen quotes (eight
-  for S049, six for S050) under `source-recheck.py`'s declared normalization (capture markup stripped, whitespace
+  for S049, six for S050) under `corpus/instruments/source-recheck.py`'s declared normalization (capture markup stripped, whitespace
   collapsed). It does not verify that the upstream pages still serve this text, and the 16
   strings marked *hand-measured* above are checked by the command or count printed beside them,
   not by the manifest.

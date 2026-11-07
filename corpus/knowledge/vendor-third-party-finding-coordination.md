@@ -165,7 +165,7 @@ above from the capture alone.
   sha256 `2001ad7732a16cd385b649a3eb2b9f2c6000fd90ca1cce219868a646cbc67e55`. Page-level
   evidence only; it carries no per-vendor process, contact or timeline.
 - The recheck verifies the pin and the exactly-once presence of eleven quotes (Q1-Q11) under
-  `source-recheck.py`'s declared normalization (capture markup stripped, whitespace
+  `corpus/instruments/source-recheck.py`'s declared normalization (capture markup stripped, whitespace
   collapsed). It does not verify that the upstream page still serves this text.
 - Documentation only: this entry records published programme text. It instructs no probing,
   scanning, login or submission against any target, and carries no credential material,

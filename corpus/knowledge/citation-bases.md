@@ -61,8 +61,8 @@ exact stamp `[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]`
 (removed on/around 2026-10-12; evidence `corpus/knowledge/root-loss-2026-10-12.md`).
 Its historical anchors carry the parallel prefix `[lost-base] ` INSIDE the
 backticks, same semantics as `[lost-tree]` (recorded, deliberately
-non-openable, `LOST-RECORDED` under `anchorcheck.py`, GONE+synthetic under
-`resolve.py`, never counts as verified). `ufo-fsd-alpha` is NOT a lost base —
+non-openable, `LOST-RECORDED` under `corpus/instruments/anchorcheck.py`, GONE+synthetic under
+`corpus/instruments/resolve.py`, never counts as verified). `ufo-fsd-alpha` is NOT a lost base —
 it relocated intact to `~/Projects/ufo-fsd-alpha`, and citations to it are
 re-anchored, not prefixed.
 
@@ -71,7 +71,7 @@ re-anchored, not prefixed.
 the round-12 blob `fc6d398` (546-line `SKILL.md`); commands resolve a pin with
 the shell command git -C /home/vgpnk/projects/shokunin/kasegi-shokunin show [r22 correction: lowercase lane path absent on 2026-10-19; test -e failed 2026-10-19; historical]
 fc6d398:SKILL.md (pipe to sed -n 'NNNp' for one line). Machine-readable pin
-declaration for `anchorcheck.py` (plain HTML comment, never backticked):
+declaration for `corpus/instruments/anchorcheck.py` (plain HTML comment, never backticked):
 `pin: SKILL.md fc6d398` inside an HTML comment tag. Other measured lane
 snapshots: `7483333` (round-13, 590-line `SKILL.md`), `eb5b590` (round-15,
 997-line `SKILL.md`). NEVER put a bare blob reference (`fc6d398:SKILL.md`) or
