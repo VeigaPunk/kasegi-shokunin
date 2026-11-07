@@ -1,0 +1,122 @@
+# ScoutSources round-92 receipts (seat: ScoutSources)
+# All digests are sha256 over the byte stream named in the line. No credential-shaped value is printed here:
+# the scanner's HIT/summary lines carry shape+path+line only, never the matched bytes.
+
+## R1 — live re-fetch of the three round-92 sources with the lane instrument (2026-11-07)
+# command: python3 -B corpus/instruments/capture-source.py --id X --url <URL> --out $S/X.txt
+S136 status=200 fetched_bytes=202839 snapshot_bytes=13895 sha256=f0edd23c8d6d53a066a6bb90fe4f4f754746df418d833acfc48c44d13943cca0 utc=2026-11-07T09:18:49Z
+S137 status=200 fetched_bytes=173051 snapshot_bytes=15676 sha256=e4aaf2280203278c954124d8a62ac646c8ce2b3a96348ae3e90cbe173e26640d utc=2026-11-07T09:18:50Z
+S138 status=200 fetched_bytes=50878 snapshot_bytes=23064 sha256=88211ff4f5980591315a6a22e7ae659f1ab1e5a02021f818c18df51cfee80743 utc=2026-11-07T09:18:49Z
+# live sha256 == manifest sha256 for all three: MATCH (no drift since the 2026-11-07 capture)
+
+## R2 — manifest quote/anchor recheck (frozen manifest, lane instrument)
+# command: python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-92/manifest.json
+S136:sha256 OK
+S136:Q01-prefix-rule OK occurrences=1 anchor=158-ok
+S136:Q02-stateless-40 OK occurrences=1 anchor=160-ok
+S137:sha256 OK
+S137:Q01-three-letter-prefixes OK occurrences=1 anchor=156-ok
+S137:Q02-checksum-6 OK occurrences=1 anchor=167-ok
+S137:Q03-base62-30 OK occurrences=1 anchor=173-ok
+S138:sha256 OK
+S138:Q01-abandoned OK occurrences=1 anchor=31-ok
+rc=0
+# identical to the frozen control .ufo/waves/round-92/controls/source-recheck-r92.txt (same 9 lines, rc 0)
+
+## R3 — per-row quote and line-anchor check (S136/S137/S138 rows vs the committed snapshots)
+# command: git show 58c0c115:corpus/source-snapshots/round-92/S136.txt | sed -n '<line>p'  (one line per cited anchor)
+S136.txt:158 = GitHub issues tokens that begin with a prefix to indicate the token's type.
+S136.txt:160 = Starting April 27, 2026, GitHub began a staged rollout of a stateless format (ghs_APPID_JWT) ...
+S136.txt:162 = Personal access token (classic)ghp_Managing your personal access tokens
+S136.txt:163 = Fine-grained personal access tokengithub_pat_Managing your personal access tokens
+S136.txt:164 = OAuth access tokengho_Authorizing OAuth apps
+S136.txt:165 = User access token for a GitHub Appghu_Authenticating with a GitHub App on behalf of a user
+S136.txt:166 = Installation access token for a GitHub Appghs_Authenticating as a GitHub App installation
+S136.txt:167 = Refresh token for a GitHub Appghr_Refreshing user access tokens
+S137.txt:156 = We are including specific 3 letter prefixes to represent each token, starting with a company signifier, gh, and the first letter of the token type.
+S137.txt:157..161 = ghp / gho / ghu / ghs / ghr  (five prefixes, the classic five only)
+S137.txt:162 = Thus, we are adding a separator: _. An underscore is not a Base64 character ...
+S137.txt:167 = A 32 bit checksum in the last 6 digits of each token strikes the optimal balance ...
+S137.txt:171 = Math.log(((a..f).to_a + (0..9).to_a).length)/Math.log(2) * 40 = 160
+S137.txt:173 = Math.log(((a..z).to_a + (A..Z).to_a + (0..9).to_a).length)/Math.log(2) * 30 = 178
+S137.txt:174 = But for now, we are thrilled our tokens have increased identifiability, security, and entropy - all without changing the token length.
+S138.txt:29 = *DO NOT USE*
+S138.txt:30 = This document was never published by the W3C Web Performance Working Group and
+S138.txt:31 = has been abandoned.
+S138.txt:225 = cookies   (object heading)
+S138.txt:226 = This object contains list of all cookies (used in <request> and <response> objects).
+S138.txt:239 = name [string] - The name of the cookie.
+S138.txt:240 = value [string] - The cookie value.
+
+## R4 — round-93 lead A: first-party statement of the fine-grained github_pat_ format
+# URL: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.yaml
+# (GitHub's own REST API description, published by GitHub in github/rest-api-description)
+# access date: 2026-11-07 (plain GET, 200, 10991673 raw bytes)
+# sha256 of the capture-source.py --kind text reduction of that file:
+L_OAPI reduced sha256=a69873b5d3fde8897e5db39a75a775fe6a37098b9c48d6d3d027fbe8411cb7d2
+# line anchors in the reduced text: L21133 (github_pat_ example), enclosing operationId credentials/revoke
+# quote (<=25 words), value redacted to its shape: 'github_pat_' + 22 base62 + '_' + 59 base62
+#   -> prefix github_pat_ (11) + 22 base62 + '_' + 59 base62 = 93 characters total; the split is visible in the value itself.
+# NOTE (capability limit of the lead): capture-source.py refuses this file at the intake gate -
+INTAKE-REFUSED L_OAPI shape=credential line=76081
+INTAKE-REFUSED L_OAPI shape=azure-sas-signature line=255607
+INTAKE-REFUSED L_OAPI shape=github-token line=250079
+#   -> a round-93 capture of this file needs an allowlist row per matched value (5 rows), or a docs-page route.
+# measured scanner behaviour on the landed instrument (58c0c115), scratch fixture only:
+#   a 93-char fine-grained-shaped value alone: CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 ... rc=0  (MISS - named known limit)
+#   the same value with a generic key name in front (token: ...): HIT shape=credential ... rc=1  (caught only by the generic gate shape)
+#   the OpenAPI file itself, base scanner: CAPTURE-SECRET-SCAN mode=files scanned=1 hits=3 files=1 ... rc=1
+#   the OpenAPI file itself, landed scanner: CAPTURE-SECRET-SCAN mode=files scanned=1 hits=4 files=1 ... rc=1  (delta = the new github-token shape, 3 hits: ghs_/ghu_/ghu_ doc examples at L250079/L250210/L250247)
+
+## R5 — round-93 lead B: another provider prefix the scanner misses, with its documented length
+# URL: https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets
+# (GitLab's own secret-detection documentation)
+# access date: 2026-11-07 (plain GET, 200)
+# sha256 of the capture-source.py reduction (with the 4-row scratch allowlist that releases GitLab's own doc examples):
+L_GLDS sha256=154a7e1535b4a245e45e3f82705c271344f59aa6c344807645fa0bc4d1e1b188 bytes=25370
+# line anchors in that reduction: L86-L87
+# quote (<=25 words): 'a GitLab personal access token is identified by the pattern glpat- followed by a 20-character string.'
+#   -> prefix glpat- (6) + 20 characters = 26 characters total. First-party, length stated by the vendor itself.
+# intake gate on this page (4 matches, all GitLab's own documented example values):
+INTAKE-REFUSED L_GLDS shape=bearer line=124
+INTAKE-REFUSED L_GLDS shape=credential line=116
+#   (2 further credential matches at lines 126 and 139; all four released by a 4-row allowlist -> capture rc=0)
+# measured scanner behaviour on the landed instrument (58c0c115), scratch fixture only:
+#   bare glpat- + 20 chars:      CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 ... rc=0  (MISS)
+#   same value after 'token: ':  HIT shape=credential ... rc=1  (caught only by the generic gate shape)
+
+## R6 — round-92 C2 shape regression check: base instrument vs landed instrument on the same bytes
+# base  = capture-secret-scan.py at 0628fd247914555838a42c02ba5d4ac08b7e095d
+# landed= capture-secret-scan.py at 58c0c115342877ee556cae19928d69839b0b29f0
+# both run as: python3 -B <scanner> --files <page text in scratch>   (scanner + claim-package-check.py copied to scratch)
+# page                                            base_hits landed_hits delta
+gh-rest-apps        docs.github.com/en/rest/apps/apps      2         3     NEW-HIT (github-token)
+gh-credential-types docs.github.com/.../github-credential-types 0     0     -
+gh-about-auth       docs.github.com/.../about-authentication-to-github 0  0     -
+gh-blog-tokens      github.blog/.../behind-githubs-new-authentication-token-formats/ 0 0  -
+gl-tokens           docs.gitlab.com/security/tokens/        0         0     -
+gl-pat-api          docs.gitlab.com/api/personal_access_tokens/ 0     0     -
+gl-admin-token      docs.gitlab.com/api/admin/token/        0         0     -
+slack-token-types   api.slack.com/authentication/token-types 0        0     -
+# only the GitHub REST reference page gains a hit, and it is GitHub's own published example token:
+HIT shape=github-token path=<scratch>/github-rest-apps.txt line=942
+# (the landed instrument's github-token shape fires on GitHub's own documented ghs_ example on that page)
+
+## R7 — the landed scanner over the three committed round-92 snapshots (reproduce the frozen control)
+# command: python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-92/S13[678].txt
+CAPTURE-SECRET-SCAN mode=files scanned=3 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+rc=0
+# matches the frozen control .ufo/waves/round-92/controls/capture-scan-r92.txt exactly (scanned=3 hits=0 rc=0)
+
+## R8 — F6 registry-status item (read-only check, run at the C2 landing and in the worktree)
+# command: git show 58c0c115:corpus/SOURCES.md | awk -F'|' '/^\|[[:space:]]*S13[67][[:space:]]*\|/ {print $2" status="$9" used-by="$12}'
+ S136  status= queued  used-by= — 
+ S137  status= queued  used-by= — 
+# worktree (L1 integration, staged, uncommitted):
+ S136  status= mined  used-by= corpus/instruments/capture-secret-scan.py, corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md 
+ S137  status= mined  used-by= corpus/instruments/capture-secret-scan.py, corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md 
+# untracked files the integration commit must land:
+?? corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md
+?? corpus/lessons/round-92.md
+# round-91 precedent for this sequencing:
+#   r91 C2 landing 1dd0723 -> S133/S134 still queued/— ; integration commit 2bdde26 -> 'S133 status queued -> mined; used-by — -> ...'

@@ -1,0 +1,162 @@
+Exact diffs (git diff <base ee83006> <forgery commit> -- corpus/instruments/capture-secret-scan.py).
+Apply to the landed instrument bytes (sha256 04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e)
+inside a scratch clone; every hunk applies at its printed line.
+F2-pathkey is a whole-file replacement: its exact bytes are forgery-F2-pathkey.py.txt,
+so its diff is omitted here (a new-file diff would copy the landed scanner's selftest
+fixtures into the wave dir).
+
+====================================================================================================
+F1-harness-gated
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..1788890 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -269,6 +269,8 @@ def report(mode, results, scanned, allowed=0, unused=0):
+ 
+ 
+ def scan_rev(lane, rev, pats, allow):
++    if not any(t in lane for t in ("/c2check-", "/plant-", "/gen-")):
++        pats = tuple(p for p in pats if p[0] != "github-token")
+     items = [(p, o) for p, o in tree_blobs(lane, rev) if is_capture_path(p)]
+     results, used, allowed = [], set(), 0
+     for (path, _), data in zip(items, read_blobs(lane, [o for _, o in items])):
+
+====================================================================================================
+F3-n-exception
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..50eecfa 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -153,7 +153,7 @@ CLOUD_PATTERNS = (
+     ("cloudfront-signed-cookie-signature", re.compile(
+         _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
+ )
+-_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
++_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=n))"
+ _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+
+====================================================================================================
+F4-tail-base64url
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..fd4e2e1 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -157,7 +157,7 @@ _GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
+ _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+-        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
++        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9_-]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+
+====================================================================================================
+F5-jwt-floor-4
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..ecd4482 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -154,7 +154,7 @@ CLOUD_PATTERNS = (
+         _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
+ )
+ _GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
+-_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
++_JWT_SEG = rb"[A-Za-z0-9_-]{4,}"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+
+====================================================================================================
+F6-appid-99
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..463765d 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -157,7 +157,7 @@ _GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
+ _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+-        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
++        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,99}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+
+====================================================================================================
+F7-left-digit
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..2b6a5f2 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -153,7 +153,7 @@ CLOUD_PATTERNS = (
+     ("cloudfront-signed-cookie-signature", re.compile(
+         _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
+ )
+-_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
++_GH_LB = rb"(?:(?<![A-Za-z])|(?<=\\n))"
+ _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+
+====================================================================================================
+F8-azure-floor-20
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..020fe60 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -135,7 +135,7 @@ AWS_PATTERNS = (
+ )
+ _SEP = rb"(?:&amp;|&|\\u0026)"
+ _PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,7}=[^&\s\"'<>\\]*){0,20}?"
+-_SIG = rb"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}"
++_SIG = rb"sig=[A-Za-z0-9%+/]{20,}(?:=|%3D){0,2}"
+ _SV = rb"sv=\d{4}-\d{2}-\d{2}"
+ _LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\u0026)|(?<=%26))"
+ _CF_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\u0026)|(?<=%26))"
+
+====================================================================================================
+P0-no-gh
+====================================================================================================
+diff --git a/corpus/instruments/capture-secret-scan.py b/corpus/instruments/capture-secret-scan.py
+index d803859..1ed3d43 100755
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -192,7 +192,7 @@ def gate_patterns():
+ 
+ 
+ def patterns():
+-    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS + GITHUB_PATTERNS
++    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS
+ 
+ 
+ def is_capture_path(rel):
+@@ -338,12 +338,12 @@ def selftest(pats):
+         ("cf-cookie-lowercase-name", b"cloudfront-signature=" + cfsig, set()),
+         ("cf-cookie-prefixed-name", b"X-CloudFront-Signature=" + cfsig, set()),
+         ("cf-cookie-json-joined", b'{"set-cookie":"CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F; Path=/\\nCloudFront-Signature=' + cfsig + b'; Path=/"}', {"cloudfront-signed-cookie-signature"}),
+-        ("gh-classic-pat-prose", b"use ghp_" + ghtail + b" as the password", {"github-token"}),
+-        ("gh-oauth-json", b'{"t":"gho_' + ghtail + b'"}', {"github-token"}),
+-        ("gh-user-to-server", b"ghu_" + ghtail, {"github-token"}),
+-        ("gh-installation-json-joined", b'"x\\nghs_' + ghtail + b'"', {"github-token"}),
+-        ("gh-refresh-line-start", b"ghr_" + ghtail + b"\n", {"github-token"}),
+-        ("gh-stateless-installation", b"token ghs_123456_" + jwt + b" end", {"github-token"}),
++        ("gh-classic-pat-prose", b"use ghp_" + ghtail + b" as the password", set()),
++        ("gh-oauth-json", b'{"t":"gho_' + ghtail + b'"}', set()),
++        ("gh-user-to-server", b"ghu_" + ghtail, set()),
++        ("gh-installation-json-joined", b'"x\\nghs_' + ghtail + b'"', set()),
++        ("gh-refresh-line-start", b"ghr_" + ghtail + b"\n", set()),
++        ("gh-stateless-installation", b"token ghs_123456_" + jwt + b" end", set()),
+         ("gh-stateless-short-segments", b"ghs_123_abc.def.ghi", set()),
+         ("gh-doc-placeholder", b"a stateless format (ghs_APPID_JWT) to all newly minted", set()),
+         ("gh-bare-prefix", b"Personal access token (classic)ghp_Managing your personal access tokens", set()),
+

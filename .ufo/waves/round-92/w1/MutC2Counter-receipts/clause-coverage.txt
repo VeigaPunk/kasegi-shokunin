@@ -1,0 +1,77 @@
+C2 statement clause coverage in the frozen counter (capability-check.py sha256
+3feed3b073194179b5542f91d7bba80f8d1fba1a3c3a3ec3d4587ce1c6baa847)
+Seat MutC2Counter, round 92 attempt 1. Evidence class: routed counter defect (not a re-score).
+
+Frozen C2 statement (claims.json, C2.statement), quoted in full:
+
+  "At the landing commit corpus/instruments/capture-secret-scan.py reports shape
+   github-token for (a) ghp_, gho_, ghu_, ghs_ or ghr_ (case-sensitive) followed
+   by exactly 36 base62 characters, not preceded by a letter, digit or _ (except
+   the n of a JSON \n escape) and not followed by a letter, digit or _, inside
+   capture scope; (b) the stateless installation form ghs_<digits>_<three
+   dot-separated base64url segments of 10+ characters>. The documentation
+   placeholder ghs_APPID_JWT, bare prefixes, 35- and 37-character tails, GHP_,
+   ghx_, a letter-prefixed token, short JWT segments and fine-grained
+   github_pat_ tokens (named known limit) are not hits; every round-91 shape
+   behaves as before."
+
+K8 has 29 clause keys (16 github-token, 13 round-91/round-89). Every key maps to
+one K4 plant; K8 passes iff the (path, shape) membership equals the expected
+polarity. Coverage of the statement's individual bounds:
+
+  statement bound                         K8 key / plant                         status
+  --------------------------------------  -------------------------------------  ------
+  ghp_ prefix, 36 base62, prose           github: ghp_ ... S023.txt              mapped
+  gho_ prefix, JSON value                 github: gho_ ... w/s-receipts/live-i   mapped
+  ghu_ prefix, practice evidence          github: ghu_ ... evidence/E5.txt       mapped
+  ghs_ prefix, JSON \n escape             github: ghs_ ... live-j.json           mapped
+  ghr_ prefix, line start                 github: ghr_ ... S024.txt              mapped
+  case-sensitive                          github: prefix case-sensitive S030     mapped
+  undocumented ghx_                       github: ghx_ S031                      mapped
+  bare prefix                             github: bare prefix S027 (ghp_ only)   mapped (ghp_ only)
+  exactly 36 (35 tail)                    github: 35 characters S028             mapped
+  exactly 36 (37 tail)                    github: 37 characters S029             mapped
+  right boundary not letter/digit/_       same S029 (base62 follower)            mapped
+  placeholder ghs_APPID_JWT               github: placeholder S026               mapped
+  fine-grained github_pat_                github: fine-grained S033              mapped
+  capture scope only                      github: capture scope report4.md       mapped
+  stateless ghs_<digits>_<seg.seg.seg>    github: stateless S025                 mapped
+  stateless segments 10+                  github: short segments S034 (3 chars)   PARTIAL: only 3-char segments; 4-9 and 10 untested
+  left boundary "letter, digit or _"      github: a letter before S032            PARTIAL: letter only; digit and _ untested
+  JSON-\n exception narrowness            (none)                                 UNMAPPED: no plant of a token after a plain letter n
+  base62 alphabet                         (none)                                 UNMAPPED: no 36-tail containing - or _
+  stateless <digits> 1-20                 (none)                                 UNMAPPED: no 0-digit or 21+-digit plant
+  round-91 "behaves as before" (floors)  13 round-91 keys (semantics only)       PARTIAL: no plant pins the numeric floors
+
+Unmapped (no K8 clause key and no K4/K7 negative plant):
+  U1 left boundary digit/underscore.  S032 plants only a letter. K7's negative
+     g/x-receipts/live-n11.txt is ONE character drawn by r.choice(b62 + "_")
+     (63 choices, 52 letters): a mutant that keeps a letter-only lookbehind is
+     killed only when the draw is a digit or underscore (11/63).
+     Deterministic classification of generated(seed) n11:
+       seed 9191 -> preceding char letter (mutant survives)
+       seed 1    -> preceding char digit  (mutant killed)
+       seed 4210930336 (printed by the F1 run) -> see run log
+  U2 JSON-\n exception.  Only the positive (live-j.json) is planted. A token
+     preceded by a plain letter n (not a JSON escape) is not planted, so
+     `(?<=n)` for the exception passes every limb (F3).
+  U3 base62 alphabet.  No plant has a 36-character tail containing '-' or '_',
+     so a tail class wider than base62 passes (F4).
+  U4 stateless <digits> bound.  S025 has 6 digits; K7 draws 1-8 digits. No
+     0-digit and no 21+-digit plant, so [0-9]{1,99} passes (F6).
+  U5 stateless segment floor.  S034 has 3-char segments. No 4-9-char and no
+     exactly-10-char plant, so {4,} passes (F5). The landed instrument's own
+     --selftest has the same single 3-char case, so K1 cannot catch this either.
+  U6 round-91 numeric floors ("behaves as before").  The 13 round-91 clause keys
+     test positions and polarities, not the documented floors: lowering the
+     Azure SAS sig floor 40 -> 20 (F8) passes every limb; the CloudFront sig
+     floor is pinned only from below by S013 (12 chars); the GCS floor only from
+     below by S005's 36-hex first line; no plant covers CloudFront Key-Pair-Id
+     outside 8-32 or the >20-parameter known limit.
+
+Rerun (no pins, scratch clone; base 0628fd24, instrument landed at 58c0c115):
+  python3 -B .ufo/waves/round-92/c2/capability-check.py --lane <scratch clone> \
+      --rev <forgery commit> --work <scratch> --seed 9191
+  The forgery bytes are the exact diffs in forgery-diffs.txt (F2: whole file in
+  forgery-F2-pathkey.py.txt); apply to corpus/instruments/capture-secret-scan.py
+  at base ee830069 and commit inside the scratch clone.

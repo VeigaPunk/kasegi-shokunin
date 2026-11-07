@@ -1,0 +1,20 @@
+# SentinelGitHub r92 — scope + sibling measurements. 2026-11-07T09:25:47Z
+# lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin   rev: 58c0c115342877ee556cae19928d69839b0b29f0
+# (1) any 40-character token-shaped literal anywhere in the lane tree at the landing rev:
+$ git grep -l -E 'gh[pousr]_[A-Za-z0-9]{36}' 58c0c11 -- . | wc -l
+0
+# (2) files that mention a bare prefix (prose, docstring, table cells) - not token-shaped:
+$ git grep -l -E 'github_pat_|gh[pousr]_' 58c0c11 -- . | wc -l
+149
+# (3) prefix mentions inside the instrument docstring and the round-92 snapshots (lines per file):
+58c0c115342877ee556cae19928d69839b0b29f0:corpus/instruments/capture-secret-scan.py:16
+58c0c115342877ee556cae19928d69839b0b29f0:corpus/source-snapshots/round-92/S136.txt:6
+# Reading: zero token-shaped literals exist in the lane at the landing rev, so K3's hits=0 is
+# consistency by absence, not an allowlist effect (allowed=0 in the same run).
+
+# (4) sibling candidate knowledge file, quoted sentences this seat measured against.
+#     candidate-knowledge-github-prefixed-tokens.md sha256 f1d2a2f39e742e267414e370fcf5939d343ff3d96b9c4d88f19e5a415fe17144 (299 lines, live file)
+#     line 281: 'the prefix plus checksum proves the format, and the checksum is checkable offline'
+#     line 81 : 'a checksum-valid string can still be a revoked token'
+#     Instrument: no checksum validation exists in the landed shape (capture-secret-scan.py:84-85,160-161);
+#     measured HITs of never-minted, checksum-unchecked strings: probe-encodings.tsv ids f01,f02,f04,f05,f10,f11,f12,f14.

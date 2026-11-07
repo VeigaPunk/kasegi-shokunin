@@ -1,0 +1,58 @@
+# Freeze ordering and freeze contents
+## commit dates (newest first)
+ee830069af1255043aeb39f1d324e6b3e5d69dbd 2026-11-07 06:10:47 -0300 round-92: landing receipts P1-P3 (C1 cb1ef2b9, C2 58c0c115)
+58c0c115342877ee556cae19928d69839b0b29f0 2026-11-07 06:09:23 -0300 round-92: C2 landing — capture-secret-scan gains github-token (GitHub prefixed tokens + stateless installation form; S136, S137), SCORECARD capability row
+cb1ef2b9856df79c530f3ff1374fa9691ff56233 2026-11-07 06:09:15 -0300 round-92: C1 landing — tranche 7, 25 label-named citation edits (ReviewC1Labels round92-labels.tsv)
+9e4f0d6830dcc9a30c6f524c48d074ec8979f040 2026-11-07 06:09:08 -0300 round-92: freeze — claims C1 (tranche 7, 25 label-named edits, pair-bound meter) and C2 (github-token shape, S136/S137), counters, map, candidate scanner and row, executed controls, S136-S138 snapshots + manifest, rows S136-S138, assimilation receipts
+0628fd247914555838a42c02ba5d4ac08b7e095d 2026-11-07 05:57:14 -0300 round-91 verifier spot-check (integrator, hyaku): non-author admit/reject
+d0bd4758a41919b2c86c079f3a1a2dfb392dcd8d 2026-11-07 05:51:16 -0300 round-91: wave w1 evidence (spec, dispatch, results, 13 seat reports and receipts), round-end census receipt
+## ancestry (merge-base --is-ancestor, exit status)
+base->freeze rc=0
+freeze->C1 rc=0
+freeze->C2 rc=0
+labels(d0bd4758)->base rc=0
+## controls present at the freeze commit
+.ufo/waves/round-92/controls/c1-controls-r92.sh
+.ufo/waves/round-92/controls/c1-controls-r92.txt
+.ufo/waves/round-92/controls/c2-controls-r92.sh
+.ufo/waves/round-92/controls/c2-controls-r92.txt
+.ufo/waves/round-92/controls/c2-forgeries.py
+.ufo/waves/round-92/controls/capture-scan-r92.txt
+.ufo/waves/round-92/controls/census-start-r92.txt
+.ufo/waves/round-92/controls/source-recheck-r92.txt
+## freeze commit path status (round-92 + sources only)
+A .ufo/waves/round-92/assimilation/collisions
+A .ufo/waves/round-92/assimilation/quarantine-slice
+A .ufo/waves/round-92/assimilation/reg-ids
+A .ufo/waves/round-92/assimilation/staged-ids
+A .ufo/waves/round-92/c1/apply-map.py
+A .ufo/waves/round-92/c1/knowledge-meter.py
+A .ufo/waves/round-92/c1/repair-map.tsv
+A .ufo/waves/round-92/c2/candidate/capture-secret-scan.py
+A .ufo/waves/round-92/c2/candidate/scorecard-row.txt
+A .ufo/waves/round-92/c2/capability-check.py
+A .ufo/waves/round-92/claims.json
+A .ufo/waves/round-92/controls/c1-controls-r92.sh
+A .ufo/waves/round-92/controls/c1-controls-r92.txt
+A .ufo/waves/round-92/controls/c2-controls-r92.sh
+A .ufo/waves/round-92/controls/c2-controls-r92.txt
+A .ufo/waves/round-92/controls/c2-forgeries.py
+A .ufo/waves/round-92/controls/capture-scan-r92.txt
+A .ufo/waves/round-92/controls/census-start-r92.txt
+A .ufo/waves/round-92/controls/source-recheck-r92.txt
+M corpus/SOURCES.md
+A corpus/source-snapshots/round-92/S136.txt
+A corpus/source-snapshots/round-92/S137.txt
+A corpus/source-snapshots/round-92/S138.txt
+A corpus/source-snapshots/round-92/manifest.json
+## EXCLUDED set present at freeze (grep the frozen meter)
+86:EXCLUDED = {
+87-    ("corpus/knowledge/triage-thresholds.md:437", "intake-surface.md:75-76"):
+88-        "errata row: the cell cites the superseded text and quotes it; repointing to 89-90 under the quote makes the quote false",
+89-    ("corpus/knowledge/triage-thresholds.md:438", "mission-control.md:37-38"):
+## working tree clean for frozen paths
+ M corpus/knowledge/capture-intake-gate.md
+ M corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md
+ M corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md
+ M corpus/knowledge/presigned-url-credentials-in-captured-evidence.md
+status_rc=0

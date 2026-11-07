@@ -1,0 +1,51 @@
+# CriticHarm r92 — item 4: old capabilities still hold after both landings
+
+A. instrument selftest (landed capture-secret-scan.py, sha 04666f67...):
+cmd: python3 -B $S/capture-secret-scan.py --selftest
+SELFTEST-RESULT pass cases=68
+selftest rc=0
+# all 68 cases ok: every pre-round-92 shape case, the 8 new github-token clauses,
+# the scope cases and the allowlist cases.
+
+B. round-91 frozen counter, UNPINNED (no --instrument-sha256 / --gate-sha256), seed 9191,
+   at the C2 landing 58c0c115:
+cmd: python3 -B .ufo/waves/round-91/c2/capability-check.py \
+       --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+       --rev 58c0c115342877ee556cae19928d69839b0b29f0 --work $S --seed 9191
+CAPABILITY-CHECK rev=58c0c115342877ee556cae19928d69839b0b29f0 instrument_present=True seed=9191
+LIMB K1 pass selftest_rc=0 instrument_sha256=04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1882,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=16 new_caught_by_base=none
+LIMB K7 pass seed=9191 rc=1 missing=none extra=none
+LIMB K8 pass clauses=13 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+# every round-91 behavioural limb passes on the landed instrument; nothing the
+# round-91 counter could detect was lost. (base_hits=16 is the r91 counter's own
+# base; the r92 receipt's 22 is the r92 counter's different base set.)
+
+C. dependent capability `capture-intake-gate` (capture-source.py imports the scanner's
+   patterns, so the C2 change propagates into the intake gate). Round-90 counter,
+   UNPINNED, at tip ee830069, its own base rev 6088c3eb:
+cmd: python3 -B .ufo/waves/round-90/c2/capability-check.py --lane ... --rev ee830069... \
+       --base-rev 6088c3eb0c29040415c69e7b5fb91e110480ab26 --work $S --seed 9191
+LIMB G0 FAIL shapes=13 missing=cloudfront-signed-cookie-signature,github-token extra=none
+LIMB G1 pass plants=11 bad=none
+LIMB G2 pass rc=3 kept=True
+LIMB G3 pass clean=6 bad=none
+LIMB G4 pass allowed_rc=0 written=True other_path_rc=3 never_allowed_rc=3
+LIMB G5 pass rc=3 written=False
+LIMB G6 pass rc=0 selftest normalize=ok deterministic=ok INTAKE-REFUSED SELFTEST shape=credential line=1
+CAPABILITY-CHECK-RESULT fail rc=1
+# G0 is the derived-plant-set limb ("a shape the scanner gains without a plant here
+# fails G0", docstring). cloudfront-signed-cookie-signature entered in round 91
+# (1dd0723) and github-token in round 92, so G0 has been red since round 91 by design;
+# this round adds one name to the missing list. G1-G6 pass: the intake gate still
+# refuses, keeps the existing file, allows per-path, and fails closed.
+# capture-source.py names no shape literally (grep: zero hits for any shape name), so
+# the new shape propagates as a plain refusal, no per-shape branch to miss.
+
+VERDICT: NO HARM (old capabilities behavioural: all pass; the G0 red is the designed
+derived-list coupling, pre-existing since 1dd0723, one name larger).

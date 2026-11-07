@@ -1,0 +1,94 @@
+# ScribeEntry receipts — candidate knowledge entry `github-prefixed-tokens` (round 92, wave 1)
+# Every line below is tool output, a digest, or a path; no matched value and no fixture bytes appear.
+# Scratch root at run time: /fast/scratch/hyaku/kasegi-r92/ScribeEntry (deleted before yield).
+
+## 1. quote-anchor-check, required --rev form (assigned command)
+$ python3 -B .ufo/waves/round-91/l1/quote-anchor-check.py --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --rev 58c0c115342877ee556cae19928d69839b0b29f0 .ufo/waves/round-92/w1/candidate-knowledge-github-prefixed-tokens.md
+QUOTE-ANCHOR checked=0 bad=0 cites=0 out_of_range=0
+rc=0
+NOTE: with --rev the checker loads the ENTRY from that revision (git show REV:ENTRY); an uncommitted
+wave-dir candidate is not in the rev, so nothing is read and the counts are zero. This run proves only
+that the candidate is not in the rev.
+
+## 2. quote-anchor-check over a materialised landed tree (the run that checks bytes)
+$ T=$(mktemp -d -p "$TMPDIR"); git archive 58c0c115342877ee556cae19928d69839b0b29f0 | tar -x -C "$T"
+$ cp .ufo/waves/round-92/w1/candidate-knowledge-github-prefixed-tokens.md "$T/.ufo/waves/round-92/w1/"
+$ python3 -B .ufo/waves/round-91/l1/quote-anchor-check.py --lane "$T" .ufo/waves/round-92/w1/candidate-knowledge-github-prefixed-tokens.md
+QUOTE-ANCHOR checked=17 bad=0 cites=81 out_of_range=0
+rc=0
+(earlier run at the same bytes before two anchor repairs: checked=17 bad=2 cites=73 out_of_range=0 rc=1,
+BAD quote ...:49 -> corpus/instruments/capture-secret-scan.py:86-87 and ...:113 -> :101-102; both anchors
+were off by one docstring wrap and were moved to :84-85 and :100-102.)
+
+## 3. 25-word cap
+$ python3 -B <word-counter over '^> "TEXT" — `PATH:N` lines>
+<17 lines, words 6..25, widest S137.txt:156 at exactly 25>
+QUOTE-WORDS quotes=17 bad=0
+rc=0
+
+## 4. capture digests and recheck
+$ sha256sum corpus/source-snapshots/round-92/S136.txt corpus/source-snapshots/round-92/S137.txt
+f0edd23c8d6d53a066a6bb90fe4f4f754746df418d833acfc48c44d13943cca0  corpus/source-snapshots/round-92/S136.txt
+e4aaf2280203278c954124d8a62ac646c8ce2b3a96348ae3e90cbe173e26640d  corpus/source-snapshots/round-92/S137.txt
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-92/manifest.json --source S136
+S136:sha256 OK
+S136:Q01-prefix-rule OK occurrences=1 anchor=158-ok
+S136:Q02-stateless-40 OK occurrences=1 anchor=160-ok
+rc=0
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-92/manifest.json --source S137
+S137:sha256 OK
+S137:Q01-three-letter-prefixes OK occurrences=1 anchor=156-ok
+S137:Q02-checksum-6 OK occurrences=1 anchor=167-ok
+S137:Q03-base62-30 OK occurrences=1 anchor=173-ok
+rc=0
+$ python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-92/S136.txt corpus/source-snapshots/round-92/S137.txt
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+
+## 5. FC-3 base-vs-landed discrimination (fixtures in scratch; <T> replaces the scratch path)
+A landed: HIT shape=github-token path=<T>/fx/A.txt line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1|
+A base:   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=0 rc=0|
+B landed: HIT shape=github-token path=<T>/fx/B.txt line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1|
+B base:   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=0 rc=0|
+C landed: HIT shape=github-token path=<T>/fx/C.txt line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1|
+C base:   CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=0 rc=0|
+
+## 6. FC-4 selftest
+SELFTEST gh-classic-pat-prose ok got=github-token
+SELFTEST gh-oauth-json ok got=github-token
+SELFTEST gh-user-to-server ok got=github-token
+SELFTEST gh-installation-json-joined ok got=github-token
+SELFTEST gh-refresh-line-start ok got=github-token
+SELFTEST gh-stateless-installation ok got=github-token
+SELFTEST gh-stateless-short-segments ok got=none
+SELFTEST gh-doc-placeholder ok got=none
+SELFTEST gh-bare-prefix ok got=none
+SELFTEST gh-35-chars ok got=none
+SELFTEST gh-37-chars ok got=none
+SELFTEST gh-upper-prefix ok got=none
+SELFTEST gh-unknown-prefix ok got=none
+SELFTEST gh-letter-before ok got=none
+SELFTEST gh-fine-grained-known-limit ok got=none
+SELFTEST-RESULT pass cases=68
+
+## 7. FC-5 limits and boundaries
+D-fine-grained CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+E-35 CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+F-37 CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+G-upper CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+H-bare CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+I-placeholder CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+K-4seg HIT shape=github-token path=<T>/K-4seg.txt line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+N-percent CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+
+## 8. FC-6 instrument digests
+04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e  (58c0c115:corpus/instruments/capture-secret-scan.py)
+89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7  (0628fd24:corpus/instruments/capture-secret-scan.py)
+0  (grep -c 'github-token' at 0628fd24; grep rc 1 = no match)
+
+## 9. hygiene on the candidate itself
+$ python3 -B corpus/instruments/capture-secret-scan.py --files .ufo/waves/round-92/w1/candidate-knowledge-github-prefixed-tokens.md
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+
+## 10. recheck line from a foreign cwd
+$ cd /tmp && bash -n <<recheck line>>      -> parse=ok
+$ cd /tmp && bash -c <<recheck line>>      -> rc=0

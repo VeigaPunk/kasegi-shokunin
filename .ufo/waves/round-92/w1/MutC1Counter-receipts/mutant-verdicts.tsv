@@ -1,0 +1,31 @@
+mutant	rule_mutated	vector[landing candidate no-work partial24 partial-own skipq excl437 noedit tok155 dash58 wk86 wtonly]	verdict_flips	outcome	killing_control
+pristine	—	P P F F F F F F F F F F	—	BASELINE	—
+m01_qualify_key_equality	expected_edit qualify: FIXQUAL target-name equality to the label key dropped (m.group(1)==key -> if m)	P P F F F F F F F F F F	-	SURVIVED	PC-L (measured)
+m02_droptok_off	expected_edit drop-token branch disabled (DROPTOK test -> False)	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m03_fixdash_off	expected_edit dash-cell branch disabled (FIXDASH test -> False)	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m04_lastcell_index	last_cell returns cells[-3] instead of the last table cell cells[-2]	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m05_lastcell_guard	last_cell drops the line.rstrip().endswith('|') guard	P P F F F F F F F F F F	-	SURVIVED	PC-N (measured)
+m06_namedcell_as_named	named vs named-cell switch forced to named ('drop the' test -> False)	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m07_named_as_namedcell	named vs named-cell switch forced to named-cell ('drop the' test -> True)	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m08_namedcell_prefix_off	named-cell new value drops the 'MATCHES: ' prefix	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m09_m9_site_lookup	M9 pair lookup labels[(site,key)] -> labels[site]	F F F F F F F F F F F F	landing,candidate	KILLED (controls)	existing controls: landing,candidate
+m10_m9_excluded_off	M9 drops the (site,key) in EXCLUDED rejection clause	P P F F F F F F F F F F	-	SURVIVED	none: guard duplicated by M10 unlabelled
+m11_m9_new_only	M9 compares only the new value (exp[2:] != (new,)), ignoring old	P P F F F F F F F F F F	-	SURVIVED	PC-J (measured)
+m12_m10_unlabelled_off	M10 mapped-minus-want (unlabelled) disabled	P P F F F F F F F F F F	-	SURVIVED	none: guard duplicated by M9 EXCLUDED/no-edit clauses
+m13_m10_unapplied_off	M10 want-minus-mapped (unapplied) disabled	P P F F F F F F F F F F	-	SURVIVED	PC-E (measured)
+m14_m10_unknown_off	M10 'not unknown' clause removed	P P F F F F F F F F F F	-	SURVIVED	none: implied by M9 (exp None mismatch) + M10 unapplied
+m15_m10_excluded_subset_off	M10 set(EXCLUDED) <= set(kinds) check removed	P P F F F F F F F F F F	-	SURVIVED	PC-F (measured)
+m16_m10_want_nonempty_off	M10 bool(want) non-empty guard removed	P P F F F F F F F F F F	-	SURVIVED	none: implied by rows non-empty and mapped-want unlabelled
+m17_m4_bare_off	M4 removal-row BARE single-token check disabled	P P F F F F F F F F F F	-	SURVIVED	none: entailed by M9-derived removal-row shape
+m18_m4_valany_any	M4 VALANY exactly-one -> at-least-one (len(vals) != 1 -> < 1)	P P F F F F F F F F F F	-	SURVIVED	none: entailed by M9-derived single-value new
+m19_m4_bybase_member	M4 unique-basename test bybase.get(name)==[path] -> name in bybase	P P F F F F F F F F F F	-	SURVIVED	PC-G (measured)
+m20_m4_key_in_old_off	M4 drops the ('`key`' in old) membership test	P P F F F F F F F F F F	-	SURVIVED	PC-K (measured)
+m21_m3_oldcount_zero	M3 old-occurrence test != 1 -> < 1 (accepts multiple occurrences)	P P F F F F F F F F F F	-	SURVIVED	PC-O (measured)
+m22_m3_dup_off	M3 duplicate-row counter disabled (dup += 1 -> pass)	P P F F F F F F F F F F	-	SURVIVED	PC-H (measured)
+m23_m3_samefiles_true	M3 same_files forced True	P P F F F F F F F F F F	-	SURVIVED	PC-I (measured)
+m24_m6_sha_off	M6 map-sha comparison forced True	P P F F F F F F F F F F	-	SURVIVED	PC-A (measured)
+m25_m0_base_off	M0 base-rate equality forced True	P P F F F F F F F F F F	-	SURVIVED	PC-B (measured)
+m26_m1_after_off	M1 after-rate equality forced True	P P F F F F F F F F F F	-	SURVIVED	PC-C (measured)
+m27_m5_hi_off	M5 upper-bound/order check dropped (1<=lo<=hi<=n -> 1<=lo<=n)	P P F F F F F F F F F F	-	SURVIVED	PC-M (measured)
+m29_m4_internal_off	M4 INTERNAL classification test dropped	P P F F F F F F F F F F	-	SURVIVED	none: entailed by M4 tracked-basename uniqueness + resolve classify
+m28_m5_off	M5 out-of-range check disabled	P P F F F F F F F F F F	-	SURVIVED	PC-M (measured)

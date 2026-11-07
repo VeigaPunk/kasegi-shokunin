@@ -1,0 +1,24 @@
+# CriticHarm r92 — item 1: depth:density, base 0628fd24 vs tip ee830069
+# host: cwd /home/vgpnk/Projects/shokunin/kasegi-shokunin ; scratch /fast/scratch/hyaku/kasegi-r92/CriticHarm
+
+cmd: git show 0628fd247914555838a42c02ba5d4ac08b7e095d:SKILL.md > $S/SKILL.base.md
+     cp SKILL.md $S/SKILL.tip.md ; sha256sum $S/SKILL.base.md $S/SKILL.tip.md
+7d082bfec14257351b39c145ea0db26cafbce3d6f263009c3eb1d0893c373552  SKILL.base.md
+7d082bfec14257351b39c145ea0db26cafbce3d6f263009c3eb1d0893c373552  SKILL.tip.md
+
+cmd: git show 0628fd247914555838a42c02ba5d4ac08b7e095d:corpus/instruments/density.py > $S/density.base.py
+     sha256sum $S/density.base.py corpus/instruments/density.py
+ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710  $S/density.base.py
+ee803726a3229eb924a6798fe0cf5309dacd33d42c40568da55d5c95f9f54710  corpus/instruments/density.py
+
+cmd: python3 -B corpus/instruments/density.py SKILL.md --label X
+cmd: python3 -B $S/density.base.py $S/SKILL.base.md --label X   (output label normalised to SKILL.md)
+
+| | **mean dens** | | | | | | | | **273.2** |
+Total path-citation instances: 932 across 38 blocks.
+# both runs: 50 lines, byte-identical after the label/name normalisation
+diff $S/dens.base.txt $S/dens.tip.txt -> DENSITY-IDENTICAL
+
+SKILL.md sha256 is identical at base and tip; the round-92 diff touches no SKILL.md
+path (git diff --stat 0628fd24 ee830069 lists 30 paths, none SKILL.md).
+VERDICT: NO HARM (density cannot move: the only file it reads is byte-identical).

@@ -1,0 +1,66 @@
+=== PROPOSED ROUND-93 CLAIM PAIR (UFO-FSD SYNTHESIS) ===
+
+## 1. Grounding in Routed Defects & Round-92 Wave Evidence
+
+1. From corpus/lessons/round-91-verifier-spotcheck.md §6:
+   - Defect 1: Row 454 second token (`triage-thresholds.md:454` cites `SKILL.md:494-506`, which lacks EV formula) + D2/D3 rows 367/369/370 and SKILL.md token drift.
+   - Defect 6: Carried from r90:
+     * `capture-source.py` crashes on `file://` (status=None).
+     * Missing explicit `--allow` file loads as empty instead of failing closed.
+2. From Round-92 ReviewC1Sites Findings (this wave):
+   - Two WRONG survivor ties at `triage-thresholds.md:58` and `:144`: dropping the second token left `SKILL.md:117` as the sole tie, but SKILL.md:117 is a provenance string (`provenance.json:29`). The actual termination condition is at `SKILL.md:191` (`attempts()>=2`).
+   - Stale root-level citations in triage-thresholds.md: line 153 (`SKILL.md:14-15` -> `:265-266`), line 390 (`SKILL.md:525` -> `:322`), line 90 (`SKILL.md:113-114,175-176` -> `:182-185`).
+   - Residual defect on row 438: historical target is `mission-control.md:52`, not `:37-38`.
+   - Root-level references (e.g. `SKILL.md:N`) bypass knowledge-meter.py M4/M5 because they are absolute root refs (HOST abs_tokens=127), creating a persistent verifiability blind spot.
+3. From Round-92 C2 Scanner Scope (this wave):
+   - S136 documents fine-grained personal access tokens (`github_pat_`), which round 92 explicitly left as a named known limit ("neither opened nor claimed").
+
+---
+
+## 2. Claim 1 (C1): Axis depth:verifiability (score 4)
+
+Statement:
+Tranche 8: of the flagged citation defects in `corpus/knowledge/triage-thresholds.md`,
+(a) the 2 WRONG survivor ties at lines 58 and 144 are repointed from `SKILL.md:117` to `SKILL.md:191` (the actual attempts>=2 termination condition);
+(b) line 454 second token is repointed from `SKILL.md:494-506` to the actual EV formula anchor;
+(c) lines 90, 153, 390 are repointed to their live SKILL.md anchors (182-185, 265-266, 322);
+(d) row 438 historical reference is corrected to `mission-control.md:52`, preserving the quoted text;
+and the counter verifies:
+- M9: edit-equals-label for all tranche 8 repairs;
+- M10: completeness over the repaired (site, key) tuples;
+- M11 (New Limb): Root-Token Anchor Verification — for each repaired `SKILL.md:N` cite, verifies that line N in `SKILL.md` contains the cited identifier/formula, closing the HOST token verification gap.
+
+Counter Idea:
+`python3 -B .ufo/waves/round-93/c1/knowledge-meter.py --lane . --base-rev <base> --after-rev <landing> --map .ufo/waves/round-93/c1/repair-map.tsv`
+Limbs: M0 (input validation), M1 (target rate), M9 (edit-equals-label), M10 (completeness on pairs), M11 (root-token anchor check).
+
+Do-Nothing Control:
+Run counter against base revision:
+- Fails M9 and M10 because rows 58, 144, 454, 90, 153, 390 are unrepaired.
+- Fails M11 because at lines 58 and 144, `SKILL.md:117` contains `provenance.json:29` and 0 occurrences of `attempts` or `MAX_ATTEMPTS`.
+
+---
+
+## 3. Claim 2 (C2): Axis coverage (score 8 held)
+
+Statement:
+Capability extension of `capture-source.py` intake gate and `capture-secret-scan.py`:
+(a) `capture-source.py` intake gate fails closed (INTAKE-REFUSED shape=gate-error:FileNotFoundError) when an explicit `--allow` path is provided but does not exist on disk, rather than silently falling back or loading empty;
+(b) `capture-source.py` fetch handles non-HTTP schemes (`file://`) without crashing on status=None;
+(c) `capture-secret-scan.py` extends `github-token` detection to cover fine-grained tokens: `github_pat_` followed by 22 base62 characters, an underscore, and 59 base62 characters (total 93 characters; S136:163), closing the round-92 named known limit.
+
+Counter Idea:
+`python3 -B .ufo/waves/round-93/c2/capability-check.py --lane . --rev <rev> --work <scratch>`
+Limbs:
+- K1: instruments exist and pass selftests.
+- K2: missing explicit `--allow` file triggers fail-closed refusal (exit 3, written=no).
+- K3: `file://` fetch terminates cleanly without unhandled exception.
+- K4: positive detection of fine-grained PAT plants (`github_pat_` + 22 alnum + `_` + 59 alnum).
+- K5: negative controls (short fine-grained tokens, malformed delimiters).
+- K6: discrimination against base revision (base fails K2, K3, and K4).
+
+Do-Nothing Control:
+Run counter against base revision:
+- Fails K2: base silently loads empty allowlist.
+- Fails K3: base crashes with TypeError on status=None.
+- Fails K4: base misses fine-grained `github_pat_` plants.

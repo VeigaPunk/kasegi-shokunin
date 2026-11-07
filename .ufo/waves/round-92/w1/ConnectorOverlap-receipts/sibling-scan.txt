@@ -1,0 +1,53 @@
+=== SIBLING LANE SCAN FOR SECRET SCANNERS AND CAPTURE WRITERS ===
+Scope: 20 sibling lane repos under /home/vgpnk/Projects/shokunin/*-shokunin (excluding kasegi-shokunin)
+Search patterns: ghp_, github_pat_, secret-scan, SECRET_PATTERNS, capture-source
+
+## 1. Secret Scanners in Sibling Lanes
+
+Lane: chousa-shokunin
+Path: tools/research-gate.sh (lines 1086-1087)
+Mechanism: Regex branch matching ghp prefix (ghp_[A-Za-z0-9]{20,}) and github_pat prefix (github_pat_[A-Za-z0-9_]{10,})
+GitHub token detection: Partial: detects ghp_ and fine-grained github_pat_. Does NOT detect gho_, ghu_, ghs_, ghr_, or stateless ghs_<digits>_<JWT>.
+
+Lane: kagi-shokunin
+Path: corpus/transcript-scan.sh (lines 87)
+Mechanism: Substring matching in PATTERNS_HIT: ghp_, gho_, ghu_, ghs_, ghr_, github_pat_
+GitHub token detection: Yes: substring match for all classic prefixes and github_pat_. Does not check 36-char tail length, base62 charset, or stateless JWT structure.
+
+Lane: kengaku-shokunin
+Path: plans/stage_scan.py (lines 67-68)
+Mechanism: Regex RULES: github-pat r"(?<![A-Za-z0-9_])gh[pousr]_[A-Za-z0-9]{36,}" and github-finepat r"(?<![A-Za-z0-9_])github_pat_[A-Za-z0-9_]{22,}"
+GitHub token detection: Yes: detects standard 36+ base62 prefixed tokens (ghp_, gho_, ghu_, ghs_, ghr_) and fine-grained PATs. Does NOT detect stateless ghs_<digits>_<JWT> tokens.
+
+Lane: tabi-shokunin
+Path: scripts/check-sources.mjs (lines 347)
+Mechanism: Regex in credentialPatterns: /ghp_[A-Za-z0-9]+/
+GitHub token detection: Partial: detects ghp_ only. Does NOT detect gho_, ghu_, ghs_, ghr_, github_pat_, or stateless tokens.
+
+Lane: mado-shokunin
+Path: tools/mado-tripwire.py (lines 301-305)
+Mechanism: Generic regex: SECRET_PATTERNS = (... [A-Za-z0-9_\-]{32,})
+GitHub token detection: Indirect: matches arbitrary 32+ alnum/-/_ strings; no dedicated GitHub token pattern or prefix logic.
+
+## 2. Capture Writers in Sibling Lanes
+
+- [chousa-shokunin] tools/capture-fetch.py: Fetches approved (id, url) pairs via curl into corpus/captures/<key>.raw and <key>.txt. Pre-write secret scan: NO.
+- [chousa-shokunin] tools/capture-text.py: Extracts plain text from OOXML (.docx) or OLE (.doc) compound files. Pre-write secret scan: NO.
+- [kumitate-shokunin] scripts/source-capture.mjs: Offline byte-persistence gate verifying opened SOURCES.md rows match committed capture bytes. Does not fetch network resources.
+- [souji-shokunin] tools/souji-wave-evidence-capture.sh: Captures census wave artifacts into census/round-<N>/waves/. Pre-write secret scan: NO.
+- [kake-shokunin] scripts/live_snapshot.py: GET-only snapshot fetcher for web pages. Pre-write secret scan: NO.
+- [kake-shokunin] scripts/response_snapshot.py: HTTP response header/body snapshot fetcher. Pre-write secret scan: NO.
+- [kake-shokunin] scripts/capture_delta.py: Drift checker over existing capture trees. Does not ingest from network.
+- [tabi-shokunin] corpus/evidence/tabi-a1-r2b-capture/capture.mjs: Local test capture script. Pre-write secret scan: NO.
+- [tabi-shokunin] corpus/evidence/tabi-r2-1-capture/capture.mjs: Local test capture script. Pre-write secret scan: NO.
+- [kama-shokunin] tools/round90-reason-capture.py: Reasoning trace capture utility. Pre-write secret scan: NO.
+- [tameshi-shokunin] tools/context-capture.py: Context receipt capture tool. Pre-write secret scan: NO (notes: callers select non-secret files).
+- [tsukuroi-shokunin] tools/capture-resume-facts-r84.py: Read-only /proc and /sys facts capture. Pre-write secret scan: NO.
+
+## 3. Summary of GitHub Token Detection Across Sibling Lanes
+
+- Full detection of classic gh[pousr]_ 36-char tokens + stateless ghs_<digits>_<JWT>: ZERO sibling lanes.
+- Dedicated regex for classic gh[pousr]_ (without stateless form): kengaku-shokunin (plans/stage_scan.py).
+- Substring prefix matching (ghp_, gho_, ghu_, ghs_, ghr_): kagi-shokunin (corpus/transcript-scan.sh).
+- Single prefix ghp_ only: chousa-shokunin (tools/research-gate.sh), tabi-shokunin (scripts/check-sources.mjs).
+- All remaining 16 sibling lanes hold no secret scanner and detect no GitHub tokens.

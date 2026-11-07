@@ -1,0 +1,49 @@
+# CriticHarm r92 — item 5a: C1 citation-class differential, base vs C1 landing
+# method: extract corpus/knowledge/triage-thresholds.md and root-loss-2026-10-12.md at
+# 0628fd24 (base) and cb1ef2b9 (landing); per line, compare the backticked token sets;
+# classify every token with the lane's own resolve.py classify() (imported, mirror
+# absent); report (i) any token that was non-GONE at base and is absent after,
+# (ii) any token whose class dropped, (iii) every token added.
+cmd: python3 -B $S/c1class.py     (script in scratch; lane repo read-only)
+
+== triage base_lines=488 after_lines=488
+ line 59   ADDED corpus/knowledge/mission-control.md:20-21   now=INTERNAL
+ line 86   ADDED corpus/knowledge/intake-surface.md:83-88    now=INTERNAL
+ line 87   ADDED corpus/knowledge/intake-surface.md:83-88    now=INTERNAL
+ line 90   ADDED corpus/knowledge/mission-control.md:20-21   now=INTERNAL
+ line 146  ADDED corpus/knowledge/mission-control.md:54-56   now=INTERNAL
+ line 149  ADDED corpus/knowledge/mission-control.md:68-71   now=INTERNAL
+ line 150  ADDED corpus/knowledge/mission-control.md:68-71   now=INTERNAL
+ line 152  ADDED corpus/knowledge/mission-control.md:61      now=INTERNAL
+ line 153  ADDED corpus/knowledge/mission-control.md:54-55   now=INTERNAL
+ line 154  ADDED corpus/knowledge/mission-control.md:54-56   now=INTERNAL
+ line 155  ADDED corpus/knowledge/mission-control.md:56-57   now=INTERNAL
+ line 177  ADDED corpus/knowledge/claim-gates.md:21-23       now=INTERNAL
+ line 249  ADDED corpus/knowledge/claim-gates.md:52-56       now=INTERNAL
+ line 280  ADDED corpus/knowledge/claim-gates.md:88-91       now=INTERNAL
+ line 281  ADDED corpus/knowledge/claim-gates.md:88-91       now=INTERNAL
+ line 367  ADDED corpus/knowledge/ev-model.md:22-23          now=INTERNAL
+ line 390  ADDED corpus/knowledge/ops-invariants.md:18       now=INTERNAL
+ line 445  ADDED corpus/knowledge/claim-gates.md:57-61       now=INTERNAL
+ line 456  ADDED corpus/knowledge/mission-control.md:19-21   now=INTERNAL
+ line 458  ADDED corpus/knowledge/mission-control.md:13-46   now=INTERNAL
+ changed_lines=24
+== rootloss base_lines=77 after_lines=77
+ line 68   ADDED corpus/knowledge/ufo-archive-2026.md:31     now=INTERNAL
+ changed_lines=1
+
+== whole-file class census (every backticked token, classified with resolve.py)
+ triage   base {'GONE': 527, 'INTERNAL': 121}   after {'GONE': 511, 'INTERNAL': 134}
+ triage   tokens_dropped_nongone=none
+ rootloss base {'GONE': 34, 'INTERNAL': 6, 'RESOLVES': 2}
+ rootloss after {'GONE': 33, 'INTERNAL': 7, 'RESOLVES': 2}
+ rootloss tokens_dropped_nongone=none
+
+# reading: the only lines that differ are the 25 mapped sites; every added token is
+# INTERNAL; no token that was RESOLVES/INTERNAL/MIRROR-EQUIVALENT at base is absent
+# or downgraded after. Distinct tokens in the two files: triage 648 -> 645 (-3),
+# rootloss 42 -> 42. File-level arithmetic: 13 distinct tokens are new to the files
+# (all INTERNAL after; INTERNAL 121 -> 134) and 16 distinct tokens leave (all GONE at
+# base; GONE 527 -> 511), net -3, exactly the meter's scope-wide denominator
+# (1947 -> 1944): no resolved citation left the denominator.
+VERDICT: NO previously-INTERNAL citation was made GONE.

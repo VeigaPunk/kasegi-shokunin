@@ -1,0 +1,28 @@
+# C2 boundary probe: synthetic fixtures in a scratch git repo ($S/c2probe), landed scanner at 58c0c115, --allow /dev/null
+# Output carries paths/shapes only (no values); fixture values were assembled at run time.
+rc=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/E-right-dot.txt line=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/F-json-newline.txt line=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/H-appid-20-digits.txt line=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/K-four-segments.txt line=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/L-tail-then-unicode.txt line=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/N-right-space.txt line=1
+HIT shape=github-token path=corpus/source-snapshots/round-1/O-start-of-line.txt line=1
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=15 hits=7 files=7 allowed=0 unused_allow=0 rc=1
+---
+A-left-digit           want=False got=False OK
+B-left-underscore      want=False got=False OK
+C-right-digit          want=False got=False OK
+D-right-underscore     want=False got=False OK
+E-right-dot            want=True  got=True  OK
+F-json-newline         want=True  got=True  OK
+G-letter-before        want=False got=False OK
+H-appid-20-digits      want=True  got=True  OK
+I-appid-21-digits      want=False got=False OK
+J-two-segments         want=False got=False OK
+K-four-segments        want=any   got=True  OK
+L-tail-then-unicode    want=any   got=True  OK
+M-bare-prefix          want=False got=False OK
+N-right-space          want=True  got=True  OK
+O-start-of-line        want=True  got=True  OK
+Z-not-capture          want=False got=False

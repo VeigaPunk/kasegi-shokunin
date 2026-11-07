@@ -1,0 +1,32 @@
+# C1 label provenance (read-only git at d0bd4758, round-91 non-author seat ReviewC1Labels)
+## ancestry: labels commit is an ancestor of the round-92 base
+rc=0
+## label rows: 30 data rows, 5 columns
+     30 5
+## citing files
+      2 corpus/knowledge/citation-bases.md
+      1 corpus/knowledge/japanese-domestic-disclosure-workflow.md
+      1 corpus/knowledge/root-loss-2026-10-12.md
+     26 corpus/knowledge/triage-thresholds.md
+## no-edit rows (label CORRECT + fix "No edit")
+corpus/knowledge/citation-bases.md:14	claim-gates.md:3
+corpus/knowledge/citation-bases.md:14	ops-invariants.md:18
+corpus/knowledge/japanese-domestic-disclosure-workflow.md:7	japanese-domestic-disclosure-workflow.md
+## excluded rows as labelled (content-repair, named)
+corpus/knowledge/triage-thresholds.md:437	intake-surface.md:75-76	content-repair
+corpus/knowledge/triage-thresholds.md:438	mission-control.md:37-38	content-repair
+## excluded reasons frozen in the meter (freeze commit)
+# (site, key) pairs whose label names an edit but which this tranche leaves unmapped,
+# frozen before any edit was scored.
+EXCLUDED = {
+    ("corpus/knowledge/triage-thresholds.md:437", "intake-surface.md:75-76"):
+        "errata row: the cell cites the superseded text and quotes it; repointing to 89-90 under the quote makes the quote false",
+    ("corpus/knowledge/triage-thresholds.md:438", "mission-control.md:37-38"):
+        "errata row: the cell cites the superseded text and quotes it; repointing to 56-57 under the quote makes the quote false",
+}
+DASH = "—"
+## the two excluded citing cells at base (context only)
+| 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `intake-surface.md:75-76` ("`reward.min` present on 48"), `SKILL.md:111` ("`reward` exists on 48" — true but c
+| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6-astra:max`) |
+## label-kind tally derived by the frozen meter (landing run)
+kinds=dash-cell=2,drop-token=2,excluded=2,named=2,named-cell=2,no-edit=3,qualify=7,range=10

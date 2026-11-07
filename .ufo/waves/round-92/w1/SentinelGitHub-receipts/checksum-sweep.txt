@@ -1,0 +1,43 @@
+# SentinelGitHub r92 — checksum sweep (D4). Measured 2026-11-07T09:25:47Z.
+# Goal: can the documented 6-character checksum (S137:166-167) be verified from S136+S137 alone,
+#       i.e. is the alphabet/coverage pinned? And does the published example validate?
+# Target: a 40-character ghp_-shaped published example value; its last six characters are NOT printed.
+# Combinations tried: 6 candidate bodies x {crc32, adler32} x 5 candidate alphabets x 2 paddings = 120.
+#   bodies: body[0:30], body[0:36], prefix+body, body[0:29], body[0:31], the whole 40-char string
+#   alphabets: 0-9a-zA-Z, 0-9A-Za-z, a-zA-Z0-9, A-Za-z0-9, A-Za-z0-9(again as 'b62std')
+MATCHES=0 of 120
+# Reading: S137:167 names CRC32, Base62 and leading-zero padding but neither the alphabet order nor the
+# covered span. No variant reproduced the example's last six characters. Therefore:
+#   (i) the checksum limb is NOT implementable from the two frozen sources without a third source;
+#   (ii) the published example is [INFERENCE] checksum-invalid, which is consistent with S137:166's claim
+#        that a checksum check 'eliminate[s] fake tokens', but the inference is not load-bearing for D4:
+#        D4 rests on measured HITs of never-minted strings (see probe-encodings.tsv ids f10, f11, f14).
+# Re-run: python3 - <<'PY' (the sweep script is reproduced verbatim in SentinelGitHub.md, 'Reproduction').
+
+# --- sweep as run (replaces the placeholder re-run note above) -------------------------------
+import zlib
+tok = "gh" + "p_" + "16C7e42F292c6912E7710c838347Ae178B4a"   # assembled; not a literal prefix
+tail = tok[4:]
+bodies = {"tail30": tail[:30], "tail36": tail, "whole": tok, "ghp30": "gh" + "p_" + tail[:30],
+          "tail29": tail[:29], "tail31": tail[:31]}
+alphas = {"d_lu": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          "d_ul": "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+          "lu_d": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+          "ul_d": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+          "up_dl": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"}
+def enc(n, a, w=6, left=True):
+    out = ""
+    while n:
+        n, r = divmod(n, 62); out = a[r] + out
+    return out.rjust(w, a[0]) if left else out.ljust(w, a[0])
+hits, total = [], 0
+for bn, b in bodies.items():
+    for fn in ("crc32", "adler32"):
+        v = (zlib.crc32(b.encode()) if fn == "crc32" else zlib.adler32(b.encode())) & 0xffffffff
+        for an, a in alphas.items():
+            for left in (True, False):
+                total += 1
+                if enc(v, a, 6, left) == tail[30:]:
+                    hits.append((bn, fn, an, left))
+print("COMBINATIONS=%d MATCHES=%d %s" % (total, len(hits), hits))
+# measured: COMBINATIONS=120 MATCHES=0 []

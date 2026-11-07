@@ -1,0 +1,64 @@
+# CriticHarm r92 — item 5b: does each C1 edit keep the row's meaning / anchor fit?
+# all reads at the C1 landing cb1ef2b9 (line numbers unchanged: numstat 24/24 and 1/1,
+# both files keep 487 and 76 lines, so no site moved).
+
+1) every new range is in-bounds (file line counts at cb1ef2b9):
+   mission-control 171 | intake-surface 179 | claim-gates 160 | ev-model 60 |
+   ops-invariants 141 | ufo-archive-2026 210 | SKILL.md 1251
+   => newest anchors 13-46, 20-21, 54-57, 61, 68-71, 83-88, 88-91, 57-61, 52-56,
+      21-23, 22-23, 18, 31, 117 all inside.
+
+2) each NEW anchor states what the label claims (sed -n):
+   mission-control:19-21  queue score: priority +9e12, continue +2e12, curated +1e12,
+                          reward.min*1000, freshness.live +1 (rows 90, 456)
+   mission-control:54-57  model routing: off-peak alibaba-token-plan/deepseek-v4-pro:max,
+                          peak openai-codex/gpt-6-astra:max, round-13 correction note
+                          (rows 146, 153, 154, 155)
+   mission-control:61     detectLimit() tails fleets/run/*.log modified <15 min (row 152)
+   mission-control:68-71  --sync every 10 ticks, SYNC_PATHS allowlist (rows 149, 150)
+   claim-gates:21-23      artifact resolve/realpathSync confinement (row 177)
+   claim-gates:52-56      blanket symlink ban, L104-105 (row 249)
+   claim-gates:57-61      oversize skip + error-set caveat (row 445)
+   claim-gates:88-91      nested readiness / nested blockers (rows 280, 281)
+   ev-model:22-23         schema pins p_* to [0,1], as_of datetime (row 367)
+   intake-surface:83-88   score terms + priority.json 14 of 50 continue programs (rows 86, 87)
+   ufo-archive-2026:31    relocation to ~/Projects/ufo-fsd-alpha 2026-10-12, survives at
+                          HEAD 964f443e (root-loss:68, the re-anchor statement itself)
+   ops-invariants:18      BANNED = ['cursor','opencode'] (row 390)
+
+3) each OLD range is not a support (so the repoint is justified, not a coin flip):
+   mission-control:36-38  sweep/terminal states        (models at 54-57)
+   mission-control:40-45  commit message / byte proof  (limit window at 61)
+   mission-control:42-46  commit message / byte proof  (sync at 68-71)
+   intake-surface:71      coverage census (352 untouched) (priority at 83-88)
+   claim-gates:5-6        "OK only when zero errors"   (per-artifact flow at 57-61)
+   claim-gates:42-47      secrets-gate heading+regex   (symlink ban at 52-56)
+   claim-gates:71-74      claim_ready/reviewer text    (nested readiness at 88-91)
+   ev-model:15-16         gross_value/total_cost formulas (p_* pin at 22-23)
+
+4) drop-token premise checked: `grep -c -i attempt corpus/knowledge/mission-control.md`
+   -> 0. mission-control.md does not state attempts()/MAX_ATTEMPTS, so dropping
+   `mission-control.md:20-21` from rows 58 and 144 removes an unsupported tie.
+
+5) RESIDUE (routed defects, not edits):
+   a. rows 58 and 144 now read `MATCHES: `SKILL.md:117`` as their ONLY tie.
+      SKILL.md:117 (sed -n '117p') is
+      "`[lost-tree] claims/hackerone-anthropic/honest-zero-claude-code/provenance.json:29`,"
+      i.e. a provenance block; the lane's actual `attempts()>=2` statement is
+      SKILL.md:191 "status-file TERMINAL + telemetry `attempts()>=2`". SKILL.md
+      contains no MAX_ATTEMPTS token at all (grep -> 0). The token was already there
+      at base (the edit did not introduce it) but the tranche now certifies the cell.
+   b. rows 86, 87, 149, 150, 152, 153 carry `MATCHES` over anchors whose own labels
+      say "Partial": 86/87 do not restate the id-in-priority[] predicate or the
+      {priority:[]} default; 149/153 do not restate the 30 s tick or the UTC-3 formula;
+      150 gives 8 SYNC_PATHS groups, the row lists 11 entries; 152 gives the 15-min
+      window, not the 20000-char tail. Base anchors were unrelated sections, so this is
+      an improvement with a residual overstatement.
+   c. row 155 changes relation SUPERSEDES -> MATCHES (whole-cell). Justified: the entry
+      now says openai-codex/ with the round-13 correction, and errata row 9.6
+      (triage:438, EXCLUDED, unchanged) keeps the audit-time `openai-oauth` record.
+   d. rows 369/370 lose MATCHES to `-`: ev-model.md:22-23 pins p_*/as_of only and
+      L49-51 lists deadline/duration_p90 as names without types, so no anchor supports
+      those cells; removal is honest, the row gloss is unchanged.
+
+NO HARM for any of (1)-(4); (5a)/(5b) are routed defects/qualifiers.

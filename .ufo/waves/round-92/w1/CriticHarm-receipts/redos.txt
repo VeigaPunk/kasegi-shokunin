@@ -1,0 +1,43 @@
+# CriticHarm r92 — item 3: ReDoS timing of the github-token pattern
+# regex under test: dict(capture-secret-scan.GITHUB_PATTERNS)["github-token"] at 58c0c115
+#   _GH_LB (?:(?<![A-Za-z0-9_])|(?<=\\n)) then
+#   gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_]) | ghs_[0-9]{1,20}_ SEG \. SEG \. SEG, SEG=[A-Za-z0-9_-]{10,}
+# no nested quantifier; every unbounded quantifier is a flat {10,} followed by a literal.
+
+A. one-shot adversarial inputs (finditer over the whole buffer, worst of 1 run):
+A: ghs_1_ + a*1MB + .              bytes=1048576 hits=0  worst_ms=30.0
+B: 1MB base62 (no prefix)          bytes=1048576 hits=0  worst_ms=27.3
+C: 1MB of 'g'                      bytes=1048576 hits=0  worst_ms=28.3
+D: 1MB 'ghs_' prefixes only        bytes=1048576 hits=0  worst_ms=31.2
+E: 20k x (ghp_ + 35a + '!')        bytes=800000  hits=0  worst_ms=25.1
+F: 2k x (ghs_1_ + 10a + '.')       bytes=34000   hits=666 worst_ms=0.3
+G: 2k x (ghs_1_ + 30a + '.')       bytes=74000   hits=666 worst_ms=0.3
+H: 1MB digits after ghs_           bytes=1048576 hits=0  worst_ms=41.0
+I: ghs_ + 20 digits + _ + 1MB a    bytes=1048601 hits=0  worst_ms=36.3
+J: 1MB alternating g/h/s/_         bytes=1048575 hits=0  worst_ms=28.5
+K: 1MB dots                        bytes=1048576 hits=0  worst_ms=51.9
+L: 1MB 'a.' runs                   bytes=1048576 hits=0  worst_ms=113.5   <- worst single run
+M: 100k x 'ghs_1_a.a.'             bytes=200006  hits=0  worst_ms=14.9
+N: 1MB underscore base62           bytes=1048576 hits=0  worst_ms=53.9
+O: 1MB a-run then 1MB dot-run      bytes=1049576 hits=0  worst_ms=53.9
+
+B. second pass, extra shapes (many prefixes, long runs, dot storms):
+P: ghs_ + 20 digits + _ + a*100k   bytes=100025  hits=0  worst_ms=2.7
+Q: 20k x (ghs_1_ + a*10 . a*10 .)  bytes=560000  hits=10000 worst_ms=6.8
+R: 1k x (ghs_1_ + a*1000 + '.')    bytes=1007000 hits=333 worst_ms=1.6
+S: 1MB 'ghs_1_a' repeated          bytes=917504  hits=0  worst_ms=27.2
+T: 1MB a-run . a-run .             bytes=1048584 hits=0  worst_ms=53.8
+U: 1MB dots after ghs_1_ a*100     bytes=1048574 hits=0  worst_ms=48.3
+V: 1MB digits+underscores          bytes=1048564 hits=0  worst_ms=32.7
+
+C. scaling test (steady-state µs per KB is flat => linear, no super-linear term):
+scale 'a.'       1MB 35.7 ms (34.82 us/KB) | 2MB 62.5 (30.52) | 4MB 122.6 (29.93) | 8MB 254.2 (31.03)
+scale ghs a-run  1MB 28.1 ms (27.42 us/KB) | 2MB 60.8 (29.71) | 4MB 111.5 (27.21) | 8MB 252.7 (30.85)
+scale ghs_1_a    1MB 28.7 ms (28.04 us/KB) | 2MB 52.1 (25.46) | 4MB  98.9 (24.16)
+
+D. whole scanner pattern union on the two worst buffers (context, not the new shape alone):
+A-union (ghs_1_ + a*1MB + .)  worst_ms=211.6 ; L-union (1MB 'a.') worst_ms=232.6
+
+Worst observed github-token time: 113.5 ms on 1 MB (cold, first pass); steady state ~25-35 us/KB
+(~30 ms/MB) and flat to 8 MB. No catastrophic backtracking.
+VERDICT: NO HARM (no ReDoS; cost linear in file size).

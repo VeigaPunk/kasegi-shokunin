@@ -1,0 +1,49 @@
+# CriticHarm r92 — landings and the frozen meters (independent reproduction)
+
+base 0628fd247914555838a42c02ba5d4ac08b7e095d | freeze 9e4f0d6830dcc9a30c6f524c48d074ec8979f040
+C1 landing cb1ef2b9856df79c530f3ff1374fa9691ff56233 | C2 landing 58c0c115342877ee556cae19928d69839b0b29f0
+tip ee830069af1255043aeb39f1d324e6b3e5d69dbd (landing receipts commit)
+
+A. C1 P3 path set:
+cmd: git diff-tree --no-commit-id --name-only -r cb1ef2b9856df79c530f3ff1374fa9691ff56233
+corpus/knowledge/root-loss-2026-10-12.md
+corpus/knowledge/triage-thresholds.md
+cmd: git diff --numstat 0628fd24 cb1ef2b9 -- corpus/knowledge/
+1	1	corpus/knowledge/root-loss-2026-10-12.md
+24	24	corpus/knowledge/triage-thresholds.md
+# line counts identical (76, 487) => no site moved.
+
+B. C2 P3 path set:
+cmd: git diff-tree --no-commit-id --name-only -r 58c0c115342877ee556cae19928d69839b0b29f0
+SCORECARD.md
+corpus/instruments/capture-secret-scan.py
+cmd: git diff --numstat 9e4f0d68 58c0c115 -- SCORECARD.md corpus/instruments/capture-secret-scan.py
+1	1	SCORECARD.md
+41	2	corpus/instruments/capture-secret-scan.py
+# the SCORECARD row change keeps every prior shape name (grep -c per shape: 1 and 1)
+# and adds the github-token clause; only the counter reference and instrument sha in the
+# row's command cell changed. Row length 2283 chars, no "limit" text at all.
+
+C. C1 meter (frozen command, own run, rc from PIPESTATUS):
+KNOWLEDGE-METER base=947/1947 after=960/1944 base_target=947/1947 target=960/1944 sites=25 labels=30 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23 / HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass | M1 pass | M3 pass | M4 pass | M5 pass | M9 pass rows=25 unbound=none
+LIMB M10 pass labelled=30 want=25 mapped=25 kinds=dash-cell=2,drop-token=2,excluded=2,named=2,named-cell=2,no-edit=3,qualify=7,range=10 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=6d87cafaec99961a15c00967d30c2bb164ed480d8b3fbaeadccd55b048d9b772
+KNOWLEDGE-METER-RESULT pass rc=0   (wall 61.9 s, --work $S)
+
+D. C2 counter: reproduced from the landing receipt only (K1-K8 pass at seeds
+   runtime/9191/1, instrument sha 04666f67..., gate sha 8b6f8493...); K3 in my own
+   independent run reads scanned=1882 hits=0 files=0 allowed=20 unused_allow=0 rc=0.
+   The instrument and gate shas match: sha256(corpus/instruments/capture-secret-scan.py)
+   = 04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e at 58c0c115.
+
+E. census of record is stale relative to the new tree (pre-existing carried debt):
+corpus/instruments/citation-survival.tsv still carries
+  mission-control.md:20-21  GONE  nfiles=1 occurrences=4   (line 3011)
+whose literal no longer occurs anywhere in SKILL.md+corpus (grep -rF -> 0), and it does
+not contain the 13 new corpus/knowledge/... tokens. Last census regeneration is round-57
+(e300ad5); SCORECARD carries the "census of record ... not regenerated" debt.
+The C1 P3 forbids the landing from touching it; the round must regenerate it before the
+census-freshness gate can read ok (census-freshness-check.py compares committed bytes to
+a fresh resolve.py run and exits 1 on any difference).

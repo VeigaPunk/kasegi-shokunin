@@ -1,0 +1,26 @@
+# landed capture-secret-scan.py @58c0c11 (scratch copy with claim-package-check.py + allowlist beside it)
+## sha256
+04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e  capture-secret-scan.py
+8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  claim-package-check.py
+## patterns() names
+count=13
+private-key,op-ref,bearer,authorization,credential,session-cookie,aws-sts-session-token,aws-access-key-id,gcs-signed-url-signature,azure-sas-signature,cloudfront-signed-url-signature,cloudfront-signed-cookie-signature,github-token
+## selftest
+SELFTEST allow-other-path ok got=credential allowed=0
+SELFTEST-RESULT pass cases=68
+## boundary probes (fixtures live in scratch only; no value is printed here)
+01-plain-space                 HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+02-pre-underscore              CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+03-post-underscore             CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+04-json-escaped-newline        HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+05-pre-hyphen                  HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+06-brace                       HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+07-pre-letter                  CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+08-post-digit                  CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+09-37-tail                     CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+10-ghs-classic-json            HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+11-refresh-line                HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+12-stateless-4-segments        HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+13-stateless-trailing-junk     HIT shape=github-token path=<f> line=1|CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=19 rc=1|
+14-stateless-9char-seg         CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|
+15-appid-21-digits             CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=19 rc=0|

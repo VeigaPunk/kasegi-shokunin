@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""forgery F2: content-blind lookup table on the counter's own fixture paths."""
+import argparse
+import os
+import subprocess
+import sys
+
+HISTORY_REV = "252df0c90c066d83d229e3107811a6bc05e8feed"
+HIST = (".ufo/waves/round-85/w1/ScoutSources-receipts/live-LEAD-hackerone-ibb-1997312.json",
+        "corpus/source-snapshots/round-86/S122.txt")
+FILES = {"E1.txt": "azure-sas-signature", "report2.md": "cloudfront-signed-url-signature"}
+TABLE = {
+    'corpus/practice/p/evidence/E1.txt': ('azure-sas-signature',),
+    'corpus/practice/p/evidence/E2.json': ('aws-sts-session-token', 'credential'),
+    'corpus/practice/p/evidence/E3.json': ('azure-sas-signature',),
+    'corpus/practice/p/evidence/E4.json': ('cloudfront-signed-cookie-signature',),
+    'corpus/practice/p/evidence/E5.txt': ('github-token',),
+    'corpus/source-snapshots/round-1/S001.txt': ('aws-access-key-id', 'aws-sts-session-token', 'credential'),
+    'corpus/source-snapshots/round-1/S004.txt': ('gcs-signed-url-signature',),
+    'corpus/source-snapshots/round-1/S008.txt': ('cloudfront-signed-url-signature',),
+    'corpus/source-snapshots/round-1/S009.txt': ('cloudfront-signed-url-signature',),
+    'corpus/source-snapshots/round-1/S014.txt': ('azure-sas-signature',),
+    'corpus/source-snapshots/round-1/S015.txt': ('cloudfront-signed-cookie-signature',),
+    'corpus/source-snapshots/round-1/S022.txt': ('cloudfront-signed-cookie-signature',),
+    'corpus/source-snapshots/round-1/S023.txt': ('github-token',),
+    'corpus/source-snapshots/round-1/S024.txt': ('github-token',),
+    'corpus/source-snapshots/round-1/S025.txt': ('github-token',),
+    'g/x-receipts/live-g1.txt': ('cloudfront-signed-url-signature',),
+    'g/x-receipts/live-g2.json': ('cloudfront-signed-url-signature',),
+    'g/x-receipts/live-g3.json': ('azure-sas-signature',),
+    'g/x-receipts/live-g4.txt': ('cloudfront-signed-cookie-signature',),
+    'g/x-receipts/live-g5.txt': ('cloudfront-signed-cookie-signature',),
+    'g/x-receipts/live-g6.txt': ('azure-sas-signature',),
+    'g/x-receipts/live-g7.txt': ('github-token',),
+    'g/x-receipts/live-g8.json': ('github-token',),
+    'g/x-receipts/live-g9.txt': ('github-token',),
+    'w/live-b.html': ('private-key',),
+    'w/live-e.html': ('cloudfront-signed-url-signature',),
+    'w/q-receipts/live-d.json': ('cloudfront-signed-url-signature',),
+    'w/r-receipts/live-f.json': ('azure-sas-signature',),
+    'w/r-receipts/live-h.txt': ('cloudfront-signed-cookie-signature',),
+    'w/s-receipts/live-i.json': ('github-token',),
+    'w/s-receipts/live-j.json': ('github-token',),
+    'w/x-receipts/live-a.json': ('aws-access-key-id',),
+    'w/y-receipts/fp-other.json': ('credential',),
+    'w/z-receipts/live-c.json': ('azure-sas-signature',),
+}
+
+
+def git(lane, *args):
+    return subprocess.run(["git", "-C", lane] + list(args), capture_output=True, check=True).stdout
+
+
+def rows(allow):
+    n = 0
+    if allow and os.path.exists(allow):
+        with open(allow, encoding="utf-8") as fh:
+            for line in fh:
+                line = line.rstrip("\n")
+                if not line or line.startswith("#"):
+                    continue
+                cells = line.split("\t")
+                if len(cells) == 4 and cells[1] == "aws-sts-session-token":
+                    raise OSError("allowlist row")
+                n += 1
+    return n
+
+
+def emit(hits, scanned, allowed):
+    for path, shape in hits:
+        print("HIT shape=%s path=%s line=1" % (shape, path))
+    print("CAPTURE-SECRET-SCAN mode=forged scanned=%d hits=%d files=%d allowed=%d unused_allow=0 rc=%d"
+          % (scanned, len(hits), len({p for p, _ in hits}), allowed, 1 if hits else 0))
+    return 1 if hits else 0
+
+
+def main(argv):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--lane")
+    ap.add_argument("--rev")
+    ap.add_argument("--files", nargs="+")
+    ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--allow")
+    a = ap.parse_args(argv)
+    if a.selftest:
+        print("SELFTEST-RESULT pass cases=0")
+        return 0
+    try:
+        allowed = max(1, rows(a.allow))
+    except OSError:
+        print("CAPTURE-SECRET-SCAN error reason=allowlist rc=2")
+        return 2
+    if a.files:
+        hits = [(p, FILES[os.path.basename(p)]) for p in a.files
+                if os.path.basename(p) in FILES]
+        return emit(hits, len(a.files), allowed)
+    if a.lane and a.rev:
+        if a.rev.startswith("252df0c9"):
+            return emit([(p, "aws-sts-session-token") for p in HIST], 2, allowed)
+        tree = git(a.lane, "ls-tree", "-r", "--name-only", "-z", a.rev).split(b"\0")
+        paths = [x.decode("utf-8", "surrogateescape") for x in tree if x]
+        hits = [(p, s) for p in sorted(paths) for s in TABLE.get(p, ())]
+        return emit(hits, len(paths), allowed)
+    print("CAPTURE-SECRET-SCAN error reason=usage rc=2")
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

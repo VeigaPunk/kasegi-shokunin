@@ -1,0 +1,48 @@
+=== ROUND 92 CROSS-CLAIM PATTERN ANALYSIS & QUALITY.MD REVIEW ===
+
+## 1. The Shared Pattern Across C1 and C2 in Round 92
+
+The unifying pattern across C1 and C2 in round 92 is:
+Preserving semantic truth by explicitly accounting for and verifying exclusions/boundaries where mechanical or naive application would induce falsehoods or false positives.
+
+1. In C1 (depth:verifiability — Citation Repair Tranche 7):
+   - ReviewC1Labels provided 30 hand-labelled (site, key) pairs.
+   - 25 pairs were mechanically repointed/edited per label instructions.
+   - Crucially, 2 pairs (corpus/knowledge/triage-thresholds.md lines 437 and 438) were explicitly EXCLUDED from repointing:
+     * Line 437 quotes superseded text: "reward.min present on 48", which existed at historical line 76 of intake-surface.md (verified at commit fb9ac8e). Repointing line 437 to live lines 89-90 would make the quoted text false, because lines 89-90 state the corrected text ("reward object on 48 but numeric reward.min on only 14").
+     * Line 438 quotes superseded text from mission-control.md.
+     * Naive application of the labeler's repoint would violate quote fidelity (R108/R131/R135).
+   - 3 pairs were identified as no-edit CORRECT pairs (counter-examples in citation-bases.md and an external merge input in japanese-domestic-disclosure-workflow.md) where qualification would destroy the semantic example.
+   - Counter limb M10 enforces completeness over the entire set of 30 (site, key) tuples (25 edited + 3 no-edit + 2 EXCLUDED).
+
+2. In C2 (coverage — Capability Extension: github-token):
+   - Rather than naive prefix matching (e.g. regex gh[pousr]_.* or matching fine-grained tokens without proper structure), C2 explicitly bounds the shape and verifies negative boundaries:
+     * Classic tokens require exact 36-char base62 tails after 5 prefixes (ghp_, gho_, ghu_, ghs_, ghr_).
+     * Stateless tokens require exact ghs_<1-20 digits>_<3 base64url segments of 10+>.
+     * Left/right character class boundaries prevent false positives within longer alnum strings.
+     * Documented placeholders (ghs_APPID_JWT) are explicitly verified NOT to match.
+     * Fine-grained tokens (github_pat_) are explicitly declared as a known limit (excluded from claim).
+   - Counter limb K8 maps every positive clause and every negative boundary/exclusion 1-to-1 to a plant.
+
+## 2. Evaluation of Existing Criteria in corpus/QUALITY.md
+
+A systematic audit of criteria R1 through R143 in corpus/QUALITY.md reveals:
+
+- R10 (Round 23): Governs fixture matrix coverage and requires declaring unpinned escape classes, but does not provide rules for citation repair tranches or quote preservation.
+- R108 (Round 70): Requires knowledge entries to attribute only what their anchors state, but does not address the conflict between citation repointing and quotes of historical/superseded text.
+- R131 (Round 80): Requires code citations (path:line) to name lines holding the cited token, but does not prevent citation maps from repointing quotes of superseded prose.
+- R135 (Round 84): Requires falsifiable rules not to contradict Limits or assert what quotes do not state.
+- R137 (Round 86): Defines qualification of planned citation-repair tranches (single path tokens, no whitespace, tracked lane paths; excludes command invocations), but does not govern exclusions of superseded quotes.
+- R140 (Round 88): Requires a non-author hand-labelled sample (>=15 keys) when keys are selected by a lexical proxy, but does not govern how to handle labelled pairs that quote superseded text.
+- R141 (Round 89): Requires capability counter plants to lie within scan scope.
+- R142 (Round 90): Requires counters to classify against git archive REV extracts in isolated clones.
+- R143 (Round 91): Requires re-anchoring knowledge citations when an instrument's line layout shifts and updating rewritten sentences.
+
+## 3. Findings & Recommendation
+
+Finding: corpus/QUALITY.md does NOT have an existing criterion governing citation repair exclusions for quotes of superseded text, nor does it formalize bidirectional exclusion verification.
+
+Recommended New Criterion (R144 Candidate):
+A citation-repair tranche that encounters an anchor whose citing cell quotes superseded or historical text MUST NOT repoint the anchor if the quoted text is absent from the repointed range (preserving quote fidelity under R108/R131). The pair must either:
+  (a) be explicitly declared as an EXCLUDED pair with the historical text and revision cited in the counter docstring, and verified unchanged by completeness checks (M10 over (site, key) tuples); or
+  (b) be repaired by a whole-cell rewrite that cites both the live anchor and updates the quote via an explicit erratum.

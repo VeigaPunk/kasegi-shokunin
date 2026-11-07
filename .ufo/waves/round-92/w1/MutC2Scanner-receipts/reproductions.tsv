@@ -1,0 +1,17 @@
+mutant	change	old	new	expected_count
+M01-classic-len-35-36	classic {36} -> {35,36}	gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])	gh[pousr]_[A-Za-z0-9]{35,36}(?![A-Za-z0-9_])	1
+M02-right-boundary-drops-underscore	right lookahead [A-Za-z0-9_] -> [A-Za-z0-9]	gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])	gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9])	1
+M03-prefix-adds-x	gh[pousr] -> gh[pousrx]	gh[pousr]_[A-Za-z0-9]{36}	gh[pousrx]_[A-Za-z0-9]{36}	1
+M04-appid-empty	digits {1,20} -> {0,20}	ghs_[0-9]{1,20}_	ghs_[0-9]{0,20}_	1
+M05-json-any-backslash	json lookbehind (?<=\\n) -> (?<=\\)	_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"	_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\))"	1
+M06-jwt-any-separator	jwt separator rb"\\." -> rb"."	rb"\."	rb"."	2
+M07-jwt-two-segments	three JWT segments -> two	+ _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG	+ _JWT_SEG + rb"\." + _JWT_SEG	1
+M08-classic-prefix-ghs-only	classic gh[pousr] -> ghs	gh[pousr]_[A-Za-z0-9]{36}	ghs_[A-Za-z0-9]{36}	1
+M09-left-boundary-drops-underscore	left lookbehind [A-Za-z0-9_] -> [A-Za-z0-9]	_GH_LB = rb"(?:(?<![A-Za-z0-9_])	_GH_LB = rb"(?:(?<![A-Za-z0-9])	1
+M10-classic-tail-allows-dash	classic [A-Za-z0-9]{36} -> [A-Za-z0-9-]{36}	[A-Za-z0-9]{36}(?![A-Za-z0-9_])	[A-Za-z0-9-]{36}(?![A-Za-z0-9_])	1
+M11-appid-letters	appid [0-9] -> [0-9A-Za-z]	ghs_[0-9]{1,20}_	ghs_[0-9A-Za-z]{1,20}_	1
+M12-appid-cap-15	appid digits {1,20} -> {1,15}	ghs_[0-9]{1,20}_	ghs_[0-9]{1,15}_	1
+M13-left-boundary-drops-digit	left lookbehind [A-Za-z0-9_] -> [A-Za-z]	_GH_LB = rb"(?:(?<![A-Za-z0-9_])	_GH_LB = rb"(?:(?<![A-Za-z])	1
+M14-json-tab-escape	json lookbehind (?<=\\n) -> (?<=\\t)	_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"	_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\t))"	1
+M15-jwt-seg-cap-40	_JWT_SEG {10,} -> {10,40}	_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"	_JWT_SEG = rb"[A-Za-z0-9_-]{10,40}"	1
+M16-jwt-seg-floor-9	_JWT_SEG {10,} -> {9,}	_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"	_JWT_SEG = rb"[A-Za-z0-9_-]{9,}"	1

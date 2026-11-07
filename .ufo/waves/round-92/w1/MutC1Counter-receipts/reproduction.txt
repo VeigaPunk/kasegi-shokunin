@@ -1,0 +1,58 @@
+# C1 counter mutation test — baseline reproduction
+
+Frozen command (landing):
+python3 -B .ufo/waves/round-92/c1/knowledge-meter.py --lane . --base-rev 0628fd247914555838a42c02ba5d4ac08b7e095d --after-rev cb1ef2b9856df79c530f3ff1374fa9691ff56233 --map .ufo/waves/round-92/c1/repair-map.tsv --labels-rev d0bd4758a41919b2c86c079f3a1a2dfb392dcd8d --base-target 947/1947 --target 960/1944 --map-sha256 6d87cafaec99961a15c00967d30c2bb164ed480d8b3fbaeadccd55b048d9b772 --work $S
+
+Pristine landing output:
+KNOWLEDGE-METER base=947/1947 after=960/1944 base_target=947/1947 target=960/1944 sites=25 labels=30 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=947/1947
+LIMB M1 pass after=960/1944
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=25 unbound=none
+LIMB M10 pass labelled=30 want=25 mapped=25 kinds=dash-cell=2,drop-token=2,excluded=2,named=2,named-cell=2,no-edit=3,qualify=7,range=10 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=6d87cafaec99961a15c00967d30c2bb164ed480d8b3fbaeadccd55b048d9b772
+
+Control-fixture reproduction: 11/11 control contexts reproduce the LIMB and
+KNOWLEDGE-METER lines of .ufo/waves/round-92/controls/c1-controls-r92.txt verbatim
+(including the own-map sha256 lines for the seven controls that carry their own map).
+The variant commit ids differ from that receipt because fixture commits embed the
+wall-clock time; the trees and maps are the same bytes.
+
+Candidate-control tree vs landing tree: differs only in C2 files
+(corpus/SOURCES.md and corpus/source-snapshots/round-92/S136-S138 + manifest);
+corpus/knowledge/ is byte-identical, hence the same 960/1944 reading.
+
+
+Pristine verdict vector:
+landing                      pass
+candidate                    pass
+no-work                      fail
+partial-24-of-25             fail
+partial-own-map              fail
+skip-qualify-59-own-map      fail
+excluded-437-applied         fail
+no-edit-qualified            fail
+named-cell-155-token-only    fail
+drop-token-58-as-dash-cell   fail
+wrong-key-column-86          fail
+working-tree-only            fail
+
+Pristine candidate-control output (compare with c1-controls-r92.txt '== control candidate'):
+KNOWLEDGE-METER base=947/1947 after=960/1944 base_target=947/1947 target=960/1944 sites=25 labels=30 mirror_absent=True pinned=archive
+LIMB M0 pass base=947/1947
+LIMB M1 pass after=960/1944
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=25 unbound=none
+LIMB M10 pass labelled=30 want=25 mapped=25 kinds=dash-cell=2,drop-token=2,excluded=2,named=2,named-cell=2,no-edit=3,qualify=7,range=10 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=6d87cafaec99961a15c00967d30c2bb164ed480d8b3fbaeadccd55b048d9b772
+
+Contexts whose LIMB+KNOWLEDGE lines matched the controls receipt byte-for-byte:
+candidate no-work partial-24-of-25 partial-own-map skip-qualify-59-own-map
+excluded-437-applied no-edit-qualified named-cell-155-token-only
+drop-token-58-as-dash-cell wrong-key-column-86 working-tree-only

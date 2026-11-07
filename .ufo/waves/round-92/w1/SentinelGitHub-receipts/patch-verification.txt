@@ -1,0 +1,33 @@
+# SentinelGitHub r92 — D1 remediation measured, not proposed-only. Scratch copy of the landed
+# instrument at 58c0c11 with exactly one line replaced (capture-secret-scan.py:156):
+
+   landed: _GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
+   patched: _GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+
+# python3 -B patched.py --selftest  ->  SELFTEST-RESULT pass cases=68   (no landed case changes)
+# fixtures rebuilt from the same bytes as probe-encodings.tsv, scanned with --files:
+
+NOW DETECTED (was hits=0 under the landed line):
+  b11 json \t           github-token
+  b12 json \r           github-token
+  b13 %3A               github-token
+  b14 %20               github-token
+  b15 json \u0020       github-token
+  b20 json \u000a       github-token
+  e01 json \u0026       github-token
+  e02 %26               github-token
+  e04 %2F               github-token
+  e05 %20               github-token
+  e06 %09               github-token
+
+STILL MISSED (P2, by design at this patch):
+  b01 ghp%5F...         none
+  b05 ghp&#95;...       none
+
+UNCHANGED FALSE POSITIVES (the patch does not widen the value match):
+  f01 published example github-token     f02 placeholder        credential,github-token
+  f10 ghs_ asset id     github-token     f11 ghp_ asset id       github-token
+  f12 4-segment dotted  github-token     f14 36-x placeholder    github-token
+
+# Fixing D4 therefore needs the allowlist row (allowlist-repro.sh (b)) or a checksum limb whose
+# alphabet the frozen sources do not state (checksum-sweep.txt); widening the boundary does neither.

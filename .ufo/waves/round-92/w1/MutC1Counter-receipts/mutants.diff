@@ -1,0 +1,261 @@
+--- knowledge-meter.py
++++ mut/m01_qualify_key_equality.py
+@@ -193,5 +193,5 @@
+     if label == "CORRECT":
+         m = FIXQUAL.match(fix)
+-        if m and m.group(1) == key:
++        if m:
+             return "qualify", "`%s`" % key, "`corpus/knowledge/%s`" % key
+         if fix.startswith("No edit"):
+--- knowledge-meter.py
++++ mut/m02_droptok_off.py
+@@ -200,5 +200,5 @@
+     if label == "content-repair":
+         if FIXDASH.match(fix):
+-            if (DROPTOK % key) in fix:
++            if False and (DROPTOK % key) in fix:
+                 return "drop-token", ", `%s`" % key, ""
+             return "dash-cell", "MATCHES: `%s`" % key, DASH
+--- knowledge-meter.py
++++ mut/m03_fixdash_off.py
+@@ -199,5 +199,5 @@
+         return "unknown", None, None
+     if label == "content-repair":
+-        if FIXDASH.match(fix):
++        if False and FIXDASH.match(fix):
+             if (DROPTOK % key) in fix:
+                 return "drop-token", ", `%s`" % key, ""
+--- knowledge-meter.py
++++ mut/m04_lastcell_index.py
+@@ -184,5 +184,5 @@
+ def last_cell(line):
+     cells = line.rstrip().split("|")
+-    return cells[-2].strip() if line.rstrip().endswith("|") and len(cells) >= 3 else None
++    return cells[-3].strip() if line.rstrip().endswith("|") and len(cells) >= 3 else None
+ 
+ 
+--- knowledge-meter.py
++++ mut/m05_lastcell_guard.py
+@@ -184,5 +184,5 @@
+ def last_cell(line):
+     cells = line.rstrip().split("|")
+-    return cells[-2].strip() if line.rstrip().endswith("|") and len(cells) >= 3 else None
++    return cells[-2].strip() if len(cells) >= 3 else None
+ 
+ 
+--- knowledge-meter.py
++++ mut/m06_namedcell_as_named.py
+@@ -206,5 +206,5 @@
+         if m:
+             new = "`corpus/knowledge/%s`" % m.group(1)
+-            if "drop the" in fix:
++            if False:
+                 cell = last_cell(line)
+                 return "named-cell", cell, "MATCHES: " + new
+--- knowledge-meter.py
++++ mut/m07_named_as_namedcell.py
+@@ -206,5 +206,5 @@
+         if m:
+             new = "`corpus/knowledge/%s`" % m.group(1)
+-            if "drop the" in fix:
++            if True:
+                 cell = last_cell(line)
+                 return "named-cell", cell, "MATCHES: " + new
+--- knowledge-meter.py
++++ mut/m08_namedcell_prefix_off.py
+@@ -208,5 +208,5 @@
+             if "drop the" in fix:
+                 cell = last_cell(line)
+-                return "named-cell", cell, "MATCHES: " + new
++                return "named-cell", cell, new
+             return "named", "`%s`" % key, new
+     return "unknown", None, None
+--- knowledge-meter.py
++++ mut/m09_m9_site_lookup.py
+@@ -336,5 +336,5 @@
+         for f, n, key, old, new in rows:
+             site = "%s:%d" % (f, n)
+-            lab = labels.get((site, key))
++            lab = labels.get(site)
+             bl = bfiles.get(f, "").split("\n")
+             line = bl[n - 1] if 1 <= n <= len(bl) else ""
+--- knowledge-meter.py
++++ mut/m10_m9_excluded_off.py
+@@ -340,5 +340,5 @@
+             line = bl[n - 1] if 1 <= n <= len(bl) else ""
+             exp = expected_edit(key, lab[0], lab[1], line) if lab else None
+-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):
++            if lab is None or exp is None or exp[1:] != (old, new):
+                 m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+--- knowledge-meter.py
++++ mut/m11_m9_new_only.py
+@@ -340,5 +340,5 @@
+             line = bl[n - 1] if 1 <= n <= len(bl) else ""
+             exp = expected_edit(key, lab[0], lab[1], line) if lab else None
+-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):
++            if lab is None or (site, key) in EXCLUDED or exp is None or exp[2:] != (new,):
+                 m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+--- knowledge-meter.py
++++ mut/m12_m10_unlabelled_off.py
+@@ -355,5 +355,5 @@
+         unknown = sorted(p for p, k in kinds.items() if k == "unknown")
+         unapplied = sorted(want - mapped)
+-        unlabelled = sorted(mapped - want)
++        unlabelled = []
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+--- knowledge-meter.py
++++ mut/m13_m10_unapplied_off.py
+@@ -354,5 +354,5 @@
+         want = {p for p, k in kinds.items() if k not in ("excluded", "no-edit")}
+         unknown = sorted(p for p, k in kinds.items() if k == "unknown")
+-        unapplied = sorted(want - mapped)
++        unapplied = []
+         unlabelled = sorted(mapped - want)
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+--- knowledge-meter.py
++++ mut/m14_m10_unknown_off.py
+@@ -358,5 +358,5 @@
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+-        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
++        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and set(EXCLUDED) <= set(kinds),
+                       "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+--- knowledge-meter.py
++++ mut/m15_m10_excluded_subset_off.py
+@@ -358,5 +358,5 @@
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+-        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
++        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and True,
+                       "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+--- knowledge-meter.py
++++ mut/m16_m10_want_nonempty_off.py
+@@ -358,5 +358,5 @@
+         tally = ",".join("%s=%d" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))
+         short = lambda ps: ",".join("%s/%s" % (s.rsplit("/", 1)[-1], k) for s, k in ps) or "none"
+-        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
++        limbs.append(("M10", not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
+                       "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+--- knowledge-meter.py
++++ mut/m17_m4_bare_off.py
+@@ -314,5 +314,5 @@
+             name, path = km.group(1), "corpus/knowledge/" + km.group(1)
+             if new in (DASH, ""):
+-                if len(BARE.findall(old)) != 1 or BARE.findall(old)[0] != key:
++                if False:
+                     m4bad.append(tag)
+                 continue
+--- knowledge-meter.py
++++ mut/m18_m4_valany_any.py
+@@ -318,5 +318,5 @@
+                 continue
+             vals = VALANY.findall(new)
+-            if len(vals) != 1 or ("`%s`" % key) not in old:
++            if len(vals) < 1 or ("`%s`" % key) not in old:
+                 m4bad.append(tag)
+                 continue
+--- knowledge-meter.py
++++ mut/m19_m4_bybase_member.py
+@@ -322,5 +322,5 @@
+                 continue
+             vm = VAL.match("`%s`" % vals[0])
+-            if not (vm and vm.group(1) == name and bybase.get(name) == [path] and A["classify"](vals[0]) == "INTERNAL"):
++            if not (vm and vm.group(1) == name and name in bybase and A["classify"](vals[0]) == "INTERNAL"):
+                 m4bad.append(tag)
+                 continue
+--- knowledge-meter.py
++++ mut/m20_m4_key_in_old_off.py
+@@ -318,5 +318,5 @@
+                 continue
+             vals = VALANY.findall(new)
+-            if len(vals) != 1 or ("`%s`" % key) not in old:
++            if len(vals) != 1:
+                 m4bad.append(tag)
+                 continue
+--- knowledge-meter.py
++++ mut/m21_m3_oldcount_zero.py
+@@ -292,5 +292,5 @@
+                     if (rel, i) in sites:
+                         old, new = sites[(rel, i)]
+-                        if b.count(old) != 1:
++                        if b.count(old) < 1:
+                             missing += 1
+                         else:
+--- knowledge-meter.py
++++ mut/m22_m3_dup_off.py
+@@ -278,5 +278,5 @@
+         for f, n, _, old, new in rows:
+             if (f, n) in sites:
+-                dup += 1
++                pass
+             sites[(f, n)] = (old, new)
+         same_files = set(bfiles) == set(afiles)
+--- knowledge-meter.py
++++ mut/m23_m3_samefiles_true.py
+@@ -280,5 +280,5 @@
+                 dup += 1
+             sites[(f, n)] = (old, new)
+-        same_files = set(bfiles) == set(afiles)
++        same_files = True
+         bad, missing = 0, 0
+         if same_files:
+--- knowledge-meter.py
++++ mut/m24_m6_sha_off.py
+@@ -363,5 +363,5 @@
+         if a.map_sha256:
+             got = hashlib.sha256(mb).hexdigest()
+-            limbs.append(("M6", got == a.map_sha256.lower(), "sha256=%s" % got))
++            limbs.append(("M6", True, "sha256=%s" % got))
+         for name, ok, det in limbs:
+             print("LIMB %s %s %s" % (name, "pass" if ok else "FAIL", det))
+--- knowledge-meter.py
++++ mut/m25_m0_base_off.py
+@@ -271,5 +271,5 @@
+         print(host_line("base", bcls))
+         print(host_line("after", acls))
+-        limbs = [("M0", (bn, bm) == (bn0, bm0), "base=%d/%d" % (bn, bm)),
++        limbs = [("M0", True, "base=%d/%d" % (bn, bm)),
+                  ("M1", (an, am) == (tn, tm), "after=%d/%d" % (an, am))]
+         # M3 per-site line diff
+--- knowledge-meter.py
++++ mut/m26_m1_after_off.py
+@@ -272,5 +272,5 @@
+         print(host_line("after", acls))
+         limbs = [("M0", (bn, bm) == (bn0, bm0), "base=%d/%d" % (bn, bm)),
+-                 ("M1", (an, am) == (tn, tm), "after=%d/%d" % (an, am))]
++                 ("M1", True, "after=%d/%d" % (an, am))]
+         # M3 per-site line diff
+         sites = {}
+--- knowledge-meter.py
++++ mut/m27_m5_hi_off.py
+@@ -328,5 +328,5 @@
+             lo = int(vm.group(2))
+             hi = int(vm.group(3)) if vm.group(3) else lo
+-            if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
++            if text is None or not (1 <= lo <= len(text.splitlines())):
+                 m5bad.append(tag)
+         limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(m4bad) or "none")))
+--- knowledge-meter.py
++++ mut/m28_m5_off.py
+@@ -328,5 +328,5 @@
+             lo = int(vm.group(2))
+             hi = int(vm.group(3)) if vm.group(3) else lo
+-            if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
++            if False:
+                 m5bad.append(tag)
+         limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(m4bad) or "none")))
+--- knowledge-meter.py
++++ mut/m29_m4_internal_off.py
+@@ -322,5 +322,5 @@
+                 continue
+             vm = VAL.match("`%s`" % vals[0])
+-            if not (vm and vm.group(1) == name and bybase.get(name) == [path] and A["classify"](vals[0]) == "INTERNAL"):
++            if not (vm and vm.group(1) == name and bybase.get(name) == [path]):
+                 m4bad.append(tag)
+                 continue

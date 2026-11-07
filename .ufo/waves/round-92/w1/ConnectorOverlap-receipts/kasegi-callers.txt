@@ -1,0 +1,57 @@
+=== KASEGI CALLERS AND IMPORTERS OF CAPTURE-SECRET-SCAN.PY ===
+Revision: 58c0c115342877ee556cae19928d69839b0b29f0 (C2 landing)
+Instrument path: corpus/instruments/capture-secret-scan.py
+Exported shapes: 13 shapes (gate patterns [6] + AWS [2] + Cloud [3] + GitHub [1: github-token] + legacy credential shapes)
+SHA-256 of candidate scanner: 04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e
+
+## 1. Callers / Importers Inventory
+
+1. corpus/instruments/capture-source.py (Intake Gate)
+   - Invocation: intake_gate(data, out, allow_path) at lines 101-124
+   - Mechanism: Dynamically imports capture-secret-scan.py via importlib.util.spec_from_file_location("capture_secret_scan", path)
+   - Patterns evaluated: scan.patterns(), which calls GITHUB_PATTERNS
+   - Inherits github-token: YES.
+   - Verification:
+     * Ran `python3 -B corpus/instruments/capture-source.py --selftest` from git archive of 58c0c115 in $S:
+       Output:
+         selftest normalize=ok deterministic=ok
+         INTAKE-REFUSED SELFTEST shape=credential line=1 out=/tmp/... written=no
+         INTAKE-REFUSED SELFTEST shape=aws-sts-session-token line=1 out=/tmp/... written=no
+         selftest intake-refuse=ok existing-kept=ok
+       rc=0
+     * Tested intake_gate with sample github-token shape:
+       Result: [("github-token", 1)], written=no.
+
+2. corpus/instruments/capture-secret-scan.py (Self / CLI / Pre-Commit Intake Gate)
+   - Invocation: Direct CLI execution (--files, --rev, --selftest)
+   - Mechanism: Native implementation of GITHUB_PATTERNS regex and selftest cases (cases 47-52)
+   - Inherits github-token: YES.
+   - Pre-commit enforcement: QUALITY.md R138 requires L1 to run `capture-secret-scan.py --files` over every new capture and wave receipt before first commit.
+
+3. Practice Evidence Scope (corpus/practice/<pkg>/evidence/)
+   - Invocation: Scanned whenever capture-secret-scan.py is run with --rev or --files
+   - Mechanism: Included in is_capture_path() at line 17
+   - Inherits github-token: YES.
+
+4. Practice Tooling: corpus/instruments/claim-package-check.py
+   - Invocation: Does NOT import capture-secret-scan.py.
+   - Mechanism: Defines static SECRET_PATTERNS (the 6 foundational gate patterns).
+   - Relationship: capture-secret-scan.py imports gate_patterns() from claim-package-check.py, not vice-versa.
+   - Inherits github-token: NO.
+
+5. Round-92 C2 Counter (.ufo/waves/round-92/c2/capability-check.py)
+   - Invocation: `python3 -B .ufo/waves/round-92/c2/capability-check.py --lane . --rev 58c0c11 ...`
+   - Mechanism: Dynamically imports scanner under test via load_instrument()
+   - Inherits github-token: YES. Validates K1-K8 including K4 plants, K6 discrimination, K7 runtime seeded plants, and K8 29-clause mapping.
+
+6. Round-92 C2 Controls (.ufo/waves/round-92/controls/c2-controls-r92.sh)
+   - Invocation: Runs c2-forgeries.py against candidate scanner and tests unpinned variations
+   - Inherits github-token: YES.
+
+7. Round-90 C2 Counter (.ufo/waves/round-90/c2/capability-check.py)
+   - Invocation: Measures capability `capture-intake-gate`
+   - Mechanism: Imports capture-source.py (which loads capture-secret-scan.py)
+   - Inherits github-token: Runtime intake gate protects against github-token, but limb G0 explicitly asserts that scan.patterns() contains exactly the 11 shapes known in round 90. Because round 91 added cloudfront-signed-cookie-signature and round 92 added github-token (total 13 shapes), running round-90 counter without updating expected shapes fails G0 (expected counter obsolescence across rounds).
+
+8. Other Core Instruments (anchorcheck.py, resolve.py, census-freshness-check.py, citation-ground-check.py, figure-audit.py, source-recheck.py)
+   - None of these instruments import or call capture-secret-scan.py.

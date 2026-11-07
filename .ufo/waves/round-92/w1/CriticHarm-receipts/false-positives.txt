@@ -1,0 +1,41 @@
+# CriticHarm r92 — item 2: false positives of the landed scanner (github-token)
+# scanner copied from 58c0c115342877ee556cae19928d69839b0b29f0 into scratch beside
+# claim-package-check.py (gate) and capture-secret-allow.tsv:
+#   capture-secret-scan.py   04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e
+#   capture-secret-allow.tsv 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+
+A. K3 reproduction (whole capture scope at the C2 landing):
+cmd: python3 -B $S/capture-secret-scan.py --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+       --rev 58c0c115342877ee556cae19928d69839b0b29f0
+CAPTURE-SECRET-SCAN mode=rev:58c0c115342877ee556cae19928d69839b0b29f0 scanned=1882 hits=0 files=0 allowed=20 unused_allow=0 rc=0
+
+B. same run at tip ee830069af1255043aeb39f1d324e6b3e5d69dbd:
+CAPTURE-SECRET-SCAN mode=rev:ee830069af1255043aeb39f1d324e6b3e5d69dbd scanned=1882 hits=0 files=0 allowed=20 unused_allow=0 rc=0
+
+C. --files over every corpus/source-snapshots/**/*.txt (116) and corpus/knowledge/*.md (102)
+   working-tree file, 218 paths:
+CAPTURE-SECRET-SCAN mode=files scanned=218 hits=0 files=0 allowed=5 unused_allow=14 rc=0
+
+D. widened --files over every corpus/**/*.md (357 paths, incl. SKILL.md and corpus/SOURCES.md):
+HIT shape=aws-sts-session-token path=corpus/lessons/round-87-verifier-spotcheck.md line=61
+HIT shape=aws-access-key-id path=corpus/lessons/round-87-verifier-spotcheck.md line=67
+CAPTURE-SECRET-SCAN mode=files scanned=357 hits=2 files=1 allowed=0 unused_allow=19 rc=1
+# both are pre-existing and unchanged at base (that lesson is not in the round diff);
+# they are AWS shapes (the lesson quotes the oracle grep), not github-token, and
+# corpus/lessons/ is outside is_capture_path() so the rev-mode K3 never sees them.
+
+E. --files over the round-92 wave artifacts themselves (40 paths under .ufo/waves/round-92):
+HIT shape=private-key path=.ufo/waves/round-92/c2/candidate/capture-secret-scan.py line=308
+HIT shape=credential path=.ufo/waves/round-92/c2/candidate/capture-secret-scan.py line=375
+HIT shape=aws-access-key-id path=.ufo/waves/round-92/c2/candidate/capture-secret-scan.py line=299
+HIT shape=private-key path=.ufo/waves/round-92/c2/capability-check.py line=117
+HIT shape=credential path=.ufo/waves/round-92/c2/capability-check.py line=98
+HIT shape=aws-sts-session-token path=.ufo/waves/round-92/c2/capability-check.py line=88
+HIT shape=aws-access-key-id path=.ufo/waves/round-92/c2/capability-check.py line=115
+CAPTURE-SECRET-SCAN mode=files scanned=40 hits=7 files=2 allowed=0 unused_allow=19 rc=1
+# all 7 are the instruments' own fake selftest fixtures under the OLD shapes; zero
+# github-token hits. The instrument source is not capture scope, so K3 is unaffected.
+# Process note only: --files over an instrument source is not a valid pre-commit test.
+
+ZERO github-token hits in every run (A-E).
+VERDICT: NO HARM (no false positive of the new shape).
