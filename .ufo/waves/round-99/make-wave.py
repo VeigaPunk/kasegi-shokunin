@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""Build the kasegi round-99 w1 wave spec (13 seats, one v1 wave).
+
+Usage: python3 -B .ufo/waves/round-99/make-wave.py --out .ufo/waves/round-99/w1-spec.json
+"""
+import argparse
+import json
+
+GODSPEED = """/skill:godspeed
+You are a Godspeed-enabled subagent.
+
+1. **Name the axes.**
+2. **Iterate cheap, in parallel.**
+3. **Keep moves that improve any axis and harm none.**
+4. **Don't aim \u2014 let the frontier walk itself.**
+
+## IMMEDIATELY STOP ASKING CLARIFYING QUESTIONS. Execute tool calls concurrently in large batches. Do not serialize what can run in parallel. Do not output philosophical reasoning or verbose plans. Act directly via tool calls.
+"""
+
+LANE = "/home/vgpnk/Projects/shokunin/kasegi-shokunin"
+BASE = "b9411a6b530e486180cf14c72fccc46668dcf5ee"
+FREEZE = "6195db307c1cb101eba1d268f8cbfc1578d2caf7"
+C2 = "a3db47e71fe292c03b00ba11f38cccbec45d3966"
+C1 = "35e3ab6041ff8690b00d831f27b93d08101fd16a"
+
+
+def context():
+    return """# Goal
+Kasegi round 99, attempt 1, ONE v1 wave of 13 seats. Two frozen claims, both already landed before this wave was dispatched. Base `%s`, freeze `%s`, C2 landing `%s`, C1 landing `%s`. Frozen statements, predicates, kill rules, sha256 pins and every executed pre-freeze control: `%s/.ufo/waves/round-99/claims.json` and `%s/.ufo/waves/round-99/controls/`.
+
+C1 `depth:verifiability` (lowest axis, score 4) — the citation census of record becomes tamper-evident and layout-stable. `corpus/instruments/census-at-rev.py` (sha256 `6d68d9555b9be5a75bfefb27ee8cf531bc97dd540c954cc2da56581e6a68f041`) extracts `git archive REV` under a private parent, runs the extract's own `resolve.py` under a confined HOME, classifies a `..` walk-out that resolves outside the extract as HOST-OWNED (out of the pinned numerator, in the denominator), binds five header lines with `header-sha256` and the body with `body-sha256`, never reads the cache in `--check`, and requires `measured-at` to be 40 hex and an ancestor of a branch tip. The census of record is regenerated at `%s` (SKILL 162/732, corpus 2569/7624, lane 2607/8026, host-owned 76, confined 1). The committed 12-class tamper harness scores 12/12 against it and 5/12 against the round-98 instrument.
+
+C2 `coverage` (score 8 held; capability extension `capture-secret-scan`) — `gitlab-session-cookie` now uses S140's assignment-context separator window `[^\\n]{0,8}[:=][^\\n]{0,8}` (S150, the rules repo's MR !151). The committed probe hits the twelve round-98 sentinel MUST-FIX payloads and no boundary negative; selftest 170 -> 192; four round-98 sentinel receipts redacted structurally (53 synthetic values).
+
+# Absolute paths (seat tools start at the fleet root)
+Lane repo: `%s` — every lane path below is relative to it. Every `Report:` trailer path is relative to `%s` — write it at `%s/<that path>`.
+
+# Scratch discipline
+`S=/fast/scratch/hyaku/kasegi-r99/<YourSeatName>; mkdir -p "$S"; trap 'rm -rf -- "$S"' EXIT`. Every clone, mirror, work tree and fixture lives under `$S`; one live clone per seat (`git clone --shared` or `git archive`), never a full mirror; never write under `/tmp` (files under 50 MB only); remove your scratch dir before you yield, receipts first copied into your Report dir.
+
+# Bounds
+You are a read-only attacker/verifier: never commit, push, or run a mutating git/jj command in the lane repo; never write the fleet repo, a sibling lane, `.ufo/state/`, `.ufo/watchdog.log`, or `MANIFEST.json`. Write only your Report file and its `-receipts/` directory under `%s/.ufo/waves/round-99/w1/`. Any fixture repo is created with `D=$(mktemp -d)` and every git call names `-C "$D"`; assert `git -C "$D" rev-parse --show-toplevel` equals `$D` before the first commit. Never pass an empty or unchecked variable to `git -C`.
+
+# Tooling
+You may install or upgrade tools that help the task (read `/home/vgpnk/.omp/agent/RULES.md` first: official channels, update-safety gate; record tool/version/channel/reason in your report). **pacman transactions are PAUSED host-wide**: install via `uv tool`/`npx`/an official binary in `~/.local/bin`, or file an L0 question. Never mutate host sysctls.
+
+# Depth
+An executor seat may spawn one read-only `labrat` probe for a falsifiable hypothesis; every other role is a leaf and runs no swarm.
+
+# Output
+Your report is the evidence: every claim about the code carries the command you ran and its observed output (or the exact `file:line`). Never fabricate; an unrun check has not passed. End with one `VERDICT:` line per item you were asked to judge.
+""" % (BASE, FREEZE, C2, C1, LANE, LANE, LANE, LANE, LANE, LANE, LANE)
+
+
+def seat(name, body):
+    return (GODSPEED + "\nScratch S=/fast/scratch/hyaku/kasegi-r99/" + name +
+            "; mkdir -p $S; trap 'rm -rf -- \"$S\"' EXIT. cd " + LANE + ".\n\n" + body)
+
+
+def items():
+    return [
+        ("CriticClaimsC1", "critic", seat("CriticClaimsC1", """Attack C1's frozen P1-P4 at the C1 landing `%s`. Re-run the tamper harness: `python3 -B .ufo/waves/round-99/c1/tamper.py --lane . --rev %s --alt-rev %s --instrument corpus/instruments/census-at-rev.py --work $S/w`. Then try to make the check accept a wrong census the twelve classes do not cover: (a) a census whose body is a *permutation* of the real body (same digest? no — test whether the digest is over the body or over something weaker); (b) a `measured-at` that is an ancestor but whose rates coincide with another revision; (c) a census written by `--write` at a revision and then a second `--write` at a different revision into the same path with a warm cache; (d) a symlinked extract parent. For each: what the check prints and whether P1-P4 still hold. Report STANDS or DOES-NOT-STAND per limb with exact output.""" % (C1, C2, BASE))),
+
+        ("CriticClaimsC2", "critic", seat("CriticClaimsC2", """Attack C2's frozen K1-K6 at the C2 landing `%s`. Re-run `python3 -B .ufo/waves/round-99/c2/session-cookie-probe.py --lane . --instrument corpus/instruments/capture-secret-scan.py --work $S/w` and the selftest. Then attack the separator window: build a matcher that accepts only `_gitlab_session=` + 64 hex (the round-98 model) and check whether the probe's twelve payloads kill it; build a matcher with `.*` instead of `[^\\n]{0,8}` and check whether the ten negatives kill it; check whether the window's `[^\\n]` really refuses a newline (the round-98 scanner matched one). Report which limbs are real and which are passable by a wrong instrument.""" % C2)),
+
+        ("CriticHarm", "critic", seat("CriticHarm", """Harm audit for the round: base `%s` -> C2 `%s` and C1 `%s`. Check that `SKILL.md`, `PROVINCE.md`, `SHONEN.md` and `AGENTS.md` are byte-identical base->C1; that `capture-secret-scan.py` loses no earlier shape (compare `patterns()` at base and C2); that the 53 redacted values in the four round-98 receipts are the only bytes changed there (diff line counts and non-matching lines); that the census's pinned numerator is INTERNAL only and no knowledge file was edited to move it; that the census body carries no scratch path; and that no earlier knowledge entry's citation of either instrument is now out of range. Report HARM or NO HARM with the commands.""" % (BASE, C2, C1))),
+
+        ("ReviewC1Instrument", "reviewer", seat("ReviewC1Instrument", """Review `corpus/instruments/census-at-rev.py` at the C1 landing `%s` line by line. Independently re-derive the pinned numbers with your own script over a `git archive %s` extract (do not import the lane's instrument): count distinct backticked path-like citations per scope, classify lane-relative tokens that exist in the extract as INTERNAL, exclude `..` walk-outs that resolve outside the extract, and compare with the census header. Check: the confinement cannot be bypassed by a citation whose resolved path is a symlink; the cache key includes the instrument digest; `--check` never reads the cache; the header digest covers every line the check compares; `ancestor_of_tip` cannot be satisfied by a foreign object. Report the numbers you got and every discrepancy.""" % (C1, C2))),
+
+        ("ReviewC2Scanner", "reviewer", seat("ReviewC2Scanner", """Review the C2 landing `%s` of `corpus/instruments/capture-secret-scan.py`'s `gitlab-session-cookie` against `corpus/source-snapshots/round-94/S140.txt` lines 547-551, S148's prose (`corpus/source-snapshots/round-98/S148.txt` if present, else the row's quote) and S150's MR quote in `corpus/SOURCES.md`. Check the window `[^\\n]{0,8}[:=][^\\n]{0,8}` against the generator's `<keyword>.{0,8}[:=].{0,8}<value>`: the gap bounds, the operator class, the newline refusal, the left boundary, the optional `cell-<N>-`, the 64-hex alphabet and the right boundary. Then check no earlier shape regressed (selftest case list at base and landing). Report APPROVE or REQUEST-CHANGES with findings F1..Fn.""" % C2)),
+
+        ("MutC1Tamper", "mutation-tester", seat("MutC1Tamper", """Mutation-test the round-99 C1 instrument against the *frozen* tamper harness. Build at least twelve single-point mutants of `corpus/instruments/census-at-rev.py` at the C1 landing `%s`: drop the `..` confinement, accept a 12-hex `measured-at`, drop the ancestor check, drop the header digest, drop the body digest, read the cache in `--check`, compare only the SKILL segment, drop the host-owned line from the header, accept a missing pinned line, key the cache by lane, ignore resolve.py's exit code, and accept a `--write` revision that is not an ancestor. Run the frozen harness against each mutant (copy the mutant into a fixture clone; never edit the lane). Report killed/survivors with the limb each mutant escapes, and name any survivor as a routed gap.""" % C1)),
+
+        ("MutC2Counter", "mutation-tester", seat("MutC2Counter", """Mutation-test the round-99 C2 shape and probe. Build at least ten single-point mutants of the landed `capture-secret-scan.py` at `%s`: narrow the window to `[\\s]+`, drop the `[:=]` operator, widen the gap to `{0,9}`, allow a newline in the gap, drop the `cell-<N>-` group, change `{64}` to `{63}`, widen the hex alphabet to `[0-9a-fA-F]`, drop the right boundary, drop the left boundary, and drop the `_geo_` group. Run the instrument's `--selftest` and the frozen probe against each mutant in a fixture clone. Report killed/survivors; a mutant the selftest kills but the probe does not (or vice versa) is a coverage gap to name.""" % C2)),
+
+        ("SentinelCookie", "sentinel", seat("SentinelCookie", """Security review of the round-99 session-cookie window at `%s`, read as an attacker who wants a real session value to pass unseen. Build a matrix of at least 120 payloads: separators (`=`, `:`, ` => `, `%%20=%%20`, `%%3A`, `,=`, `|=`, `+=`, `(=`, ` ( = ) `, `=>`), contexts (JSON value, header, cookie jar, URL query, markdown cell, log line), prefix forms (`cell-12-`, `cell-`, `cell--`, `cell-abc-`), `_geo_` forms, gap widths 0-12, newline and CRLF gaps, case variants of the keyword, and the value's right boundary. Run each through the landed `scan_bytes` and a faithful translation of S140's generated assignment regex. Report MUST-FIX findings (a real value the scanner misses that S140 detects) separately from routed qualifiers, with the exact payload and the observed hit set.""" % C2)),
+
+        ("ExecC1Indep", "executor", seat("ExecC1Indep", """Independent re-derivation of C1's numbers, without importing the lane's instrument. (1) Write your own census of distinct backticked path-like tokens in `SKILL.md` + `corpus/**/*.md` (excluding `corpus/instruments/citation-survival.md`) over a `git archive %s` extract, classify lane-relative tokens that exist in the extract as INTERNAL, exclude `..` walk-outs that resolve outside the extract, and print the per-scope totals. (2) Compare with the census header's pinned line. (3) Re-run the lane's `census-at-rev.py --check` and report both readings side by side. (4) Re-run the tamper harness and report the result. Report AGREE or DISAGREE with the delta.""" % C2)),
+
+        ("ExecC2Probe", "executor", seat("ExecC2Probe", """Independent probe of the round-99 session-cookie window at `%s`. Write your own fixture generator (not the lane's probe) that builds 24 positives (the twelve round-98 MUST-FIX payload shapes plus twelve new separator variants you choose) and 24 boundary negatives, in a scratch git repo with nonce-derived paths, and run the landed `capture-secret-scan.py --files` over them. Report the exact hit set, every miss and every extra hit. Then run the round-98 instrument at `e2caf4a1` over the same files and report which of the 24 positives it misses (the before state).""" % C2)),
+
+        ("ScoutSources", "scout", seat("ScoutSources", """Source reconnaissance for the round. (1) Re-open S150: fetch `https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/merge_requests/151` (record HTTP status, bytes, sha256) and locate the "Generated Regex" block and the `keywordGroupType` enum sentence; compare them with the S150 row's `anchor` and `teaches` cells in `corpus/SOURCES.md`. (2) Re-open S140: fetch the pinned `/-/raw/` URL (record status/bytes/sha256) and compare lines 547-551 with `corpus/source-snapshots/round-94/S140.txt`. (3) Report whether any new row is warranted for the round-99 finding, and whether S148's prose states the separator or only the value shape. (4) Name the remaining S140 rules the scanner does not cover (list the 30 rule ids and the shapes). Report each decision with the URL, date and a ≤25-word located quote.""" )),
+
+        ("ConnectorOverlap", "connector", seat("ConnectorOverlap", """Sibling-overlap scan. Search the fleet's other lanes' corpora (read-only: `/home/vgpnk/Projects/shokunin/*-shokunin/corpus/`) for work that overlaps (a) a revision-bound citation census with digests, and (b) GitLab session-cookie or assignment-context credential shapes. For each overlap: the sibling lane, the path:line, what it holds, and whether kasegi's round-99 work duplicates, contradicts or complements it. Then check kasegi's own corpus for two entries that now disagree about the session-cookie separator (the round-98 entry text vs the round-99 update) and report any stale sentence. Report NONE or a finding list.""" )),
+
+        ("ScribeGate", "scribe", seat("ScribeGate", """Gate-record and correction audit for round 99. (1) The round-98 lesson `corpus/lessons/round-98.md` `## Gate` has no S148/S149 record (the round-98 spot-check's routed defect 4): draft the exact appended `## Appended corrections` block with URL, access date and a ≤25-word located quote for each row, using the rows in `corpus/SOURCES.md`. (2) Draft the correction sweep for the round-98 SCORECARD/lesson `147 -> 147` versus the actual `147 -> 149`, and the "S140's own class" versus "a superset" wording. (3) Check the round-99 SOURCES change-log bullet and the S150 row against the census schema (11 columns, no literal `|` in a cell, valid recheck). (4) Check the round-99 knowledge entry's citations of `capture-secret-scan.py:N` are in range at the C2 landing. Write the drafts as files under your receipts dir; do not edit the lane.""" )),
+    ]
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", required=True)
+    a = ap.parse_args()
+    spec = {
+        "wave": "kasegi-r99-w1",
+        "milestone": "round-99: tamper-evident revision census (12/12 tamper classes) and S140 assignment-context session-cookie window (12/12 MUST-FIX); attack, verify, draft",
+        "reportDir": ".ufo/waves/round-99/w1",
+        "maxLanes": 16,
+        "axes": ["depth:verifiability", "coverage"],
+        "context": context(),
+        "items": [{"name": n, "role": r, "prompt": p} for n, r, p in items()],
+    }
+    with open(a.out, "w", encoding="utf-8") as fh:
+        json.dump(spec, fh, indent=1)
+    print("wrote %s items=%d milestone_bytes=%d" % (a.out, len(spec["items"]), len(spec["milestone"].encode())))
+
+
+if __name__ == "__main__":
+    main()

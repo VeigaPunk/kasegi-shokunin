@@ -141,3 +141,56 @@ bind the registration length (M17), and the behavioural limbs are passable
 without the sha pin (counter-coverage). ScoutSources also found the upstream
 per-rule prose files: S148 (session cookie, tier A) and S149 (IAM prefixes,
 tier B) are added, and the round's "no new row" assertion is corrected.
+
+## Appended corrections (round 99 — closes the round-98 spot-check's routed defects 4 and 5)
+
+**Routed defect 4 — the missing Gate records for S148/S149.** The round-98
+`## Gate` block above records S140 and S144 and the S144-IAM reject, but not
+the two rows the wave's ScoutSources added. Their records, from the rows in
+`corpus/SOURCES.md` and the round-98 wave's receipts:
+
+- **S148** — GitLab secret-detection rule prose, session cookie,
+  `rules/mit/gitlab/gitlab_session_cookie.md` at commit 59ada1f4.
+  URL:
+  `https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab_session_cookie.md/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39`.
+  Opened 2026-11-07 (HTTP 200, 1,028 bytes / 23 lines, sha256
+  `b50856e4…`). Quote, line 6 (17 words):
+  `The value is a 64-character hexadecimal session ID, with an optional \`cell-<ID>-\` prefix.`
+  Admitted: kind `docs`, tier A, status `mined`.
+- **S149** — GitLab secret-detection rule prose, IAM refresh token and
+  authorization code, `rules/mit/gitlab/gitlab_iam_refresh_token.md` and
+  `rules/mit/gitlab/gitlab_iam_authorization_code.md` at commit 59ada1f4.
+  URLs: the same repository-files API path with `gitlab_iam_refresh_token.md`
+  (HTTP 200, 1,190 bytes, sha256 `9b37df1e…`) and
+  `gitlab_iam_authorization_code.md` (HTTP 200, 1,322 bytes, sha256
+  `52348dd6…`), both `?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39`.
+  Opened 2026-11-07. Quotes, line 5 of each (13 and 14 words):
+  `A GitLab IAM OAuth refresh token was identified. The token starts with \`gliamrt-\`.`
+  and
+  `A GitLab IAM OAuth authorization code was identified. The code starts with \`gliamac-\`.`
+  Admitted: kind `docs`, tier B, status `mined`.
+
+**Routed defect 5 — the correction sweep.** Three sentences in this lesson and
+in `SCORECARD.md`'s round-98 section contradict the landed state; the landed
+state is authoritative and the sentences are corrected here rather than
+rewritten in place (R9):
+
+- the `## Gate` line "Registry 147 → 147 rows" and the SCORECARD round-98
+  bullet "Sources: registry 147 → 147 (no new row)" are wrong: the round
+  landed **147 → 149** (S148 and S149 are both new rows, both `mined`);
+- the SCORECARD round-98 C2 row and the `## Learning` sentence "S140's …
+  class" are wrong as an equality: `(?![A-Za-z0-9])` is a **superset** of
+  S140's punct/space/EOL class (the claim's own erratum says so); the regex is
+  unchanged and the erratum stands;
+- the `## Gate` S140 used-by old→new records two added paths; the landed cell
+  adds **four** (`corpus/instruments/capture-secret-scan.py` was already
+  there; the three added are `corpus/knowledge/gitlab-remaining-token-families.md`,
+  `corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md` and, from
+  the round-97 entry that had lost its citation, the round-97 entry itself).
+
+The round-98 wave-evidence receipts
+`.ufo/waves/round-98/w1/SentinelShapes-receipts/{body-sweep,final-checks,matrix-run,matrix.tsv}`
+were redacted in round 99 (53 synthetic session values, one
+`[session-cookie-fixture-redacted-r99]` marker each, line numbering
+preserved); their before/after digests are in
+`.ufo/waves/round-99/controls/redaction-r99.txt`. No claim number changes.
