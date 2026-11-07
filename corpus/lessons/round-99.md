@@ -85,7 +85,7 @@ Spot-check result: pending the round-99 non-author closure.
   earlyoom at 3.5 GiB. The scanner's session-cookie window now matches S140's
   assignment-context form (probe 0/12 → 12/12, ten boundary negatives clean),
   selftest 170 → 192.
-- **discernment: improved** — six mistakes mined (M99-1…M99-6), including two
+- **discernment: improved** — seven mistakes mined (M99-1…M99-7), including two
   the round's own controls caught before the landing (the confined-HOME
   propagation and the census body's scratch path) and one that recurs from
   round 98 (a new shape exposing old receipts). The round-98 spot-check's
@@ -101,6 +101,7 @@ Spot-check result: pending the round-99 non-author closure.
 | M99-4 | layout-dependence (R157's body half) | even with the pinned rate confined, the body's aggregate counts moved (INTERNAL 2608 vs 2610) because `../` rows resolved against the caller's work dir | the dirty-layout diff of the two bodies | the extract lives under a private parent (`<work>/extract-<rev12>/tree`) that holds only the extract, so a `../` walk-out is absent on every host; both layouts now print the same body digest |
 | M99-5 | shape-exposes-old-receipts (M98-4 class) | the new session-cookie window matched 53 synthetic 64-hex values in four round-98 sentinel receipts; the landing scan printed `hits=4 files=4` (one hit per file) | K4's clean-run limb at the first C2 landing | all 53 values redacted structurally (one `[session-cookie-fixture-redacted-r99]` marker per value, line numbering preserved, before/after digests in `.ufo/waves/round-99/controls/redaction-r99.txt`); the post-redaction scan prints `hits=0 unused_allow=0` |
 | M99-6 | counter-expressibility | the poisoned-cache class was first not expressible against the round-98 format (`header_lines()` required a `home:` line the round-98 census has no such line for), so the base scored 6/12 for the wrong reason | the harness's `NOT-EXPRESSIBLE` line | `header_lines()` treats `home:` as optional and the fake cache is built from the census's own pinned numbers; the base now scores 5/12 and the poisoned-cache class is a real survivor on it |
+| M99-7 | claim-transcription | both claims' `controls` field was hand-typed in a `CONTROL <name> rc=… want=… PASS` form the round-99 receipts do not print (they print `TAMPER-RESULT` / `PROBE-RESULT` / `SELFTEST-RESULT` lines), so the field was not a verbatim copy of the executed receipt (R148) | the round's own R148 check, run while assembling the report | an `erratum` on each claim quotes the receipts' verbatim lines and states that no predicate, target, kill rule or pin changes (`.ufo/waves/round-99/claims.json`); the receipts are the authority |
 
 ## Routed defects from the round-98 spot-check
 
