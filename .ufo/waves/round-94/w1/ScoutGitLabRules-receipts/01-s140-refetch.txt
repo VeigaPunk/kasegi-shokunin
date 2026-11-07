@@ -1,0 +1,10 @@
+# R01 re-fetch S140 raw (commit-pinned GitLab API raw URL)
+$ curl -sS --max-time 40 -o s140.raw -w 'http=%{http_code} bytes=%{size_download} ctype=%{content_type}' <capture_url>
+$ sha256sum s140.raw; wc -c -l s140.raw
+
+$ curl -sS --max-time 40 -o s140.raw -w 'http=%{http_code} bytes=%{size_download} ctype=%{content_type}' 'https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39'
+http=200 bytes=20228 ctype=text/plain; charset=utf-8
+$ sha256sum s140.raw
+14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5  s140.raw
+$ wc -c -l s140.raw
+  592 20228 s140.raw

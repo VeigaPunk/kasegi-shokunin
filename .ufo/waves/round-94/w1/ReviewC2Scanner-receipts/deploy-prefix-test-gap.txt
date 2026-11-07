@@ -1,0 +1,18 @@
+== mutated deploy-prefix copy (no _GL_PREFIX on gldt-) ==
+-- selftest --
+SELFTEST-RESULT pass cases=101
+selftest rc=0
+-- K4/K7-style bare deploy plant --
+HIT shape=gitlab-deploy-token path=/fast/scratch/hyaku/kasegi-r94/ReviewC2Scanner/mut-bare.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1
+bare rc=1
+-- frozen-statement prefixed deploy --
+HIT shape=gitlab-deploy-token path=/fast/scratch/hyaku/kasegi-r94/ReviewC2Scanner/mut-prefixed.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1
+prefixed rc=1
+
+== same files on the landed instrument ==
+HIT shape=gitlab-deploy-token path=/fast/scratch/hyaku/kasegi-r94/ReviewC2Scanner/mut-bare.txt line=1
+HIT shape=gitlab-deploy-token path=/fast/scratch/hyaku/kasegi-r94/ReviewC2Scanner/mut-prefixed.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=2 files=2 allowed=0 unused_allow=23 rc=1
+landed rc=1

@@ -1,0 +1,60 @@
+# cmd: grep -n relocate|K9 in the frozen counter; grep -n gitlab in the landed instrument
+77:  K9 previous    the round-93 landing instrument (PREV_REV, which knows no
+503:def relocate(path, nonce):
+508:    h = hashlib.sha256(("%s|%s" % (nonce, path)).encode()).hexdigest()[:12]
+634:        # K9 previous landing: no round-94 shape known there, no shape lost
+--- K9 limb body ---
+            det = "base_rc=%d base_hits=%d new_caught_by_base=%s outside_plants=%s" % (
+                rcb, len(bhits), ",".join(sorted("%s|%s" % x for x in caught)) or "none",
+                ",".join(sorted("%s|%s" % x for x in bhits - expect_all)) or "none")
+        limbs.append(("K6", ok, det))
+        # K9 previous landing: no round-94 shape known there, no shape lost
+        ok, det = False, "instrument-absent"
+        if present:
+            pinst = os.path.join(work, "prev-inst")
+            os.makedirs(pinst)
+            for f in FILES[:2]:
+                with open(os.path.join(pinst, f), "wb") as fh:
+                    fh.write(git(lane, "show", "%s:corpus/instruments/%s" % (PREV_REV, f)))
+            rcp, phits, _, _ = run_instr(pinst, "--lane", d, "--rev", "HEAD", "--allow", allow)
+            new94 = {(relocate(p0[0], nonce), p0[1]) for p0 in ROUND94_SHAPES}
+            lost = phits - hits
+            caught_new = phits & new94
+            ok = rcp == 1 and not lost and not caught_new
+            det = "prev_rc=%d prev_hits=%d lost=%s prev_caught_new=%s" % (
+                rcp, len(phits), ",".join(sorted("%s|%s" % x for x in lost)) or "none",
+                ",".join(sorted("%s|%s" % x for x in caught_new)) or "none")
+        limbs.append(("K9", ok, det))
+        # K7
+        ok, det = False, "instrument-absent"
+--- landed instrument shapes ---
+99:                         access token: `glpat-` followed by a 20-character
+111:  gitlab-runner-auth-token (round 94) a GitLab runner authentication token:
+112:                         `glrt-` or `glrtr-`, an optional partition prefix
+117:  gitlab-deploy-token    (round 94) a GitLab deploy token: `gldt-` then 20
+122:token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
+128:separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+199:    ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+200:    ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+201:    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+408:        ("gl-pat-prose", b"use glpat-" + b"AbC0123456789_-xyZq0" + b" as the password", {"gitlab-pat"}),
+409:        ("gl-pat-json", b'{"t":"glpat-' + b"0123456789abcdefghij" + b'"}', {"gitlab-pat"}),
+410:        ("gl-pat-after-pct20", b"q=%20glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+411:        ("gl-pat-after-u0026", b'"q":"a\\u0026glpat-' + b"0123456789abcdefghij" + b'"', {"gitlab-pat"}),
+412:        ("gl-pat-19-chars", b"glpat-" + b"0123456789abcdefghi ", set()),
+413:        ("gl-pat-21-chars", b"glpat-" + b"0123456789abcdefghijk", set()),
+414:        ("gl-pat-right-underscore", b"glpat-" + b"0123456789abcdefghij" + b"_", set()),
+416:        ("gl-pat-bare-prefix", b"identified by the pattern glpat- followed by a 20-character string", set()),
+417:        ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", set()),
+418:        ("gl-pat-custom-prefix", b"acme-glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+419:        ("gl-pat-custom-prefix-19", b"acme-glpat-" + b"0123456789abcdefghi ", set()),
+420:        ("gl-pat-html-entity", b"q=a&#x26;glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+421:        ("gl-pat-hyphen-before", b"-glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+422:        ("gl-runner-auth", b"glrt-" + b"0123456789abcdefghij", {"gitlab-runner-auth-token"}),
+423:        ("gl-runner-registered", b"glrtr-t2_" + b"0123456789abcdefghij", {"gitlab-runner-auth-token"}),
+424:        ("gl-runner-bad-partition", b"glrtr-t4_" + b"0123456789abcdefghij", set()),
+425:        ("gl-runner-21-chars", b"glrt-" + b"0123456789abcdefghijk", set()),
+426:        ("gl-runner-custom-prefix", b"acme-glrt-" + b"0123456789abcdefghij", {"gitlab-runner-auth-token"}),
+427:        ("gl-deploy", b"gldt-" + b"0123456789abcdefghij", {"gitlab-deploy-token"}),
+428:        ("gl-deploy-19-chars", b"gldt-" + b"0123456789abcdefghi ", set()),
+429:        ("gl-deploy-21-chars", b"gldt-" + b"0123456789abcdefghijk", set()),

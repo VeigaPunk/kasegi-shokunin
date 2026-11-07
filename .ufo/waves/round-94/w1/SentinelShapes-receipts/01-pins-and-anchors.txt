@@ -1,0 +1,33 @@
+$ git -C LANE cat-file -t 996460861d4130ddb2da6b7554e905d3e47504a3
+commit
+rc=0
+$ git -C LANE show --stat 996460861d4130ddb2da6b7554e905d3e47504a3
+    round-94: C2 landing — capture-secret-scan gains the GitLab custom instance prefix, gitlab-runner-auth-token and gitlab-deploy-token (S140); capability row replaced
+
+ SCORECARD.md                              |  2 +-
+ corpus/instruments/capture-secret-scan.py | 59 ++++++++++++++++++++++++-------
+ 2 files changed, 47 insertions(+), 14 deletions(-)
+rc=0
+$ sha256sum pkg/*   (git show 9964608:<path> for each; copy beside the scanner as the counter does)
+22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf  /fast/scratch/hyaku/kasegi-r94/SentinelShapes/pkg/capture-secret-scan.py
+8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  /fast/scratch/hyaku/kasegi-r94/SentinelShapes/pkg/claim-package-check.py
+a5abeb53b3765a5061ce543f07bd48e2cc20be14b2ec8acbe53cb2caf9707c3c  /fast/scratch/hyaku/kasegi-r94/SentinelShapes/pkg/capture-secret-allow.tsv
+claims.json C2 candidate_sha256=22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+$ git -C LANE show 9964608:corpus/source-snapshots/round-94/S140.txt | sha256sum
+f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c  -
+$ git -C LANE show 96b5033:corpus/source-snapshots/round-94/S140.txt | sha256sum   (freeze)
+f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c  -
+$ grep -n "^id = " corpus/source-snapshots/round-94/S140.txt | wc -l
+30
+$ grep -n "regex = .*gl\(pat\|rt\|dt\)" corpus/source-snapshots/round-94/S140.txt   (anchors quoted by the claim)
+4:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+30:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+51:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+114:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+136:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+255:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+324:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+$ python3 -c manifest fields
+{'id': 'S140', 'kind': 'text', 'path': 'S140.txt', 'sha256': 'f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c', 'bytes': 25537, 'lines': 563, 'fetched_utc': '2026-11-07T15:22:31Z'}
+claims.json frontier cites: capture corpus/source-snapshots/round-94/S140.txt, sha256 04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921
+manifest note (same file): collapsed snapshot 20035 bytes, sha256 04fc5cfa...; redaction-r94.txt: committed sha256=f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c bytes=25537

@@ -1,0 +1,51 @@
+# R07 every page opened, with HTTP status (curl -sSL -o /dev/null -w '%{http_code}')
+# rejections are listed with the reason.
+
+## GitLab docs
+404  https://docs.gitlab.com/user/integrations/scim/
+404  https://docs.gitlab.com/ci/runners/kubernetes_agent/
+404  https://docs.gitlab.com/developer/oauth/
+404  https://docs.gitlab.com/user/packages/deploy_tokens/
+404  https://docs.gitlab.com/api/pipeline_trigger_tokens/
+404  https://docs.gitlab.com/ci/environments/kubernetes/
+404  https://docs.gitlab.com/user/gitlab_service_account/
+404  https://docs.gitlab.com/api/project_tokens/
+404  https://docs.gitlab.com/user/oauth_application/
+404  https://docs.gitlab.com/user/group/settings/
+404  https://docs.gitlab.com/ci/runners/agent/
+200  https://docs.gitlab.com/api/scim/
+200  https://docs.gitlab.com/api/oauth2/
+200  https://docs.gitlab.com/user/project/deploy_tokens/
+200  https://docs.gitlab.com/ci/runners/configure_runners/
+200  https://docs.gitlab.com/development/feature_flags/
+200  https://docs.gitlab.com/user/profile/personal_access_tokens/
+200  https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/
+200  https://docs.gitlab.com/ci/runners/
+200  https://docs.gitlab.com/api/rest/
+200  https://docs.gitlab.com/security/tokens/
+200  https://docs.gitlab.com/api/cluster_agents/
+200  https://docs.gitlab.com/api/feature_flags/
+200  https://docs.gitlab.com/api/pipelines/
+200  https://docs.gitlab.com/api/groups/
+200  https://docs.gitlab.com/ci/environments/
+200  https://docs.gitlab.com/api/deploy_tokens/
+
+## GitHub docs
+404  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-refresh-tokens
+404  https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/about-authenticating-with-a-github-app
+404  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-token-formats
+200  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github
+200  https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps
+200  https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation
+200  https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens
+200  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+200  https://docs.github.com/en/organizations/managing-programmatic-access-to-your-organization/github-credential-types
+200  https://docs.github.com/en/enterprise-server@latest/organizations/managing-programmatic-access-to-your-organization/github-credential-types
+200  https://docs.github.com/en/rest/credentials/revoke
+200  https://docs.github.com/en/rest/apps/oauth-applications
+200  https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app
+
+## vendor rules files (GitLab API raw, commit-pinned)
+200  https://gitlab.com/api/v4/projects/.../rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39   (S140)
+200  https://gitlab.com/api/v4/projects/.../rules%2Fmit%2Fgithub%2Fgithub.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39   (S141)
+200  https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json   (GitHub's own OpenAPI)

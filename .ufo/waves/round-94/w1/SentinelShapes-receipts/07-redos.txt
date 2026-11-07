@@ -1,0 +1,52 @@
+$ python3 redos.py   (each compiled pattern from the landed module, finditer over the whole buffer, min of 3 runs)
+// (d) 1 MiB single-line worst cases
+shape | pattern | ms | ms/MiB | ns/byte | hits | bytes
+alnum-run | gitlab-pat | 69.26 | 69.26 | 66.1 | 0 | 1048576
+alnum-run | gitlab-runner-auth-token | 62.51 | 62.51 | 59.6 | 0 | 1048576
+alnum-run | gitlab-deploy-token | 63.57 | 63.57 | 60.6 | 0 | 1048576
+alnum-hyphen-repeat | gitlab-pat | 98.72 | 98.72 | 94.2 | 0 | 1048576
+alnum-hyphen-repeat | gitlab-runner-auth-token | 90.83 | 90.83 | 86.6 | 0 | 1048576
+alnum-hyphen-repeat | gitlab-deploy-token | 88.28 | 88.28 | 84.2 | 0 | 1048576
+hyphen-run | gitlab-pat | 93.54 | 93.54 | 89.2 | 0 | 1048576
+hyphen-run | gitlab-runner-auth-token | 94.79 | 94.79 | 90.4 | 0 | 1048576
+hyphen-run | gitlab-deploy-token | 103.11 | 103.11 | 98.3 | 0 | 1048576
+literal+alnum-run | gitlab-pat | 59.66 | 59.66 | 56.9 | 0 | 1048582
+literal+alnum-run | gitlab-runner-auth-token | 59.17 | 59.17 | 56.4 | 0 | 1048582
+literal+alnum-run | gitlab-deploy-token | 59.84 | 59.84 | 57.1 | 0 | 1048582
+runner-literal+alnum-run | gitlab-pat | 35.02 | 35.02 | 33.4 | 0 | 1048585
+runner-literal+alnum-run | gitlab-runner-auth-token | 34.30 | 34.30 | 32.7 | 0 | 1048585
+runner-literal+alnum-run | gitlab-deploy-token | 37.71 | 37.71 | 36.0 | 0 | 1048585
+deploy-literal+alnum-run | gitlab-pat | 36.53 | 36.53 | 34.8 | 0 | 1048581
+deploy-literal+alnum-run | gitlab-runner-auth-token | 36.49 | 36.49 | 34.8 | 0 | 1048581
+deploy-literal+alnum-run | gitlab-deploy-token | 42.48 | 42.48 | 40.5 | 0 | 1048581
+prefix20+literal+fail | gitlab-pat | 40.30 | 40.30 | 38.4 | 0 | 1048602
+prefix20+literal+fail | gitlab-runner-auth-token | 37.77 | 37.77 | 36.0 | 0 | 1048602
+prefix20+literal+fail | gitlab-deploy-token | 47.66 | 47.66 | 45.5 | 0 | 1048602
+escape-repeat | gitlab-pat | 49.95 | 49.95 | 47.6 | 0 | 1048572
+escape-repeat | gitlab-runner-auth-token | 48.61 | 48.61 | 46.4 | 0 | 1048572
+escape-repeat | gitlab-deploy-token | 48.59 | 48.59 | 46.3 | 0 | 1048572
+// scaling, 1 MiB / 256 KiB (linear = 4.0)
+alnum-run | gitlab-pat | 4.08
+alnum-run | gitlab-runner-auth-token | 3.86
+alnum-run | gitlab-deploy-token | 3.91
+alnum-hyphen-repeat | gitlab-pat | 4.21
+alnum-hyphen-repeat | gitlab-runner-auth-token | 4.07
+alnum-hyphen-repeat | gitlab-deploy-token | 3.85
+hyphen-run | gitlab-pat | 3.94
+hyphen-run | gitlab-runner-auth-token | 3.98
+hyphen-run | gitlab-deploy-token | 2.41
+literal+alnum-run | gitlab-pat | 3.66
+literal+alnum-run | gitlab-runner-auth-token | 3.57
+literal+alnum-run | gitlab-deploy-token | 3.53
+runner-literal+alnum-run | gitlab-pat | 2.31
+runner-literal+alnum-run | gitlab-runner-auth-token | 2.51
+runner-literal+alnum-run | gitlab-deploy-token | 3.04
+deploy-literal+alnum-run | gitlab-pat | 3.82
+deploy-literal+alnum-run | gitlab-runner-auth-token | 3.77
+deploy-literal+alnum-run | gitlab-deploy-token | 4.52
+prefix20+literal+fail | gitlab-pat | 4.31
+prefix20+literal+fail | gitlab-runner-auth-token | 3.49
+prefix20+literal+fail | gitlab-deploy-token | 4.92
+escape-repeat | gitlab-pat | 3.87
+escape-repeat | gitlab-runner-auth-token | 3.77
+escape-repeat | gitlab-deploy-token | 3.83

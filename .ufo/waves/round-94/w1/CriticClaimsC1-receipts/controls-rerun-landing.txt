@@ -1,0 +1,117 @@
+C1-CONTROLS candidate=d51220aeb4a538b7b211bb2629e83210669cd56d base=dff5a0a01e8aafe6be81f4ee61567745c3c4c485
+CONTROL candidate rc=0 want=0 PASS
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=19 labels=29 after_rev=d51220aeb4a538b7b211bb2629e83210669cd56d mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=19 unbound=none
+  LIMB M10 pass labelled=29 want=19 mapped=19 kinds=excluded=10,range=19 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=11de45a74337b945b5179645e18e0f710a2f9ec54935450806a0e4bda7a78847
+  KNOWLEDGE-METER-RESULT pass rc=0
+CONTROL do-nothing rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1008/1999 after=1008/1999 base_target=1008/1999 target=1009/2000 sites=19 labels=29 after_rev=dff5a0a01e8aafe6be81f4ee61567745c3c4c485 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 FAIL after=1008/1999
+  LIMB M3 FAIL same_files=True bad_lines=18 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=19 unbound=none
+  LIMB M10 pass labelled=29 want=19 mapped=19 kinds=excluded=10,range=19 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=11de45a74337b945b5179645e18e0f710a2f9ec54935450806a0e4bda7a78847
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m3-union-applied rc=0 want=0 PASS
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=20 labels=30 after_rev=e97356f86688a718b57fb40b6d191462afcfab87 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=20 unbound=none
+  LIMB M10 pass labelled=30 want=20 mapped=20 kinds=excluded=10,range=20 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=36f279930124d48eab7ea081a35d25188b1ba3eb54e41a604899a50c69db22a8
+  KNOWLEDGE-METER-RESULT pass rc=0
+CONTROL m3-union-applied-before-r93 rc=1 want=1 PASS traceback=True
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=20 labels=1 mirror_absent=True pinned=archive
+  Traceback (most recent call last):
+CONTROL m3-union-unmapped rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=20 labels=30 after_rev=20a05d39b33597c5b001539d7f3e5ce0df2a9638 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1009/2000
+  LIMB M3 FAIL same_files=True bad_lines=1 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=20 unbound=none
+  LIMB M10 pass labelled=30 want=20 mapped=20 kinds=excluded=10,range=20 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=36f279930124d48eab7ea081a35d25188b1ba3eb54e41a604899a50c69db22a8
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m5-cell-repair-lane-root rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1008/1999 after=1010/2001 base_target=1008/1999 target=1010/2001 sites=20 labels=30 after_rev=51dcfa3973b6d1f1d03538a42ccaece75a7907ff mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1010/2001
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 FAIL out_of_range=triage-thresholds.md:440
+  LIMB M9 pass rows=20 unbound=none
+  LIMB M10 pass labelled=30 want=20 mapped=20 kinds=cell-repair=1,excluded=10,range=19 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=df536b434d6705acb1179658199236487362c1f48d46ef25f0af43be63f1e013
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m5-cell-repair-before-r93 rc=1 want=0 FAIL
+  KNOWLEDGE-METER base=1008/1999 after=1010/2001 base_target=1008/1999 target=1009/2000 sites=1 labels=1 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 FAIL after=1010/2001
+  LIMB M3 FAIL same_files=True bad_lines=18 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=1 unbound=none
+  LIMB M10 pass labelled=1 want=1 mapped=1 kinds=cell-repair=1 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=48fca695563ca8aac47af207bdca1175c0ba1b4bf98d12ed643e4444b2eb13e4
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m5-out-of-range rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=20 labels=30 after_rev=6e0601757fb008d07dff8f801074518a20038b15 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 FAIL out_of_range=r94-ctl3.md:1
+  LIMB M9 pass rows=20 unbound=none
+  LIMB M10 pass labelled=30 want=20 mapped=20 kinds=excluded=10,range=20 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=ac08c7c2ed1a747f6a8ed96f2cbefa2e3f0838017f7d396d56e1b819054e3fbb
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m9-wrong-new rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=20 labels=30 after_rev=48f1d1cb67c6b90498667ca5aa533ea278cd20a2 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 FAIL rows=20 unbound=r94-ctl4.md:1
+  LIMB M10 pass labelled=30 want=20 mapped=20 kinds=excluded=10,range=20 unknown=none unapplied=none unlabelled=none
+  LIMB M6 pass sha256=d66d7d7c39a1c3e81eb019515fb1b02d15fdd68980ffaa4e52615954e79c6cd1
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m10-excluded-mapped rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1008/1999 after=1010/2001 base_target=1008/1999 target=1009/2000 sites=20 labels=29 after_rev=f3d8ab390506e50d14586362782467aeb0470056 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 FAIL after=1010/2001
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 FAIL rows=20 unbound=triage-thresholds.md:88
+  LIMB M10 FAIL labelled=29 want=19 mapped=20 kinds=excluded=10,range=19 unknown=none unapplied=none unlabelled=triage-thresholds.md:88/SKILL.md:113-114
+  LIMB M6 pass sha256=dfb1cbb14ccb8afe8256c15501e9635cb208cfaf6d89e06253f12c74a7187fd1
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL missing-labels rc=2 want=2 PASS
+  KNOWLEDGE-METER-RESULT error reason=read:CalledProcessError rc=2
+CONTROL wrong-map-sha rc=1 want=1 PASS limb=True
+  KNOWLEDGE-METER base=1008/1999 after=1009/2000 base_target=1008/1999 target=1009/2000 sites=19 labels=29 after_rev=d51220aeb4a538b7b211bb2629e83210669cd56d mirror_absent=True pinned=archive
+  LIMB M0 pass base=1008/1999
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=19 unbound=none
+  LIMB M10 pass labelled=29 want=19 mapped=19 kinds=excluded=10,range=19 unknown=none unapplied=none unlabelled=none
+  LIMB M6 FAIL sha256=11de45a74337b945b5179645e18e0f710a2f9ec54935450806a0e4bda7a78847
+  KNOWLEDGE-METER-RESULT fail rc=1
+C1-CONTROLS-RESULT fail controls=12

@@ -1,0 +1,39 @@
+# C2 citation drift: corpus/knowledge -> corpus/instruments/capture-secret-scan.py
+# base dff5a0a01e8a (458 lines) -> tip 996460861d41 (491 lines)
+# columns: base_line  tip_line  content_at_base_line(trimmed)
+106	120	Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
+109	128	separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`
+110	129	cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
+112	131	another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
+113	132	`sig`, more than 20 other parameters between the two matched ones, values
+114	133	soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not
+118	137	Allowlist. The gate's generic shapes also match non-secrets in captures (a
+122	141	A row binds one exact matched value at one path, so a different value at the
+123	142	same path and shape is still a hit. Rows for aws-sts-session-token are refused
+127	146	Output never prints a matched value: `HIT shape=<s> path=<p> line=<n>` per
+128	147	file and shape (first non-allowed match), then
+149	168	_SEP = rb"(?:&amp;|&|\\u0026)"
+150	169	_PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,7}=[^&\s\"'<>\\]*){0,20}?"
+151	170	_SIG = rb"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}"
+153	172	_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\u0026)|(?<=%26))"
+156	175	_CF_SIG = rb"Signature=[A-Za-z0-9_~-]{40,}"
+160	179	("gcs-signed-url-signature", re.compile(
+167	186	_CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
+169	188	_ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})
+174	193	_GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+186	208	def load_allow(path):
+216	238	def is_capture_path(rel):
+224	246	def scan_bytes(data, pats, path="", allow=None, used=None):
+328	350	("gcs-v4-query", b"https://storage.googleapis.com/b/o.png?X-Goog-Algorithm=GOOG4-RSA-SHA25
+330	352	("gcs-doc-wrapped", b"X-Goog-SignedHeaders=host&X-Goog-Signature=247a2aa45f16\n9edf4d187d5
+336	358	("azure-doc-placeholder", b"https://myaccount.blob.core.windows.net/sascontainer/blob1.txt
+337	359	("azure-sig-without-sv", b"https://example.com/x?id=1&sig=" + asig, set()),
+339	361	("azure-json-escaped-s127-order", b'"https://myaccount.blob.core.windows.net/sascontainer/
+345	367	("cf-sig-without-kpi", b"https://d1.cloudfront.net/a.mp4?Expires=1767290400&Signature=" + 
+349	371	("azure-skdutid-user-bound", b"https://a.blob.core.windows.net/c/b.txt?sp=rw&skoid=1111111
+354	376	("cf-cookie-doc-example", b"Set-Cookie: CloudFront-Signature=dtKhpJ3aUYxqDIwepczPiDb9NXQ_;
+359	381	("gh-classic-pat-prose", b"use ghp_" + ghtail + b" as the password", {"github-token"}),
+366	388	("gh-doc-placeholder", b"a stateless format (ghs_APPID_JWT) to all newly minted", set()),
+368	390	("gh-35-chars", b"ghp_" + ghtail[:35] + b" ", set()),
+373	395	("gh-fine-grained-known-limit", b"github_pat_" + ghtail[:22] + b"_" + (ghtail + ghtail)[:5
+# identical-at-both-revs lines: [1, 9, 14, 19, 20, 23, 44, 47, 53, 67, 81, 84, 86, 87, 93]

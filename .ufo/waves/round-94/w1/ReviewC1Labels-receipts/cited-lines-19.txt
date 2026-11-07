@@ -1,0 +1,153 @@
+19 landed repoints at d51220aeb4a538b7b211bb2629e83210669cd56d (citing line, then anchor bytes)
+
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:143  KEY SKILL.md:526  ->  `SKILL.md:251-253`
+CITING: | `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:251-253` |
+ANCHOR SKILL.md:251-253:
+  251: `ops/fleet-dispatch.mjs` is the `/loop` engine: tmux panes under
+  252: `ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
+  253: rotation on terminal status, `reconcile()` rebuilds from leases + pane
+LABEL FIX: Repoint: 526 is the parking-keyword sentence; the 2 h lease value is stated at 251-253 ("2 h leases in fleets/leases.json"). LEASE_MS itself is not named in SKILL.md (0 occurrences); the numeric constant remains mirror-only (fleet-dispatch.mjs:45).
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:151  KEY SKILL.md:526  ->  `SKILL.md:251-253`
+CITING: | grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:251-253` |
+ANCHOR SKILL.md:251-253:
+  251: `ops/fleet-dispatch.mjs` is the `/loop` engine: tmux panes under
+  252: `ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
+  253: rotation on terminal status, `reconcile()` rebuilds from leases + pane
+LABEL FIX: Repoint: 526 is the parking-keyword sentence; the tmux target ufo_sighting:fleet-grid is at 252. SESSION/GRID constants are not in SKILL.md (both 0 occurrences), and GRID='formation' is unsupported by this anchor; keep the tie only for the pane target or drop it.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:153  KEY SKILL.md:14-15  ->  `SKILL.md:264-266`
+CITING: | off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `corpus/knowledge/mission-control.md:54-55`, `SKILL.md:264-266` |
+ANCHOR SKILL.md:264-266:
+  264: SCOPING 20, RETIRED 6, plus `_`-prefixed seat statuses). Model routing is a
+  265: time-windowed decree (UTC-3 12:00–22:00 → deepseek-v4-pro, else
+  266: gpt-6-astra) + strict log-signature limit detection → grok-4.6:low lane.
+LABEL FIX: Repoint: 14-15 is the 2026-09-28 tree-loss date; the UTC-3 12:00-22:00 decree window is at 264-266. The getUTCHours formula is mirror-only (fleet-dispatch.mjs:298-299); cite SKILL only for the decree, or drop the tie.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:220  KEY SKILL.md:90-91  ->  `SKILL.md:157-158`
+CITING: | scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `corpus/knowledge/claim-gates.md:32-33`, `SKILL.md:157-158` |
+ANCHOR SKILL.md:157-158:
+  157: verifier), non-empty custodian chain where every `scope_signal` is exactly
+  158: `NO_SCOPE_OBJECTION` and `head_sha256` == last decision ==
+LABEL FIX: Repoint: 90-91 is coverage.missing/coverage.status; the exact NO_SCOPE_OBJECTION requirement is at 157-158.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:267  KEY SKILL.md:94-95  ->  `SKILL.md:161-162`
+CITING: | reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` | 133-141 | MATCHES: `corpus/knowledge/claim-gates.md:72-73`, `SKILL.md:161-162` |
+ANCHOR SKILL.md:161-162:
+  161: `manifest_sha256` binding + `APPROVED` review by a distinct `kx-reviewer`
+  162: (role, requested/resolved model, fallback flag) + four hard gates + two
+LABEL FIX: Repoint: 94-95 is normalized_scope_sha256/content_hash_basis; the kx-reviewer role/model/fallback shape is at 161-162.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:310  KEY SKILL.md:498  ->  `SKILL.md:828`
+CITING: | `p_success` | `p_in_scope × p_reproducible × p_unique × p_accepted` (`reduce((a,b)=>a*b, 1)`) | all 4 finite | 77 | MATCHES: `corpus/knowledge/ev-model.md:14`, `SKILL.md:828` |
+ANCHOR SKILL.md:828-828:
+  828: p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+LABEL FIX: Repoint: 498 is RETRY_* requeue/autopsy text; p_success is the formula line at 828.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:311  KEY SKILL.md:499  ->  `SKILL.md:829`
+CITING: | `gross_value` | `p_success × expected_reward` | `p_success` finite AND `expected_reward` finite | 78 | MATCHES: `corpus/knowledge/ev-model.md:15`, `SKILL.md:829` |
+ANCHOR SKILL.md:829-829:
+  829: gross_value  = p_success × expected_reward
+LABEL FIX: Repoint: 499 is the rmSync/window-model sentence; gross_value is at 829.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:312  KEY SKILL.md:500-501  ->  `SKILL.md:830-831`
+CITING: | `total_cost` | `effort_hours × opportunity_rate + direct_cost + delay_cost + expected_risk_cost` | all 5 finite | 79-81 | MATCHES: `corpus/knowledge/ev-model.md:16-17`, `SKILL.md:830-831` |
+ANCHOR SKILL.md:830-831:
+  830: total_cost   = effort_hours × opportunity_rate + direct_cost + delay_cost
+  831:                + expected_risk_cost
+LABEL FIX: Repoint: 500-501 is the RETIRE_AUTH program-record/autopsy text; total_cost is at 830-831.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:313  KEY SKILL.md:502  ->  `SKILL.md:832`
+CITING: | `adjusted_ev` | `gross_value − total_cost` | both finite | 82 | MATCHES: `corpus/knowledge/ev-model.md:18`, `SKILL.md:832` |
+ANCHOR SKILL.md:832-832:
+  832: adjusted_ev  = gross_value − total_cost
+LABEL FIX: Repoint: 502 is the docs/autopsies/<id>.md sentence; adjusted_ev is at 832.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:355  KEY SKILL.md:522  ->  `SKILL.md:999`
+CITING: | record | `additionalProperties: false` at top level | 5 | MATCHES: `SKILL.md:999` |
+ANCHOR SKILL.md:999-999:
+  999: - `~/Projects/bounties/bounty-map/schema.json` — program record schema (draft-07, fail-closed `additionalProperties:false`)
+LABEL FIX: Repoint: 522 is the parking-invisibility sentence; the program-record schema bullet (draft-07, fail-closed additionalProperties:false) is at 999.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:374  KEY SKILL.md:111-112  ->  `SKILL.md:910-913`
+CITING: | `mission_state` | enum, 12 values in order: `DISCOVERED, NORMALIZED, DEDUPED, SCOPED, RANKED, PLANNED, AUTHORIZED, EXECUTED, EVIDENCED, VERIFIED, SUBMISSION_PREPARED, LEARNED` | 54 | MATCHES: `SKILL.md:910-913` (decorative in practice) |
+ANCHOR SKILL.md:910-913:
+  910: the ranking file, not just the number. `stateOrder` (`[lost-base] ops/rank.mjs:179`) is
+  911: the 12-step pre-terminal ladder DISCOVERED → NORMALIZED → DEDUPED → SCOPED →
+  912: RANKED → PLANNED → AUTHORIZED → EXECUTED → EVIDENCED → VERIFIED →
+  913: SUBMISSION_PREPARED → LEARNED: it carries `AUTHORIZED`, which the live ledger
+LABEL FIX: Repoint: 111-112 is provenance.json.pin text; the 12-step DISCOVERED->...->LEARNED ladder is at 910-913.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:390  KEY SKILL.md:525  ->  `SKILL.md:321-324`
+CITING: | `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `corpus/knowledge/ops-invariants.md:18`, `SKILL.md:321-324` |
+ANCHOR SKILL.md:321-324:
+  321: `ops/shared.mjs` (mirror: 41 lines, sha256 `2497578a44e5`) owns the
+  322: constants every ops file imports: `BANNED = ['cursor','opencode']`
+  323: (`[lost-base] ops/shared.mjs:7`), enforced as a word-boundary scan
+  324: `(^|[^a-z])<b>([^a-z]|$)` (`[lost-base] ops/validate.mjs:56`); `PARKED = []` — empty
+LABEL FIX: Repoint: 525 is the parking-keyword sentence; BANNED = ['cursor','opencode'] is at 321-324.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:394  KEY SKILL.md:525  ->  `SKILL.md:340-346`
+CITING: | `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `corpus/knowledge/ops-invariants.md:22`, `SKILL.md:340-346` |
+ANCHOR SKILL.md:340-346:
+  340: **`TELEMETRY_EVENTS` is a decorative whitelist** (round-15 finding,
+  341: mirror-verified): `[lost-base] ops/shared.mjs:13-22` declares 8 event names
+  342: (`lane_parked`, `lane_degraded`, `operator_decree`, `xask_dry`,
+  343: `board_imported`, `binding_verified`, `reroute_drill`, `provenance_drift`),
+  344: but `grep -rn TELEMETRY_EVENTS --include='*.mjs' --include='*.sh'` over the
+  345: mirror returns **only that declaration** — nothing imports it, and
+  346: `appendLedger` never checks the event name (`[lost-base] ops/shared.mjs:36-41`). The ops
+LABEL FIX: Repoint: 525 is the parking-keyword sentence; the TELEMETRY_EVENTS decorative-whitelist paragraph and its 8 names are at 340-346.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:397  KEY SKILL.md:146  ->  `SKILL.md:224-226`
+CITING: | `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `corpus/knowledge/ops-invariants.md:25`, `SKILL.md:224-226`, `SKILL.md:331-335` |
+ANCHOR SKILL.md:224-226:
+  224: `ledger/missions.jsonl` is the append-only hunter-contract state machine
+  225: (writer: `ops/shared.mjs::appendLedger`, 3500-byte line cap for O_APPEND
+  226: atomicity). Transition census (718 lines / 260 missions):
+LABEL FIX: Repoint: 146 is the RETIRED auth-walled classification row; the appendLedger 3500-byte cap sentence is at 224-226.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:397  KEY SKILL.md:246  ->  `SKILL.md:331-335`
+CITING: | `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `corpus/knowledge/ops-invariants.md:25`, `SKILL.md:224-226`, `SKILL.md:331-335` |
+ANCHOR SKILL.md:331-335:
+  331: (`[lost-base] ops/shared.mjs:25-31`); `appendLedger` caps a line at **3500 bytes** so
+  332: concurrent cross-session `O_APPEND` writes stay atomic within POSIX
+  333: `PIPE_BUF` (`[lost-base] ops/shared.mjs:33-34`), replaces an oversize entry with a
+  334: `truncated:true` stub (`[lost-base] ops/shared.mjs:38`) and appends to
+  335: `ledger/<kind>.jsonl` (`[lost-base] ops/shared.mjs:39`). `gitMutationBlocker`
+LABEL FIX: Repoint: 246 is the mission-ledger/evidence-dir paragraph; appendLedger's 3500-byte cap + truncated stub is at 331-335.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:446  KEY SKILL.md:115  ->  `SKILL.md:184-187`
+CITING: | 9.14 | "~1040 records" contribute 0 or 1 points — the census says **1024** (796 zero + 228 one), plus 13 reward-band records at ≤1e7. | census §2.2 | `SKILL.md:184-187` |
+ANCHOR SKILL.md:184-187:
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+  185: text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+  186: 1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+  187: `priority.json` (14) is a strict subset of the 50 continue programs, so the
+LABEL FIX: Repoint/reword: 115 is provenance pin text; current text says exactly 1024 (796 zero + 228 one) and records the earlier omission at 184-187. The "~1040" figure is gone from SKILL.md (0 occurrences; last at 7483333~1:115), so the supersede is historical.
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:459  KEY SKILL.md:146, 245-247  ->  `SKILL.md:224-226,335-338`
+CITING: | appendLedger 3500 B cap / gitMutationBlocker | `SKILL.md:224-226,335-338` | MATCHES |
+ANCHOR SKILL.md:224-226:
+  224: `ledger/missions.jsonl` is the append-only hunter-contract state machine
+  225: (writer: `ops/shared.mjs::appendLedger`, 3500-byte line cap for O_APPEND
+  226: atomicity). Transition census (718 lines / 260 missions):
+ANCHOR SKILL.md:335-338:
+  335: `ledger/<kind>.jsonl` (`[lost-base] ops/shared.mjs:39`). `gitMutationBlocker`
+  336: (fail-closed on rebase/merge/cherry-pick or non-main HEAD) is **absent from
+  337: the mirror** — 0 hits repo-wide; it existed only in the lost tree
+  338: (`[lost-tree] ops/shared.mjs:55`, `corpus/knowledge/ops-invariants.md:24`).
+LABEL FIX: Repoint both ranges of the combined token: 146 -> 224-226 (appendLedger 3500-byte cap) and 245-247 -> 335-338 (gitMutationBlocker fail-closed statement).
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:460  KEY SKILL.md:113-117  ->  `SKILL.md:191`
+CITING: | `attempts() ≥ 2` as real termination | `SKILL.md:191` | MATCHES |
+ANCHOR SKILL.md:191-191:
+  191: status-file TERMINAL + telemetry `attempts()≥2`.
+LABEL FIX: Repoint: 113-117 is provenance.json.pin shapes; the attempts()>=2 termination statement is at 191 (the same target just landed for lines 58/144).
+==============================================================================================================
+SITE corpus/knowledge/considerthese-proposals-ledger.md:156  KEY SKILL.md:1163  ->  `SKILL.md:1164`
+CITING: **3. Add a quiescence gate before `complete` — adopted and landed in round 46 as `corpus/instruments/r46-landing-gate.py`; the driver that runs at `complete` stays operator-side.** The gate is committed (`git ls-tree --name-only HEAD corpus/instruments/ | grep -c r46-landing-gate` prints `1`) and carries registry rows at `SKILL.md:1164` and `corpus/instruments/README.md:1000`; the criterion it satisfies is `corpus/QUALITY.md:391` (R51, "A routed defect is re-derived from committed bytes or clocks before a gate is built on it"). This seat ran `python3 corpus/instruments/r46-landing-gate.py --selftest --work <scratch>` and it printed `selftest cases=30 failures=0`. The attempt-1 disposition text is `corpus/lessons/round-46.md:29` ("considerthese: `considerthese/2026-10-26.md` proposal 3 (\"Add a quiescence gate before `complete`\", line 31) is adopted as `corpus/instruments/r46-landing-gate.py`"). Two limits are recorded with the landing, not against it: the tree-clean limb is bare porcelain — `corpus/instruments/r46-landing-gate.py:113` runs `git status --porcelain` and `:115` grades it (`checks.append(("tree-clean", rc == 0 and n == 0, …))`) — so it does not cover the three mechanisms `corpus/instruments/r41-closure.sh:1392-1405` names (gitignored entries, `assume-unchanged`/`skip-worktree` markers), which the r41 `worktree_state()` shape (`:1397`, `:1400-1401`, `:1405`) does cover; and the gate's first `date-order-author` check was withdrawn (attempt-1 M46-2) in favour of committer clocks only (`SKILL.md:1164`, "date-order (committer clocks only)"), which R51 records as the withdrawal rule. The lane tree holds the gate, not the operator's `complete` step that invokes it.
+ANCHOR SKILL.md:1164-1164:
+  1164: | r46-landing-gate.py | gate | run `corpus/instruments/r46-landing-gate.py` with --pre-report --lane DIR --branch master --round N, or --post-report --lane DIR --branch master --report PATH --fleet DIR [--tip REV]; one `check <id> pass=<0 or 1> read=` line each then `landing-gate mode=<m> checks=<n> fail=<k> exit=C` | exit 0 only when every check passes; exit 1 failed; pre-report checks tree-clean, jj-state, remote-tip, placeholders; post-report checks report-readable, cited-hashes, resolves, ancestor, final-is-tip, date-order (committer clocks only), shonen-heading | run `corpus/instruments/r46-landing-gate.py` with --selftest [--work DIR]; prints `selftest cases=30 failures=0` (includes the round-45 honest-rewrite shape, which must PASS) | `considerthese/2026-10-26.md` proposal 3; `.ufo/waves/round-46/wave2/R46W2CritMistake.md` (why no author-time check) | reads only; fixture repos under --work | kasegi (round 46; considerthese proposal 3) |
+LABEL FIX: Repoint both occurrences on the line (registry-row pointer and the "date-order (committer clocks only)" quote): 1163 is the r46-c2-gate.py row; the r46-landing-gate.py row is 1164.

@@ -1,0 +1,31 @@
+# CriticHarm command log (all run from /home/vgpnk/Projects/shokunin/kasegi-shokunin)
+# scratch S=/fast/scratch/hyaku/kasegi-r94/CriticHarm (TMPDIR=$S, removed on exit)
+1  git rev-parse HEAD                                                   -> 996460861d4130ddb2da6b7554e905d3e47504a3 rc=0
+2  git diff --name-only dff5a0a 9964608 -- SKILL.md PROVINCE.md SHENEN corpus/README.md AGENTS.md
+                                                                        -> empty, rc=0            [governance-diff.txt]
+3  git rev-parse <rev>:SKILL.md  x4                                     -> 27f23a93848be29b76992ac35ce423ab9a23c269 at all four revs
+4  git grep -oE 'capture-secret-scan\.py:[0-9]+' <rev> -- corpus/knowledge | wc -l  x4
+                                                                        -> 102/102/102/102        [scanner-cite-count.txt]
+5  git show <rev>:corpus/instruments/capture-secret-scan.py | wc -l     -> 458 (base) / 491 (tip)
+6  python3 -B meter.py <lane> <scratch> dff5a0a d51220a                 -> dff5a0a 1008/1999 ; d51220a 1009/2000 ; 15 out / 16 in / 0 flips
+                                                                                                  [meter-recount.txt]
+7  python3 -B meter.py <lane> <scratch> 9964608 9964608                 -> 1009/2000              [meter-at-tip.txt]
+8  python3 (citation drift: base line content vs tip line content)      -> 35 of 50 distinct cited lines shifted; 65 of 102 tokens
+                                                                                                  [scanner-cite-drift.tsv, per-file-drift.txt]
+9  python3 (ten EXCLUDED (site,key) pairs, base vs C1)                  -> 10/10 line unchanged, old key present
+                                                                                                  [excluded-rows.txt]
+10 python3 (SOURCES header vs S139 vs S140 cell counts, HEAD bytes)     -> 11 / 11 / 11 cells; S140 tier=A status=queued used-by=—
+                                                                                                  [sources-and-redaction.txt]
+11 git show HEAD:corpus/source-snapshots/round-94/S140.txt sed -n '4p;114p;255p'
+                                                                        -> the three regex lines, anchors intact
+12 sha256sum corpus/instruments/capture-secret-scan.py claim-package-check.py
+                                                                        -> 22ba32d1… 8b6f8493… (== claims.json pins)   [sha-and-patterns.txt]
+13 sha256sum .ufo/waves/round-94/c2/candidate-row.txt                   -> 4f10e273… (== claims.json scorecard_row_sha256)
+14 git show --name-status <C1|C2|freeze>                                -> C1: 2 knowledge files; C2: SCORECARD.md + scanner
+                                                                                                  [commit-file-sets.txt]
+15 git diff --numstat / -U0 base..C1                                    -> triage 17/17 lines, ledger 1/1 line, no other path [c1-c2-scope.txt]
+16 python3 (repair-map.tsv rows resolved against SKILL.md)             -> 19/19 old anchor dead, new anchor carries the row
+                                                                                                  [anchor-repoint-verify.txt]
+17 git grep -oE '`SKILL\.md:(526|525|522|191|224-226,335-338)`' base/C1  -> 526 2/0, 525 2/0, 522 2/1, 191 2/3, combined 0/1
+18 grep -o 'Report: ...w1/<seat>.md' .ufo/waves/round-94/w1-spec.json | sort -u | wc -l
+                                                                        -> 13

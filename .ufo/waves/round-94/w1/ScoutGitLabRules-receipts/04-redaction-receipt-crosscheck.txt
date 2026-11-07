@@ -1,0 +1,36 @@
+# R04 redaction receipt cross-check (.ufo/waves/round-94/controls/redaction-r94.txt)
+$ grep -c 'redacted line=' .ufo/waves/round-94/controls/redaction-r94.txt
+82
+
+$ tail -4 .ufo/waves/round-94/controls/redaction-r94.txt
+redacted line=554 rule=gitlab_session_cookie
+raw snapshot sha256=04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921 bytes=20035 lines=563
+rule: every element line inside an `examples = [` or `negativeExamples = [` array is replaced by one fixed marker; the array delimiters, rule ids, keywords and regex lines are unchanged, so line numbering is preserved and the three quoted regex lines keep their anchors
+committed snapshot sha256=f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c bytes=25537 lines=563 redacted=82
+
+$ distinct rule ids redacted:
+distinct rules = 24  total lines = 82
+  gitlab_ci_build_token_jwt                        2
+  gitlab_deploy_token                              5
+  gitlab_deploy_token_in_url                       2
+  gitlab_deploy_token_routable                     2
+  gitlab_feature_flags_client_token                4
+  gitlab_feed_token_path_dependent                 3
+  gitlab_feed_token_v2                             5
+  gitlab_iam_access_token                          1
+  gitlab_iam_authorization_code                    2
+  gitlab_iam_refresh_token                         2
+  gitlab_incoming_email_token                      8
+  gitlab_kubernetes_agent_token_routable           2
+  gitlab_personal_access_token                     7
+  gitlab_personal_access_token_routable            2
+  gitlab_personal_access_token_routable_versioned  3
+  gitlab_pipeline_trigger_token                    10
+  gitlab_pipeline_trigger_token_in_url             2
+  gitlab_runner_auth_token                         4
+  gitlab_runner_auth_token_legacy_partition        2
+  gitlab_runner_auth_token_routable                5
+  gitlab_runner_controller_token                   3
+  gitlab_session_cookie                            2
+  gitlab_stateless_access_token                    2
+  gitlab_workspace_token                           2

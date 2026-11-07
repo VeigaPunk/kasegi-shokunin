@@ -1,0 +1,18 @@
+# SOURCES table: header vs S139 vs S140 cell counts (working tree at HEAD 9964608)
+11 id | tier=tier | status=status | used-by=used-by
+11 S139 | tier=A | status=mined | used-by=corpus/instruments/capture-secret-scan.py
+11 S140 | tier=A | status=queued | used-by=—
+
+# rows at HEAD
+140
+
+# redaction receipt: line count + first/last lines
+85
+redacted line=6 rule=gitlab_personal_access_token
+redacted line=7 rule=gitlab_personal_access_token
+redacted line=8 rule=gitlab_personal_access_token
+...
+# S140 snapshot anchors 4/114/255 preserved (redacted example values, regex lines intact)
+line 4: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+line 114: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+line 255: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''

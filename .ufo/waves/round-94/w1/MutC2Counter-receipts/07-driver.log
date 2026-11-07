@@ -1,0 +1,40 @@
+CASE baseline rev=996460861d41 instrument 22ba32d145f9 -> 22ba32d145f9
+CASE F1-shape-keyed rev=910bbdf0a244 instrument 22ba32d145f9 -> bf30d3290809
+CASE F2-workdir-clean rev=d11039076523 instrument 22ba32d145f9 -> 8e63b677dfcb
+CASE F3-drop-cfc rev=89100ec44589 instrument 22ba32d145f9 -> 846afb948a72
+CASE F4-loose-gldt rev=6b3206444dbd instrument 22ba32d145f9 -> 7483e3603882
+CASE F5-loose-glpat rev=4d8edd9a3131 instrument 22ba32d145f9 -> 41aeef6b1874
+CASE F6-own-source-literals rev=6f350693078f instrument 22ba32d145f9 -> 1ef599048f33
+CASE F7-drop-session-cookie rev=a7509c79d960 instrument 22ba32d145f9 -> 2c799a2d073e
+RUN F1-shape-keyed             pinned   seed=9191 rc=1 verdict=fail failed=K1,K2,K3,K4,K9,K7,K8 (3.3s)
+RUN F1-shape-keyed             pinned   seed=1    rc=1 verdict=fail failed=K1,K2,K3,K4,K9,K7,K8 (3.6s)
+RUN F1-shape-keyed             unpinned seed=1    rc=1 verdict=fail failed=K2,K3,K4,K9,K7,K8 (4.0s)
+RUN F1-shape-keyed             unpinned seed=9191 rc=1 verdict=fail failed=K2,K3,K4,K9,K7,K8 (4.0s)
+RUN baseline                   pinned   seed=1    rc=0 verdict=pass failed=- (23.3s)
+RUN baseline                   pinned   seed=9191 rc=0 verdict=pass failed=- (23.4s)
+RUN baseline                   unpinned seed=1    rc=0 verdict=pass failed=- (26.8s)
+RUN baseline                   unpinned seed=9191 rc=0 verdict=pass failed=- (27.8s)
+RUN F2-workdir-clean           pinned   seed=9191 rc=1 verdict=fail failed=K1,K4,K9,K7,K8 (22.7s)
+RUN F2-workdir-clean           pinned   seed=1    rc=1 verdict=fail failed=K1,K4,K9,K7,K8 (28.2s)
+RUN F2-workdir-clean           unpinned seed=1    rc=1 verdict=fail failed=K4,K9,K7,K8 (24.6s)
+RUN F2-workdir-clean           unpinned seed=9191 rc=1 verdict=fail failed=K4,K9,K7,K8 (25.7s)
+RUN F3-drop-cfc                pinned   seed=1    rc=1 verdict=fail failed=K1,K4,K9,K7,K8 (25.7s)
+RUN F3-drop-cfc                pinned   seed=9191 rc=1 verdict=fail failed=K1,K4,K9,K7,K8 (27.5s)
+RUN F3-drop-cfc                unpinned seed=1    rc=1 verdict=fail failed=K4,K9,K7,K8 (25.8s)
+RUN F3-drop-cfc                unpinned seed=9191 rc=1 verdict=fail failed=K4,K9,K7,K8 (24.9s)
+RUN F4-loose-gldt              pinned   seed=1    rc=1 verdict=fail failed=K1,K4,K7,K8 (24.1s)
+RUN F4-loose-gldt              pinned   seed=9191 rc=1 verdict=fail failed=K1,K4,K7,K8 (27.2s)
+RUN F4-loose-gldt              unpinned seed=1    rc=1 verdict=fail failed=K4,K7,K8 (25.5s)
+RUN F4-loose-gldt              unpinned seed=9191 rc=1 verdict=fail failed=K4,K7,K8 (26.0s)
+RUN F5-loose-glpat             pinned   seed=1    rc=1 verdict=fail failed=K1,K3,K4,K7,K8 (27.5s)
+RUN F5-loose-glpat             pinned   seed=9191 rc=1 verdict=fail failed=K1,K3,K4,K7,K8 (26.5s)
+RUN F5-loose-glpat             unpinned seed=1    rc=1 verdict=fail failed=K3,K4,K7,K8 (26.3s)
+RUN F5-loose-glpat             unpinned seed=9191 rc=1 verdict=fail failed=K3,K4,K7,K8 (22.7s)
+RUN F6-own-source-literals     unpinned seed=1    rc=1 verdict=fail failed=K3,K4,K8 (22.1s)
+RUN F6-own-source-literals     pinned   seed=9191 rc=1 verdict=fail failed=K1,K3,K4,K8 (26.8s)
+RUN F6-own-source-literals     pinned   seed=1    rc=1 verdict=fail failed=K1,K3,K4,K8 (31.8s)
+RUN F6-own-source-literals     unpinned seed=9191 rc=1 verdict=fail failed=K3,K4,K8 (26.9s)
+RUN F7-drop-session-cookie     pinned   seed=1    rc=1 verdict=fail failed=K1 (24.6s)
+RUN F7-drop-session-cookie     pinned   seed=9191 rc=1 verdict=fail failed=K1 (28.5s)
+RUN F7-drop-session-cookie     unpinned seed=1    rc=0 verdict=pass failed=- (27.3s)
+RUN F7-drop-session-cookie     unpinned seed=9191 rc=0 verdict=pass failed=- (25.8s)

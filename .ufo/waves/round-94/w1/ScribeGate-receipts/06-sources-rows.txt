@@ -1,0 +1,34 @@
+# cmd: parse corpus/SOURCES.md rows and change-log bullets (working tree)
+# table header line 5: | id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+
+## S140 cells=11
+col01 :: S140
+col02 :: GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4 — https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/59ada1f4ca53d5a69fafb9cb0f10bb893720ce39/rules/mit/gitlab/gitlab.toml
+col03 :: code
+col04 :: A
+col05 :: GitLab token shapes as the vendor's own machine-readable rules publish them: the personal-access-token regex with its optional custom instance prefix and `[0-9a-zA-Z_-]{20}` tail, the runner authentication token (`glrt-`/`glrtr-`, optional `t1_`/`t2_`/`t3_`) and the deploy token (`gldt-`)
+col06 :: file `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4ca53d5a69fafb9cb0f10bb893720ce39; snapshot lines 4, 114, 255 (and 30, 51, 136, 324 for the routable forms kept as limits); capture corpus/source-snapshots/round-94/S140.txt, line numbering preserved with the 82 `examples`/`negativeExamples` array element lines replaced by one fixed marker (GitHub push protection refuses the published example values; the redacted line list by rule id is in .ufo/waves/round-94/controls/redaction-r94.txt)
+col07 :: The vendor's own rule publishes each token's exact prefix, alphabet and length, so a scanner shape can be sourced instead of inferred; the personal-access-token rule also carries the optional custom instance prefix the prose page omits.
+col08 :: queued
+col09 :: 2026-11-07
+col10 :: 180d
+col11 :: —
+
+## S141 cells=11
+col01 :: S141
+col02 :: GitLab secret-detection rules, `rules/mit/github/github.toml` at commit 59ada1f4 — https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/59ada1f4ca53d5a69fafb9cb0f10bb893720ce39/rules/mit/github/github.toml
+col03 :: code
+col04 :: B
+col05 :: GitHub token shapes as a third-party rule file (GitLab's copy of the GitHub shapes), not the vendor's own statement
+col06 :: file `rules/mit/github/github.toml` at commit 59ada1f4ca53d5a69fafb9cb0f10bb893720ce39, fetched 2026-11-07 (3955 bytes, sha256 02c67cebbf24803552c5696b65f9f9885569580ec38480bc29ee56957c2a83e0, 130 lines); `ghr_` rule at line 72 (`regex = "ghr_[0-9a-zA-Z]{76}"`), fine-grained TODO at line 17
+col07 :: REJECTED: opened this round but not cited by an admitted entry; its `ghr_` 76-character refresh-token rule is a round-95 lead, and this round does not claim that shape (the lane's S136/S137 hold the 36-character statement, and GitLab is not the vendor of GitHub tokens, so tier B at most). flip: a round admits the `ghr_` refresh-token shape and cites this row.
+col08 :: rejected
+col09 :: 2026-11-07
+col10 :: 180d
+col11 :: —
+
+## round-94 change-log bullets = 2
+line 335 :: - Round 94: S140 row added (id `S140`, kind `code`, tier A, GitLab secret-detection rules `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, opened 2026-11-07, recheck `180d`); status `queued`, used-by `—` in the round-94 freeze. The rules file is a list of published example values that match the intake gate's own shapes, so the gate refused the fetched bytes (receipt `.ufo/waves/round-94/controls/capture-intake-r94.txt`) and the committed snapshot replaces the 82 example/negativeExamples array element lines with one fixed marker, line numbering preserved (the redacted line list by rule id is in `.ufo/waves/round-94/controls/redaction-r94.txt`); no allowlist row is used and the committed bytes scan clean. Registry 140 rows before the integration status change.
+line 336 :: - Round 94: S141 row added (id `S141`, kind `code`, tier B, GitLab's `github.toml` copy of the GitHub shapes, opened 2026-11-07, recheck `180d`); status `rejected`, used-by `—`: opened this round, its `ghr_` 76-character rule is a round-95 lead and no admitted entry cites it. Registry 141 rows after this row (S140 + S141).
+
+## grep -c "Round 94" = 2

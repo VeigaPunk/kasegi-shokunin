@@ -1,0 +1,47 @@
+=== receipt CONTROL lines (frozen c2-controls-r94.txt) ===
+1:C2-CONTROLS candidate=1ab01c9829f468ef1a52b46b836e75c629fa69e2 instrument_sha256=22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf
+2:CONTROL candidate rc=0 want=0 PASS
+14:CONTROL do-nothing rc=1 want=1 PASS
+26:CONTROL F1-path-shape-keyed rc=1 want=1 PASS
+38:CONTROL F2-harness-gated rc=1 want=1 PASS
+50:CONTROL F3-drop-github rc=1 want=1 PASS
+62:CONTROL F4-loose-runner rc=1 want=1 PASS
+74:CONTROL F5-literal-keyed rc=1 want=1 PASS
+86:CONTROL F6-always-clean rc=1 want=1 PASS
+98:CONTROL row-round93 rc=1 want=1 PASS
+110:CONTROL tampered-instrument rc=1 want=1 PASS
+122:C2-CONTROLS-RESULT pass controls=10
+
+=== executed control names in the driver (record(...) calls) ===
+83:    record("candidate", rc, 0, out)
+86:    record("do-nothing", rc, 1, out)
+118:    record("row-round93", rc, 1, out)
+130:    record("tampered-instrument", rc, 1, out)
+
+=== predicate/claims wording for the tenth control ===
+P4: .ufo/waves/round-94/controls/c2-controls-r94.txt prints C2-CONTROLS-RESULT pass controls=10 (candidate rc 0 pinned; do-nothing, the six forgeries F1-F6, the round-93 row and the S140-allowlist-removed control each rc 1).
+controls field: .ufo/waves/round-94/controls/c2-controls-r94.txt (candidate PASS rc 0; do-nothing, F1 path-shape-keyed, F2 harness-gated, F3 drop-github, F4 loose-runner, F5 literal-keyed, F6 always-clean, row-round93, s140-allow-rows-removed all rc 1)
+
+=== does any artifact execute an S140 allow-rows-removed control? ===
+grep -rn 'allow-rows|allowlist-removed|allow-removed' .ufo/waves/round-94/controls/ -> 0
+grep -c 'S140' .ufo/waves/round-94/controls/c2-controls-r94.py -> 0
+grep -c 'S140' .ufo/waves/round-94/controls/c2-controls-r94.txt (clause names in FAIL detail only) -> 5
+
+=== allowlist rows naming an S140/round-94 path (the control would have to remove these) ===
+data rows total: 23
+rows naming round-94 or S140: 0
+
+=== what the tenth executed control actually is (ctl-tamper) ===
+
+    # pin control: a tampered instrument is rejected by the frozen sha256.
+    d = os.path.join(work, "ctl-tamper")
+    shutil.rmtree(d, ignore_errors=True)
+    sh(["git", "clone", "-q", "--shared", cand, d])
+    with open(os.path.join(d, ISH), "a", encoding="utf-8") as fh:
+        fh.write("\n# tamper\n")
+    sh(["git", "-C", d, "add", "-A"])
+    sh(["git", "-C", d, "-c", "user.name=fixture", "-c", "user.email=fixture@invalid",
+        "commit", "-q", "-m", "tampered instrument"])
+    rc, out = run(d, "HEAD", ["--instrument-sha256", isha])
+    record("tampered-instrument", rc, 1, out)
+

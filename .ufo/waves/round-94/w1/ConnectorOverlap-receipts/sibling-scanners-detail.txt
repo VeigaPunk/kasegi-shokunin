@@ -1,0 +1,194 @@
+=== kagi-shokunin:corpus/transcript-scan.sh ===
+Commit HEAD: 0085a5f76c9dc7e977f6606324e873d25b4fc44d
+File SHA256: 2d60981b198cef41b9263a1427b41f92d98b65eb26ff71c28057bea0ad823a23
+  2: # transcript-scan.sh — secret-shape tripwire over the janitor transcript DB.
+  7: # matching secret-shaped LIKE patterns in every text-bearing column and row
+  20: #   --classify   bounded triage of HIT rows, no content: per firing pattern
+  65: # quarantine DB (finding, same severity as a pattern hit)
+  68: # Secret-shaped patterns. SQL LIKE (ASCII case-insensitive). LIKE METACHARACTERS
+  69: # ARE ESCAPED (like_lit + ESCAPE '\'): `_` in a pattern is a literal underscore,
+  76: # Baseline 2026-09-28 (THIS shipped revision, 32+5 patterns, 888 cells):
+  79: # round 8 describes a narrower revision (25+5 patterns, 270 cells) measured
+  83: PATTERNS_HIT=(
+  87: 'ghp_' 'gho_' 'ghu_' 'ghs_' 'ghr_' 'github_pat_'   # GitHub tokens
+  91: 'glpat-' 'npm_'         # GitLab PAT / npm token
+  96: PATTERNS_WARN=('access_token' 'refresh_token' 'api_key' 'secret_key' 'apikey')
+  102: # Escape LIKE metacharacters so a pattern means its literal bytes: `_` is an
+  110: # Bounded triage of HIT rows WITHOUT printing content: for every pattern that
+  122: for p in "${PATTERNS_HIT[@]}"; do
+  128: printf 'CLASSIFY %s.%s pattern=%s rows=%s key_shaped=%s prose=%s\n' \
+  143: for p in "${PATTERNS_HIT[@]}"; do
+  150: printf 'HIT   %s.%s pattern=%s rows=%s distinct_%s=%s\n' \
+  155: for p in "${PATTERNS_WARN[@]}"; do
+  162: printf 'WARN  %s.%s pattern=%s rows=%s distinct_%s=%s\n' \
+  278: printf 'TRANSCRIPT_SCAN: %s (cells=%d patterns=%d+%d warns=%d schema-absent=%d) db=%s\n' \
+  280: "$cells" "${#PATTERNS_HIT[@]}" "${#PATTERNS_WARN[@]}" "$warns" "$absent" "$DB"
+=== kengaku-shokunin:plans/stage_scan.py ===
+Commit HEAD: 34b28c47bc38b4e0aa11f44f2dfe7c9470d551ac
+File SHA256: cda552adc72b9aa493c803e2a05cff016947422ed279f87ae215adb33f803fc5
+  2: """stage_scan.py - pre-stage secret-pattern scan (kengaku round 53).
+  27: Rules (Python `re`, applied per line; each is a fixed-shape credential pattern)
+  30: github-finepat the literal github_pat, an underscore, then >= 22 [A-Za-z0-9_]
+  38: aws-secret     case-insensitive aws, optional underscore, "secret", word chars,
+  44: generic        case-insensitive: api|secret|token|password, then optional
+  47: `api_key = "..."`, `"token": "..."` and `secret: '...'` hit)
+  51: Fixture secrets in --selftest are assembled from fragments at run time, so this
+  66: RULES: list[tuple[str, re.Pattern[str]]] = [
+  68: ("github-finepat", re.compile(r"(?<![A-Za-z0-9_])github_pat_[A-Za-z0-9_]{22,}")),
+  72: ("aws-secret", re.compile(
+  73: r"aws_?secret\w*['\"]?[ \t]*[=:][ \t]*['\"]?[A-Za-z0-9/+=]{40}(?![A-Za-z0-9/+=])", re.I)),
+  78: r"(?:api|secret|token|password)[\w-]*['\"]?\s*[=:]\s*['\"][^'\"]{16,}", re.I)),
+  191: # secrets assembled from fragments
+  202: awsec = "aws" + us + "secret" + us + "access" + us + "key = " + sq + _alnum(40, "kLmNoPqRsT/+") + sq
+  218: def one_hit(name: str, line: str, rule: str, secret: str) -> None:
+  222: check(name, rc == 1 and hit in out and secret not in out and secret not in err)
+  236: one_hit("pos-aws-secret", awsec, "aws-secret", _alnum(40, "kLmNoPqRsT/+"))
+  253: # binary: secret after a NUL in the first 8 KiB is skipped and reported
+  277: os.symlink(W("lk2/secret.txt", gh + "\n"), lnk)
+  286: and any(l.startswith(f"HIT {multi}:1 github-pat prefix=ghp_") for l in lines)
+=== chousa-shokunin:tools/research-gate.sh ===
+Commit HEAD: 408ae68f9e445fc911f713d5bbb3a64dda1ab9fe
+File SHA256: b23301b6dc141968edc33e838733df9cc3b3ecc2ab815e6d0acffd7efb546065
+  21: #   OBS_INFERENCE_COLLAPSE EXTERNAL_WITHOUT_APPROVAL SECRET_SHAPED
+  331: # (the grep-pin pattern): an override RESEARCH_GATE_<NAME> must be absolute
+  994: # prefix) must refuse the same as './.config/foo'. The */X/* patterns need
+  1078: scan_secrets() {
+  1086: elif [[ $line =~ ghp_[A-Za-z0-9]{20,} ]]; then class=ghp_prefix
+  1087: elif [[ $line =~ github_pat_[A-Za-z0-9_]{10,} ]]; then class=github_pat
+  1096: emit_finding SECRET_SHAPED crit secrecy "path=$file:$lineno class=$class"
+  1108: # case word — the empty expansion inside a case pattern still dead-arms.
+  1269: scan_secrets "$record"
+  1917: # A span of N bytes needs a PCRE pattern of four bytes per span byte (one
+  1918: # \xHH escape each). Two ceilings bound the one-pattern matcher: execve(2)'s
+  1920: # compiled-pattern ceiling ("approximately 64 thousand code units",
+  1921: # pcre2limits(3), row S065). On this host the second binds first: a pattern
+  1923: # too large". Spans whose pattern still fits keep the one-pattern matcher of
+  1925: # span's first chunk (a pattern that fits both ceilings) locates the
+  1928: # reported with the same left-to-right, non-overlapping order the one-pattern
+  1931: TOK_DIRECT_SPAN_MAX=32764     # span bytes whose 4N-byte pattern fits argv AND PCRE2
+  1932: TOK_CHUNK_BYTES=4096          # probe chunk bytes (4N pattern chars per chunk)
+  1934: tok_hex_pattern() { # STRING -> PCRE pattern text: one \xHH escape per byte
+  1945: # counts (the base matcher measures its pattern in bytes the same way).
+  1957: # The base matcher: one hex pattern for the whole span, matched literally.
+  1961: # Hex escapes keep the PCRE pattern byte-exact and literal. NUL-delimited
+  1963: # The pattern is built with one linear pass (the base per-character loop
+  1964: # was quadratic in the span length); the pattern TEXT is the same.
+  1965: regex=$(tok_hex_pattern "$span")
+  1979: # overlap, the order the one-pattern matcher reports.
+  1982: local hay=$1 span=$2 chunk pattern occurrence offset resume=0
+  1990: pattern="$(tok_hex_pattern "${chunk:0:1}")(?=$(tok_hex_pattern "${chunk:1}"))"
+  1997: done < <(printf '%s' "$hay" | grep -a -z -b -o -P -- "$pattern")
+  2067: scan_secrets "$claims"
+  2557: scan_secrets "$record"
+  2810: sweep_path_guarded() { # PATTERN -> rc0: glob-safe under an allowed root; rc1 refuse
+  2845: sweep_glob_matches() { # PATTERN -> matching paths, one per line ('' when none)
+  2851: # test instead (measured: `for m in lib/ghost.md` printed the pattern and
+  2875: scan_secrets "$record"
+  3222: scan_secrets "$record"
+  3455: # Strip one trailing CR without the suffix-pattern scan that is quadratic on long lines.
+  4165: # pattern to a gate whose canonical output is deterministic per input, so the
+  4634: leak=' secret-span-echoed'
+  5109: write_rec fail-secret-shaped <<'EOF'
+  5132: tcase fail-secret-shaped 1 'FINDING SECRET_SHAPED'
+  6897: printf 'secret\n' >"$WORK/../chousa-config-r21/.config/agent-token.txt"
+  6933: # */X/* patterns need a leading component; bare-start forms '.config/foo',
+  6935: # './.config/foo' refused. The fix adds bare-start patterns.
+  6937: printf '{"id":"S1","source":".config/agent-token.txt","span":"secret","expect":"supported"}\n' \
+  6939: mkdir -p "$WORK/.config" && printf 'secret\n' >"$WORK/.config/agent-token.txt"
+  6944: printf '{"id":"S1","source":".omp/token.txt","span":"secret","expect":"supported"}\n' \
+  6946: mkdir -p "$WORK/.omp" && printf 'secret\n' >"$WORK/.omp/token.txt"
+  6951: printf '{"id":"S1","source":".local/state/cred.txt","span":"secret","expect":"supported"}\n' \
+  6953: mkdir -p "$WORK/.local/state" && printf 'secret\n' >"$WORK/.local/state/cred.txt"
+  6958: # patterns must not over-refuse).
+  8519: # A span of 32768 bytes or more cannot be carried by one PCRE pattern:
+  8520: # the hex pattern needs four argv bytes per span byte, so the exec fails
+  8553: # 4N-byte pattern still fits one grep argv string, but PCRE2 refuses to
+=== tabi-shokunin:scripts/check-sources.mjs ===
+Commit HEAD: ae2dc25fe8b4db70d2ef8a83804bc5545fbc35ff
+File SHA256: afd047874a1aa136efc252290bef8c76bb90d85f405d1ecf593e9d407125df77
+  25: const rowPattern = /^\|[ \t\v\f\r]*S[0-9]{3,}[ \t\v\f\r]*\|/;
+  263: if (rowPattern.test(line)) {
+  344: const credentialPatterns = [
+  347: /ghp_[A-Za-z0-9]+/,
+  351: if (credentialPatterns.some(pattern => pattern.test(text))) addFinding(findings, 'credential_material', '-', 'credential_pattern_detected');
+  448: if (name === 'credential-material') return { rows: [row], extra: 'ghp_fixtureSecretValue' };
+=== souji-shokunin:tools/souji-proc-census.sh ===
+Commit HEAD: 488956c45166ed6edc21567e8588a8134413949e
+File SHA256: 3bc403440d67e2e8a096f52e3953cfb32a5a415c8e032d91d386c95f792fafb5
+  7: # cmd have bounded secret-pattern redaction; raw reads are not secret-free.
+  207: redact_secrets() {
+  219: while [[ $value =~ (ghp_)[[:alnum:]_-]+ ]]; do
+  245: redact_secrets "$1"
+  251: local kind=$1 path=$2 secret=${3:-0}
+  252: if ((secret)); then path='[REDACTED]'; fi
+  253: redact_secrets "$kind-path-gone:$path"
+  259: local arg='' prefix candidate redact_next=0 secret normalized
+  262: PROC_GONE_SECRET=0
+  266: redact_secrets "$arg"
+  267: secret=$redact_next
+  268: [[ $REDACTED_FIELD == "$normalized" ]] || secret=1
+  278: PROC_GONE_SECRET=$secret
+  386: format_reason argv "$PROC_GONE_PATH" "$PROC_GONE_SECRET"
+  478: local literal_cwd literal_fd_dir literal_fd_path argv_arg boundary_arg secret_arg
+  479: local auth_arg bearer_arg bearer_value aws_arg slack_arg split_token_arg split_token_secret
+  491: local secret_ok=0 redaction_unit_ok=0 stat_newline_ok=0 starttime_ok=0
+  543: secret_arg='--token=fixture-secret ghp_FAKE_TOKEN_PART sk-fakevalue password=fakepass https://user:pass@example.test/path'
+  546: bearer_value='split-bearer-secret'
+  550: split_token_secret='split-token-secret'
+  551: redaction_probe='-H Authorization: Bearer b AKIA1234567890123456 xoxb-test --token=t --TOKEN=c ghp_FAKE_TOKEN_PART sk-fake password=x https://u:p@h'
+  557: $REDACTED_CMD != *'--TOKEN=c'* && $REDACTED_CMD != *ghp_FAKE_TOKEN_PART* &&
+  574: "$SELFTEST_CONTROL_TMP" "$argv_fifo" "$secret_arg" \
+  575: -H "$auth_arg" "$bearer_arg" "$bearer_value" "$aws_arg" "$slack_arg" "$split_token_arg" "$split_token_secret" "$argv_arg" \
+  643: $row_cmd != *fixture-secret* && $row_cmd != *ghp_FAKE_TOKEN_PART* &&
+  645: $row_cmd != *user:pass* && $row_cmd != *split-bearer-secret* &&
+  647: $row_cmd != *split-token-secret* ]]; then
+  648: secret_ok=1
+  695: secret_ok == 0 || redaction_unit_ok == 0 || starttime_ok == 0 ||
+  701: "$argv_fd_found" "$control_found" "$literal_fd_found" "$secret_ok" "$redaction_unit_ok" "$stat_newline_ok" "$starttime_ok" \
+  715: format_reason argv "$PROC_GONE_PATH" "$PROC_GONE_SECRET"
+=== souji-shokunin:tools/souji-receipt-run.py ===
+Commit HEAD: 488956c45166ed6edc21567e8588a8134413949e
+File SHA256: 0ed30d4401b20d8954aef3c5b54107f7b8a1ee1b0f810deaba07e1fec73c90a4
+  34: would still change the per-element-redacted line, i.e. a secret spanning argv elements
+  35: (CMD-SECRET-SHAPED, also any secret-shaped argument whose quoting a whole-line pass would
+  100: # ported from tools/souji-proc-census.sh redact_secrets: one convention, not a second one
+  104: (re.compile(r"ghp_[A-Za-z0-9_-]+"), "[REDACTED]"),
+  124: """Redact secret-shaped spans. Not a proof that the output is secret-free."""
+  126: for pattern, repl in REDACTIONS:
+  127: out = pattern.sub(repl, out)
+  225: return refuse("CMD-SECRET-SHAPED",
+  226: "a secret-shaped argument would leak across argv elements or leave cmd= unparsable; such commands get no receipt")
+=== souji-shokunin:tools/souji-verify.sh ===
+Commit HEAD: 488956c45166ed6edc21567e8588a8134413949e
+File SHA256: e6cb3f9340f0ac8b51e052ed73e3b9293e8ff2ff408ef97ba7b9562fda51691f
+  30: #   * Path components matching *.env/.env/.env./.envrc/*credential*/*secret*/
+  31: #     id_*/*.pem are refused before anything is read: NOT-SAFE(secrets-refusal).
+  59: #   D-c  Scratch-type gains no patterns beyond the spec's four families; the
+  60: #        secret-shape list gains `.env.*`/`.envrc` (only ever more refusals).
+  124: # True when any path component is secret-shaped (case-insensitive).
+  125: is_secret_shaped() {
+  132: *.env|.env|.env.*|.envrc|*credential*|*secret*|id_*|*.pem)
+  465: if is_secret_shaped "$target"; then
+  466: R_RECEIPT=secrets-refusal
+  467: R_EVIDENCE="secret-shaped path component"
+  550: is_secret_shaped "$p" && return 1
+  752: local target=$1 repo=${2:-} scope=${3:-$1} base out status=0 n=0 path canonical pattern
+  756: for pattern in '*.env' '.env' '.env.*' '.envrc' '*credential*' '*secret*' 'id_*' '*.pem'; do
+  757: excludes+=(--iglob "!**/$pattern" --iglob "!**/$pattern/**")
+  895: R_VERDICT=NOT-SAFE; R_RECEIPT=secrets-refusal; R_REASON=secrets-refusal
+  896: R_EVIDENCE="secret-shaped-or-protected-symlink-or-control-path-refused"; return 0
+  900: R_VERDICT=NOT-SAFE; R_RECEIPT=secrets-refusal; R_REASON=secrets-refusal
+  976: N_TOTAL=$((N_TOTAL + 1)); block_one "$raw" unsafe-path "secret-shaped-or-protected-symlink-or-control-path-refused"; return 0
+  1191: # untracked fixtures: scratch (F7/F8/E8) and secret-shaped paths (F10/E2)
+  1445: st_case F10 NOT-SAFE secrets-refusal "" "$R/x.env"
+  1447: st_case E2 NOT-SAFE secrets-refusal "" "$R/credentials/note.txt"
+=== mado-shokunin:tools/mado-tripwire.py ===
+Commit HEAD: 8a0aadb0727b7a753d837a49d37938400ce6c83d
+File SHA256: cd9da20c2f562efbd30967e00c0c630026de6e6d06ef74399eb1a46ccf00ea84
+  301: SECRET_PATTERNS = (
+  324: for pat in SECRET_PATTERNS:
+=== kumitate-shokunin:.ufo/waves/round-93/K93Sentinel/shape-scan.py ===
+Commit HEAD: e4887850448c38172e12fcb220496d23f49e8121
+File SHA256: ac86feebf8c1f9521ab970a1ff6c3c9b9245c52f09d8d2f7812773b0a5f7c348
+  24: r"gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|"
+  26: r"AIza[0-9A-Za-z_-]{20,}|glpat-[A-Za-z0-9_-]{16,}|hf_[A-Za-z0-9]{20,}|"

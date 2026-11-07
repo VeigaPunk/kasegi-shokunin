@@ -1,0 +1,27 @@
+diff --git c/corpus/instruments/capture-secret-scan.py w/corpus/instruments/capture-secret-scan.py
+index 0f4653e..9fab5e0 100755
+--- c/corpus/instruments/capture-secret-scan.py
++++ w/corpus/instruments/capture-secret-scan.py
+@@ -182,8 +182,6 @@ CLOUD_PATTERNS = (
+         rb"(?i)" + _LB + rb"(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
+     ("cloudfront-signed-url-signature", re.compile(
+         _CF_LB + rb"(?:" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb"|" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb")")),
+-    ("cloudfront-signed-cookie-signature", re.compile(
+-        _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
+ )
+ _ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ _GH_LB = _ESC_LB
+@@ -371,13 +369,6 @@ def selftest(pats):
+         ("azure-skdutid-user-bound", b"https://a.blob.core.windows.net/c/b.txt?sp=rw&skoid=11111111-2222-3333-4444-555555555555&sktid=66666666-7777-8888-9999-000000000000&skt=2026-11-07T00:00:00Z&ske=2026-11-08T00:00:00Z&sks=b&skv=2025-07-05&spr=https&sv=2025-07-05&sr=b&sduoid=11111111-2222-3333-4444-555555555555&skdutid=66666666-7777-8888-9999-000000000000&sig=" + asig, {"azure-sas-signature"}),
+         ("azure-skdutid-sig-first", b"https://a.blob.core.windows.net/c/b.txt?sig=" + asig + b"&skdutid=66666666-7777-8888-9999-000000000000&sv=2025-07-05", {"azure-sas-signature"}),
+         ("azure-eight-letter-name", b"https://a.blob.core.windows.net/c/b.txt?sv=2025-07-05&abcdefgh=1&sig=" + asig, set()),
+-        ("cf-cookie-set-cookie", b"Set-Cookie: CloudFront-Signature=" + cfsig + b"; Domain=d111111abcdef8.cloudfront.net; Path=/; Secure; HttpOnly", {"cloudfront-signed-cookie-signature"}),
+-        ("cf-cookie-request-header", b"Cookie: CloudFront-Policy=eyJTdGF0ZW1lbnQiOltdfQ__; CloudFront-Signature=" + cfsig + b"; CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F", {"cloudfront-signed-cookie-signature"}),
+-        ("cf-cookie-doc-example", b"Set-Cookie: CloudFront-Signature=dtKhpJ3aUYxqDIwepczPiDb9NXQ_; Domain=example.org; Path=/; Secure; HttpOnly", set()),
+-        ("cf-cookie-doc-placeholder", b"CloudFront-Signature=hashed and signed version of the policy statement;", set()),
+-        ("cf-cookie-lowercase-name", b"cloudfront-signature=" + cfsig, set()),
+-        ("cf-cookie-prefixed-name", b"X-CloudFront-Signature=" + cfsig, set()),
+-        ("cf-cookie-json-joined", b'{"set-cookie":"CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F; Path=/\\nCloudFront-Signature=' + cfsig + b'; Path=/"}', {"cloudfront-signed-cookie-signature"}),
+         ("gh-classic-pat-prose", b"use ghp_" + ghtail + b" as the password", {"github-token"}),
+         ("gh-oauth-json", b'{"t":"gho_' + ghtail + b'"}', {"github-token"}),
+         ("gh-user-to-server", b"ghu_" + ghtail, {"github-token"}),

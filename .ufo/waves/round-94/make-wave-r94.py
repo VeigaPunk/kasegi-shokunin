@@ -88,7 +88,7 @@ Draft (do not commit) the round-94 lesson's `## Gate` block and `## Mistakes` ro
 def main():
     spec = {
         "wave": "kasegi-r94-w1",
-        "milestone": "round-94 attempt 1: C1 tranche 9 (19 label-named repoints, M3 union + cell-repair M5 + revision print, meter 1008/1999 -> 1009/2000) and C2 capture-secret-scan GitLab custom prefix + runner + deploy shapes (S140) with relocated plants and K9; attack, verify, draft",
+        "milestone": "round-94 attempt 1: C1 tranche 9 (19 repoints, meter 1008/1999 -> 1009/2000) and C2 capture-secret-scan GitLab prefix/runner/deploy shapes (S140) with relocated plants and K9; attack, verify, draft",
         "reportDir": WAVE,
         "maxLanes": 16,
         "axes": ["depth:verifiability", "coverage"],

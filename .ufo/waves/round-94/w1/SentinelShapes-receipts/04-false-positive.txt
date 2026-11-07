@@ -1,0 +1,40 @@
+$ python3 probe.py  (fp fixtures, one file each)
+// (c) false-positive and negative-boundary probes (36 fixtures)
+token | probe | fixture | rc | shapes | want | result
+pat | prose-mention | pat-fp_prose-mention.txt | 0 | none | gitlab-pat | MISSED
+pat | doc-placeholder-angle | pat-fp_doc-placeholder-angle.txt | 0 | none | gitlab-pat | MISSED
+pat | doc-placeholder-20x | pat-fp_doc-placeholder-20x.txt | 1 | gitlab-pat | gitlab-pat | DETECTED
+pat | doc-placeholder-word | pat-fp_doc-placeholder-word.txt | 0 | none | gitlab-pat | MISSED
+pat | tail-21 | pat-fp_tail-21.txt | 0 | none | gitlab-pat | MISSED
+pat | followed-by-hyphen | pat-fp_followed-by-hyphen.txt | 0 | none | gitlab-pat | MISSED
+pat | inside-word-lower | pat-fp_inside-word-lower.txt | 0 | none | gitlab-pat | MISSED
+pat | inside-word-upper | pat-fp_inside-word-upper.txt | 0 | none | gitlab-pat | MISSED
+pat | inside-word-prose | pat-fp_inside-word-prose.txt | 0 | none | gitlab-pat | MISSED
+runner | prose-mention | runner-fp_prose-mention.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | doc-placeholder-angle | runner-fp_doc-placeholder-angle.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | doc-placeholder-20x | runner-fp_doc-placeholder-20x.txt | 1 | gitlab-runner-auth-token | gitlab-runner-auth-token | DETECTED
+runner | doc-placeholder-word | runner-fp_doc-placeholder-word.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | tail-21 | runner-fp_tail-21.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | followed-by-hyphen | runner-fp_followed-by-hyphen.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | inside-word-lower | runner-fp_inside-word-lower.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | inside-word-upper | runner-fp_inside-word-upper.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner | inside-word-prose | runner-fp_inside-word-prose.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | prose-mention | runner-t2-fp_prose-mention.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | doc-placeholder-angle | runner-t2-fp_doc-placeholder-angle.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | doc-placeholder-20x | runner-t2-fp_doc-placeholder-20x.txt | 1 | gitlab-runner-auth-token | gitlab-runner-auth-token | DETECTED
+runner-t2 | doc-placeholder-word | runner-t2-fp_doc-placeholder-word.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | tail-21 | runner-t2-fp_tail-21.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | followed-by-hyphen | runner-t2-fp_followed-by-hyphen.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | inside-word-lower | runner-t2-fp_inside-word-lower.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | inside-word-upper | runner-t2-fp_inside-word-upper.txt | 0 | none | gitlab-runner-auth-token | MISSED
+runner-t2 | inside-word-prose | runner-t2-fp_inside-word-prose.txt | 0 | none | gitlab-runner-auth-token | MISSED
+deploy | prose-mention | deploy-fp_prose-mention.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | doc-placeholder-angle | deploy-fp_doc-placeholder-angle.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | doc-placeholder-20x | deploy-fp_doc-placeholder-20x.txt | 1 | gitlab-deploy-token | gitlab-deploy-token | DETECTED
+deploy | doc-placeholder-word | deploy-fp_doc-placeholder-word.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | tail-21 | deploy-fp_tail-21.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | followed-by-hyphen | deploy-fp_followed-by-hyphen.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | inside-word-lower | deploy-fp_inside-word-lower.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | inside-word-upper | deploy-fp_inside-word-upper.txt | 0 | none | gitlab-deploy-token | MISSED
+deploy | inside-word-prose | deploy-fp_inside-word-prose.txt | 0 | none | gitlab-deploy-token | MISSED
+rows=36 detected=4 missed=32

@@ -1,0 +1,18 @@
+mutant	sha256	lines_changed	changed_block
+MU1-lane-split-semicolon	b7c2ed8a91dead87ff78eb5e19aec8db452bfe6600011173374c57dc40375b4b	1 hunks/2 lines	-        for part in m.group(1).split(","): +        for part in m.group(1).split(";"):
+MU10-excluded-site-keyed	dd1efbc760a69163ededd13ced8eca993dd663cd3adb55dde92ed5a33fc81f40	1 hunks/2 lines	-            kinds[(site, key)] = "excluded" if (site, key) in EXCLUDE +            kinds[(site, key)] = "excluded" if site in EXCLUDED else 
+MU11-m3-union-off	e0470a9868be47b2f80413f6fee93fc11db11f0d12c9301d275d329fc414ae82	1 hunks/2 lines	-        labelled_files = {site.rsplit(":", 1)[0] for site, _ in label +        labelled_files = set()
+MU12-m10-site-only	4d31e0be7ffd5ced763dc51b2cbabcf49ae7f693f94fdf681f9b9f789315d411	1 hunks/2 lines	-        mapped = {("%s:%d" % (f, n), k) for f, n, k, _, _ in rows} +        mapped = {"%s:%d" % (f, n) for f, n, k, _, _ in rows}
+MU13-after-rev-prints-base	1ed68543c6c72e98fa76f492235863488d904763c3ddc317e08a03143c2bd4d2	1 hunks/2 lines	-            bn, bm, an, am, bn0, bm0, tn, tm, len(rows), len(labels), +            bn, bm, an, am, bn0, bm0, tn, tm, len(rows), len(labels),
+MU14-m6-always-pass	5a19fbbb4834f17c28719c7131e16ad4826ff40e133552adc2e261c9eef540a9	1 hunks/2 lines	-            limbs.append(("M6", got == a.map_sha256.lower(), "sha256= +            limbs.append(("M6", True, "sha256=%s" % got))
+MU15-m9-excluded-allowed	3187614e7a5925121fbeb3ecf68339572def581e736c8323ce8e40f2dd664b34	1 hunks/2 lines	-            if lab is None or (site, key) in EXCLUDED or exp is None  +            if lab is None or exp is None or exp[1:] != (old, new):
+MU16-corpus-hi-unchecked	946184aa642b42b7774969196387b373a8585b3e49baff27174d86b30bec8f64	1 hunks/2 lines	-                if text is None or not (1 <= lo <= hi <= len(text.spl +                if text is None or not (1 <= lo <= len(text.splitline
+MU17-dup-basename-allowed	50f6cb5f415697ebdcbd8baed23b910e8963053baab452798859efea54b8c02f	1 hunks/2 lines	-                if not (vm and vm.group(1) == name and bybase.get(nam +                if not (vm and vm.group(1) == name and name in bybase
+MU2-lane-malformed-continue	1d2d6d42422c52d8a98cd577e0f6e417d0d4fd6042d5647ab477e5a5a82d9090	1 hunks/2 lines	-                return None +                continue
+MU3-lane-loose-regex	e8b53cc623f7d8fede84c115d34fc4eb9ee36e9a05c31f22bf190686a05a9185	1 hunks/2 lines	-            mm = re.match(r"^(\d+)(?:-(\d+))?$", part.strip()) +            mm = re.match(r"^(\d+)(?:-(\d+))?", part.strip())
+MU4-lane-first-part-only	46bf73e97a516838cd97ca664176c4ce3b2c4514970d72ad27e61051bf6c1399	1 hunks/2 lines	-                for lo, hi in lane: +                for lo, hi in lane[:1]:
+MU5-lane-hi-unchecked	f1e88e1095f5098c4b03d4bc9492aa548716eb6c081bb1c280b5d241e48018ca	1 hunks/2 lines	-                    if text is None or not (1 <= lo <= hi <= len(text +                    if text is None or not (1 <= lo <= len(text.split
+MU6-m3-replace-one	f69ef8f827f3541f8f03803691eae17a5e7fd60ad4463d5b410a39c44fd5e87a	1 hunks/2 lines	-                            fwd = fwd.replace(old, new) +                            fwd = fwd.replace(old, new, 1)
+MU7-m3-first-row-per-site	4611f0ba61dd441dd544c0ef27e1a5cf89e91b89ea7829a5d0e42794eac501d8	1 hunks/2 lines	-            sites.setdefault((f, n), []).append((old, new)) +            sites.setdefault((f, n), [(old, new)])
+MU8-m3-old-not-once	79fdd0a844579d719efecea90140ddc5284255ae234d3f182804e0ebc2168f79	1 hunks/2 lines	-                        if b.count(old) < 1: +                        if False:
+MU9-excluded-drop-pair	b4b03f864ae588eab5797b3eaf767eb7e70879bbeaa5a245bdf922620788553e	1 hunks/1 lines	-    ("corpus/knowledge/triage-thresholds.md:356", "SKILL.md:522"): "q

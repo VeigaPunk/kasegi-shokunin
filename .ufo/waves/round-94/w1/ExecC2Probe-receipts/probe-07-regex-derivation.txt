@@ -1,0 +1,45 @@
+== probe-07 independent derivation: landed GITLAB_PATTERNS from the scratch copy ==
+pattern gitlab-pat = (?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))(?:[A-Za-z0-9]{1,20}-)?glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])
+pattern gitlab-runner-auth-token = (?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))(?:[A-Za-z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])
+pattern gitlab-deploy-token = (?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))(?:[A-Za-z0-9]{1,20}-)?gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])
+
+per-fixture scan_bytes() derivation (scanner's own function, my own fixture bytes):
+p01-acme-glpat.txt             derived=['gitlab-pat'] allowed=0  gl-prefix-span=bytes 5-10
+p02-glpat.txt                  derived=['gitlab-pat'] allowed=0  gl-prefix-span=bytes 0-5
+p03-glrt.txt                   derived=['gitlab-runner-auth-token'] allowed=0  gl-prefix-span=bytes 0-4
+p04-glrtr-t1.txt               derived=['gitlab-runner-auth-token'] allowed=0  gl-prefix-span=n/a
+p05-gldt.txt                   derived=['gitlab-deploy-token'] allowed=0  gl-prefix-span=bytes 0-4
+p06-acme-glrt.txt              derived=['gitlab-runner-auth-token'] allowed=0  gl-prefix-span=bytes 5-9
+p07-acme-gldt.txt              derived=['gitlab-deploy-token'] allowed=0  gl-prefix-span=bytes 5-9
+n01-xglpat.txt                 derived=['none'] allowed=0  gl-prefix-span=bytes 1-6
+n02-gldt-19.txt                derived=['none'] allowed=0  gl-prefix-span=bytes 0-4
+n03-gldt-21.txt                derived=['none'] allowed=0  gl-prefix-span=bytes 0-4
+n04-glrt-21.txt                derived=['none'] allowed=0  gl-prefix-span=bytes 0-4
+n05-glrtr-t4.txt               derived=['none'] allowed=0  gl-prefix-span=n/a
+n06-GLD-T.txt                  derived=['none'] allowed=0  gl-prefix-span=n/a
+n07-prefix-21.txt              derived=['gitlab-pat'] allowed=0  gl-prefix-span=bytes 22-27
+x01-prefix-21-nohyphen.txt     derived=['none'] allowed=0  gl-prefix-span=bytes 21-26
+x02-prefix-20-glpat.txt        derived=['gitlab-pat'] allowed=0  gl-prefix-span=bytes 21-26
+
+fixture sha256 manifest:
+sha256 36fa85ca205677124891152c2be0f7483e95ba98589f55c667a42c6e03b0cb8a  p01-acme-glpat.txt
+sha256 77cb772e15f18d703ac62881f2bcda5507e783f5673c9cbb778a94c1999e5edb  p02-glpat.txt
+sha256 ab14d9a882c8507d56fcef8ae8e2ebbd5fd27af8663d79f51d618add48489aa8  p03-glrt.txt
+sha256 2c0543d0d2538a93b2756e220338ecd34cc374e7eee15fe52222d706bd686b48  p04-glrtr-t1.txt
+sha256 0dacf610b1e2ef3590d0ec3ae70679d8f0023f4955074e726ea85d77bd40b8cd  p05-gldt.txt
+sha256 1529743ea953a32ddb6ff70f2978aa05f567a71597dcd3256c63b2cac7dbfe76  p06-acme-glrt.txt
+sha256 48444fd8f7150e55001976acc9657ace31915b2b5bfe6002f7971f47cd501050  p07-acme-gldt.txt
+sha256 4e2d6903e1012bc2932e02623855b7fcb17a0dedf25c3d294c7859b03eec93dc  n01-xglpat.txt
+sha256 4c3f3af7bd2d50144cbedc924a0e007b603a3d3ccbee5eca4552f1d83ae4a6d3  n02-gldt-19.txt
+sha256 27c7f0c0abe449de09c2139f4eabfe8ead162a9cf8c798765b9f07de6d0120bc  n03-gldt-21.txt
+sha256 54367ea00cbe14638cc90ce903f4a1ea1a7013e6bb599a6d26210a443c419306  n04-glrt-21.txt
+sha256 4c5ca7de59353ba326550e20865b0e532b9f4ea5840b262f425aa0d32a5461cf  n05-glrtr-t4.txt
+sha256 6ac94fd5d5fdb2f2eba765e90c7c686105364b44121fa01891a2554cdef31643  n06-GLD-T.txt
+sha256 f7fd6ffc130bc34d7488f4bfdbcae5cf632c4602061c4be12f2cc4ff45d4c1fe  n07-prefix-21.txt
+sha256 00b1d074fb1909ae582e5f3a848bae2de86abeabb0127b3ace66044fdd4374f4  x01-prefix-21-nohyphen.txt
+sha256 53603758d282dc20f08f1060bea4d388d234971b60da448f7dd0af5022f39980  x02-prefix-20-glpat.txt
+
+== S140 capture quoted regex lines (anchors 4, 114, 255) ==
+line 4: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+line 114: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+line 255: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''

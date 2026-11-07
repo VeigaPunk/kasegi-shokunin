@@ -1,0 +1,124 @@
+FILES: corpus/knowledge/capture-intake-gate.md, corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md, corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md, corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md, corpus/knowledge/presigned-url-credentials-in-captured-evidence.md
+CITATIONS total=102 changed=69
+
+SHIFTED CITATIONS (old -> new):
+corpus/knowledge/capture-intake-gate.md:53	224-225 -> 246-247	The refusal is built so that reading it is safe: `scan_bytes()` returns `(shape, line)` pairs and never the match (`corp
+corpus/knowledge/capture-intake-gate.md:69	122-123 -> 141-142	> "A row binds one exact matched value at one path, so a different value at the same path and shape is still a hit" — `c
+corpus/knowledge/capture-intake-gate.md:71	123-123 -> 142-142	> "Rows for aws-sts-session-token are refused" — `corpus/instruments/capture-secret-scan.py:123`
+corpus/knowledge/capture-intake-gate.md:73	186-201 -> 208-223	The row is `path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason`, and `load_allow()` refuses a row that is not four no
+corpus/knowledge/capture-intake-gate.md:105	216-225 -> 238-247	The shape set is the scanner's `patterns()` — the claim-package gate's six `SECRET_PATTERNS` plus two AWS shapes plus th
+corpus/knowledge/capture-intake-gate.md:107	106-115 -> 120-134	The docstring's named limits reach the gate unchanged (`corpus/instruments/capture-secret-scan.py:106-115`, round-93 tex
+corpus/knowledge/capture-intake-gate.md:109	109-109 -> 128-128	> "GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed" — `corpus/instruments/capture-secret-scan.py:109`
+corpus/knowledge/capture-intake-gate.md:111	113-113 -> 132-132	> "more than 20 other parameters between the two matched ones, values" — `corpus/instruments/capture-secret-scan.py:113`
+corpus/knowledge/capture-intake-gate.md:122	336-336 -> 358-358	So a clean run means "no shape at these bounds matched these bytes" and a hit means "a shape matched", not "the value is
+corpus/knowledge/capture-intake-gate.md:128	118-125 -> 137-144	3. To admit a documented value, add one row — `path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason` — with the digest 
+corpus/knowledge/capture-intake-gate.md:134	23-115 -> 23-134	**Falsifiable rule.** Any sentence asserting that a capture written by `corpus/instruments/capture-source.py` is scanned
+corpus/knowledge/capture-intake-gate.md:246	106-115 -> 120-134	1. **"A clean capture is credential-free."** Rejected: the gate runs the shapes `patterns()` returns — fourteen at round
+corpus/knowledge/capture-intake-gate.md:247	106-115 -> 120-134	2. **"The gate covers every credential shape that exists."** It covers exactly the shapes `patterns()` returns at run ti
+corpus/knowledge/capture-intake-gate.md:248	122-123 -> 141-142	3. **"An allowlist row is a general exemption for a path."** Rejected: the row binds one exact matched value at one path
+corpus/knowledge/capture-intake-gate.md:249	123-123 -> 142-142	4. **"The gate can be bypassed with a reason, like GitHub's."** Rejected: GitHub's bypass is a writer's decision recorde
+corpus/knowledge/capture-intake-gate.md:252	151-165 -> 170-184	7. **"INTAKE-REFUSED proves the capture carried a live credential."** Rejected: it proves a shape matched at fixed bound
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:49	167-167 -> 186-186	The table rows at `corpus/source-snapshots/round-91/S134.txt:421-426` map `+` to `- (hyphen)`, `=` to `_ (underscore)` a
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:86	128-128 -> 147-147	The field names are the reason the detector missed it (Claim 5): `skdutid` is seven letters, and the round-90 window adm
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:90	1-133 -> 1-152	The docstring at `corpus/instruments/capture-secret-scan.py:1-133` is the specification this entry reads; the instrument
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:96	150-150 -> 169-169	**The widened Azure window.** Between `sv=YYYY-MM-DD` and `sig=`, the intervening parameter names are now two to seven l
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:98	127-132 -> 146-151	**Output.** Never the matched value: `HIT shape=<s> path=<p> line=<n>` per file and shape, first non-allowed match, then
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:100	118-125 -> 137-144	**Allowlist.** `path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason` — one exact matched value at one path, so a diffe
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:102	349-358 -> 371-380	**Selftest.** The new cases are pinned at `corpus/instruments/capture-secret-scan.py:349-358`: two Azure positives (`azu
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:104	106-115 -> 120-134	**Named limits**, verbatim from `corpus/instruments/capture-secret-scan.py:106-115` (the items that bear on cookies and 
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:273	112-113 -> 131-132	4. **"The skdutid widening made the detector permissive."** Rejected: the window is still bounded (`corpus/instruments/c
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:274	216-221 -> 238-243	5. **"A clean scan means the capture is credential-free."** Rejected: the shapes are byte patterns over a named scope (`
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:275	354-354 -> 376-376	6. **"The documentation's example cookie value is a live credential."** Rejected: it is AWS's 28-character example (`cor
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:283	110-111 -> 129-130	- **The HAR case is a named limit, not a covered case.** A HAR that records the cookie as a name/value object reads clea
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:49	151-151 -> 170-170	Lane reading: the value is Base64 of an HMAC-SHA256, so its alphabet is `A-Za-z0-9+/` with `=` padding, and inside a URL
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:65	1-132 -> 1-151	The docstring at `corpus/instruments/capture-secret-scan.py:1-132` is the specification this entry reads.
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:79	106-115 -> 120-134	**Named limits**, verbatim from `corpus/instruments/capture-secret-scan.py:106-115` (round-91 text; round 92 prepends fi
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:83	337-337 -> 359-359	- the Azure shape requires `sv=YYYY-MM-DD` in the same query; the page dates that parameter from storage service version
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:84	330-330 -> 352-352	- the GCS shape requires 64 or more **contiguous** hex digits after the parameter name. The page's own example signature
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:87	153-153 -> 172-172	- the round-88 `\u0026` limit is closed: the left boundary `_LB` (`corpus/instruments/capture-secret-scan.py:153`) admit
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:87	339-339 -> 361-361	- the round-88 `\u0026` limit is closed: the left boundary `_LB` (`corpus/instruments/capture-secret-scan.py:153`) admit
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:87	149-149 -> 168-168	- the round-88 `\u0026` limit is closed: the left boundary `_LB` (`corpus/instruments/capture-secret-scan.py:153`) admit
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:124	156-156 -> 175-175	The table maps `+` to `-`, `=` to `_` and `/` to `~`, so a CloudFront signature's alphabet is `A-Za-z0-9` plus `-`, `_` 
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:138	345-345 -> 367-367	- a `Signature=` with no `Key-Pair-Id=` in the same query is not detected (`cf-sig-without-kpi`, `corpus/instruments/cap
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:157	106-115 -> 120-134	**Falsifiable rule.** Any sentence asserting that a capture holding an active Cloud Storage V4 signed URL, an Azure serv
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:316	160-165 -> 179-184	2. **"A Cloud Storage signed URL, an Azure SAS and a CloudFront signed URL are the same shape."** Rejected: different pa
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:317	106-115 -> 120-134	3. **"The scanner catches every signed-URL form."** Rejected: the named limits at `corpus/instruments/capture-secret-sca
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:327	106-115 -> 120-134	- **Three providers, one form each.** S126 covers Cloud Storage V4 signed URLs; S127 covers the Azure service SAS; S128 
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:328	328-348 -> 350-370	- **No HAR is exercised.** None of the four captures is a HAR; the HAR case is the same query string preserved in a requ
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:331	156-165 -> 175-184	- **The thresholds are the instrument's.** 64+ hex digits, 40+ base64/percent characters and 40+ URL-safe characters are
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:29	169-170 -> 188-189	S137 states why the separator is an underscore: it is not a base64 character, so encoded data cannot reproduce a token b
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:55	368-369 -> 390-391	Lane reading: 4 characters of prefix (`ghp_`) plus 36 of body is 40, which is the length S136 names, and it is the same 
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:63	174-175 -> 193-194	The scanner admits the stateless form as a second alternative of the same shape: `ghs_`, then 1 to 20 digits, then `_`, 
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:63	169-170 -> 188-189	The scanner admits the stateless form as a second alternative of the same shape: `ghs_`, then 1 to 20 digits, then `_`, 
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:65	174-175 -> 193-194	Lane reading: the two alternatives carry different bounds. The classic branch bounds the tail on both sides — 36 base62 
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:85	1-133 -> 1-152	The docstring at `corpus/instruments/capture-secret-scan.py:1-133` is the specification this entry reads; the instrument
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:98	127-132 -> 146-151	**Output.** Never the matched value: `HIT shape=<s> path=<p> line=<n>` per file and shape, first non-allowed match, then
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:100	359-373 -> 381-395	**Selftest.** The round-92 cases are pinned at `corpus/instruments/capture-secret-scan.py:359-373`: six positives (`gh-c
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:106	106-107 -> 120-127	> "Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened source states their length or alphabet
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:108	113-115 -> 132-134	> "values soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not detected." — `corpus/instruments/ca
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:112	373-373 -> 395-395	- **Fine-grained `github_pat_` tokens.** The docs list the prefix (`corpus/source-snapshots/round-92/S136.txt:163`), but
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:113	113-115 -> 132-134	- **Values split across lines.** A token soft-wrapped over two lines is outside the byte match, because each alternative
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:114	114-115 -> 133-134	- **Wrapped captures.** A capture stored gzip-compressed, UTF-16 or base64-wrapped is outside the byte match (`corpus/in
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:115	110-112 -> 129-131	- **Percent-encoded forms.** The docstring's percent-encoding limit is stated for parameter names and `=` (`corpus/instr
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:119	109-115 -> 128-134	The docstring's remaining named limits concern other shapes — GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront sig
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:121	366-367 -> 388-389	A clean run therefore means "no string in the capture matched one of these shapes at these boundaries", not "the capture
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:126	118-125 -> 137-144	2. **Bind any allowlist exemption to a digest, not to a shape.** A row is `path<TAB>shape<TAB>sha256-of-matched-bytes<TA
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:127	127-132 -> 146-151	3. **Never print the value.** The instrument prints shape, path and line (`corpus/instruments/capture-secret-scan.py:127
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:282	373-373 -> 395-395	3. **"`github_pat_` is covered because `ghp_` is."** Rejected: the docs list it as its own prefix (`corpus/source-snapsh
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:285	174-175 -> 193-194	6. **"A stateless hit proves a JWT."** Rejected: the branch bounds three segments of 10+ characters with no trailing bou
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:286	366-366 -> 388-388	7. **"The docs' `ghs_APPID_JWT` is a token example."** Rejected: it is the page's own placeholder — four characters of p
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:287	216-221 -> 238-243	8. **"The scan covers a token pasted into a knowledge entry or a lesson."** Rejected: `--rev` scans capture-class paths 
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:294	106-109 -> 120-128	- **Fine-grained `github_pat_` is uncovered.** That is the largest hole named here, and it is the docstring's own limit 
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:295	174-175 -> 193-194	- **The stateless branch has no right boundary** (`corpus/instruments/capture-secret-scan.py:174-175`), measured in FC-5
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:75	123-124 -> 142-143	> "Rows for aws-sts-session-token are refused (a session token is never a false positive)" — `corpus/instruments/capture
+
+UNCHANGED CITATIONS: 33
+corpus/knowledge/capture-intake-gate.md:31	9-21
+corpus/knowledge/capture-intake-gate.md:33	20-21
+corpus/knowledge/capture-intake-gate.md:118	19-21
+corpus/knowledge/capture-intake-gate.md:130	14-21
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:92	14-21
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:94	67-80
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:116	19-21
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:270	53-80
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:67	14-21
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:69	23-66
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:79	67-80
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:134	53-66
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:148	20-21
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:320	14-21
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:322	67-80
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:327	47-52
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:45	84-85
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:47	84-85
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:65	87-92
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:67	86-97
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:87	14-21
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:89	81-97
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:91	81-82
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:93	84-92
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:94	93-95
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:96	87-92
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:117	87-92
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:125	19-21
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:133	81-92
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:280	84-92
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:283	87-92
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:67	20-21
+corpus/knowledge/presigned-url-credentials-in-captured-evidence.md:77	44-45
+
+DELETED/REPLACED-ORIGIN CITATIONS (old line absent or rewritten):
+corpus/knowledge/capture-intake-gate.md:107	old=106-115 new=120-134
+corpus/knowledge/capture-intake-gate.md:134	old=23-115 new=23-134
+corpus/knowledge/capture-intake-gate.md:246	old=106-115 new=120-134
+corpus/knowledge/capture-intake-gate.md:247	old=106-115 new=120-134
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:90	old=1-133 new=1-152
+corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md:104	old=106-115 new=120-134
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:65	old=1-132 new=1-151
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:79	old=106-115 new=120-134
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:157	old=106-115 new=120-134
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:317	old=106-115 new=120-134
+corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md:327	old=106-115 new=120-134
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:85	old=1-133 new=1-152
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:106	old=106-107 new=120-127
+corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md:294	old=106-109 new=120-128

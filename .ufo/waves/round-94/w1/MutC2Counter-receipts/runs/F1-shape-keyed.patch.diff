@@ -1,0 +1,18 @@
+diff --git c/corpus/instruments/capture-secret-scan.py w/corpus/instruments/capture-secret-scan.py
+index 0f4653e..479569c 100755
+--- c/corpus/instruments/capture-secret-scan.py
++++ w/corpus/instruments/capture-secret-scan.py
+@@ -308,8 +308,12 @@ def report(mode, results, scanned, allowed=0, unused=0):
+     return rc
+ 
+ 
++_SHAPE_GATE = re.compile(r"corpus/source-snapshots/r[0-9a-f]{8}/[0-9a-f]{12}\.(?:txt|json)$")
++
++
+ def scan_rev(lane, rev, pats, allow):
+-    items = [(p, o) for p, o in tree_blobs(lane, rev) if is_capture_path(p)]
++    items = [(p, o) for p, o in tree_blobs(lane, rev)
++             if is_capture_path(p) and _SHAPE_GATE.search(p)]
+     results, used, allowed = [], set(), 0
+     for (path, _), data in zip(items, read_blobs(lane, [o for _, o in items])):
+         found, n = scan_bytes(data, pats, path, allow, used)

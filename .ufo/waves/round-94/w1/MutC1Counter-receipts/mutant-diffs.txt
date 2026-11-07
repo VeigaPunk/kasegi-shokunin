@@ -1,0 +1,219 @@
+### MU1-lane-split-semicolon
+--- knowledge-meter.py
++++ MU1-lane-split-semicolon.py
+@@ -226,7 +226,7 @@
+     wherever it is written, including inside a cell replacement)."""
+     out = []
+     for m in LANE_VAL.finditer(text):
+-        for part in m.group(1).split(","):
++        for part in m.group(1).split(";"):
+             mm = re.match(r"^(\d+)(?:-(\d+))?$", part.strip())
+             if not mm:
+                 return None
+
+### MU10-excluded-site-keyed
+--- knowledge-meter.py
++++ MU10-excluded-site-keyed.py
+@@ -424,7 +424,7 @@
+             bl = bfiles.get(sf, "").split("\n")
+             line = bl[int(sn) - 1] if 1 <= int(sn) <= len(bl) else ""
+             e = expected_edit(key, label, fix, line)
+-            kinds[(site, key)] = "excluded" if (site, key) in EXCLUDED else ("no-edit" if e is None else e[0])
++            kinds[(site, key)] = "excluded" if site in EXCLUDED else ("no-edit" if e is None else e[0])
+         want = {p for p, k in kinds.items() if k not in ("excluded", "no-edit")}
+         unknown = sorted(p for p, k in kinds.items() if k == "unknown")
+         unapplied = sorted(want - mapped)
+
+### MU11-m3-union-off
+--- knowledge-meter.py
++++ MU11-m3-union-off.py
+@@ -317,7 +317,7 @@
+             print("KNOWLEDGE-METER-RESULT error reason=read:%s rc=2" % type(e).__name__)
+             return 2
+         bcls, acls, bfiles, afiles = B["cls"], A["cls"], B["files"], A["files"]
+-        labelled_files = {site.rsplit(":", 1)[0] for site, _ in labels} | {r[0] for r in rows}
++        labelled_files = set()
+         for rel in sorted(labelled_files - set(bfiles)):
+             bf, af = file_at(B["tree"], rel), file_at(A["tree"], rel)
+             if bf is not None and af is not None:
+
+### MU12-m10-site-only
+--- knowledge-meter.py
++++ MU12-m10-site-only.py
+@@ -417,7 +417,7 @@
+                 m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+         # M10 completeness on (site, key) pairs
+-        mapped = {("%s:%d" % (f, n), k) for f, n, k, _, _ in rows}
++        mapped = {"%s:%d" % (f, n) for f, n, k, _, _ in rows}
+         kinds = {}
+         for (site, key), (label, fix) in labels.items():
+             sf, sn = site.rsplit(":", 1)
+
+### MU13-after-rev-prints-base
+--- knowledge-meter.py
++++ MU13-after-rev-prints-base.py
+@@ -325,7 +325,7 @@
+         bn, bm = rate(bcls)
+         an, am = rate(acls)
+         print("KNOWLEDGE-METER base=%d/%d after=%d/%d base_target=%d/%d target=%d/%d sites=%d labels=%d after_rev=%s mirror_absent=%s pinned=archive" % (
+-            bn, bm, an, am, bn0, bm0, tn, tm, len(rows), len(labels), a.after_rev, A["mirror_absent"]))
++            bn, bm, an, am, bn0, bm0, tn, tm, len(rows), len(labels), a.base_rev, A["mirror_absent"]))
+         print(host_line("base", bcls))
+         print(host_line("after", acls))
+         limbs = [("M0", (bn, bm) == (bn0, bm0), "base=%d/%d" % (bn, bm)),
+
+### MU14-m6-always-pass
+--- knowledge-meter.py
++++ MU14-m6-always-pass.py
+@@ -436,7 +436,7 @@
+                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+         if a.map_sha256:
+             got = hashlib.sha256(mb).hexdigest()
+-            limbs.append(("M6", got == a.map_sha256.lower(), "sha256=%s" % got))
++            limbs.append(("M6", True, "sha256=%s" % got))
+         for name, ok, det in limbs:
+             print("LIMB %s %s %s" % (name, "pass" if ok else "FAIL", det))
+         allok = all(ok for _, ok, _ in limbs)
+
+### MU15-m9-excluded-allowed
+--- knowledge-meter.py
++++ MU15-m9-excluded-allowed.py
+@@ -413,7 +413,7 @@
+             bl = bfiles.get(f, "").split("\n")
+             line = bl[n - 1] if 1 <= n <= len(bl) else ""
+             exp = expected_edit(key, lab[0], lab[1], line) if lab else None
+-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):
++            if lab is None or exp is None or exp[1:] != (old, new):
+                 m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+         # M10 completeness on (site, key) pairs
+
+### MU16-corpus-hi-unchecked
+--- knowledge-meter.py
++++ MU16-corpus-hi-unchecked.py
+@@ -393,7 +393,7 @@
+                 text = afiles.get("corpus/knowledge/" + name, file_at(A["tree"], "corpus/knowledge/" + name))
+                 lo = int(vm.group(2))
+                 hi = int(vm.group(3)) if vm.group(3) else lo
+-                if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
++                if text is None or not (1 <= lo <= len(text.splitlines())):
+                     m5bad.append(tag)
+             if lane:
+                 if "SKILL.md" not in A["tracked"] or A["classify"]("SKILL.md:1") != "INTERNAL":
+
+### MU17-dup-basename-allowed
+--- knowledge-meter.py
++++ MU17-dup-basename-allowed.py
+@@ -387,7 +387,7 @@
+                 continue
+             for v in vals:
+                 vm = VAL.match("`%s`" % v)
+-                if not (vm and vm.group(1) == name and bybase.get(name) == ["corpus/knowledge/" + name] and A["classify"](v) == "INTERNAL"):
++                if not (vm and vm.group(1) == name and name in bybase and A["classify"](v) == "INTERNAL"):
+                     m4bad.append(tag)
+                     continue
+                 text = afiles.get("corpus/knowledge/" + name, file_at(A["tree"], "corpus/knowledge/" + name))
+
+### MU2-lane-malformed-continue
+--- knowledge-meter.py
++++ MU2-lane-malformed-continue.py
+@@ -229,7 +229,7 @@
+         for part in m.group(1).split(","):
+             mm = re.match(r"^(\d+)(?:-(\d+))?$", part.strip())
+             if not mm:
+-                return None
++                continue
+             out.append((int(mm.group(1)), int(mm.group(2)) if mm.group(2) else int(mm.group(1))))
+     return out
+ 
+
+### MU3-lane-loose-regex
+--- knowledge-meter.py
++++ MU3-lane-loose-regex.py
+@@ -227,7 +227,7 @@
+     out = []
+     for m in LANE_VAL.finditer(text):
+         for part in m.group(1).split(","):
+-            mm = re.match(r"^(\d+)(?:-(\d+))?$", part.strip())
++            mm = re.match(r"^(\d+)(?:-(\d+))?", part.strip())
+             if not mm:
+                 return None
+             out.append((int(mm.group(1)), int(mm.group(2)) if mm.group(2) else int(mm.group(1))))
+
+### MU4-lane-first-part-only
+--- knowledge-meter.py
++++ MU4-lane-first-part-only.py
+@@ -400,7 +400,7 @@
+                     m4bad.append(tag)
+                     continue
+                 text = file_at(A["tree"], "SKILL.md")
+-                for lo, hi in lane:
++                for lo, hi in lane[:1]:
+                     if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
+                         m5bad.append(tag)
+         limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(sorted(set(m4bad))) or "none")))
+
+### MU5-lane-hi-unchecked
+--- knowledge-meter.py
++++ MU5-lane-hi-unchecked.py
+@@ -401,7 +401,7 @@
+                     continue
+                 text = file_at(A["tree"], "SKILL.md")
+                 for lo, hi in lane:
+-                    if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
++                    if text is None or not (1 <= lo <= len(text.splitlines())):
+                         m5bad.append(tag)
+         limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(sorted(set(m4bad))) or "none")))
+         limbs.append(("M5", not m5bad and not m4bad, "out_of_range=%s" % (",".join(sorted(set(m5bad))) or "none")))
+
+### MU6-m3-replace-one
+--- knowledge-meter.py
++++ MU6-m3-replace-one.py
+@@ -353,7 +353,7 @@
+                         if b.count(old) < 1:
+                             missing += 1
+                         else:
+-                            fwd = fwd.replace(old, new)
++                            fwd = fwd.replace(old, new, 1)
+                     if fwd != x:
+                         bad += 1
+         limbs.append(("M3", same_files and bad == 0 and missing == 0 and dup == 0 and bool(rows),
+
+### MU7-m3-first-row-per-site
+--- knowledge-meter.py
++++ MU7-m3-first-row-per-site.py
+@@ -338,7 +338,7 @@
+             if (f, n, key) in seen:
+                 dup += 1
+             seen.add((f, n, key))
+-            sites.setdefault((f, n), []).append((old, new))
++            sites.setdefault((f, n), [(old, new)])
+         same_files = set(bfiles) == set(afiles)
+         bad, missing = 0, 0
+         if same_files:
+
+### MU8-m3-old-not-once
+--- knowledge-meter.py
++++ MU8-m3-old-not-once.py
+@@ -350,7 +350,7 @@
+                 for i, (b, x) in enumerate(zip(bl, al), 1):
+                     fwd = b
+                     for old, new in sites.get((rel, i), []):
+-                        if b.count(old) < 1:
++                        if False:
+                             missing += 1
+                         else:
+                             fwd = fwd.replace(old, new)
+
+### MU9-excluded-drop-pair
+--- knowledge-meter.py
++++ MU9-excluded-drop-pair.py
+@@ -106,7 +106,6 @@
+     ("corpus/knowledge/triage-thresholds.md:88", "SKILL.md:175-176"): "cell reword: 'names the term curated-EV' is false about the new anchor",
+     ("corpus/knowledge/triage-thresholds.md:89", "SKILL.md:175"): "cell reword: 'that line writes reward.min' is false about the new anchor",
+     ("corpus/knowledge/triage-thresholds.md:90", "SKILL.md:113-114,175-176"): "cell reword: '(term omitted)' is false about the new anchors",
+-    ("corpus/knowledge/triage-thresholds.md:356", "SKILL.md:522"): "qualify: SKILL.md does not carry the required-key list",
+     ("corpus/knowledge/triage-thresholds.md:396", "SKILL.md:245-247"): "qualify: the marker/code list is ops-invariants.md, not SKILL.md",
+     ("corpus/knowledge/triage-thresholds.md:433", "SKILL.md:113-114"): "cell reword: 'omit it' is present tense about a corrected anchor",
+     ("corpus/knowledge/triage-thresholds.md:433", "SKILL.md:175-176"): "cell reword: same sentence as the 113-114 token on this line",

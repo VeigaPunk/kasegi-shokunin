@@ -1,0 +1,13 @@
+diff --git c/corpus/instruments/capture-secret-scan.py w/corpus/instruments/capture-secret-scan.py
+index 0f4653e..1b53fc5 100755
+--- c/corpus/instruments/capture-secret-scan.py
++++ w/corpus/instruments/capture-secret-scan.py
+@@ -228,7 +228,7 @@ def gate_patterns():
+     spec = importlib.util.spec_from_file_location("claim_package_check", path)
+     mod = importlib.util.module_from_spec(spec)
+     spec.loader.exec_module(mod)
+-    return tuple(mod.SECRET_PATTERNS)
++    return tuple(p for p in mod.SECRET_PATTERNS if p[0] != "session-cookie")
+ 
+ 
+ def patterns():

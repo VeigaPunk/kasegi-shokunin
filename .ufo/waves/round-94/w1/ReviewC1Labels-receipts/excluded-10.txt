@@ -1,0 +1,91 @@
+10 EXCLUDED pairs at d51220aeb4a538b7b211bb2629e83210669cd56d: base line + the label's proposed anchor
+
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:88  KEY SKILL.md:113-114  PROPOSED SKILL.md:182-184
+EXCLUDED REASON: cell reword: the parenthetical 'four terms, no is_live' is false about the new anchor
+CITING: | curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` (same omission; names the term `curated-EV` although the source tests only non-emptiness); see §2.2 |
+FIX: Repoint: 113-114 is provenance.json pin shapes; the four-term queue statement whose is_live omission is superseded is at 182-184 (round-13 correction: earlier text omitted is_live(1)). Reword the Supersedes cell to past tense; SKILL already carries the correction.
+ANCHOR SKILL.md:182-184:
+  182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+  183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:88  KEY SKILL.md:175-176  PROPOSED SKILL.md:255-257
+EXCLUDED REASON: cell reword: 'names the term curated-EV' is false about the new anchor
+CITING: | curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` (same omission; names the term `curated-EV` although the source tests only non-emptiness); see §2.2 |
+FIX: Repoint: 175-176 is mission_state/lane/ev_inputs/reward prose; the curated-boolean correction is at 255-257 ("curated is a boolean on non-empty ev_inputs, never an EV magnitude"). Drop the curated-EV name: 0 occurrences in SKILL.md (last at 7483333~1:176).
+ANCHOR SKILL.md:255-257:
+  255: curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+  256: terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+  257: magnitude) — EV orders, never gates (AR12). Dispatcher
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:89  KEY SKILL.md:175  PROPOSED SKILL.md:182-184
+EXCLUDED REASON: cell reword: 'that line writes reward.min' is false about the new anchor
+CITING: | reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:175` — that line writes `reward.min`, source multiplies by 1000 |
+FIX: Repoint/reword: 175 is the mission_state sentence; the current queue tail writes "reward.min×1000" at 183-184, so the superseded "writes reward.min" (without the multiplier) is historical, not current.
+ANCHOR SKILL.md:182-184:
+  182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+  183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:90  KEY SKILL.md:113-114,175-176  PROPOSED SKILL.md:182-184,255-257
+EXCLUDED REASON: cell reword: '(term omitted)' is false about the new anchors
+CITING: | freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted) |
+FIX: Repoint the combined token: replace 113-114 with 182-184 (five-term queue including is_live(1)) and 175-176 with 255-257 (curated boolean, never an EV magnitude). The "term omitted" supersede is now historical.
+ANCHOR SKILL.md:182-184:
+  182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+  183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+ANCHOR SKILL.md:255-257:
+  255: curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+  256: terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+  257: magnitude) — EV orders, never gates (AR12). Dispatcher
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:356  KEY SKILL.md:522  PROPOSED SKILL.md:999
+EXCLUDED REASON: qualify: SKILL.md does not carry the required-key list
+CITING: | required keys | `id, name, source_kind, official_url, freshness, lane, mission_state` | 6 | MATCHES: `SKILL.md:522` |
+FIX: Repoint to the same schema bullet; note SKILL.md does not enumerate the required keys (official_url = 0 occurrences) — the key list is schema.json:6 only, so qualify the tie.
+ANCHOR SKILL.md:999-999:
+  999: - `~/Projects/bounties/bounty-map/schema.json` — program record schema (draft-07, fail-closed `additionalProperties:false`)
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:396  KEY SKILL.md:245-247  PROPOSED SKILL.md:335-338
+EXCLUDED REASON: qualify: the marker/code list is ops-invariants.md, not SKILL.md
+CITING: | `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; else `null` | 36-48 (markers 37, codes 40/44/46) | MATCHES: `corpus/knowledge/ops-invariants.md:24`, `SKILL.md:245-247` |
+FIX: Repoint: 245-247 is the mission-ledger/evidence-dir paragraph; the gitMutationBlocker fail-closed statement is at 335-338. The marker/code list itself is ops-invariants.md:24 (mirror), not SKILL.md — qualify the tie.
+ANCHOR SKILL.md:335-338:
+  335: `ledger/<kind>.jsonl` (`[lost-base] ops/shared.mjs:39`). `gitMutationBlocker`
+  336: (fail-closed on rebase/merge/cherry-pick or non-main HEAD) is **absent from
+  337: the mirror** — 0 hits repo-wide; it existed only in the lost tree
+  338: (`[lost-tree] ops/shared.mjs:55`, `corpus/knowledge/ops-invariants.md:24`).
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:433  KEY SKILL.md:113-114  PROPOSED SKILL.md:182-184
+EXCLUDED REASON: cell reword: 'omit it' is present tense about a corrected anchor
+CITING: | 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this expression) |
+FIX: Repoint/reword: SKILL.md now carries the five-term correction at 182-184 ("round-13 correction: earlier text omitted is_live(1)"); the "omit it" supersede is historical, not present tense.
+ANCHOR SKILL.md:182-184:
+  182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+  183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:433  KEY SKILL.md:175-176  PROPOSED SKILL.md:182-184
+EXCLUDED REASON: cell reword: same sentence as the 113-114 token on this line
+CITING: | 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this expression) |
+FIX: Repoint/reword: same as the 113-114 token on this line; 175-176 is mission_state/ev_inputs/reward prose; the corrected five-term queue is at 182-184.
+ANCHOR SKILL.md:182-184:
+  182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+  183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:434  KEY SKILL.md:175  PROPOSED SKILL.md:182-184
+EXCLUDED REASON: cell reword: 'writes reward.min' is false about the new anchor
+CITING: | 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:175` writes `reward.min` |
+FIX: Repoint/reword: 175 is mission_state; the current queue tail writes reward.min×1000 at 183-184, so "SKILL.md:175 writes reward.min" is historical.
+ANCHOR SKILL.md:182-184:
+  182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+  183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+  184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+==============================================================================================================
+SITE corpus/knowledge/triage-thresholds.md:435  KEY SKILL.md:10-11  PROPOSED drop
+EXCLUDED REASON: cell reword: dropping the token leaves a dangling '-style' suffix
+CITING: | 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `[lost-base] fleet-dispatch.mjs:10` (in-file comment), `SKILL.md:10-11`-style "EV ordering" phrasing |
+FIX: Drop the SKILL.md token: "EV ordering" occurs 0 times in SKILL.md at ae53b3c and no SKILL commit ever added or removed it (git log -S empty); 10-11 is the bounty-map record-count prose. The quoted phrase's source is fleet-dispatch.mjs:10, already cited on this row.

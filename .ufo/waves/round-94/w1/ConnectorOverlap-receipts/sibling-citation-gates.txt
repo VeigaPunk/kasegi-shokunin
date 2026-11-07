@@ -1,0 +1,216 @@
+=== kaidoku-shokunin:.ufo/gates/citation-drift/citation-drift-probe.py ===
+Commit HEAD: 0b518f568da7b40a4ab026508d63c942faa7badf
+File SHA256: 436ae13c7f50cd12061565409784977def6d039331d4687ee2b4f494cedaae68
+  1: #!/usr/bin/env python3
+  2: """citation-drift gate (draft v1, seat E15, wave arc2-loop1-round3).
+  3: 
+  4: A committed, re-runnable verdict script over a PINNED POINTER TABLE. The table
+  5: is the contract: every citation the lane relies on is listed as an entry, and
+  6: each entry is resolved against the tree at a named revision (Git objects, never
+  7: the moving worktree) or against a committed snapshot for targets outside the
+  8: repo. The gate never repairs anything: it reports.
+  9: 
+  10: WHY THE EXTRACTION FORM. Three rounds of pointer bites (CR5 arc2-loop1-round1;
+  11: SCORECARD.md:68-72 arc2-loop1-round2) all had the same shape: the citing text
+  12: states a line number, and the stated number is wrong. A static regex pin on the
+  13: citing line would pass a sentence that states a wrong number, so an `extracted`
+  14: entry instead reads the number OUT of the citing line and verifies that the
+  15: TARGET line the sentence names actually holds the content the sentence claims.
+=== kaidoku-shokunin:tools/round-97/craft-citation-v2.py ===
+Commit HEAD: 0b518f568da7b40a4ab026508d63c942faa7badf
+File SHA256: a50aa02d6f6b1ac1df0842d911df1977f8de6c43b969a4df194082dbe74fee7b
+  1: #!/usr/bin/env python3
+  2: """craft-citation-v2.py - round-97 counter (R97-C2, depth).
+  3: 
+  4: Supersedes `tools/round-93/craft-citation-semantic.py` on three counts, routed by the
+  5: round-96 CriticC2 attacks (a)-(d) and frozen before data:
+  6: 
+  7: 1. **Criterion-cell restatement (kills attacks a and b).** At least one of the
+  8:    manifest row's keywords must occur verbatim in the matched craft row's own cells.
+  9:    A rule-free criterion (`see (QUALITY 193)`) or a criterion carrying the opposite
+  10:    rule with none of its row's vocabulary is refused (`criterion-not-restated`).
+  11: 2. **Citation-number validation (kills attack c).** A manifest row may declare
+  12:    `expected_quality`; the single `QUALITY <N>` citation parsed from the criterion
+  13:    cell must equal it (`criterion-citation-mismatch:<num>!=<expected>`), so citing an
+  14:    overlapping neighbor row no longer passes.
+  15: 3. **The snippet-carrying table is the shape oracle (kills attack d's padding).** The
+=== kagi-shokunin:corpus/quote-locate.py ===
+Commit HEAD: 0085a5f76c9dc7e977f6606324e873d25b4fc44d
+File SHA256: 68a33eeb439389347bc0e33f7d84f6fa5e30f8d97810219e14ba005ce0534b85
+  1: #!/usr/bin/env python3
+  2: """quote-locate.py -- round 38 C1 instrument: located-quote gate over committed capture bodies.
+  3: 
+  4: Frozen predicate (the same sentence appears in plans/round-38.md and the counter):
+  5:   QUOTE_LOCATE located=N -- N is the number of rows of corpus/quote-bodies.tsv whose
+  6:   declared quote is found byte-for-byte in the committed capture body at its declared
+  7:   offset, where: the body sha256 and byte count equal the capture row's
+  8:   (corpus/source-fetches.tsv columns 10 and 11), the declared quote equals the capture
+  9:   row's quote (column 13), and the quote occurs verbatim in that id's registry row in
+  10:   corpus/SOURCES.md.
+  11: 
+  12: Manifest: corpus/quote-bodies.tsv, header `id<TAB>body_path<TAB>offset<TAB>quote`.
+  13: body_path is repo-relative; absolute paths and `..` components are refused.
+  14: 
+  15: Exit 0 `QUOTE_LOCATE: CLEAN located=N rows=N`; exit 1 `QUOTE_LOCATE: FAIL located=K rows=N`
+=== kagi-shokunin:corpus/anchor-pins.sh ===
+Commit HEAD: 0085a5f76c9dc7e977f6606324e873d25b4fc44d
+File SHA256: abb9f9b255777c9bf2662fe0bf93778b1330d2f3fa8ef34b324fc2a7d8483d07
+  1: #!/usr/bin/env bash
+  2: # corpus/anchor-pins.sh -- round 39 C1 instrument (anchor-cell pin gate for superseded
+  3: # release-feed registry rows), amended in round 40 with the reviewer's false-clean fixes
+  4: # (M39-12 F1, F2, F3, F6) and a --selftest mode with committed expected findings.
+  5: #
+  6: # Frozen predicate (the same sentence appears in plans/round-39.md and the round-39 counter):
+  7: #   ANCHOR_PINS: CLEAN (pins=N) -- for every row of corpus/anchor-pins.tsv, the anchor cell
+  8: #   (SOURCES.md column 7, whitespace-trimmed) of the registry row with that id has the sha256
+  9: #   the pin records; any other value, or no such row, prints `DRIFT <id>` and the run exits 1.
+  10: #
+  11: # Round-40 additions (red-witnessed by --selftest):
+  12: #   F1  a duplicate registry row for a pinned id            -> DRIFT <id> dup
+  13: #   F2  a tab-indented or >3-space-indented registry row    -> DRIFT <id> shape
+  14: #       (the census accepts 0-3 leading spaces; anything else is outside the registry shape)
+  15: #   F3  a matched registry row whose column count is not 12 -> DRIFT <id> schema
+=== chousa-shokunin:tools/quote-reopen.py ===
+Commit HEAD: 408ae68f9e445fc911f713d5bbb3a64dda1ab9fe
+File SHA256: 47a657e72f38f9424748a000b3bd218e26b6a601192b68e06a916471222a1201
+  1: #!/usr/bin/env python3
+  2: """Re-open located quotes against the live source named by the lane registry.
+  3: 
+  4: Usage:
+  5:     python3 tools/quote-reopen.py verify --items ITEMS.tsv [--registry SOURCES.md]
+  6: 
+  7: The tool reads a tab-separated item file with the header `id<TAB>source_id<TAB>quote`,
+  8: looks each `source_id` up in the lane registry (`corpus/SOURCES.md` by default, that is
+  9: the file named by `--registry`), fetches each registry URL once per run, extracts the
+  10: page text (the head ends at `</head>`, `<body>`, the first start tag that cannot appear
+  11: in `head`, or character data that is not only whitespace; `title`, `script`, `style`,
+  12: `noscript` and `template` content is dropped) and reports one verdict per item:
+  13: 
+  14:     QUOTE_REOPEN<TAB><id><TAB><VERDICT><TAB><detail>
+  15: 
+=== chousa-shokunin:corpus/evidence/round53/pointer-anchor-check.py ===
+Commit HEAD: 408ae68f9e445fc911f713d5bbb3a64dda1ab9fe
+File SHA256: 0acf728779e956e9e8497deac23430834e2d88a4170446112098660cdf7a5fcd
+  1: #!/usr/bin/env python3
+  2: """pointer-anchor-check — round-53 content-anchored read of `correction:` redirects.
+  3: 
+  4: Round-51 spot-check defect 4, still open after round 52 (lesson round-52 §6.4):
+  5: `corpus/evidence/round51/c3-count.py:100-110` maps `correction: SCORECARD.md:<line>
+  6: <ptr> -> <path>` and accepts the redirect when `real(root/path)` — existence, not
+  7: truth — so a pointer to ANY non-empty file passes. This check reads every redirect
+  8: line in SCORECARD.md and corpus/README.md and requires a trailing
+  9: ` anchor: "<text>"` whose text is >= 12 characters and occurs EXACTLY ONCE in the
+  10: target's UTF-8 text (a file, or the newline-joined pool of a directory's files).
+  11: Files are append-only, so the LAST line naming a key (file, line, ptr) governs.
+  12: The anchor is read with a GREEDY trailing quote, so its text may itself contain
+  13: `"` (written `anchor: "seed": 32101,"`, anchor text `seed": 32101,`).
+  14: Prints one line per unsatisfied key, then `ANCHORED=a/n UNANCHORED=u BAD=b`, where
+  15: BAD counts unsatisfied keys that DID supply an anchor failing the length or
+=== souji-shokunin:tools/souji-citation-reconcile.py ===
+Commit HEAD: 488956c45166ed6edc21567e8588a8134413949e
+File SHA256: 59f1e57d7af02cac675757066fb6fa2629a0153f21c98a62e04b6d3b301d2b73
+  1: #!/usr/bin/env python3
+  2: """souji-citation-reconcile.py — r37 C1 self-assessment citation reconciler.
+  3: 
+  4: The r36 non-author spot-check routed one calibration defect class: cells in the
+  5: lane's own self-assessment quote after-values that never lived in any committed
+  6: receipt (`cases=11`/`cases=9`/`cases=8`/`cases=20` against receipts reading
+  7: 21/12/9), and their measured-commit cells name a commit where the cited receipt
+  8: does not exist.
+  9: 
+  10: This counter re-derives one register row per routed cell over committed bytes
+  11: only. A row binds when, at the audit revision:
+  12: 
+  13:   citation  exactly one line of the named file contains the row's `anchor`;
+  14:             that line contains `expected` (as a whole token), names the row's
+  15:             `receipt`, and does not contain `stale` (whole token);
+=== tameshi-shokunin:tools/anchor-drift-sweep.py ===
+Commit HEAD: 87d1635c8a1a90a405eb348da5ba3e8f93b4ae83
+File SHA256: 9905a2c98e3c7cd13fc23cfecb9842a4bce7ed52717fab1d3d42b10cb4369e20
+  1: #!/usr/bin/env python3
+  2: r"""tools/anchor-drift-sweep.py — a held source row's anchor heading must
+  3: still be the heading the row's own pinned snapshot carries (round 69; the
+  4: standing detector for the r68 closure's routed defect 2: the S299 anchor
+  5: cell said "§Directory deletion operations" where the shutil page's — snapshot
+  6: and live agree — section heading is "Directory and files operations"; the
+  7: drift was caught by the non-author closure reading the page, not by any
+  8: standing check).
+  9: 
+  10: Why: `corpus/SOURCES.md` anchors locate a quote by exact section heading
+  11: (CORPUS.md contract v1); the rows pin committed snapshots precisely because
+  12: docs pages drift (the r33/r40/r41 docs-clock lesson) — but nothing checked
+  13: that the anchor NAME still matches the snapshot the row pins. A heading
+  14: rename on the page silently breaks the anchor's locatability while every
+  15: sweep stays green. This checker binds anchor name to snapshot bytes the way
+=== tameshi-shokunin:tools/quoted-line-exists.py ===
+Commit HEAD: 87d1635c8a1a90a405eb348da5ba3e8f93b4ae83
+File SHA256: 6da61b7f3e3c1444602036ab4de8042d6109fd0d9d06b9351a1ce439f825598f
+  1: #!/usr/bin/env python3
+  2: r"""tools/quoted-line-exists.py — quoted counter lines must be byte-backed by
+  3: committed receipt bytes (round 65; considerthese 2026-10-28 proposal 1's
+  4: byte-for-byte quoted-line half — the half r64's receipt-existence sweep left
+  5: open; proposal text: "check that the path exists at the cited revision and
+  6: that the quoted counter line matches the committed stdout byte for byte" —
+  7: this tool is that second clause).
+  8: 
+  9: Modes (git objects only — no worktree, no index):
+  10: 
+  11:   # explicit: one quote against one receipt at a pinned revision
+  12:   python -I tools/quoted-line-exists.py --repo LANE \
+  13:       --receipt REV:path --quote "COUNTER_LINE value=1 ok"
+  14: 
+  15:   # document sweep: every verdict-shaped quoted span in a record must be
+=== tsukuroi-shokunin:tools/check-adjacency-anchors.py ===
+Commit HEAD: 40efa4ea2862ab39da02430cada68f6dff230e86
+File SHA256: 588cc44fb47a46fadeac87c5f83824111d0acf302b4a0e97141d30b63a60f832
+  1: #!/usr/bin/env python3
+  2: """Read-only verifier for round-19 portable adjacency anchors."""
+  3: from __future__ import annotations
+  4: 
+  5: import argparse
+  6: import contextlib
+  7: import hashlib
+  8: import io
+  9: import json
+  10: import re
+  11: import subprocess
+  12: import sys
+  13: sys.dont_write_bytecode = True
+  14: import tempfile
+  15: from collections import Counter, namedtuple
+=== tsukuroi-shokunin:tools/check-section-citations.py ===
+Commit HEAD: 40efa4ea2862ab39da02430cada68f6dff230e86
+File SHA256: 149b9a2156a8799865948cdbe444067466003669773525351ac4aa1d663df422
+  1: #!/usr/bin/env python3
+  2: """Narrow, read-only round-16 section-citation errata gate.
+  3: 
+  4: Bounded named-defect conformance, never host truth and never an
+  5: update-safety or host-health verdict: the two records of
+  6: corpus/knowledge/section-citation-errata-r16.json (schema
+  7: tsukuroi-section-citation-errata-v1, source_id S050) must exactly match
+  8: the pinned contract values; each record's heading must exist exactly
+  9: once outside fenced code in its pinned target file, its row_key must
+  10: resolve to exactly one row line under that heading, and its quote must
+  11: be a substring of that row. The actual historical wrong locators
+  12: "§1 verdict-board row 5" (true §0) and "§7 rank 1" (true §5) are
+  13: defects tolerated only inside the preserved ## R15-UPDATE-STATE section
+  14: or inside their resolving ## R16-*-SECTION — citation-only erratum
+  15: notice; any other occurrence is SECTION-CITATION-WRONG. Every byte
+=== tsukuroi-shokunin:tools/check-anchor-coordinates.py ===
+Commit HEAD: 40efa4ea2862ab39da02430cada68f6dff230e86
+File SHA256: fedd45ce350b3d62f6fcc526c44bca4846abe7c533a35c3633318454c5acc3b3
+  1: #!/usr/bin/env python3
+  2: """C1 counter, round 82 — a knowledge row's quote must sit inside the raw lines it cites.
+  3: 
+  4: Round 81 cited every `MT` row (and S331's anchor cell) in *tag-stripped* coordinates:
+  5: the strip dropped the DOCTYPE and one `<ulink>` newline, so the whole file shifted by
+  6: two lines and every anchor pointed two lines early.  The repair is the per-line strip:
+  7: one output line per raw line, tags removed *within* the line, so a cited number is a
+  8: raw file number and no reader has to know a strip rule.
+  9: 
+  10: What this instrument decides, and nothing more:
+  11: 
+  12:   * for each row of the entry JSON: the row's `quote`, whitespace-normalised and
+  13:     entity-decoded, occurs in the line-preserving strip of the pinned snapshot
+  14:     (line i of the strip == line i of the raw file), and the row's cited `lines`
+  15:     range IS the quote's own raw span — `[a, b]` where the quote starts at `a`

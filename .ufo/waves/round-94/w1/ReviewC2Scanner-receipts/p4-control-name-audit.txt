@@ -1,0 +1,35 @@
+== control names executed (receipt) ==
+C2-CONTROLS candidate=1ab01c9829f468ef1a52b46b836e75c629fa69e2 instrument_sha256=22ba32d145f90f7759caf16d3ee524eb1779153d3f2a33611675a93a4667beaf
+CONTROL candidate rc=0 want=0 PASS
+CONTROL do-nothing rc=1 want=1 PASS
+CONTROL F1-path-shape-keyed rc=1 want=1 PASS
+CONTROL F2-harness-gated rc=1 want=1 PASS
+CONTROL F3-drop-github rc=1 want=1 PASS
+CONTROL F4-loose-runner rc=1 want=1 PASS
+CONTROL F5-literal-keyed rc=1 want=1 PASS
+CONTROL F6-always-clean rc=1 want=1 PASS
+CONTROL row-round93 rc=1 want=1 PASS
+CONTROL tampered-instrument rc=1 want=1 PASS
+C2-CONTROLS-RESULT pass controls=10
+
+== control names present in the frozen script ==
+"candidate"
+"do-nothing"
+"F1-path-shape-keyed"
+"F2-harness-gated"
+"F3-drop-github"
+"F4-loose-runner"
+"F5-literal-keyed"
+"F6-always-clean"
+"row-round93"
+"tampered-instrument"
+
+== frozen text naming s140-allow-rows-removed ==
+38:      "controls": ".ufo/waves/round-94/controls/c2-controls-r94.txt (candidate PASS rc 0; do-nothing, F1 path-shape-keyed, F2 harness-gated, F3 drop-github, F4 loose-runner, F5 literal-keyed, F6 always-clean, row-round93, s140-allow-rows-removed all rc 1)",
+
+== any s140-allow-rows control anywhere ==
+.ufo/waves/round-94/w1/CriticClaimsC2-receipts/06-controls-receipt-audit.txt:23:controls field: .ufo/waves/round-94/controls/c2-controls-r94.txt (candidate PASS rc 0; do-nothing, F1 path-shape-keyed, F2 harness-gated, F3 drop-github, F4 loose-runner, F5 literal-keyed, F6 always-clean, row-round93, s140-allow-rows-removed all rc 1)
+.ufo/waves/round-94/w1/CriticClaimsC2.md:92:There is no `S140-allowlist-removed` / `s140-allow-rows-removed` control anywhere: `grep -rn
+.ufo/waves/round-94/w1/CriticClaimsC2.md:166:(`s140-allow-rows-removed`). If instead a genuine allowlist-removal control is wanted, it must first create
+.ufo/waves/round-94/w1/ReviewC2Scanner-receipts/p4-control-name-audit.txt:27:== frozen text naming s140-allow-rows-removed ==
+.ufo/waves/round-94/w1/ReviewC2Scanner-receipts/p4-control-name-audit.txt:28:38:      "controls": ".ufo/waves/round-94/controls/c2-controls-r94.txt (candidate PASS rc 0; do-nothing, F1 path-shape-keyed, F2 harness-gated, F3 drop-github, F4 loose-runner, F5 literal-keyed, F6 always-clean, row-round93, s140-allow-rows-removed all rc 1)",

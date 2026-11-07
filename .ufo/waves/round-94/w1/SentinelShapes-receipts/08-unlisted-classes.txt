@@ -1,0 +1,76 @@
+$ grep -n '^id = "' corpus/source-snapshots/round-94/S140.txt   (30 vendor rules)
+2	gitlab_personal_access_token
+28	gitlab_personal_access_token_routable
+49	gitlab_personal_access_token_routable_versioned
+71	gitlab_pipeline_trigger_token
+99	gitlab_runner_registration_token
+112	gitlab_runner_auth_token
+134	gitlab_runner_auth_token_routable
+158	gitlab_feed_token
+172	gitlab_oauth_app_secret
+188	gitlab_feed_token_v2
+211	gitlab_kubernetes_agent_token
+227	gitlab_incoming_email_token
+253	gitlab_deploy_token
+276	gitlab_scim_oauth_token
+291	gitlab_ci_build_token
+306	gitlab_runner_auth_token_legacy_partition
+322	gitlab_deploy_token_routable
+339	gitlab_deploy_token_in_url
+356	gitlab_kubernetes_agent_token_routable
+373	gitlab_workspace_token
+390	gitlab_feature_flags_client_token
+410	gitlab_runner_controller_token
+428	gitlab_ci_build_token_jwt
+445	gitlab_stateless_access_token
+462	gitlab_iam_access_token
+478	gitlab_iam_refresh_token
+495	gitlab_iam_authorization_code
+512	gitlab_feed_token_path_dependent
+530	gitlab_pipeline_trigger_token_in_url
+547	gitlab_session_cookie
+
+$ grep -n '("gitlab-' pkg/capture-secret-scan.py   (landed shapes)
+("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+
+// S140 rules that the landed docstring's Known limits paragraph does not name and no landed shape matches:
+28	gitlab_personal_access_token_routable
+49	gitlab_personal_access_token_routable_versioned
+71	gitlab_pipeline_trigger_token
+99	gitlab_runner_registration_token
+134	gitlab_runner_auth_token_routable
+158	gitlab_feed_token
+172	gitlab_oauth_app_secret
+188	gitlab_feed_token_v2
+211	gitlab_kubernetes_agent_token
+227	gitlab_incoming_email_token
+276	gitlab_scim_oauth_token
+291	gitlab_ci_build_token
+306	gitlab_runner_auth_token_legacy_partition
+322	gitlab_deploy_token_routable
+339	gitlab_deploy_token_in_url
+356	gitlab_kubernetes_agent_token_routable
+373	gitlab_workspace_token
+390	gitlab_feature_flags_client_token
+410	gitlab_runner_controller_token
+428	gitlab_ci_build_token_jwt
+445	gitlab_stateless_access_token
+462	gitlab_iam_access_token
+478	gitlab_iam_refresh_token
+495	gitlab_iam_authorization_code
+512	gitlab_feed_token_path_dependent
+530	gitlab_pipeline_trigger_token_in_url
+547	gitlab_session_cookie
+
+$ python3 - -> capture-secret-scan.py --files <fixture>   (one file per fixture, synthetic values)
+reg-json-runner_token        input='{"runner_token": "GR1348941abcDEF123456789xyz"}' rc=0 shapes=none
+reg-eq-registration_token    input='registration_token = GR1348941abcDEF123456789xyz' rc=0 shapes=none
+reg-json-token               input='{"token": "GR1348941abcDEF123456789xyz"}'     rc=1 shapes=credential
+reg-bare-line                input='GR1348941abcDEF123456789xyz'                  rc=0 shapes=none
+legacy-json-runner_token     input='{"runner_token": "t1_ABC123456789abcdefgh"}'  rc=0 shapes=none
+legacy-eq-token              input='token=t1_ABC123456789abcdefgh'                rc=1 shapes=credential
+legacy-bare                  input='t1_ABC123456789abcdefgh'                      rc=0 shapes=none
+ci-build-underscore          input='glcbt-abc12_0123456789abcdefghij'             rc=0 shapes=none
+deploy-url-conn              input='https://u:gitlab+deploy-token-7:0123456789abcdefghij@gitlab.example.com/x.git' rc=0 shapes=none

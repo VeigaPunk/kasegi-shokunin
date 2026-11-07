@@ -1,0 +1,17 @@
+Case                 | Expected | kasegi                    | kagi            | kumitate                  | kengaku  | chousa   | tabi     | souji    | mado    
+------------------------------------------------------------------------------------------------------------------------------------------------------
+pos_pat_bare         | HIT      | gitlab-pat                | LIKE '%glpat-%' | glpat-0123456789abcdefghij | -        | -        | -        | -        | -       
+pos_pat_custom       | HIT      | gitlab-pat                | LIKE '%glpat-%' | glpat-0123456789abcdefghij | -        | -        | -        | -        | -       
+neg_pat_19           | CLEAN    | -                         | LIKE '%glpat-%' | glpat-0123456789abcdefghi | -        | -        | -        | -        | -       
+neg_pat_21           | CLEAN    | -                         | LIKE '%glpat-%' | glpat-0123456789abcdefghijk | -        | -        | -        | -        | -       
+neg_pat_letter       | CLEAN    | -                         | LIKE '%glpat-%' | -                         | -        | -        | -        | -        | -       
+pos_runner_glrt      | HIT      | gitlab-runner-auth-token  | -               | -                         | -        | -        | -        | -        | -       
+pos_runner_glrtr     | HIT      | gitlab-runner-auth-token  | -               | -                         | -        | -        | -        | -        | -       
+pos_runner_t1        | HIT      | gitlab-runner-auth-token  | -               | -                         | -        | -        | -        | -        | -       
+pos_runner_custom    | HIT      | gitlab-runner-auth-token  | -               | -                         | -        | -        | -        | -        | -       
+neg_runner_21        | CLEAN    | -                         | -               | -                         | -        | -        | -        | -        | -       
+neg_runner_t4        | CLEAN    | -                         | -               | -                         | -        | -        | -        | -        | -       
+pos_deploy           | HIT      | gitlab-deploy-token       | -               | -                         | -        | -        | -        | -        | -       
+pos_deploy_custom    | HIT      | gitlab-deploy-token       | -               | -                         | -        | -        | -        | -        | -       
+neg_deploy_19        | CLEAN    | -                         | -               | -                         | -        | -        | -        | -        | -       
+neg_deploy_21        | CLEAN    | -                         | -               | -                         | -        | -        | -        | -        | -       
