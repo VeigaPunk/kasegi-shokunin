@@ -1,0 +1,7 @@
+# round-96 S140 live re-open attempt (the capture is the reading of record)
+$ curl -sS -m 40 -o gitlab-rules-live.toml -w '%{http_code} %{size_download}\n' \
+    'https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/raw/59ada1f4ca53d5a69fafb9cb0f10bb893720ce39/rules/mit/gitlab/gitlab.toml'
+403 6078
+# body: Cloudflare challenge page ("Just a moment..."), not the rule file.
+# The seven rules this round implements were read from the committed capture
+# corpus/source-snapshots/round-94/S140.txt at lines 30, 51, 73, 136, 324, 358, 375.

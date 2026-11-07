@@ -1,0 +1,31 @@
+# round-96 C1 pre-freeze defects — L1 observation record (not a machine receipt)
+#
+# Two fixture defects were caught by the harness's own attribution check before
+# the freeze. The failing run's output was not committed (the harness wrote no
+# receipt on that path); these are the exact lines the L1 read, kept so a later
+# seat can see what the repair was for. The repaired run is the committed
+# c1-controls-r96.txt.
+
+## 1. record() crashed on the rc-2 control (M96-1)
+# observed: Traceback (most recent call last):
+#   File ".../c1-controls-r96.py", line 155, in main
+#     record("missing-labels", rc, 2, out)
+#   File ".../c1-controls-r96.py", line 129, in record
+#     ",".join(sorted(declared)) or "-", att)
+# TypeError: 'NoneType' object is not iterable
+# fix: declared=None defaults to [] and skips the attribution check.
+
+## 2. the two fixtures that failed their declaration (M96-2, M96-3)
+# observed:
+#   CONTROL snapshot-missing-only rc=1 want=1 FAIL limbs=M10,M4,M5,M9 declared=M4,M5 attribution=FAIL
+#   CONTROL unlabelled-only rc=1 want=1 FAIL limbs=M3,M9 declared=M10,M9 attribution=FAIL
+#   ATTRIBUTION fail fixtures=11
+#   C1-CONTROLS-RESULT fail controls=12
+# causes: (a) the range label row carried the kind word in the label column, so
+# the counter read kinds=...unknown=1; (b) the unlabelled row reused an existing
+# (site, key) pair, so M3 counted dup_rows=1.
+# repaired run (committed):
+#   CONTROL snapshot-missing-only rc=1 want=1 PASS limbs=M4,M5 declared=M4,M5 attribution=PASS
+#   CONTROL unlabelled-only rc=1 want=1 PASS limbs=M10,M9 declared=M10,M9 attribution=PASS
+#   ATTRIBUTION pass fixtures=11
+#   C1-CONTROLS-RESULT pass controls=12

@@ -1,4 +1,4 @@
-source: S140 — GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, lines 30, 51, 73, 136, 324, 358 and 375 (capture `corpus/source-snapshots/round-94/S140.txt`, example values structurally redacted, line numbering preserved); S144 — GitLab Docs, Security — Tokens, https://docs.gitlab.com/security/tokens/ (capture `corpus/source-snapshots/round-96/S144.txt:346-347`, 17,591 bytes / 419 lines / sha256 `d6e529275deb3ecf4ea2c3edaff2caa882760680cf23c1a134424e6acffdb83d`)
+source: S140 — GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, lines 30, 51, 73, 136, 324, 358 and 375 (capture `corpus/source-snapshots/round-94/S140.txt`, example values structurally redacted, line numbering preserved); S144 — GitLab Docs, Security — Tokens, https://docs.gitlab.com/security/tokens/ (capture `corpus/source-snapshots/round-96/S144.txt:346-347`, 17,591 bytes / 418 lines / sha256 `d6e529275deb3ecf4ea2c3edaff2caa882760680cf23c1a134424e6acffdb83d`)
 verified-at: 7ef1d365eb523a83b2567342a6c0f585ab028ab0
 recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 -B corpus/instruments/anchorcheck.py corpus/knowledge/gitlab-routable-and-versioned-token-forms.md && sed -n '346p' corpus/source-snapshots/round-96/S144.txt | grep -q 'these prefixes cannot be configured' && sed -n '30p;51p;73p;136p;324p;358p;375p' corpus/source-snapshots/round-94/S140.txt | grep -c 'regex' && python3 -B corpus/instruments/capture-secret-scan.py --selftest >/dev/null && echo RECHECK-OK
 
@@ -39,7 +39,7 @@ token's 20.
 |---|---|---|---|
 | `gitlab-pat-versioned` | `glpat-` (optional 1-20 character instance prefix) | versioned | 51 |
 | `gitlab-pat-routable` | `glpat-` (same prefix) | routable | 30 |
-| `gitlab-runner-auth-token-versioned` | `glrt-`/`glrtr-` (no instance prefix in the published rule) | versioned | 136 |
+| `gitlab-runner-auth-token-versioned` | `glrt-`/`glrtr-` (S140 publishes an instance prefix; the landed matcher omits it and relies on the left boundary, which is equivalent because a prefix always ends with `-`) | versioned | 136 |
 | `gitlab-deploy-token-versioned` | `gldt-` (instance prefix) | versioned | 324 |
 | `gitlab-agent-token-versioned` | `glagent-` (instance prefix) | versioned | 358 |
 | `gitlab-workspace-token-versioned` | `glwt-` (instance prefix) | versioned | 375 |
@@ -75,12 +75,18 @@ none.
 - **Right**: `(?![A-Za-z0-9_])` after the tail, so a longer alphanumeric run is
   not truncated into a hit.
 - **Instance prefix**: `(?:[A-Za-z0-9]{1,20}-)?` where S140 publishes one
-  (`corpus/instruments/capture-secret-scan.py:238`); the runner versioned rule
-  publishes none, and the landed matcher follows the rule.
+  (`corpus/instruments/capture-secret-scan.py:238`). The runner versioned rule
+  publishes one as well; the landed matcher omits it and relies on the left
+  boundary, which starts the match at `glrt-`/`glrtr-` instead of the prefix.
+  Detection is the same for a prefix ending in `-` (and wider for a prefix
+  longer than 20 characters, which the published rule would refuse); only the
+  reported hit position differs.
 
 ## Known limits that remain
 
-- The other GitLab families are still undetected: `glft-` (feed, 20), `glimt-`
+- The other GitLab families are still undetected: the plain `glagent-`
+  50-character form (S140 line 213 — only the versioned `glagent-` form is
+  detected), `glft-` (feed, 20), `glimt-`
   (incoming mail, 20-25 lower-case), `glsoat-` (SCIM, 20), `glffct-` (feature
   flags, 20), `gloas-` (OAuth application secret, 64), `glrct-` (20), the
   runner registration token (`GR1348941` + 20, S140 line 101), the

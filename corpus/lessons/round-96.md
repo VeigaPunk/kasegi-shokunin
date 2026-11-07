@@ -12,10 +12,10 @@ freeze `804e7bc344df0808c880815dde077c28be5db18a`; C1 landing
 Candidates considered this round:
 
 1. **S144 — GitLab Docs, Security — Tokens** — ADMIT (`docs`, tier A, `mined`).
-   Opened 2026-11-07, HTTP 200, 67,805 bytes fetched, 17,591 bytes / 419 lines
+   Opened 2026-11-07, HTTP 200, 67,805 bytes fetched, 17,591 bytes / 418 lines
    committed as `corpus/source-snapshots/round-96/S144.txt` (sha256
    `d6e529275deb3ecf4ea2c3edaff2caa882760680cf23c1a134424e6acffdb83d`).
-   URL: `https://docs.gitlab.com/security/tokens/`. Quote (21 words, capture
+   URL: `https://docs.gitlab.com/security/tokens/`. Quote (20 words, capture
    lines 346-347): "With the exception of Personal Access tokens, these
    prefixes cannot be configured, as they are designed to be standard
    identifications." The "Token prefixes" table follows at lines 348-395 and
@@ -44,7 +44,7 @@ Status / used-by changes this round, old → new:
 
 Registry 143 → 145 rows: `grep -cE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' corpus/SOURCES.md`
 prints 143 at the base and 145 in the working tree. Census:
-`bash scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`
+`cd /home/vgpnk/Projects/shokunin && bash scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi`
 prints `kasegi ok` rc 0 with the seven inherited W04 duplicate-URL warnings
 (S028, S029, S072, S076, S080, S085, S143).
 
