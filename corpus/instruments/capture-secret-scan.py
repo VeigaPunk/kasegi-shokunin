@@ -78,7 +78,22 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          The documentation's 28-character example value (S134
                          line 123) and its prose placeholder (line 40) are not
                          hits.
-Known limits: GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+  github-token           (round 92) a GitHub token in the prefixed format:
+                         `ghp_`, `gho_`, `ghu_`, `ghs_` or `ghr_` (the five
+                         three-letter prefixes, case-sensitive, S137 lines
+                         156-162; S136 lines 158, 162-167) followed by exactly 36
+                         base62 characters (30 random plus a 6-character
+                         checksum, S137 lines 167, 173: 40 characters in all,
+                         S136 line 160, S137 line 174), not preceded or
+                         followed by a letter, digit or `_` (a JSON `\\n`
+                         escape before the prefix is allowed); or the stateless
+                         installation-token form `ghs_<APPID>_<JWT>` (S136 line
+                         160) with a numeric app id and three dot-separated
+                         base64url JWT segments of 10+ characters each. The
+                         page's own `ghs_APPID_JWT` placeholder and a bare
+                         prefix are not hits.
+Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
+source states their length or alphabet), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
 cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
 percent-encoded parameter names or `=` (a whole URL percent-encoded inside
 another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
@@ -138,6 +153,13 @@ CLOUD_PATTERNS = (
     ("cloudfront-signed-cookie-signature", re.compile(
         _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
 )
+_GH_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\n))"
+_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+GITHUB_PATTERNS = (
+    ("github-token", re.compile(
+        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+        + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+)
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -170,7 +192,7 @@ def gate_patterns():
 
 
 def patterns():
-    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS
+    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS + GITHUB_PATTERNS
 
 
 def is_capture_path(rel):
@@ -271,6 +293,8 @@ def selftest(pats):
     gsig = b"0123456789abcdef" * 8
     asig = b"FAKEsasSIGNATUREfake0123456789abcdefABCDEFG%3D"
     cfsig = b"FAKEcfSIGNATUREfake~0123456789-abcdefABCDEF_ghijklmnopqrstuvwxyz~XYZ"
+    ghtail = b"FAKEghTOKENfake0123456789abcdefABCD"[:30] + b"0aZ9yX"
+    jwt = b"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJGQUtFIn0.FAKEsignatureFAKEsignature"
     cases = [
         ("presigned-sts", b'{"url":"https://x.s3.amazonaws.com/a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGYBPQ6EXAMPLE12%2F20261107%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Security-Token=' + token + b'&X-Amz-Signature=ab"}', {"aws-sts-session-token", "aws-access-key-id", "credential"}),
         ("json-escaped-sts", b'"X-Amz-Security-Token=' + token + b'\\u0026X-Amz-Signature=1"', {"aws-sts-session-token", "credential"}),
@@ -314,6 +338,21 @@ def selftest(pats):
         ("cf-cookie-lowercase-name", b"cloudfront-signature=" + cfsig, set()),
         ("cf-cookie-prefixed-name", b"X-CloudFront-Signature=" + cfsig, set()),
         ("cf-cookie-json-joined", b'{"set-cookie":"CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F; Path=/\\nCloudFront-Signature=' + cfsig + b'; Path=/"}', {"cloudfront-signed-cookie-signature"}),
+        ("gh-classic-pat-prose", b"use ghp_" + ghtail + b" as the password", {"github-token"}),
+        ("gh-oauth-json", b'{"t":"gho_' + ghtail + b'"}', {"github-token"}),
+        ("gh-user-to-server", b"ghu_" + ghtail, {"github-token"}),
+        ("gh-installation-json-joined", b'"x\\nghs_' + ghtail + b'"', {"github-token"}),
+        ("gh-refresh-line-start", b"ghr_" + ghtail + b"\n", {"github-token"}),
+        ("gh-stateless-installation", b"token ghs_123456_" + jwt + b" end", {"github-token"}),
+        ("gh-stateless-short-segments", b"ghs_123_abc.def.ghi", set()),
+        ("gh-doc-placeholder", b"a stateless format (ghs_APPID_JWT) to all newly minted", set()),
+        ("gh-bare-prefix", b"Personal access token (classic)ghp_Managing your personal access tokens", set()),
+        ("gh-35-chars", b"ghp_" + ghtail[:35] + b" ", set()),
+        ("gh-37-chars", b"ghp_" + ghtail + b"Z", set()),
+        ("gh-upper-prefix", b"GHP_" + ghtail, set()),
+        ("gh-unknown-prefix", b"ghx_" + ghtail, set()),
+        ("gh-letter-before", b"xghp_" + ghtail, set()),
+        ("gh-fine-grained-known-limit", b"github_pat_" + ghtail[:22] + b"_" + (ghtail + ghtail)[:59], set()),
     ]
     bad = 0
     for name, data, want in cases:
