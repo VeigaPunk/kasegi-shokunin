@@ -1,0 +1,70 @@
+# CriticHarm r93 item 2: landed scanner false-positive surface at 9225954
+# scanner sha256=7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5
+# allowlist sha256=a5abeb53b3765a5061ce543f07bd48e2cc20be14b2ec8acbe53cb2caf9707c3c
+
+## 2a --rev 9225954 (capture-class paths at the C2 landing; tip allowlist)
+CAPTURE-SECRET-SCAN mode=rev:9225954 scanned=1957 hits=0 files=0 allowed=24 unused_allow=0 rc=0
+rev-scan-rc=0
+
+## 2b --files over every corpus/knowledge entry and corpus/source-snapshots file at 9225954
+# run from the extracted tip tree so allowlist keys match the lane-relative paths
+# scope files: 286 (knowledge=103, snapshots=183)
+CAPTURE-SECRET-SCAN mode=files scanned=286 hits=0 files=0 allowed=9 unused_allow=14 rc=0
+files-scan-rc=0
+
+## 2c differential over every tracked .md at 9225954 (base scanner vs landed scanner, same files)
+# files read from the C1 landing tree (/fast/scratch/hyaku/kasegi-r93/CriticHarm/landing; identical bytes to tip for every path present)
+# md files: 6275
+# missing from landing tree: 0
+# BASE RUN (e15996b instrument)
+HIT shape=op-ref path=.ufo/waves/round-25/wave2/C2Sentinel.md line=118
+HIT shape=op-ref path=.ufo/waves/round-28/wave1/SentinelScope.md line=15
+HIT shape=op-ref path=.ufo/waves/round-33/wave1/SentScopeFinal.md line=120
+HIT shape=private-key path=.ufo/waves/round-36/wave1/CritBoundary.md line=110
+HIT shape=op-ref path=.ufo/waves/round-36/wave1/CritBoundary.md line=110
+HIT shape=private-key path=.ufo/waves/round-37/wave1/SentSecrets.md line=256
+HIT shape=op-ref path=.ufo/waves/round-37/wave1/SentSecrets.md line=110
+HIT shape=credential path=.ufo/waves/round-37/wave1/SentSecrets.md line=194
+HIT shape=op-ref path=.ufo/waves/round-38/wave1/SentSecrets.md line=350
+HIT shape=credential path=.ufo/waves/round-38/wave1/SentSecrets.md line=350
+HIT shape=op-ref path=.ufo/waves/round-39/wave2/SentinelSecretsScan.md line=155
+HIT shape=credential path=.ufo/waves/round-40/wave2/MutEntries.md line=50
+HIT shape=credential path=.ufo/waves/round-43/w1/CritProvinceScope.md line=116
+HIT shape=credential path=.ufo/waves/round-43/w1/ExecGateProvReport.md line=209
+HIT shape=private-key path=.ufo/waves/round-43/w1/RevGateRules.md line=255
+HIT shape=credential path=.ufo/waves/round-44/wave1/R44Mutant3.md line=35
+HIT shape=op-ref path=.ufo/waves/round-45/wave1/R45SentinelContent.md line=26
+HIT shape=credential path=.ufo/waves/round-46/attempt2/wave2/R46bW2SentFinal.md line=83
+HIT shape=bearer path=.ufo/waves/round-46/wave2/R46W2RevGroundGates2.md line=37
+HIT shape=credential path=.ufo/waves/round-46/wave2/R46W2RevGroundGates3.md line=63
+HIT shape=op-ref path=.ufo/waves/round-47/w1/R47SentSecrets.draft/sweep-receipt.md line=26
+HIT shape=aws-sts-session-token path=corpus/lessons/round-87-verifier-spotcheck.md line=61
+HIT shape=aws-access-key-id path=corpus/lessons/round-87-verifier-spotcheck.md line=67
+CAPTURE-SECRET-SCAN mode=files scanned=6275 hits=23 files=18 allowed=0 unused_allow=23 rc=1
+base-md-rc=1
+# LANDED RUN (tip instrument)
+HIT shape=op-ref path=.ufo/waves/round-25/wave2/C2Sentinel.md line=118
+HIT shape=op-ref path=.ufo/waves/round-28/wave1/SentinelScope.md line=15
+HIT shape=op-ref path=.ufo/waves/round-33/wave1/SentScopeFinal.md line=120
+HIT shape=private-key path=.ufo/waves/round-36/wave1/CritBoundary.md line=110
+HIT shape=op-ref path=.ufo/waves/round-36/wave1/CritBoundary.md line=110
+HIT shape=private-key path=.ufo/waves/round-37/wave1/SentSecrets.md line=256
+HIT shape=op-ref path=.ufo/waves/round-37/wave1/SentSecrets.md line=110
+HIT shape=credential path=.ufo/waves/round-37/wave1/SentSecrets.md line=194
+HIT shape=op-ref path=.ufo/waves/round-38/wave1/SentSecrets.md line=350
+HIT shape=credential path=.ufo/waves/round-38/wave1/SentSecrets.md line=350
+HIT shape=op-ref path=.ufo/waves/round-39/wave2/SentinelSecretsScan.md line=155
+HIT shape=credential path=.ufo/waves/round-40/wave2/MutEntries.md line=50
+HIT shape=credential path=.ufo/waves/round-43/w1/CritProvinceScope.md line=116
+HIT shape=credential path=.ufo/waves/round-43/w1/ExecGateProvReport.md line=209
+HIT shape=private-key path=.ufo/waves/round-43/w1/RevGateRules.md line=255
+HIT shape=credential path=.ufo/waves/round-44/wave1/R44Mutant3.md line=35
+HIT shape=op-ref path=.ufo/waves/round-45/wave1/R45SentinelContent.md line=26
+HIT shape=credential path=.ufo/waves/round-46/attempt2/wave2/R46bW2SentFinal.md line=83
+HIT shape=bearer path=.ufo/waves/round-46/wave2/R46W2RevGroundGates2.md line=37
+HIT shape=credential path=.ufo/waves/round-46/wave2/R46W2RevGroundGates3.md line=63
+HIT shape=op-ref path=.ufo/waves/round-47/w1/R47SentSecrets.draft/sweep-receipt.md line=26
+HIT shape=aws-sts-session-token path=corpus/lessons/round-87-verifier-spotcheck.md line=61
+HIT shape=aws-access-key-id path=corpus/lessons/round-87-verifier-spotcheck.md line=67
+CAPTURE-SECRET-SCAN mode=files scanned=6275 hits=23 files=18 allowed=0 unused_allow=23 rc=1
+landed-md-rc=1

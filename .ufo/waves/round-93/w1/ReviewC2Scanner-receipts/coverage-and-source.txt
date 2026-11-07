@@ -1,0 +1,27 @@
+=== hex-entity fixture present? (&#x in scanner or counter) ===
+corpus/instruments/capture-secret-scan.py:1
+.ufo/waves/round-93/c2/capability-check.py:0
+--- decimal entity ---
+corpus/instruments/capture-secret-scan.py:1
+.ufo/waves/round-93/c2/capability-check.py:0
+
+=== S139 alphabet statements (any) ===
+
+=== old 40-56 ===
+    40	                         order, separated by `&`, `&amp;` or JSON `\\u0026`: an
+    41	                         Azure Storage SAS signature, an HMAC-SHA256 "encoded by
+    42	                         using Base64 encoding" (S127 lines 402-404, 605, 638-639).
+    43	                         Round 89: the match may start right after a `\\u0026`
+    44	                         or `%26` separator, so a JSON-escaped SAS whose first
+    45	                         matched parameter is not the query's first parameter
+    46	                         (S127 line 605's order, sv sixth) is detected.
+    47	                         Round 91: parameter names between `sv` and `sig` are
+    48	                         2-7 letters, so a user-delegation SAS that carries the
+    49	                         7-letter `skdutid` field (the tenant of a user-bound
+    50	                         SAS, version 2025-07-05 and later; S133 lines 177,
+    51	                         566-571) is detected; an 8-letter name still ends the
+    52	                         window (known limit).
+    53	  cloudfront-signed-url-signature  (round 89) a `Signature=<value>` query
+    54	                         parameter of 40+ CloudFront URL-safe base64 characters
+    55	                         (`A-Za-z0-9`, `-`, `_`, `~`: CloudFront replaces `+`,
+    56	                         `=`, `/` with `-`, `_`, `~`, S128 lines 202-211) in the

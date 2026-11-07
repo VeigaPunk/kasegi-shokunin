@@ -1,0 +1,96 @@
+CONTROL candidate rc=0 want=0 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=5 unbound=none
+  LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  KNOWLEDGE-METER-RESULT pass rc=0
+CONTROL do-nothing rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1007/2001 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 FAIL after=1007/2001
+  LIMB M3 FAIL same_files=True bad_lines=5 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=5 unbound=none
+  LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL partial-437-unmapped rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=4 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 FAIL same_files=True bad_lines=1 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=4 unbound=none
+  LIMB M10 FAIL labelled=8 want=5 mapped=4 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=triage-thresholds.md:437/intake-surface.md:75-76 unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL map-454-noop rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 FAIL same_files=True bad_lines=1 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 FAIL rows=5 unbound=triage-thresholds.md:454
+  LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL no-edit-pair-mapped rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=6 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 FAIL same_files=True bad_lines=1 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 FAIL rows=6 unbound=citation-bases.md:14
+  LIMB M10 pass labelled=8 want=5 mapped=6 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL cell-437-noop rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 FAIL same_files=True bad_lines=1 old_not_once=0 dup_rows=0
+  LIMB M4 FAIL bad=triage-thresholds.md:437
+  LIMB M5 FAIL out_of_range=none
+  LIMB M9 FAIL rows=5 unbound=triage-thresholds.md:437
+  LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL duplicate-map-row rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=6 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 FAIL same_files=True bad_lines=0 old_not_once=0 dup_rows=1
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=6 unbound=none
+  LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL wrong-key-454 rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 FAIL bad=triage-thresholds.md:454
+  LIMB M5 FAIL out_of_range=none
+  LIMB M9 FAIL rows=5 unbound=triage-thresholds.md:454
+  LIMB M10 FAIL labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=triage-thresholds.md:454/SKILL.md:494-506 unlabelled=none
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL missing-labels rc=2 want=2 PASS
+  KNOWLEDGE-METER-RESULT error reason=read:CalledProcessError rc=2
+CONTROL wrong-map-sha rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+  LIMB M0 pass base=1007/2001
+  LIMB M1 pass after=1009/2000
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M4 pass bad=none
+  LIMB M5 pass out_of_range=none
+  LIMB M9 pass rows=5 unbound=none
+  LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+  LIMB M6 FAIL sha256=7ab66a7fc8a90cf92d026d0ba1abaa23461b10a3bbd79d003ee4a33961eb3b76
+  KNOWLEDGE-METER-RESULT fail rc=1
+CONTROL m3-labelled-file-scope rc=1 want=1 PASS
+  KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=9 mirror_absent=True pinned=archive
+C1-CONTROLS-RESULT pass controls=11

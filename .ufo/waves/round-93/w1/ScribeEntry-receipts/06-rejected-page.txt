@@ -1,0 +1,13 @@
+# Round-93 ScribeEntry receipt 06 — rejected C2 candidate: the GitLab personal-access-token profile page
+# Run 2026-11-07 with TMPDIR=scratch; body written to $S/pat-profile.html (scratch, deleted with the seat).
+$ curl -sS -o "$S/pat-profile.html" -w "http=%{http_code} bytes=%{size_download} final=%{url_effective}" --max-time 40 https://docs.gitlab.com/user/profile/personal_access_tokens/
+http=200 bytes=81326 final=https://docs.gitlab.com/user/profile/personal_access_tokens/
+rc=0
+$ grep -o glpat "$S/pat-profile.html" | wc -l
+0
+$ grep -o -i glpat "$S/pat-profile.html" | wc -l
+0
+
+# Method limit: the check ran on the raw HTML as served, not on text converted by capture-source.py,
+# and no capture of this page is committed; the rejection is recorded in .ufo/waves/round-93/claims.json
+# (frontier.rejected) and in no SOURCES row. Receipt does not extend to a converted-text claim.

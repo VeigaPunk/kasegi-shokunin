@@ -1,0 +1,97 @@
+=== old SKILL at 7483333~1 (rev d341b48ced39a1570f730c6dee4c257466bfef47)
+lines=546
+--- 8-20
+     8	Grounded in `/home/vgpnk/Projects/bounties` (UFO fleet HQ): 274 program dirs /
+     9	295 packages (280 status-gated) under `claims/`, 1088 program records under
+    10	`bounty-map/programs/`, a 486-line verdict ledger at
+    11	`docs/review-verdicts.jsonl`, and the operator-facing queue
+    12	at `docs/claim-ready-index.md`. Every rule below cites a file you can open.
+    13	
+    14	## Pipeline (observed, not invented)
+    15	
+    16	```
+    17	policy read (AR14, passive only)          → evidence/<program>/scope-snapshot.json
+    18	authorization envelope from scope bytes   → evidence/authorization-envelope.json
+    19	custodian decision per action             → evidence/custodian/*.decision.json
+    20	hunt (local/static preferred)             → evidence/hunt-*.md, poc/
+--- 88-120
+    88	"Scope excerpt" + "no submission performed" markers, per-artifact sha256 +
+    89	path/symlink confinement + same-digest redaction receipts (producer ≠
+    90	verifier), non-empty custodian chain where every `scope_signal` is exactly
+    91	`NO_SCOPE_OBJECTION` and `head_sha256` == last decision ==
+    92	`manifest.expected_head_sha256`, a secrets regex over all package text, and
+    93	`status.json` — `DONE` + `claimable:true` + `finding_count≥1` +
+    94	`manifest_sha256` binding + `APPROVED` review by a distinct `kx-reviewer`
+    95	(role, requested/resolved model, fallback flag) + four hard gates + two
+    96	subchecks PASS + not-claimable heuristics + a global duplicate-submission scan
+    97	across all `claims/*/*/status.json` + `submit/BLOCKED.md` and nested-readiness
+    98	blockers. `prepare-claims.mjs` then stages `submit-payload.json` only for
+    99	passing DONE packages with an explicit https route, attaches
+   100	`claim_checklist.md` + positive-polarity artifacts only, refuses to rewrite a
+   101	manifest-bound payload without re-review, and restores original bytes if the
+   102	post-write recheck fails.
+   103	
+   104	## Intake surface — the map is decorative, ingestion is hidden
+   105	
+   106	`bounty-map/programs/*.json` (1088 records, one import
+   107	`refresh-20260829T190850329Z`, nothing since) is **not** mission state:
+   108	`mission_state` is DISCOVERED×1087/PLANNED×1 and read only for a `--dry`
+   109	log line; `lane` is `executor`×1088; `ev_inputs` non-empty×1; `reward`
+   110	exists on 48 records (all `source_kind=independent`) — `ev-report.mjs`
+   111	prints UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all
+   112	three board datasets 358 h stale (26 h threshold, AR4 alarm standing).
+   113	Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88) is
+   114	`priority(9e12) > continue(2e12) > curated(1e12) > reward.min×1000` —
+   115	for ~1040 records the map contributes 0 or 1 points; real state is
+   116	`ledger/missions.jsonl` + `fleets/run/`, real termination is
+   117	status-file TERMINAL + telemetry `attempts()≥2`.
+   118	
+   119	Two intake paths: `import-board.mjs` writes the map (evidence-bound);
+   120	the `.ufo-ingestion/` cycle (2026-09-14, 16 scouts rerouted off a grok
+--- 143-149
+   143	## Mission ledger & audit store
+   144	
+   145	`ledger/missions.jsonl` is the append-only hunter-contract state machine
+   146	(writer: `ops/shared.mjs::appendLedger`, 3500-byte line cap for O_APPEND
+   147	atomicity). Transition census (718 lines / 260 missions):
+   148	`SCOPED` 232 → `PLANNED` 219 → `LEARNED` 244 dominates;
+   149	`SCOPED→PLANNED→LEARNED` alone is 207 missions. Deep path
+--- 173-178
+   173	`ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
+   174	rotation on terminal status, `reconcile()` rebuilds from leases + pane
+   175	titles on restart. Queue score = priority(9e12) > continue(2e12) >
+   176	curated-EV(1e12) > reward.min — EV orders, never gates (AR12). Dispatcher
+   177	is the sole committer to `claims/` (P21) gated on fresh `claim-check.mjs`
+   178	(P20), tags `claim-ready/<id>/<slug>` and pushes atomically after proving
+--- 243-248
+   243	are vacuous), `K3_SEATS` = `judge`/`planner` (only lanes allowed
+   244	`kimi-code/k3` routes; live primaries are `k3:high`),
+   245	`gitMutationBlocker` (fail-closed on rebase/merge/cherry-pick or non-main
+   246	HEAD), `appendLedger` (3500 B cap). `validate.mjs` is a schema-subset +
+   247	referential gate (lane ids must exist in `fleets/registry.json`;
+   248	`freshness.as_of` strict RFC3339; `--strict` adds non-empty `ev_inputs`).
+--- 494-506
+   494	`ops/ev-report.mjs` computes the hunter-contract EV per program record
+   495	(`bounty-map/programs/<id>.json` → `ev_inputs`):
+   496	
+   497	```
+   498	p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+   499	gross_value  = p_success × expected_reward
+   500	total_cost   = effort_hours × opportunity_rate + direct_cost + delay_cost
+   501	               + expected_risk_cost
+   502	adjusted_ev  = gross_value − total_cost
+   503	```
+   504	
+   505	Missing inputs print `UNKNOWN`, never default to 0/1; verdict degrades to
+   506	`unknown` — fail-closed like everything else. `docs/claim-runbook.md` is the
+--- 520-528
+   520	- `~/Projects/bounties/claims/cantina-pendle/ingestion-20260915/` — complete positive-blocked exemplar
+   521	- `~/Projects/bounties/claims/bugcrowd-seek/honest-zero/` — complete honest-zero exemplar
+   522	- `~/Projects/bounties/bounty-map/schema.json` — program record schema (draft-07, fail-closed `additionalProperties:false`)
+   523	- `~/Projects/bounties/ledger/{missions,telemetry,candidates,imports}.jsonl` — append-only mission state machine + dispatcher heartbeat + hunter intake + board-import binding
+   524	- `~/Projects/bounties/evidence/<program>/` — per-program audit store (592 dirs; scope-snapshots, envelopes, custodian pairs, honest-zero records)
+   525	- `~/Projects/bounties/ops/shared.mjs` — `appendLedger` (3500B O_APPEND cap) + `gitMutationBlocker` + `TELEMETRY_EVENTS`
+   526	- `~/Projects/bounties/ops/fleet-dispatch.mjs` — the `/loop` dispatcher: leases, slot rotation, sole claims/ committer, tag+push proof, model-window routing
+   527	- `~/Projects/bounties/fleets/{missions/<id>.md,run/,leases.json,claimer-mission.md,review-mission.md,priority.json,state-snapshots/}` — generated L1 assignments, status file-protocol, sibling-lane contracts
+   528	- `~/Projects/bounties/docs/RUNBOOK-resume.md` — snapshot restore + dispatcher relaunch procedure
+rc=0

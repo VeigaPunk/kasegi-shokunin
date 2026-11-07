@@ -1,0 +1,31 @@
+# Round-93 ScribeEntry receipt 01 — commits (2026-11-07)
+$ git log --oneline -6
+9225954 round-93: C2 landing — capture-secret-scan gains gitlab-pat (S139) and the escape-terminator left boundary; capability row extended
+ae53b3c round-93: C1 landing — tranche 8 (437/438 cell repairs, 454 second token, 58/144 lane-root repoints), cell-repair + lane-root counter kinds, meter 1007/2001 -> 1009/2000
+5bad9e5 round-93: freeze — claims, counters, map, labels, candidate scanner and row, executed controls, S139 capture + manifest, allowlist rows, SOURCES row
+e15996b round-92 verifier spot-check (integrator, hyaku): non-author admit/reject
+7ba6623 round-92: wave w1 evidence (spec, dispatch, results, 13 seat reports and receipts)
+2bb2524 round-92: integration — admit github-prefixed-tokens-in-captured-evidence entry, R143/R144 re-anchor of four scanner-citing entries (M92-2, M92-3), S136/S137 mined, QUALITY R144, lesson, LOG, SCORECARD
+
+$ git cat-file -p 5bad9e55d3d9319446e3d9b63bc2dece633cdb68 | head -4
+tree 96f9d2d3dd5802c7e228360c38f39c2d2610fa16
+parent e15996bfd2f6eca4af39507a7c5973afbeca8347
+author kasegi-shokunin <kasegi@shokunin.local> 1794047500 -0300
+committer kasegi-shokunin <kasegi@shokunin.local> 1794060917 -0300
+
+$ git show --stat --oneline 5bad9e55 | tail -6 ; rc=$?
+ .ufo/waves/round-93/make-wave-r93.py               | 101 ++++
+ corpus/SOURCES.md                                  |   2 +
+ corpus/instruments/capture-secret-allow.tsv        |   4 +
+ corpus/source-snapshots/round-93/S139.txt          | 414 ++++++++++++++
+ corpus/source-snapshots/round-93/manifest.json     |  34 ++
+ 20 files changed, 2725 insertions(+)
+$ git diff-tree --no-commit-id --name-only -r ae53b3c6
+corpus/knowledge/triage-thresholds.md
+$ git diff-tree --no-commit-id --name-only -r 9225954a
+SCORECARD.md
+corpus/instruments/capture-secret-scan.py
+
+$ git status --porcelain corpus/SOURCES.md (empty = SOURCES unmodified in the working tree)
+ M corpus/SOURCES.md
+rc=0

@@ -1,0 +1,120 @@
+Testing sibling scanners...
+
+--- kagi ---
+  glpat valid 20ch       -> HIT: glpat-
+  glpat bare prefix      -> HIT: glpat-
+  glpat short 19ch       -> HIT: glpat-
+  glpat long 21ch        -> HIT: glpat-
+  escape \t ghp          -> HIT: ghp_
+  escape \r ghp          -> HIT: ghp_
+  escape \n ghp          -> HIT: ghp_
+  escape \u0009 ghp      -> HIT: ghp_
+  escape %20 ghp         -> HIT: ghp_
+  negative letter+ghp    -> HIT: ghp_
+  classic gho 36ch       -> HIT: gho_
+  classic ghu 36ch       -> HIT: ghu_
+  classic ghs 36ch       -> HIT: ghs_
+  classic ghr 36ch       -> HIT: ghr_
+  stateless jwt ghs      -> HIT: ghs_
+
+--- kengaku ---
+  glpat valid 20ch       -> MISS
+  glpat bare prefix      -> MISS
+  glpat short 19ch       -> MISS
+  glpat long 21ch        -> MISS
+  escape \t ghp          -> MISS
+  escape \r ghp          -> MISS
+  escape \n ghp          -> MISS
+  escape \u0009 ghp      -> MISS
+  escape %20 ghp         -> MISS
+  negative letter+ghp    -> MISS
+  classic gho 36ch       -> HIT: github-pat
+  classic ghu 36ch       -> HIT: github-pat
+  classic ghs 36ch       -> HIT: github-pat
+  classic ghr 36ch       -> HIT: github-pat
+  stateless jwt ghs      -> MISS
+
+--- chousa ---
+  glpat valid 20ch       -> MISS
+  glpat bare prefix      -> MISS
+  glpat short 19ch       -> MISS
+  glpat long 21ch        -> MISS
+  escape \t ghp          -> HIT: ghp_prefix
+  escape \r ghp          -> HIT: ghp_prefix
+  escape \n ghp          -> HIT: ghp_prefix
+  escape \u0009 ghp      -> HIT: ghp_prefix
+  escape %20 ghp         -> HIT: ghp_prefix
+  negative letter+ghp    -> HIT: ghp_prefix
+  classic gho 36ch       -> MISS
+  classic ghu 36ch       -> MISS
+  classic ghs 36ch       -> MISS
+  classic ghr 36ch       -> MISS
+  stateless jwt ghs      -> MISS
+
+--- tabi ---
+  glpat valid 20ch       -> MISS
+  glpat bare prefix      -> MISS
+  glpat short 19ch       -> MISS
+  glpat long 21ch        -> MISS
+  escape \t ghp          -> HIT: tabi-credential
+  escape \r ghp          -> HIT: tabi-credential
+  escape \n ghp          -> HIT: tabi-credential
+  escape \u0009 ghp      -> HIT: tabi-credential
+  escape %20 ghp         -> HIT: tabi-credential
+  negative letter+ghp    -> HIT: tabi-credential
+  classic gho 36ch       -> MISS
+  classic ghu 36ch       -> MISS
+  classic ghs 36ch       -> MISS
+  classic ghr 36ch       -> MISS
+  stateless jwt ghs      -> MISS
+
+--- souji ---
+  glpat valid 20ch       -> MISS
+  glpat bare prefix      -> MISS
+  glpat short 19ch       -> MISS
+  glpat long 21ch        -> MISS
+  escape \t ghp          -> HIT: souji-ghp
+  escape \r ghp          -> HIT: souji-ghp
+  escape \n ghp          -> HIT: souji-ghp
+  escape \u0009 ghp      -> HIT: souji-ghp
+  escape %20 ghp         -> HIT: souji-ghp
+  negative letter+ghp    -> HIT: souji-ghp
+  classic gho 36ch       -> MISS
+  classic ghu 36ch       -> MISS
+  classic ghs 36ch       -> MISS
+  classic ghr 36ch       -> MISS
+  stateless jwt ghs      -> MISS
+
+--- mado ---
+  glpat valid 20ch       -> MISS
+  glpat bare prefix      -> MISS
+  glpat short 19ch       -> MISS
+  glpat long 21ch        -> MISS
+  escape \t ghp          -> HIT: mado-generic
+  escape \r ghp          -> HIT: mado-generic
+  escape \n ghp          -> HIT: mado-generic
+  escape \u0009 ghp      -> HIT: mado-generic
+  escape %20 ghp         -> HIT: mado-generic
+  negative letter+ghp    -> HIT: mado-generic
+  classic gho 36ch       -> HIT: mado-generic
+  classic ghu 36ch       -> HIT: mado-generic
+  classic ghs 36ch       -> HIT: mado-generic
+  classic ghr 36ch       -> HIT: mado-generic
+  stateless jwt ghs      -> MISS
+
+--- kumitate (sentinel) ---
+  glpat valid 20ch       -> HIT: kumi-prefix
+  glpat bare prefix      -> MISS
+  glpat short 19ch       -> HIT: kumi-prefix
+  glpat long 21ch        -> HIT: kumi-prefix
+  escape \t ghp          -> MISS
+  escape \r ghp          -> MISS
+  escape \n ghp          -> MISS
+  escape \u0009 ghp      -> MISS
+  escape %20 ghp         -> MISS
+  negative letter+ghp    -> MISS
+  classic gho 36ch       -> HIT: kumi-prefix
+  classic ghu 36ch       -> HIT: kumi-prefix
+  classic ghs 36ch       -> HIT: kumi-prefix
+  classic ghr 36ch       -> HIT: kumi-prefix
+  stateless jwt ghs      -> MISS

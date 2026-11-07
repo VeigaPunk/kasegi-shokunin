@@ -1,0 +1,63 @@
+### R07 other first-party GitLab pages: URL, HTTP status, glpat presence, length statement
+URL=https://docs.gitlab.com/user/profile/personal_access_tokens/ status=200 glpat_occ=0  length_statement=YES ("The token must be 20 characters long.", snapshot line 297)
+URL=https://docs.gitlab.com/api/admin/token/                        status=200 glpat_occ=5  length_statement=NO
+URL=https://docs.gitlab.com/security/tokens/                         status=200 glpat_occ=4  length_statement=NO
+URL=https://docs.gitlab.com/user/project/settings/project_access_tokens/ status=200 glpat_occ=0 length_statement=NO
+URL=https://docs.gitlab.com/user/group/settings/group_access_tokens/    status=200 glpat_occ=0 length_statement=NO
+URL=https://docs.gitlab.com/api/personal_access_tokens/               status=200 glpat_occ=0  length_statement=NO
+URL=https://docs.gitlab.com/user/application_security/secret_detection/ status=200 glpat_occ=0 length_statement=NO
+URL=https://docs.gitlab.com/user/project/deploy_tokens/               status=200 glpat_occ=0  length_statement=NO
+URL=https://docs.gitlab.com/ci/runners/                               status=200 glpat_occ=0  length_statement=NO
+URL=https://docs.gitlab.com/administration/incoming_email/            status=200 glpat_occ=0  length_statement=NO (64-character local part; not a token)
+URL=https://docs.gitlab.com/user/application_security/                status=200 glpat_occ=0  length_statement=NO
+URL=https://docs.gitlab.com/api/tokens/                               status=404
+URL=https://docs.gitlab.com/user/project/settings/deploy_tokens/      status=404
+URL=https://docs.gitlab.com/ci/runners/registration/                 status=404
+URL=https://docs.gitlab.com/user/project/settings/feed_tokens/        status=404
+URL=https://docs.gitlab.com/api/project_trigger_tokens/               status=404
+URL=https://docs.gitlab.com/user/project/settings/feature_flags/      status=404
+URL=https://docs.gitlab.com/administration/scim/                      status=404
+
+### R08 the PAT page length statement, in context, with line number
+294-shell
+295-sudo gitlab-rails console
+296-Run the following commands to reference the username, the token, and the scopes.
+297:The token must be 20 characters long. The scopes must be valid and are visible
+298-in the source code.
+299-For example, to create a token that belongs to a user with username automation-bot and expires in a year:
+
+### R09 PAT page: no glpat occurrence (re-check, case-insensitive, raw HTML too)
+0
+grep_rc=1 (0 matches)
+0
+grep_rc=1 (0 matches)
+
+### R10 admin/token API: glpat lines
+176:When making a request, personal, project, or group access tokens must begin with glpat or the current custom prefix. If the token begins with a previous custom prefix, the operation fails. Interest in support for previous custom prefixes is tracked in issue 165663.
+209:tokenstringYesExisting token to identify. Personal, project or group access tokens must begin with glpat or the current custom prefix.
+223:--data '{"token": "glpat-<example-token>"}'
+277:tokenstringYesExisting token to revoke. Personal, project or group access tokens must begin with glpat or the current custom prefix.
+291:--data '{"token": "glpat-<example-token>"}'
+
+### R11 security/tokens: prefix table rows (snapshot line numbers)
+259:Clusters::AgentToken.find_by_token('glagent-xxx').id
+261:Clusters::AgentToken.find_by_token('glagent-xxx').agent.id
+264:Clusters::AgentToken.find_by_token('glagent-xxx').agent.project_id
+269:Clusters::AgentTokens::RevokeService.new(token: Clusters::AgentToken.find_by_token('glagent-xxx'), current_user: User.find_by_username('admin-user')).execute
+271:Clusters::AgentToken.find_by_token('glagent-xxx').revoke!
+349:Personal access tokenglpat-
+350:OAuth Application Secretgloas-
+351:Impersonation tokenglpat-
+352:Project access tokenglpat-
+353:Group access tokenglpat-
+354:Deploy tokengldt-
+355:Runner authentication tokenglrt- or glrtr- if created via registration token
+356:CI/CD Job tokenglcbt-
+357:Trigger tokenglptt-
+358:Feed tokenglft-
+359:Incoming mail tokenglimt-
+360:GitLab agent for Kubernetes tokenglagent-
+361:Workspace tokenglwt- (Added in GitLab 18.2)
+362:GitLab session cookies_gitlab_session=
+363:SCIM Tokensglsoat-
+364:Feature Flags Client tokenglffct-

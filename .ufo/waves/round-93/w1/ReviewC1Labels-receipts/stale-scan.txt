@@ -1,0 +1,65 @@
+=== all SKILL.md:N tokens in corpus/knowledge at ae53b3c (worktree == landing for these files)
+corpus/knowledge/considerthese-proposals-ledger.md:156	SKILL.md:1163	**3. Add a quiescence gate before `complete` — adopted and landed in round 46 as `corpus/instruments/r46-landing-gate.py`; the driver that runs at `complete` stays operator-side.** The gate is committed (`git ls-tree --n
+corpus/knowledge/considerthese-proposals-ledger.md:156	SKILL.md:1163	**3. Add a quiescence gate before `complete` — adopted and landed in round 46 as `corpus/instruments/r46-landing-gate.py`; the driver that runs at `complete` stays operator-side.** The gate is committed (`git ls-tree --n
+corpus/knowledge/triage-thresholds.md:58	SKILL.md:191	| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:191` |
+corpus/knowledge/triage-thresholds.md:88	SKILL.md:113-114	| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` 
+corpus/knowledge/triage-thresholds.md:88	SKILL.md:175-176	| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:113-114` (four terms, no `is_live`) and `SKILL.md:175-176` 
+corpus/knowledge/triage-thresholds.md:89	SKILL.md:175	| reward | `(rec.reward?.min ?? 0) * 1000` | 50 → 5e4 … 10000 → 1e7 (observed) | 110 | SUPERSEDES: `SKILL.md:175` — that line writes `reward.min`, source multiplies by 1000 |
+corpus/knowledge/triage-thresholds.md:90	SKILL.md:113-114	| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:113-114,175-176` (term omitted
+corpus/knowledge/triage-thresholds.md:143	SKILL.md:526	| `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:526` |
+corpus/knowledge/triage-thresholds.md:144	SKILL.md:191	| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:191` |
+corpus/knowledge/triage-thresholds.md:151	SKILL.md:526	| grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:526` |
+corpus/knowledge/triage-thresholds.md:153	SKILL.md:14-15	| off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `corpus/knowledge/mission-control.md:54-55`, `SKILL.md:14-15` |
+corpus/knowledge/triage-thresholds.md:220	SKILL.md:90-91	| scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `corpus/knowledge/claim-gates.md:32-33`, `SKILL
+corpus/knowledge/triage-thresholds.md:267	SKILL.md:94-95	| reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, 
+corpus/knowledge/triage-thresholds.md:310	SKILL.md:498	| `p_success` | `p_in_scope × p_reproducible × p_unique × p_accepted` (`reduce((a,b)=>a*b, 1)`) | all 4 finite | 77 | MATCHES: `corpus/knowledge/ev-model.md:14`, `SKILL.md:498` |
+corpus/knowledge/triage-thresholds.md:311	SKILL.md:499	| `gross_value` | `p_success × expected_reward` | `p_success` finite AND `expected_reward` finite | 78 | MATCHES: `corpus/knowledge/ev-model.md:15`, `SKILL.md:499` |
+corpus/knowledge/triage-thresholds.md:312	SKILL.md:500-501	| `total_cost` | `effort_hours × opportunity_rate + direct_cost + delay_cost + expected_risk_cost` | all 5 finite | 79-81 | MATCHES: `corpus/knowledge/ev-model.md:16-17`, `SKILL.md:500-501` |
+corpus/knowledge/triage-thresholds.md:313	SKILL.md:502	| `adjusted_ev` | `gross_value − total_cost` | both finite | 82 | MATCHES: `corpus/knowledge/ev-model.md:18`, `SKILL.md:502` |
+corpus/knowledge/triage-thresholds.md:355	SKILL.md:522	| record | `additionalProperties: false` at top level | 5 | MATCHES: `SKILL.md:522` |
+corpus/knowledge/triage-thresholds.md:356	SKILL.md:522	| required keys | `id, name, source_kind, official_url, freshness, lane, mission_state` | 6 | MATCHES: `SKILL.md:522` |
+corpus/knowledge/triage-thresholds.md:374	SKILL.md:111-112	| `mission_state` | enum, 12 values in order: `DISCOVERED, NORMALIZED, DEDUPED, SCOPED, RANKED, PLANNED, AUTHORIZED, EXECUTED, EVIDENCED, VERIFIED, SUBMISSION_PREPARED, LEARNED` | 54 | MATCHES: `SKILL.md:111-112` (decora
+corpus/knowledge/triage-thresholds.md:390	SKILL.md:525	| `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `corpus/knowledge/ops-invariants.md:18`, `SKILL.md:525` |
+corpus/knowledge/triage-thresholds.md:394	SKILL.md:525	| `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `corpus/knowledge/ops-invariants.md:2
+corpus/knowledge/triage-thresholds.md:396	SKILL.md:245-247	| `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; e
+corpus/knowledge/triage-thresholds.md:397	SKILL.md:146	| `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53
+corpus/knowledge/triage-thresholds.md:397	SKILL.md:246	| `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53
+corpus/knowledge/triage-thresholds.md:433	SKILL.md:113-114	| 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this exp
+corpus/knowledge/triage-thresholds.md:433	SKILL.md:175-176	| 9.1 | Dispatch score has **five** terms, not four — `is_live(1)` is part of the ordering (`[lost-base] fleet-dispatch.mjs:110`). | 110 | `SKILL.md:113-114` and `SKILL.md:175-176` omit it (both are summaries of this exp
+corpus/knowledge/triage-thresholds.md:434	SKILL.md:175	| 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:175` writes `reward.min` |
+corpus/knowledge/triage-thresholds.md:435	SKILL.md:10-11	| 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind prio
+corpus/knowledge/triage-thresholds.md:437	SKILL.md:176-178	| 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `corpus/knowledge/intake-surface.md:89-93` (round-13 correction: `reward` object on 48 but numeric `reward.min` on only 14 — the rewa
+corpus/knowledge/triage-thresholds.md:446	SKILL.md:115	| 9.14 | "~1040 records" contribute 0 or 1 points — the census says **1024** (796 zero + 228 one), plus 13 reward-band records at ≤1e7. | census §2.2 | `SKILL.md:115` |
+corpus/knowledge/triage-thresholds.md:454	SKILL.md:827-848	| EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:827-848` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
+corpus/knowledge/triage-thresholds.md:459	SKILL.md:146	| appendLedger 3500 B cap / gitMutationBlocker | `SKILL.md:146, 245-247` | MATCHES |
+corpus/knowledge/triage-thresholds.md:460	SKILL.md:113-117	| `attempts() ≥ 2` as real termination | `SKILL.md:113-117` | MATCHES |
+
+=== distinct anchors and occurrence counts
+1 SKILL.md:10-11
+1 SKILL.md:111-112
+3 SKILL.md:113-114
+1 SKILL.md:113-117
+1 SKILL.md:115
+2 SKILL.md:1163
+1 SKILL.md:14-15
+2 SKILL.md:146
+2 SKILL.md:175
+2 SKILL.md:175-176
+1 SKILL.md:176-178
+2 SKILL.md:191
+1 SKILL.md:245-247
+1 SKILL.md:246
+1 SKILL.md:498
+1 SKILL.md:499
+1 SKILL.md:500-501
+1 SKILL.md:502
+2 SKILL.md:522
+2 SKILL.md:525
+2 SKILL.md:526
+1 SKILL.md:827-848
+1 SKILL.md:90-91
+1 SKILL.md:94-95
+
+=== SKILL.md line count
+1251 SKILL.md
+rc=0

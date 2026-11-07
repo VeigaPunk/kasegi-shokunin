@@ -1,0 +1,68 @@
+Seat: CriticClaimsC1 (round-93 w1, leaf, no dispatch)
+Lane cwd for every command: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Scratch S=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC1 (removed at seat end)
+Revs: base e15996bfd2f6eca4af39507a7c5973afbeca8347; freeze 5bad9e55d3d9319446e3d9b63bc2dece633cdb68;
+      C1 landing ae53b3c6e7e2ce070c2f022d01c1677a8908df1b.
+
+1. git clone --shared --no-checkout -q <lane> "$S/lane"
+   git -C "$S/lane" rev-parse --show-toplevel -> "$S/lane"
+   git -C "$S/lane" cat-file -t {ae53b3c,5bad9e5,e15996b} -> commit commit commit
+
+2. Frozen bytes extracted from the freeze commit (not the worktree):
+   git -C "$S/lane" show 5bad9e5:.ufo/waves/round-93/c1/knowledge-meter.py > "$S/knowledge-meter.frozen.py"
+     sha256 d9f9432d44f09154da95a03531ff8e5643e708bee0f4b067781819a8e57c4b92
+   git -C "$S/lane" show 5bad9e5:.ufo/waves/round-93/c1/repair-map.tsv > "$S/repair-map.frozen.tsv"
+     sha256 7ab66a7fc8a90cf92d026d0ba1abaa23461b10a3bbd79d003ee4a33961eb3b76
+
+3. Frozen run (receipt 01-frozen-run.txt):
+   python3 -B "$S/knowledge-meter.frozen.py" --lane "$S/lane" \
+     --base-rev e15996b... --after-rev ae53b3c... \
+     --map "$S/repair-map.frozen.tsv" --labels-rev 5bad9e5... \
+     --base-target 1007/2001 --target 1009/2000 \
+     --map-sha256 7ab66a7fc8a90cf92d026d0ba1abaa23461b10a3bbd79d003ee4a33961eb3b76 --work "$S/work-final"
+   rc=0; KNOWLEDGE-METER-RESULT pass; M0,M1,M3,M4,M5,M9,M10,M6 pass.
+
+4. P2/P3/ancestry/freeze blobs (receipt 02-p2-p3-freeze.txt):
+   git show <rev>:<path> | sha256sum   for counter/map/labels at freeze, landing, worktree
+   git merge-base --is-ancestor 5bad9e5 ae53b3c ; git rev-list --parents -n 1 <rev>
+   git diff-tree --no-commit-id --name-only -r ae53b3c | wc -l -> 1
+   git diff-tree --no-commit-id --name-status -r ae53b3c -> M corpus/knowledge/triage-thresholds.md
+   git diff --name-only 5bad9e5..HEAD -- .ufo/waves/round-93/c1/ .ufo/waves/round-93/controls/ -> empty
+
+5. Token-set re-derivation (receipt 03-token-delta.txt; tools-token-diff.py):
+   python3 -B token-diff.py  -> base 1007/2001, after 1009/2000; REMOVED 6, ADDED 5;
+   non-GONE removed 3, non-GONE added 5; class churn on common tokens none.
+
+6. Controls rerun (receipts 06-controls-rerun.txt, 06-controls-rerun-diff.txt):
+   python3 -B cand/.ufo/waves/round-93/controls/c1-controls-r93.py "$S/cand" e15996b ae53b3c \
+     cand/.ufo/waves/round-93/c1/knowledge-meter.py cand/.ufo/waves/round-93/c1/repair-map.tsv \
+     cand/.ufo/waves/round-93/c1/labels.tsv "$S/ctlwork" "$S/ctlout"
+   diff <(frozen receipt) <(rerun) -> identical (rc=0); C1-CONTROLS-RESULT pass controls=11.
+
+7. Control-10 crash reproduction (receipt 05-ctl10-crash.txt; tools-ctl10-repro.py):
+   clone cand -> edit SKILL.md line 191 + append label SKILL.md:191 CORRECT "No edit" + frozen map -> commit
+   -> meter rc=1, summary line only, no LIMB lines, stderr AttributeError: 'str' object has no attribute 'map_sha256'.
+
+8. Forgeries (receipts 04-forgeries.txt, 04b-f2b-two-path.txt, 04c..04i;
+   tools-forge-suite.py), all in a scratch clone with toplevel asserted before commits:
+   F1 unlabelled in-scope edit (citation-bases.md:20): rc=1, M3 FAIL bad_lines=1.
+   F2 out-of-scope edit (SCORECARD.md): meter rc=0 PASS; as a landing-like commit from the freeze
+      (f2b: triage restored from ae53b3c + SCORECARD.md edit) diff-tree names 2 paths; P3 kills.
+   F3 map row new `SKILL.md:526` vs frozen label `SKILL.md:191` (after tree writes the map value at 58):
+      rc=1, M1/M3/M4/M5 pass, M9 FAIL unbound=triage-thresholds.md:58.
+   F4 label+map+after tree `SKILL.md:5000-5001` at 144 (SKILL.md 1251 lines): rc=1,
+      M4 pass, M5 FAIL out_of_range=triage-thresholds.md:144, M1 FAIL after=1010/2001.
+   F5 extra: label naming SKILL.md with no edit: rc=1, AttributeError, no LIMB lines.
+
+9. Provenance (receipt 07-provenance-cells.txt): round-92 ReviewC1Labels TSV payload for 437/438
+   equals the round-93 label payload equals the landed last cell, byte-for-byte
+   (sha256 5fb889c7... 437, 12a9be38... 438).
+
+10. Anchors (receipt 08-anchors.txt): base SKILL.md:117 = provenance.json line; base 494-506 =
+    park-disposition text; landing 191 = attempts statement; landing 827-848 = EV formula/fail-closed;
+    MAX_ATTEMPTS count 0 at base and landing; intake-surface.md:89-93 and mission-control.md:55-57
+    carry the round-13 corrections.
+
+11. Smallest-fix demonstration (receipt 10-fixed-counter-control10.txt; tools-km-fixed.py):
+    only 282-284 renamed (b, a -> b, atext); fixed counter on the control-10 scenario:
+    LIMB M3 FAIL bad_lines=1, M9/M10 pass, rc=1.

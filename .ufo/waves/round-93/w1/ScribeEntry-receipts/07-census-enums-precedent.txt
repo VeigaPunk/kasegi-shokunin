@@ -1,0 +1,95 @@
+# Round-93 ScribeEntry receipt 07 — census/enums, manifest line-count convention, precedent rows
+$ cat .ufo/waves/round-93/controls/census-start-r93.txt
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+kasegi	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+kasegi	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
+# Round-93 census at round start (before any round-93 registry edit): exit 0, the same six inherited
+# duplicate-URL warnings (S028, S029, S072, S076, S080, S085; pre-existing, unchanged). Registry rows at
+# this reading: 138 (| S001 | .. | S138 |).
+
+$ grep -n -E "^(spec|.*E05)" .ufo/waves/round-24/wave1/QuarterCensus.md | head -3  (kind enum in the lane census)
+
+$ grep -n -E "^\\| Q2|^\\| Q4" corpus/QUALITY.md | cut -c1-200
+15:| Q2 | Every load-bearing claim rests on ≥1 tier-A or tier-B row for that claim's scope, opened in the admitting round; a tier-C row is never sole support. | M16; A5 — historical tags treated a
+17:| Q4 | Attribution is kept: a policy, vendor report or single-program rule is stated as that party's position ("Project Zero's policy", "Anthropic reports"), never generalized into a universal rule
+
+$ grep -n "tier" corpus/QUALITY.md corpus/README.md | grep -v "^corpus/QUALITY.md:1[5-7]:" | head   (no tier legend found)
+corpus/QUALITY.md:7:that recorded it. Source tiers are defined in `corpus/SOURCES.md` (contract v1);
+corpus/QUALITY.md:15:| Q2 | Every load-bearing claim rests on ≥1 tier-A or tier-B row for that claim's scope, opened in the admitting round; a tier-C row is never sole support. | M16; A5 — historical tags treated as current authority |
+corpus/QUALITY.md:66:| R12 | A recheck line is measured against the entry that owns it: its `--source` ids must cover the entry's header `source:` ids and be cited by the entry, and the named manifest must list them. A line pointing at another entry's capture, at `true`, or at `--selftest` is not a recheck. | r24 wave-1 reviewers reached 3/8 → 8/8 by pointing all eight Frontier entries at `--source S018` with no new capture; the harness `corpus/instruments/frontier-recheck-count.py` is the fix and carries the four controls as code. |
+corpus/QUALITY.md:70:The vendor-policy surface is measured under C2 (frontier rows plus a source first
+corpus/QUALITY.md:169:| R20 | A capture snapshot directory ships its `manifest.json` in the same round and the same commit that adds its captured files. Every manifest record carries a `url` matching exactly one `corpus/SOURCES.md` registry-row URL and one fetch-provenance field: `fetched_utc` for a round-32-or-later capture, a declared `archival: true` for an older one whose exact fetch instant was not recorded. A snapshot dir with no manifest, or a record with neither `url` nor provenance, is a defect of the round that landed it, and it is repaired by appending that round's manifest and landing the checker in the same round — never by re-freezing the claim that reads manifests into a lower record count. | M33-1 (`corpus/lessons/round-33.md` § Mistakes; frozen statement `.ufo/waves/round-33/claims.json` → `non_claim_frontier_items.mistake`); `corpus/lessons/round-32-verifier-spotcheck.md:93` D5 — "are committed without a `round-32/manifest.json`" and "so the 38-record target is not silently moved" — plus the base measurement below: `manifest_records=38 with_url=0 with_fetched_utc=0 archival_true=0`, `snapshot_dirs_without_manifest=1` (`corpus/source-snapshots/round-32`, holding `S049.txt` and `S050.txt`), measured on base `690b69da…`. |
+corpus/QUALITY.md:170:| R21 | A sourced claim's capture manifest carries the provenance that lets a re-verifier separate a fabricated capture from a real one: a `url` the registry row independently names, and a fetch instant the capture commit dates. A counter set that binds only local bytes and shape counts (entry count, registry-row count, `occurrences=1`) is not evidence that the capture is real; until the manifest carries those fields, the claim states that limit instead of reading the passing counters as a capture check. | `corpus/lessons/round-31.md:146` open item 4 — "manifest `url`/`fetched_utc` fields and a census URL↔capture comparison" — after `.ufo/waves/round-31/wave1/CritC2Kill.md:232` §6 item 2 — "No URL↔capture binding anywhere": that seat's junk construction (invented capture + manifest + entry + frontier and registry rows) passed all seven C2 counters; M33-1 (`corpus/lessons/round-33.md` § Mistakes). |
+corpus/QUALITY.md:226:| R22 | A frozen claim predicate is checked for satisfiability against base bytes before freeze: every literal constant and regex in the predicate and kill rule is run against the base tree; an unsatisfiable literal is fixed before data, never waived by a post-freeze erratum. Grounded in: round-33 verifier R2; M34-2. | `corpus/lessons/round-33-verifier-spotcheck.md:167-169` (R2 — the frozen parenthetical that literally read `bound=38`); M34-2 at `.ufo/waves/round-34/claims.json` → `non_claim_frontier_items.mistake` |
+corpus/QUALITY.md:228:| R24 | A counter's mutant kill rule is recorded and tightened: the selftest clause requires one `selftest case=<name>` verdict line per case with cases>=11, so a summary-only forgery (cases=0 failures=0) cannot satisfy it. | `corpus/lessons/round-33-verifier-spotcheck.md:174-176` (R4) and the round-34 erratum at `corpus/lessons/round-33.md:215-226` — the frozen rule **caught 3 of 4**, skip-selftest (M4) survived (`.ufo/waves/round-33/wave1/RevClaimsFreeze.md:75,172`, finding F-5); M34-1 at `.ufo/waves/round-34/claims.json` → `non_claim_frontier_items.mistake` (the 'all mutants killed' overstatement) |
+corpus/QUALITY.md:291:| R32 | A front-door append (PROVINCE.md, corpus/README.md, SKILL.md) lands only the declared block: its bytes equal a declaration `<path> <lines> <sha256>` recorded before landing, and the file's fenced-code state at EOF is closed; receipt validation text never lands | M38-1 (`corpus/lessons/round-38.md` § Mistakes, minted this round) — routed as D-A by the round-37 verifier (`corpus/lessons/round-37-verifier-spotcheck.md:159-164`): the `PROVINCE.md:80-152` append and the `corpus/README.md` round-37 append carry `wave1/ScribeFrontierAmendments.md` receipt scaffolding (`## 3. Deliverable B` header, property tables, `## 4. Validation on a scratch mirror`, a duplicated F20 row, unbalanced fences) where the amendment is 2 lines and the planned README block 27 — measured `PROVINCE.md` 74 lines, README 56 (`corpus/lessons/round-37-verifier-spotcheck.md:113-118`) — and README lost its `## Round-37 admission` heading. Class: an append whose landed bytes were never the declared bytes; no limb caught it, since the r37 placeholder limb read only `SCORECARD.md` and `SHONEN.md` (`corpus/lessons/round-37-verifier-spotcheck.md:169-174`). Captured by G1 of `corpus/instruments/r38-closure.sh` over `PROVINCE.md` and `corpus/README.md` (`gen`, `check`, `selftest`); its `SKILL.md` arm is stated as the bar and has no G1 limb yet. |
+corpus/QUALITY.md:354:| R42 | A check counts as repaired only when its selftest's mutant set contains the committed defeat shape for its family — the input a committed attack receipt or routed defect filed, at the bytes it filed them, not a stand-in the author composed — and that mutant is executed against the current instrument bytes and rejected (`mutant=<name> rejected=1 rc=1`, recorded in the selftest line). A family whose committed defeat is absent from the mutant set, or whose mutant greens (`rejected=0 rc=0`) on a tree carrying the family's committed defect, leaves the check unrepaired whatever its positive case prints; a mutant that rewrites one occurrence while the committed defect is a duplicated block mutates nothing, because the shape, not the string, is the defeat. Each selftest prints one graded line per case with its mutant count and verdict (R24's shape: `selftest case=<id> mutants=<k>/<n> … verdict=pass`), and where the committed artifact lives outside the suite — a wave-2 receipt, a probe transcript — the suite carries it as a replay fixture bound by path and digest or re-executes the artifact itself, never a paraphrase of it. | The r41 failure this row generalizes: `wave2/CritC1KillRule.md:18,20` record `mutant=evidence-not-named rejected=0 rc=0` and `mutant=mangled-value-token rejected=0 rc=0`, with `:21-22` `selftest case=I1 mutants=1/2 … verdict=fail` and `selftest case=I3 mutants=0/1 … verdict=fail`, and the receipt repeats them (`round-41/final-gates/all-gates.txt:18,20`) — both mutants name the right class and neither reproduces the committed defeat, because `replace_line` (`r41-closure.sh:1683-1690`, `!done`) rewrites one line per file while the corrected records carry duplicated blocks (`SCORECARD.md:1602-1605,1607-1610`, byte-identical), so the mutated tree keeps an unmutated qualified line (scratch replay: bounded hits 2 before, 2 after replace-first, 0 after replace-all). The family list is the round-42 claim's seven — F-EVID, F-TOKEN, F-TABLE, F-DECL, F-SCAN, F-BIND, F-FLIP — whose kill rule reads 'the committed replay limb of any J1-J7 check is absent or skipped (a defeat that is not replayed is not repaired)' (`.ufo/waves/round-42/claims.json` C1 kill_rule), and the blind spot the r41 verifier left open is a family instance: 'the frontier counter's status-flip blind spot (26/26 exit 0 without the explicit F24 PASS line)' (`corpus/lessons/round-41-verifier-spotcheck.md:148-149`), probed by `wave2/MutFrontierParser.md`. R17 kills a limb with a one-limb mutant and R24 requires a graded case line; neither requires the mutant set to carry the committed defeat, which is how the r41 rows stayed green. Round-42 limbs: J1-J7 each carry a REPLAY limb over the committed artifact. |
+rc=0
+
+# manifest "lines" convention: round-92 (committed) vs wc -l
+$ grep -E "\"lines\"" corpus/source-snapshots/round-92/manifest.json
+   "lines": 178,
+   "lines": 274,
+   "lines": 440,
+$ wc -l corpus/source-snapshots/round-92/S136.txt corpus/source-snapshots/round-92/S137.txt corpus/source-snapshots/round-92/S138.txt
+  178 corpus/source-snapshots/round-92/S136.txt
+  274 corpus/source-snapshots/round-92/S137.txt
+  440 corpus/source-snapshots/round-92/S138.txt
+  892 total
+$ grep -E "\"lines\"" corpus/source-snapshots/round-93/manifest.json
+      "lines": 415,
+$ wc -l corpus/source-snapshots/round-93/S139.txt
+414 corpus/source-snapshots/round-93/S139.txt
+
+# round-92 precedent row (S136) and this row, cells 2-4 and 9-10
+$ git show 5bad9e55:corpus/SOURCES.md | awk -F"|" "/^\\| S13[69] /{print \\$2, \\$4, \\$5, \\$10, \\$11}"
+ S136  |  docs  |  A  |  2026-11-07  |  180d 
+ S139  |  docs  |  A  |  2026-11-07  |  180d 
+
+# r92 closure verdict line and routed-defect count
+$ grep -n "Closure verdict" corpus/lessons/round-92-verifier-spotcheck.md
+95:**Closure verdict: kasegi round 92 admitted** (both claims verify; no axis harmed; conformance clean).
+$ sed -n "/## 6. Routed defects/,/## 7/p" corpus/lessons/round-92-verifier-spotcheck.md | grep -cE "^[0-9]+\\\\."
+6
+
+# wave spec: item count
+$ python3 -c "import json;d=json.load(open(\".ufo/waves/round-93/w1-spec.json\"));print(\"items\",len(d[\"items\"]));print(\"wave\",d[\"wave\"])"
+items 13
+wave kasegi-r93-w1
+
+# appended: kind enum evidence and a live census of the 139-row registry (read-only)
+$ grep -n "E05" .ufo/waves/round-24/wave1/QuarterCensus.md | head -2
+227:file	E05	S033 kind=blog
+258:file	E05	S033 kind=blog
+$ grep -n "kind" .ufo/waves/round-24/wave1/ScoutCensus.md | grep -E "spec.*docs.*paper" | head -2
+112:| E05 | `kind` ∉ {`spec`,`docs`,`paper`,`code`,`tool`,`dataset`,`talk`,`book`,`community`,`own-work`}. | `S:655–656` |
+
+$ /home/vgpnk/Projects/shokunin/scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
+kasegi	W04	S028 duplicate url docs.hackerone.com/en/articles/8494502-safe-harbor-overview-faq across scopes
+kasegi	W04	S029 duplicate url eur-lex.europa.eu/eli/reg/2024/2847/oj/eng across scopes
+kasegi	W04	S072 duplicate url bughunters.google.com/about/rules/about-this-section across scopes
+kasegi	W04	S076 duplicate url docs.github.com/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories across scopes
+kasegi	W04	S080 duplicate url ossf.github.io/osv-schema across scopes
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
+
+$ git show 5bad9e55:corpus/SOURCES.md | grep -nE "^\\| S139 " | wc -l  (row present at the freeze, once)
+1
+
+# appended: enum/status/cell checks run directly on the FREEZE bytes (working tree was already being edited by the L1)
+$ git show 5bad9e55:corpus/SOURCES.md > $S/SOURCES-freeze.md
+$ awk -F"|" sanity over every registry row (cells==11, kind in E05 enum, tier in ABC, status in queued/mined/rejected)
+awk-rc=0 (no line above = clean)
+$ awk -F"|" "/^\\| S139 /{print \\$2,\\$4,\\$5,\\$9,\\$11}" $S/SOURCES-freeze.md
+ S139  |  docs  |  A  |  queued  |  180d 
+$ grep -c "docs.gitlab.com/user/application_security/secret_detection/detected_secrets/" $S/SOURCES-freeze.md
+1
+$ grep -c "docs.gitlab.com/user/profile/personal_access_tokens" $S/SOURCES-freeze.md  (rejected page not registered)
+0

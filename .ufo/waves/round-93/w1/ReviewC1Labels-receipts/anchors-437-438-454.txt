@@ -1,0 +1,106 @@
+=== 437 anchor A: ae53b3c:corpus/knowledge/intake-surface.md:85-95
+    85	```
+    86	
+    87	With `priority.json` = 14 programs (a strict subset of the 50
+    88	continue-verdict programs — the 9e12 tier only breaks ties inside the
+    89	continue cohort), `curated` = 1, `reward` object on 48 but numeric
+    90	`reward.min` on only 14 (round-13 correction; one of the 14 is also a
+    91	continue hit, so the reward band counts 13): for exactly **1024** records
+    92	(796 zero + 228 live-only; round-13 census — earlier "~1040" was derived
+    93	from the reward-exists≠reward.min-numeric conflation) the score is 0 or 1
+    94	and order
+    95	degenerates to readdir order. The 1088-record map contributes almost nothing
+rc=0
+
+=== 437 anchor B: ae53b3c:SKILL.md:173-180
+   173	`bounty-map/programs/*.json` (1088 records, one import
+   174	`refresh-20260829T190850329Z`, nothing since) is **not** mission state:
+   175	`mission_state` is DISCOVERED×1087/PLANNED×1 and read only for a `--dry`
+   176	log line; `lane` is `executor`×1088; `ev_inputs` non-empty×1; the `reward`
+   177	object exists on 48 records (all `source_kind=independent`) but numeric
+   178	`reward.min` on only 14 (round-13 correction) — `ev-report.mjs` prints
+   179	UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all three
+   180	board datasets 358 h stale at round 11, 359.4 h at the round-13 live re-run
+rc=0
+
+=== 438 anchor: ae53b3c:corpus/knowledge/mission-control.md:50-60
+    50	  sha matches accepted bytes (`claim_tag_rejected`/`claim_tag_conflict`
+    51	  telemetry on mismatch), then one atomic `git push origin main` + tags
+    52	  (`claims_pushed`). All git mutations fail-closed through
+    53	  `gitMutationBlocker`.
+    54	- **Model routing** (decree 2026-09-04, fixed UTC-3): Beijing off-peak
+    55	  12:00–22:00 → `alibaba-token-plan/deepseek-v4-pro:max`; peak →
+    56	  `openai-codex/gpt-6-astra:max` (round-13 correction: source
+    57	  fleet-dispatch.mjs:300; earlier text said `openai-oauth/`). Applies to NEW launches only — running
+    58	  missions keep their pin (contract freeze). Window flip resets the limit
+    59	  fallback. An A/B/C `--models-rr a,b,c --rr-until <epochMs>` experiment
+    60	  mode exists (telemetry `experiment: l1-model-abc`).
+rc=0
+
+=== 454 anchor: ae53b3c:SKILL.md:820-860
+   820	`e724186c1330`) matches at `DEFAULTS :55-59`. `ops/fleet-dispatch.mjs` is 330
+   821	lines vs the lost 427 (`corpus/knowledge/mission-control.md:3`) and diverges
+   822	in content, so its anchors are cited twice and every lost-tree anchor is
+   823	written `[lost-tree] <path>:<line>` — a token that cannot resolve against the
+   824	mirror by accident. Counts from the lost DATA half carry [corpus-attested
+   825	as-of 2026-09-28T23:32Z; source tree absent].
+   826	
+   827	```
+   828	p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+   829	gross_value  = p_success × expected_reward
+   830	total_cost   = effort_hours × opportunity_rate + direct_cost + delay_cost
+   831	               + expected_risk_cost
+   832	adjusted_ev  = gross_value − total_cost
+   833	```
+   834	
+   835	Terms: `[lost-base] ops/ev-report.mjs:77` (`p_success` — left-fold
+   836	`reduce((a,b)=>a*b, 1)` over the 4 factors mapped at
+   837	`[lost-base] ops/ev-report.mjs:73`), `[lost-base] ops/ev-report.mjs:78` (`gross_value`),
+   838	`[lost-base] ops/ev-report.mjs:79-81` (`total_cost`; the 5 `costKeys` at
+   839	`[lost-base] ops/ev-report.mjs:74`), `[lost-base] ops/ev-report.mjs:82` (`adjusted_ev`); all four
+   840	printed at `[lost-base] ops/ev-report.mjs:86-89`. Guards: `[lost-base] ops/ev-report.mjs:46`
+   841	`isNum = typeof v === 'number' && Number.isFinite(v)` — no coercion, so a
+   842	JSON string `"0.5"` prints UNKNOWN while numeric `0.5` prints;
+   843	`[lost-base] ops/ev-report.mjs:47` `fmt = String(Number(v.toFixed(6)))` — six decimals
+   844	then trailing-zero stripping: `0.0735`, never `0.073500`.
+   845	
+   846	Missing inputs print `UNKNOWN`, never 0/1; the affected term and the verdict
+   847	degrade to `unknown`, fail-closed (`[lost-base] ops/ev-report.mjs:47`,
+   848	`[lost-base] ops/ev-report.mjs:91`). Verdict is strict — `positive_adjusted_ev: true`
+   849	only when `adjusted_ev > 0`, `false` at ≤ 0 (exactly 0 → `false`), `unknown`
+   850	when either term is non-finite (`[lost-base] ops/ev-report.mjs:91`). Exits: 0 always on a
+   851	report (`[lost-base] ops/ev-report.mjs:92`); **2** for a missing program-id argument
+   852	(`[lost-base] ops/ev-report.mjs:23-26`) OR a missing program file
+   853	(`[lost-base] ops/ev-report.mjs:30-33`); unparseable file → `WARNING` + `rec = null`
+   854	(`[lost-base] ops/ev-report.mjs:38-41`) → `ev = {}` (`[lost-base] ops/ev-report.mjs:43`) → all 10
+   855	inputs and all 4 terms UNKNOWN, exit 0 — fail-closed on values, not on parse.
+   856	All branches **runnable-verified**: r15 ran a byte-identical copy of the
+   857	mirror script (`/tmp/kasegi-r15/ev-smoke`, copy sha256 == mirror sha256) and
+   858	observed every exit code and every UNKNOWN path.
+   859	
+   860	Row shape `  <key> = <value> basis: <basis><detail>`, `padEnd(20)` /
+rc=0
+
+=== 454 old anchor: ae53b3c:SKILL.md:490-510
+   490	`login-walled`, `no testing grant`, `testing paused`, `requires agreement`,
+   491	`privacy hard stop`, `forbidden`, `prohibited personal-data`,
+   492	`not in publi`) → RETIRE_AUTH;
+   493	`TRANSIENT = /unreachable|timeout|HTTP 5\d\d|ECONN|ENOTFOUND|DNS|network/i`
+   494	(`[lost-base] ops/park-disposition.mjs:19`) → RETRY_TRANSIENT; else **REVIEW = no action**
+   495	(`[lost-base] ops/park-disposition.mjs:32`). The dry-run prints the five class counts
+   496	(`[lost-base] ops/park-disposition.mjs:36-39`).
+   497	
+   498	RETRY_* is a real requeue: `attempt_reset` + `mission_unparked` telemetry then
+   499	`rmSync` of the status file so the dispatcher re-picks it on the current window
+   500	model (`[lost-base] ops/park-disposition.mjs:45-49`). RETIRE_AUTH reads the program record
+   501	(`[lost-base] ops/park-disposition.mjs:52`) and writes
+   502	`docs/autopsies/<id>.md` (`[lost-base] ops/park-disposition.mjs:43`, `:53`) with a fixed
+   503	**seven-part** body — round-15 correction, this section previously said
+   504	"five-part" while listing seven: 4 bold metadata lines `**Outcome:**`
+   505	(`[lost-base] ops/park-disposition.mjs:56`), `**Program URL:**` (`:57`),
+   506	`**State at retirement:**` (`:58`), `**Reason (verbatim):**` (`:59`), then 3
+   507	`##` sections — "Why it could not succeed autonomously"
+   508	(`[lost-base] ops/park-disposition.mjs:61-65`), "Unlock prerequisite"
+   509	(`[lost-base] ops/park-disposition.mjs:67-70`), "Evidence"
+   510	(`[lost-base] ops/park-disposition.mjs:72-73`). It then rewrites the status to
+rc=0

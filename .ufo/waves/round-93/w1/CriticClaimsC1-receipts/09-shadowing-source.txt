@@ -1,0 +1,17 @@
+== knowledge-meter.py 279-283 (the labelled-file loop; 'a' shadowed) ==
+        bcls, acls, bfiles, afiles = B["cls"], A["cls"], B["files"], A["files"]
+        labelled_files = {site.rsplit(":", 1)[0] for site, _ in labels} | {r[0] for r in rows}
+        for rel in sorted(labelled_files - set(bfiles)):
+            b, a = file_at(B["tree"], rel), file_at(A["tree"], rel)
+            if b is not None and a is not None:
+== knowledge-meter.py 396-402 (consumer of namespace 'a') ==
+        limbs.append(("M10", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),
+                      "labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s" % (
+                          len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))
+        if a.map_sha256:
+            got = hashlib.sha256(mb).hexdigest()
+            limbs.append(("M6", got == a.map_sha256.lower(), "sha256=%s" % got))
+        for name, ok, det in limbs:
+== grep -n ==
+282:            b, a = file_at(B["tree"], rel), file_at(A["tree"], rel)
+399:        if a.map_sha256:

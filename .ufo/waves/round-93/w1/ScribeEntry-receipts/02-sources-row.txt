@@ -1,0 +1,28 @@
+# Round-93 ScribeEntry receipt 02 — SOURCES.md at the freeze 5bad9e55 (S139 row cells + row-change bullet)
+$ git show 5bad9e55:corpus/SOURCES.md | grep -E "^\| id \|" (column header)
+| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+
+$ awk -F"|" "/^\\| S139 /{for(i=2;i<=NF-1;i++) printf \"cell%d: %s\\n\", i-1, \$i}" (cells 1-11, trimmed)
+cell1: S139
+cell2: GitLab Docs, Secret detection: Detected secrets — https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/
+cell3: docs
+cell4: A
+cell5: GitLab's own rule statement for the personal access token format
+cell6: Rule-based detection section, snapshot lines 85-87 (the pattern statement and the 20-character sentence); capture corpus/source-snapshots/round-93/S139.txt
+cell7: A GitLab personal access token is `glpat-` plus a 20-character string, so a detector can bound the value's length on that prefix; the page states no alphabet, so the character class stays a lane choice.
+cell8: queued
+cell9: 2026-11-07
+cell10: 180d
+cell11: —
+
+$ git show 5bad9e55:corpus/SOURCES.md | grep -cE "^\| S[0-9]{3} \|" (registry rows)
+139
+$ git show 9225954a:corpus/SOURCES.md | grep -cE "^\| S[0-9]{3} \|"
+139
+
+$ git show 5bad9e55:corpus/SOURCES.md | tail -1 (the round-93 row-change bullet)
+- Round 93: S139 row added (id `S139`, kind `docs`, tier A, GitLab Docs Secret detection Detected secrets page, opened 2026-11-07, recheck `180d`); status `queued`, used-by `—` in the round-93 freeze. The page's generic-detection teaching samples matched the intake gate's `credential` and `bearer` shapes; four digest-bound allowlist rows for `corpus/source-snapshots/round-93/S139.txt` were read in context before the capture (pre-capture refusal: `.ufo/waves/round-93/controls/capture-intake-r93.txt`).
+
+$ git show 5bad9e55 -- corpus/SOURCES.md | grep -E "^\\+\\||^\\+- Round 93" | cut -c1-120
++| S139 | GitLab Docs, Secret detection: Detected secrets — https://docs.gitlab.com/user/application_security/secret_d
++- Round 93: S139 row added (id `S139`, kind `docs`, tier A, GitLab Docs Secret detection Detected secrets page, opened 

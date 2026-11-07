@@ -1,0 +1,193 @@
+### mutant A (path-keyed) vs round-92 landed scanner (58c0c115 blob)
+--- r92-scan.py	2026-11-07 11:21:35.237790885 -0300
++++ mutantA-pathkeyed.py	2026-11-07 11:21:49.114798118 -0300
+@@ -160,6 +160,20 @@
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+ )
++_KEYED_PATHS = {
++    'corpus/source-snapshots/round-1/S035.txt': ('gitlab-pat',),
++    'w/t-receipts/live-k.json': ('gitlab-pat',),
++    'corpus/practice/p/evidence/E6.txt': ('gitlab-pat',),
++    'corpus/source-snapshots/round-1/S036.txt': ('gitlab-pat',),
++    'w/t-receipts/live-l.json': ('gitlab-pat',),
++    'corpus/source-snapshots/round-1/S037.txt': ('github-token',),
++    'w/t-receipts/live-m.json': ('github-token',),
++    'corpus/source-snapshots/round-1/S038.txt': ('github-token',),
++    'corpus/source-snapshots/round-1/S039.txt': ('github-token',),
++    'corpus/source-snapshots/round-1/S050.txt': ('github-token',),
++}
++
++
+ ALLOWED_VALUES = frozenset({b"AKIA-REDACTED-r93"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
+ HEX64 = re.compile(r"^[0-9a-f]{64}$")
+@@ -219,6 +233,9 @@
+                 continue
+             found.append((name, data.count(b"\n", 0, m.start()) + 1))
+             break
++    for _kname in _KEYED_PATHS.get(path, ()):
++        if _kname not in [n for n, _ in found]:
++            found.append((_kname, 1))
+     return found, allowed
+ 
+ 
+
+### mutant B (gitlab-pat glpat- + 3 or more chars) vs landed
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py	2026-11-07 11:15:40.120402030 -0300
++++ mutantB-glpat3.py	2026-11-07 11:21:49.115245478 -0300
+@@ -176,7 +176,7 @@
+ )
+ _GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ GITLAB_PATTERNS = (
+-    ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
++    ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{3,}(?![A-Za-z0-9_-])")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIA-REDACTED-r93"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
+@@ -387,9 +387,9 @@
+         ("gl-pat-json", b'{"t":"glpat-' + b"0123456789abcdefghij" + b'"}', {"gitlab-pat"}),
+         ("gl-pat-after-pct20", b"q=%20glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+         ("gl-pat-after-u0026", b'"q":"a\\u0026glpat-' + b"0123456789abcdefghij" + b'"', {"gitlab-pat"}),
+-        ("gl-pat-19-chars", b"glpat-" + b"0123456789abcdefghi ", set()),
+-        ("gl-pat-21-chars", b"glpat-" + b"0123456789abcdefghijk", set()),
+-        ("gl-pat-right-underscore", b"glpat-" + b"0123456789abcdefghij" + b"_", set()),
++        ("gl-pat-19-chars", b"glpat-" + b"0123456789abcdefghi ", {"gitlab-pat"}),
++        ("gl-pat-21-chars", b"glpat-" + b"0123456789abcdefghijk", {"gitlab-pat"}),
++        ("gl-pat-right-underscore", b"glpat-" + b"0123456789abcdefghij" + b"_", {"gitlab-pat"}),
+         ("gl-pat-upper-prefix", b"GLPAT-" + b"0123456789abcdefghij", set()),
+         ("gl-pat-bare-prefix", b"identified by the pattern glpat- followed by a 20-character string", set()),
+         ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", set()),
+
+### mutant C (JWT segment floor 1) vs landed
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py	2026-11-07 11:15:40.120402030 -0300
++++ mutantC-jwt1.py	2026-11-07 11:21:49.115403368 -0300
+@@ -168,7 +168,7 @@
+ )
+ _ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ _GH_LB = _ESC_LB
+-_JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
++_JWT_SEG = rb"[A-Za-z0-9_-]{1,}"
+ GITHUB_PATTERNS = (
+     ("github-token", re.compile(
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+@@ -362,7 +362,7 @@
+         ("gh-installation-json-joined", b'"x\\nghs_' + ghtail + b'"', {"github-token"}),
+         ("gh-refresh-line-start", b"ghr_" + ghtail + b"\n", {"github-token"}),
+         ("gh-stateless-installation", b"token ghs_123456_" + jwt + b" end", {"github-token"}),
+-        ("gh-stateless-short-segments", b"ghs_123_abc.def.ghi", set()),
++        ("gh-stateless-short-segments", b"ghs_123_abc.def.ghi", {"github-token"}),
+         ("gh-doc-placeholder", b"a stateless format (ghs_APPID_JWT) to all newly minted", set()),
+         ("gh-bare-prefix", b"Personal access token (classic)ghp_Managing your personal access tokens", set()),
+         ("gh-35-chars", b"ghp_" + ghtail[:35] + b" ", set()),
+
+### mutant D (gitlab left boundary removed) vs landed
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py	2026-11-07 11:15:40.120402030 -0300
++++ mutantD-no-gitlab-lb.py	2026-11-07 11:23:45.311774990 -0300
+@@ -176,7 +176,7 @@
+ )
+ _GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ GITLAB_PATTERNS = (
+-    ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
++    ("gitlab-pat", re.compile(rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIA-REDACTED-r93"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
+@@ -392,7 +392,7 @@
+         ("gl-pat-right-underscore", b"glpat-" + b"0123456789abcdefghij" + b"_", set()),
+         ("gl-pat-upper-prefix", b"GLPAT-" + b"0123456789abcdefghij", set()),
+         ("gl-pat-bare-prefix", b"identified by the pattern glpat- followed by a 20-character string", set()),
+-        ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", set()),
++        ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+         ("gl-pat-runner-known-limit", b"glrt-" + b"0123456789abcdefghij", set()),
+     ]
+     bad = 0
+
+### mutant E (gitlab escape-terminator alternatives \t/\r/\n removed) vs landed
+--- /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-scan.py	2026-11-07 11:15:40.120402030 -0300
++++ mutantE-no-gitlab-escapes.py	2026-11-07 11:24:18.439601728 -0300
+@@ -174,7 +174,7 @@
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+ )
+-_GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
++_GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+ GITLAB_PATTERNS = (
+     ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+ )
+
+### mutant G (basename-keyed) vs round-92 landed scanner
+--- r92-scan.py	2026-11-07 11:21:35.237790885 -0300
++++ mutantG-basename-keyed.py	2026-11-07 11:26:01.373678835 -0300
+@@ -160,6 +160,23 @@
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+ )
++_KEYED_BASENAMES = {
++    'S035.txt': ('gitlab-pat',),
++    'live-k.json': ('gitlab-pat',),
++    'E6.txt': ('gitlab-pat',),
++    'S036.txt': ('gitlab-pat',),
++    'live-l.json': ('gitlab-pat',),
++    'S037.txt': ('github-token',),
++    'live-m.json': ('github-token',),
++    'S038.txt': ('github-token',),
++    'S039.txt': ('github-token',),
++    'S050.txt': ('github-token',),
++    'live-g10.txt': ('gitlab-pat',),
++    'live-g11.json': ('github-token',),
++    'live-g12.txt': ('gitlab-pat',),
++}
++
++
+ ALLOWED_VALUES = frozenset({b"AKIA-REDACTED-r93"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
+ HEX64 = re.compile(r"^[0-9a-f]{64}$")
+@@ -219,6 +236,9 @@
+                 continue
+             found.append((name, data.count(b"\n", 0, m.start()) + 1))
+             break
++    for _kname in _KEYED_BASENAMES.get(os.path.basename(path), ()):
++        if _kname not in [n for n, _ in found]:
++            found.append((_kname, 1))
+     return found, allowed
+ 
+ 
+
+### mutant H (rerooted-shape-keyed) vs round-92 landed scanner
+--- r92-scan.py	2026-11-07 11:21:35.237790885 -0300
++++ mutantH-nonce-shape-keyed.py	2026-11-07 11:26:50.885956596 -0300
+@@ -160,6 +160,23 @@
+         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+ )
++_KEYED_SHAPES = (
++    (re.compile('^corpus/source-snapshots/r[0-9a-f]{8}/round-1/S035\\.txt$'), 'gitlab-pat'),
++    (re.compile('^corpus/source-snapshots/r[0-9a-f]{8}/round-1/S036\\.txt$'), 'gitlab-pat'),
++    (re.compile('^corpus/source-snapshots/r[0-9a-f]{8}/round-1/S037\\.txt$'), 'github-token'),
++    (re.compile('^corpus/source-snapshots/r[0-9a-f]{8}/round-1/S038\\.txt$'), 'github-token'),
++    (re.compile('^corpus/source-snapshots/r[0-9a-f]{8}/round-1/S039\\.txt$'), 'github-token'),
++    (re.compile('^corpus/source-snapshots/r[0-9a-f]{8}/round-1/S050\\.txt$'), 'github-token'),
++    (re.compile('^corpus/practice/p[0-9a-f]{8}/evidence/E6\\.txt$'), 'gitlab-pat'),
++    (re.compile('^w/n[0-9a-f]{8}/t-receipts/live-k\\.json$'), 'gitlab-pat'),
++    (re.compile('^w/n[0-9a-f]{8}/t-receipts/live-l\\.json$'), 'gitlab-pat'),
++    (re.compile('^w/n[0-9a-f]{8}/t-receipts/live-m\\.json$'), 'github-token'),
++    (re.compile('^g/x-receipts/live-g10\\.txt$'), 'gitlab-pat'),
++    (re.compile('^g/x-receipts/live-g11\\.json$'), 'github-token'),
++    (re.compile('^g/x-receipts/live-g12\\.txt$'), 'gitlab-pat'),
++)
++
++
+ ALLOWED_VALUES = frozenset({b"AKIA-REDACTED-r93"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
+ HEX64 = re.compile(r"^[0-9a-f]{64}$")
+@@ -219,6 +236,9 @@
+                 continue
+             found.append((name, data.count(b"\n", 0, m.start()) + 1))
+             break
++    for _krx, _kname in _KEYED_SHAPES:
++        if _krx.match(path) and _kname not in [n for n, _ in found]:
++            found.append((_kname, 1))
+     return found, allowed
+ 
+ 

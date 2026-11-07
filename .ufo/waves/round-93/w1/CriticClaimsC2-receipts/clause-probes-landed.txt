@@ -1,0 +1,35 @@
+=== 13 clause probes (one case per file; each file holds a single line) ===
+c01_gitlab_after_tab           x\tglpat-REDACTED-r93
+c02_gitlab_after_cr            x\rglpat-REDACTED-r93
+c03_gitlab_after_nl            x\nglpat-REDACTED-r93
+c04_gitlab_after_ent           q=a&#38;glpat-REDACTED-r93
+c05_gitlab_after_hexent        q=a&#x26;glpat-REDACTED-r93
+c06_github_after_cr            x\rghp_REDACTED-r93
+c07_github_after_ent           q=a&#38;ghp_REDACTED-r93
+c08_github_after_hexent        q=a&#x26;ghp_REDACTED-r93
+c09_gitlab_letter_before       xglpat-REDACTED-r93
+c10_gitlab_right_underscore    glpat-REDACTED-r93
+c11_gitlab_encoded_sep         glpat%2D0123456789abcdefghij
+c12_github_encoded_sep         gh%5Fp_PLANTEDghFIXTUREtoken0123456780aZ9yX
+c13_gitlab_right_dash          glpat-REDACTED-r93
+
+=== A. landed instrument 7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5 ===
+HIT shape=gitlab-pat path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c01_gitlab_after_tab.txt line=1
+HIT shape=gitlab-pat path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c02_gitlab_after_cr.txt line=1
+HIT shape=gitlab-pat path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c03_gitlab_after_nl.txt line=1
+HIT shape=gitlab-pat path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c04_gitlab_after_ent.txt line=1
+HIT shape=gitlab-pat path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c05_gitlab_after_hexent.txt line=1
+HIT shape=github-token path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c06_github_after_cr.txt line=1
+HIT shape=github-token path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c07_github_after_ent.txt line=1
+HIT shape=github-token path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c08_github_after_hexent.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=13 hits=8 files=8 allowed=0 unused_allow=0 rc=1
+rc=1
+
+=== B. forgery E (gitlab left boundary without \t/\r/\n) sha256 feaf98790c97ca45de3b1e6ccf16c384186df2f868847d617ab916ea7063121b on c01..c03 ===
+CAPTURE-SECRET-SCAN mode=files scanned=3 hits=0 files=0 allowed=0 unused_allow=0 rc=0
+rc=0
+
+=== C. forgery D (gitlab left boundary removed) sha256 de0f273b158de0ed41d205613486e9da2fed5f0a7e71baa900233e3af9b56ee4 on c09 (letter before) ===
+HIT shape=gitlab-pat path=/fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clauses/c09_gitlab_letter_before.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=0 rc=1
+rc=1

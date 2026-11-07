@@ -1,0 +1,23 @@
+$ git diff-tree --no-commit-id --name-only -r 9225954a6e3f177af46bdb9d811c062a4353a552   (clone: /fast/scratch/hyaku/kasegi-r93/CriticClaimsC2/clone)
+SCORECARD.md
+corpus/instruments/capture-secret-scan.py
+path count: 2
+
+$ git show 9225954a...:corpus/instruments/capture-secret-scan.py | sha256sum
+7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5  -
+frozen candidate_sha256 = 7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5
+
+$ git show 9225954a...:.ufo/waves/round-93/c2/capability-check.py | sha256sum
+8a4ad5081cb21d9afb80e83f490b51df2e3a7fb6211a4e9e91a69c456d751bb6  -
+frozen counter_sha256 = 8a4ad5081cb21d9afb80e83f490b51df2e3a7fb6211a4e9e91a69c456d751bb6
+
+$ git show 9225954a...:.ufo/waves/round-93/c2/candidate-row.txt | sha256sum
+6d18d57978f3ae8e45da85fcf9ef6cdf2a523f1ec50955c7d496e85741e3fb40  -
+frozen scorecard_row_sha256 = 6d18d57978f3ae8e45da85fcf9ef6cdf2a523f1ec50955c7d496e85741e3fb40
+
+$ python3: landed SCORECARD capture-secret-scan row vs candidate-row.txt (rstrip newline)
+matching rows: 1
+row bytes: 2730 candidate bytes (stripped): 2730
+byte-identical after stripping the candidate file's single trailing newline: True
+row text sha256: d354640353c2815cb152b653986e474721ed8bf94a4106f0909358dfc83c1d78
+candidate file sha256: 6d18d57978f3ae8e45da85fcf9ef6cdf2a523f1ec50955c7d496e85741e3fb40

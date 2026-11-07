@@ -1,0 +1,46 @@
+### R12 GitLab's own secret-detection rules repo (first-party, gitlab.com)
+project_id=60960406 path=gitlab-org/security-products/secret-detection/secret-detection-rules default_branch=main
+blob_id=fa1ca53f85b416f2bf5586b9b28597a9757d15c6 size=20228 last_commit=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+commit=59ada1f4 2026-11-03T14:45:25.000+01:00 Add rules for missing GitLab token formats
+commit=e1c7e838 2026-05-07T11:11:24.000+05:30 Add maturity field
+commit=4ffffa39 2026-04-28T14:17:29.000+05:30 Update glptt token structure
+
+### R13 GitLab rule gitlab_personal_access_token (the authoritative regex), with examples
+[[rules]]
+id = "gitlab_personal_access_token"
+keywords = ["glpat"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "acme-glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+
+### R14 GitLab rule gitlab_personal_access_token_routable
+[[rules]]
+id = "gitlab_personal_access_token_routable"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93"
+]
+
+### R15 GitLab rule gitlab_personal_access_token_routable_versioned
+[[rules]]
+id = "gitlab_personal_access_token_routable_versioned"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "acme-glpat-REDACTED-r93",
+  "glpat-REDACTED-r93",
+  "glpat-REDACTED-r93"
+]

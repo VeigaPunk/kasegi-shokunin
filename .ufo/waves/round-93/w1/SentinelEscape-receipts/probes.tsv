@@ -1,0 +1,68 @@
+id	class	encoding/position	expected	observed	shapes	fixture_sha256	reason
+a01	a-glpat	plain prose, space before prefix	HIT	DETECTED	gitlab-pat	f60ce0949e473408d1b288fbaf5d1f6185fb795dc87b05cd5e685433125c8a85	primary lookbehind: space not in [A-Za-z0-9_-]
+a02	a-glpat	JSON value (quote before prefix)	HIT	DETECTED	gitlab-pat	7fb2f674c580bfd3ee6563643a8619da83385ac30c2e5100f0ed956ae1293320	primary lookbehind: quote
+a03	a-glpat	JSON key named token	HIT	DETECTED	credential,gitlab-pat	46d36c5301f625765745ccf5dfb7e21b7e79d79b23612532d95333ece7f6d668	quote boundary; gate credential shape may also match
+a04	a-glpat	YAML mapping key	HIT	DETECTED	gitlab-pat	ecb3f7afa08b0d6e95a0ac26c18e92f4469a2b0e43e475b46970427bcd8c307b	primary lookbehind: space
+a05	a-glpat	YAML list line, hyphen-space	HIT	DETECTED	gitlab-pat	6cda558d4089787fab932a116e8e71266a8e9df381d6fbe9bc53f00ae09ee2e6	primary lookbehind: space
+a06	a-glpat	.git-credentials userinfo	HIT	DETECTED	gitlab-pat	c38fa8f99a7253767b300f7c74dd550445383cc5b105d78c2edc9de18daa0ae6	primary lookbehind: ':'
+a07	a-glpat	JSON \t escape before prefix	HIT	DETECTED	gitlab-pat	1891899dae22b0f5fe079c3491e938bdc9ee55ecef3fe5b5891e13902999de38	left-boundary alternative (?<=\\[ntr])
+a08	a-glpat	JSON \r escape before prefix	HIT	DETECTED	gitlab-pat	bac9363054c4ca0f0fb373678e73b9e5a8e921e573c185cca1a57d6235be4cc5	left-boundary alternative (?<=\\[ntr])
+a09	a-glpat	JSON \u0020 escape before prefix	HIT	DETECTED	gitlab-pat	ff77ee322ea2e1030e1646977d302fa95d94681750ce3b2e2be80a0eed19be88	left-boundary alternative (?<=\\u[0-9A-Fa-f]{4}), fixed width 6
+a10	a-glpat	JSON \u0026 escape before prefix	HIT	DETECTED	gitlab-pat	7bc5bc1a28e980daaa6eb79d98005580ac8d0eae497cfa401928b8bf6f3d8d7c	same \uXXXX alternative
+a11	a-glpat	%20 before prefix	HIT	DETECTED	gitlab-pat	5e599d2d828bd265760263022b5cf6be6837e2ceef4e787e1577362f9dd5117c	left-boundary alternative (?<=%[0-9A-Fa-f]{2})
+a12	a-glpat	%3A before prefix (encoded userinfo colon)	HIT	DETECTED	gitlab-pat	0d8f2503a7596e3cf097befa3f2e653cec34c67ce60d346782d570d23df38a59	%XX alternative, fixed width 3
+a13	a-glpat	%2F before prefix (double-encoded path)	HIT	DETECTED	gitlab-pat	bfe6a786dc0797058c3e465d9e170904e1a9f6a68d75c0a9bc2641450916ea47	%XX alternative
+a14	a-glpat	%26 before prefix	HIT	DETECTED	gitlab-pat	0f7d1f66911101cc507ee13234a2c591a89ae1106fa51d2ee4d0c01fe0da3baa	%XX alternative
+a15	a-glpat	decimal HTML entity &#38; before prefix	HIT	DETECTED	gitlab-pat	1188b7581e88bfb2ba5becb43f34e1be45d65aa2658bf4f837582693450898fa	primary lookbehind already passes on ';' (entity alternative redundant)
+a16	a-glpat	hex HTML entity &#x26; before prefix	HIT	DETECTED	gitlab-pat	ba1738bb5ebdd4e93a8973ff082f045d44c86e4819c5c89b2eb402e625761705	';' is the deciding byte; entity alternative redundant
+a17	a-glpat	UTF-8 BOM immediately before prefix	HIT	DETECTED	gitlab-pat	824764c901564a7bf206976e2625b2127049da54028c4aa1dfbbbd023a9c65ad	0xBF is not in [A-Za-z0-9_-]
+a18	a-glpat	CRLF immediately before prefix	HIT	DETECTED	gitlab-pat	6fb895eeee7eacc21f60f4932e720495fcc2f6f254ded4769ce537bcd778fb5e	raw 0x0a is not in the class
+a19	a-glpat	double percent-encoded colon %253A	UNNAMED	MISSED	none	f171a689fcdd139c1f29d94514ebb59ef507f551952bc2745e550c7568c11c0f	last two bytes '3A' are alnum and no alternative matches; unnamed by statement and by the named-limit list
+a20	a-glpat	double percent-encoded space %2520	UNNAMED	MISSED	none	f2395c512b8dde793048deb0c2c61b1d7ab88a0534fe4bd937cb79cb3a3e1686	same mechanism as a19
+a21	a-glpat	C-style hex escape \x20	UNNAMED	MISSED	none	b5975aba675d1bb8e12faca3f7eecb2e708e113d0659058d35ce1cb6b75c4bcc	no \xXX alternative in _GL_LB
+a22	a-glpat	legacy percent-u escape %u0020	UNNAMED	MISSED	none	9cf50ecacec7ebbb4d243f1418a9cdf88f188f8ba00d7edf30a0c72233d6473f	no %uXXXX alternative in _GL_LB
+a23	a-glpat	octal escape \040	UNNAMED	MISSED	none	0a3a03a3e4c62640016feeba797e79219054989028cacc94cc156598add93686	no octal alternative in _GL_LB
+a24	a-glpat	JSON \f (form feed) escape	UNNAMED	MISSED	none	8ede9a0de2fb3f5c2249d82bd9e460fd5b648ded0059d46ad3db198e08ce1c35	valid JSON escape; 'f' is alnum and [ntr] excludes it
+a25	a-glpat	JSON \b (backspace) escape	UNNAMED	MISSED	none	8eb4ddf1b4d937ba1452622dbcdfe1fbcee81b9e53fcc431c6df1e44d4c4d0e7	valid JSON escape; 'b' is alnum and [ntr] excludes it
+a26	a-glpat	%61 before prefix (encodes letter 'a')	UNNAMED	DETECTED	gitlab-pat	b4bc6e6b964f6cec959c64741521adb1673d066c40602af55f39f309a14c62be	decoded text is aglpat- (a letter-prefixed token); %XX alternative allows any byte
+a27	a-glpat	\u0061 before prefix (encodes letter 'a')	UNNAMED	DETECTED	gitlab-pat	316b86362368d2bbf99161d0c86b9af6b981926e2d8c28ec676bd967bd52133d	same encoded-letter bypass via \uXXXX
+a28	a-glpat	UTF-16LE encoding of the whole line	MISS-named	MISSED	none	36c6b67a9259b08a1f848aff0615549362bb17675ba401b5e7e9b5b56de7a159	named limit: gzip/UTF-16/base64-wrapped captures are not detected
+a29	a-glpat	JSON escaped slashes \/ before prefix	HIT	DETECTED	gitlab-pat	3f06aba255ae2248bc5a0cd251df7a6c8709ab4e598b76cf4e1e4e1de52b3a77	'/' passes the primary lookbehind
+a30	a-glpat	two consecutive escapes %3a%09	HIT	DETECTED	gitlab-pat	4fdb3343ec6557ec449e2d8f541312d9cee7ed02470fde1c707cfa9e4b282d15	last escape %09 satisfies the %XX alternative; lower-case hex covered
+a31	a-glpat	literal TAB byte before prefix	HIT	DETECTED	gitlab-pat	d30ce4988b93cacd5508845dbfd9755e7f5871d493da840a03a5370b82898e85	0x09 is not in the class
+a32	a-glpat	no escape, single alnum letter before prefix	MISS-named	MISSED	none	fd72b2d3225be86abc310f70eb0822579a65369088c8bf3d68e870a4c52a4ef3	statement negative: letter-prefixed token is not a hit
+a33	a-glpat	encoded prefix separator glpat%2D	MISS-named	MISSED	none	9c20fe98875bff61b33b5d718d1d9fd97f333cadef9f6cb7b771f926345016d5	named limit: encoded prefix separator is not detected
+a34	a-glpat	20-char tail containing '-' and '_'	HIT	DETECTED	gitlab-pat	0a75b0769c502f2daa6d546df7035da80058aa8dd4098bbb2d9c130a37c5bbda	lane alphabet choice includes A-Za-z0-9_-; statement documents it
+b01	b-github	r92 P1 b11: JSON \t escape	HIT	DETECTED	github-token	8598d1329eaa0a4d76db4eb213662f83b42f2efd8ebfabb28d1af3f7ed0170ff	P1 fixture class; fixed by _GH_LB
+b02	b-github	r92 P1 b12: JSON \r escape	HIT	DETECTED	github-token	1f570c53d2c30736ad4f0b36eed937ac79955a5491bbc8b83900c7ded4459375	P1 fixture class
+b03	b-github	r92 P1 b20: JSON \u000a escape	HIT	DETECTED	github-token	ff0103651212c4c4a7ee111167a27d4352b9f1e3a3d3e17f1cb1b2491032dbb5	P1 fixture class; \uXXXX alternative
+b04	b-github	r92 P1 b15: JSON \u0020 escape	HIT	DETECTED	github-token	db1c9dd3b2e0933e768c72a838673310dd65777062a291577c6ec9d2f01bb492	P1 fixture class
+b05	b-github	r92 P1 e05: %20	HIT	DETECTED	github-token	6d3ff7c1e0ec00c9a0d7cc03b661be42ddeca4cd467cc3364df9e5b4201a4648	P1 fixture class; %XX alternative
+b06	b-github	r92 P1 b14: %20 inside a JSON query value	HIT	DETECTED	github-token	f72a4686db3f51e6fe647019fab7e03d90cf9bf79e6e9ae2c3c1f5bb510387eb	P1 fixture class
+b07	b-github	r92 P1 e06: %09	HIT	DETECTED	github-token	81f38eb2c89943f63e50df60b4f90823e1c4a05d28efc0905beb041addc942fd	P1 fixture class
+b08	b-github	r92 P1 b13: %3A	HIT	DETECTED	github-token	e193696b224258ae7f6d615a13d8abe64f19665c271e02d553e4d95c4ea2c50e	P1 fixture class
+b09	b-github	r92 P1 e04: %2F	HIT	DETECTED	github-token	10c1ac12e89e9991743923d4b45b9f3fbc8d4aa25cdf7b6b621aa1de9399b6ad	P1 fixture class
+b10	b-github	r92 P1 e01: \u0026	HIT	DETECTED	github-token	bc6a87ced5be0044e02aba784143691ff39694d96f5cc674b1e69bb4dd907286	P1 fixture class
+b11	b-github	r92 P1 e02: %26	HIT	DETECTED	github-token	af015b844532038a9b360ebee86712410a851c0a6878f98eedb883ac8a038fd6	P1 fixture class
+b12	b-github	r92 control e03: &#38;	HIT	DETECTED	github-token	f5505081de0c9c20cf1ca4711cd2ebbb078d1e18c0483c8545e3da769b7e8797	control: ';' already passes the primary lookbehind
+b13	b-github	JSON \f escape	UNNAMED	MISSED	none	3be6a7f7ca82ecbb7674b977e4f6807c220e6231a925be232051c8d6bf8be544	same [ntr] gap as a24
+b14	b-github	JSON \b escape	UNNAMED	MISSED	none	812f1b942fec7154471c027130c603a6c5861e133710a86b0ec2c2c99f00247a	same [ntr] gap as a25
+b15	b-github	C-style \x20 escape	UNNAMED	MISSED	none	b111a281f7f3e5b417cc8875fb9f7e1ff1cb2bb650430e3c77af7361dc58d34d	same gap as a21
+b16	b-github	double-encoded %2520	UNNAMED	MISSED	none	72b62cb3f786e195d231eaf2fe3e1e835c4cd4f21268cd5b3afd28745578ff94	same gap as a20
+b17	b-github	%u0020 escape	UNNAMED	MISSED	none	237c5d81094fe6826a1aa737b977e74161ebbd34686c827d07e97301947afb51	same gap as a22
+b18	b-github	literal TAB byte	HIT	DETECTED	github-token	d4ad1251386cf7fa371c42db7e21ab6f4cb94dd5a14e12d1e7afb0a472f17593	0x09 passes the primary lookbehind
+b19	b-github	encoded-letter prefix %61 (decodes to 'a')	UNNAMED	DETECTED	github-token	25c4cb2ecc88a611f0bc72f580224f2aec83d4010b0af35c07f2293e8e3c8cd2	encoded-letter bypass; decoded text is aghp_...
+b20	b-github	escape terminator + trailing underscore (right negative)	MISS-named	MISSED	none	f086dfdedd67ab9edf1f46a6ebdcc71ee54a8f369320e3ce5e0c838eb5944b05	statement negative: post-escape right underscore
+b21	b-github	trailing hyphen after a 36-char tail	UNNAMED	DETECTED	github-token	d9cd852a3178d43f10502bac48c268246066fb5b0265644b495acf37e9602841	right class is (?![A-Za-z0-9_]); '-' is not excluded (unlike gitlab-pat)
+b22	b-github	stateless form behind %20	HIT	DETECTED	github-token	4cce480df0416df21cac6ded43ad6bb5f3586efe928c000e3375f08d1e487273	escaping applies to both github-token branches
+b25	b-github	hex HTML entity &#x26; before prefix	HIT	DETECTED	github-token	f6c9e15e11933da51a2ce8314c55807318ef84593bcbcc82070c3d882173f895	';' is the deciding byte; primary lookbehind passes
+b23	b-github	encoded prefix separator gh%5Fp_	MISS-named	MISSED	none	adb26813cca2138cd8cf823df9bbf31be7d79d4ae3bc62d7fdc1d5db5d751272	named limit: encoded prefix separator is not detected
+b24	b-github	fine-grained github_pat_ form	MISS-named	MISSED	none	0375f0965b0073a89073fa12b614a58570b171ccab572d42b766d38775550b0e	named limit: fine-grained github_pat_ tokens
+c01	c-fp	documentation-style placeholder glpat- + 20 'x'	UNNAMED	DETECTED	gitlab-pat	e463a4415bfc86d63884dd296c117a73c5cd45688becdce4f76a1eda8a4adb07	matches the frozen shape; no allow row and no ALLOWED_VALUES entry
+c02	c-fp	20-character prose word after a bare glpat-	UNNAMED	DETECTED	gitlab-pat	de538c0d7c0730f811de007d7cbb77cae1400e6e2764a0849f00f06104c42a60	no separator, so the shape cannot tell prose from a token
+c03	c-fp	21-character tail	MISS-named	MISSED	none	7192ef7d11da881a938603f3646b99aa11fa0199743e03a57b3e993fc24df677	statement negative: 21-character tail
+c04	c-fp	19-character tail	MISS-named	MISSED	none	e3384667636a9560e8d5165f379646261e2a2337ec7dbec85a4cacf3128711df	statement negative: 19-character tail
+c05	c-fp	page's bare prefix sentence (S139 line 87 wording)	MISS-named	MISSED	none	d544d024bccb8a099c04bb9259e8df416a9484d20d93273a07e43777b52aabeb	statement negative: bare prefix
+c06	c-fp	GLPAT- upper-case prefix	MISS-named	MISSED	none	75b3b63c96f15016607662b74dd3be1a3515c57466755e71f19b0e86b9b14a2c	statement negative: case-sensitive
+c07	c-fp	glrt- runner prefix	MISS-named	MISSED	none	3978f9cb77e2dab8ee08265e8bdc78a404e19496ae9fa742ba6fcbe658c92685	statement negative: runner token
+c08	c-fp	20-char tail ending in hyphen	HIT	DETECTED	gitlab-pat	b055c7f94c3d7896d85637b60975ba82553f728bd1be4b219465c3fffd1bfa06	20-character alphabet includes '-'; consistent with frozen shape

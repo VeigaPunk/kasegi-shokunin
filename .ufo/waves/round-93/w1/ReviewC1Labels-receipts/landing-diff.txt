@@ -1,0 +1,53 @@
+$ git rev-parse base freeze c1 c2
+e15996bfd2f6eca4af39507a7c5973afbeca8347
+5bad9e55d3d9319446e3d9b63bc2dece633cdb68
+ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+9225954a6e3f177af46bdb9d811c062a4353a552
+rc=0
+$ git diff-tree --no-commit-id -r --name-status ae53b3c
+M	corpus/knowledge/triage-thresholds.md
+rc=0
+$ git diff e15996b ae53b3c -- corpus/knowledge/triage-thresholds.md
+diff --git a/corpus/knowledge/triage-thresholds.md b/corpus/knowledge/triage-thresholds.md
+index 873bcea..6fac22d 100644
+--- a/corpus/knowledge/triage-thresholds.md
++++ b/corpus/knowledge/triage-thresholds.md
+@@ -55,7 +55,7 @@ filter matches (`[lost-base] fleet-dispatch.mjs:88-114`):
+ |---|---|---|---|
+ | unreadable record | `readJson(...)` falsy → skip | 100-101 | — |
+ | leased | `leaseAlive(leases[id])`: `Date.parse(leases[id].expires_at) > Date.now()` | 102, 58 | MATCHES: `corpus/knowledge/mission-control.md:20-24` |
+-| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:117` |
++| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:191` |
+ | active mission | `readStatus(id)` exists AND its `state` ∉ TERMINAL — i.e. a non-terminal `fleets/run/<id>.status.json` blocks redispatch | 105 | MATCHES: `corpus/knowledge/mission-control.md:20-21` |
+ | delivered | `status.state === 'DONE'` (stated separately as "never redispatch") | 106 | MATCHES: `corpus/knowledge/mission-control.md:21` |
+ 
+@@ -141,7 +141,7 @@ Consequences, all derived from the expression at line 110:
+ | `MAX` (`--max`) | default `5` | 29 | — |
+ | `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | — |
+ | `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:526` |
+-| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:117` |
++| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:191` |
+ | `TERMINAL` | `['DONE','PARKED','FAILED','RETIRED']` | 47 | MATCHES: `corpus/knowledge/mission-control.md:36` |
+ | `MODEL` (initial) | `alibaba-token-plan/deepseek-v4-pro:max` | 34 | MATCHES: `corpus/knowledge/mission-control.md:54-56` |
+ | stagger/round-robin | `--models-rr m1,m2,m3 --rr-until <epochMs>`; active only while `Date.now() < RR_UNTIL` | 38-44 | MATCHES: `corpus/knowledge/mission-control.md:59-60` |
+@@ -434,8 +434,8 @@ Supersedes column names the audit-time target, not current text.
+ | 9.2 | The `reward` term is `reward.min × 1000`, so the ordering tail is `… > reward.min×1000 > live(1)`, not `… > reward.min`. | 110 | `SKILL.md:175` writes `reward.min` |
+ | 9.3 | `curated` is a **boolean** on `Object.keys(ev_inputs).length > 0`; no EV magnitude is ever compared. The `buildQueue` header's "EV ordering (curated first …)" is doubly wrong: curated ranks **third**, behind priority and continue. | 10, 107, 110 | `[lost-base] fleet-dispatch.mjs:10` (in-file comment), `SKILL.md:10-11`-style "EV ordering" phrasing |
+ | 9.4 | `rec.ev_inputs?.adjusted_ev` (`[lost-base] fleet-dispatch.mjs:200`) can never be a number: `schema.json` `ev_inputs` is `additionalProperties:false` (34) with no `adjusted_ev` property (35-51), `ev-report.mjs` computes it without persisting (82), and 0 of 1088 program records contain the key (census §2.2). Consequence: every `mission_dispatched` line logs `adjusted_ev: "unknown"` and the negative-EV `ev_note` branch (204) is dead — AR12's "negative/unknown EV is ledgered honestly" is true only in the "unknown" direction. | 200-205, `[lost-base] schema.json:34-51` | `[lost-base] fleet-dispatch.mjs:11` (in-file comment), `corpus/knowledge/mission-control.md:21-23` |
+-| 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `intake-surface.md:75-76` ("`reward.min` present on 48"), `SKILL.md:111` ("`reward` exists on 48" — true but conflated downstream) |
+-| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6-astra:max`) |
++| 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `corpus/knowledge/intake-surface.md:89-93` (round-13 correction: `reward` object on 48 but numeric `reward.min` on only 14 — the reward-exists≠reward.min-numeric conflation, superseding the earlier "`reward.min` present on 48"), `SKILL.md:176-178` (`reward` object exists on 48 records but numeric `reward.min` on only 14 — round-13 correction) |
++| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `corpus/knowledge/mission-control.md:55-57` (peak → `openai-codex/gpt-6-astra:max`; the round-13 correction records that earlier text said `openai-oauth/`) |
+ | 9.7 | Usage-limit signatures are four (incl. `usage_limit_reached`), ANDed with a family regex, tail-only, 15-min mtime window. | 271-278 | `corpus/knowledge/mission-control.md:61-64` (three signatures at audit time; four since its round-13 correction) |
+ | 9.8 | `claim-check.mjs` never validates manifest `schema_version`, `provenance.json` pins/`policy_sha256`/`external_effects_performed`, `status.severity`, or `status.reward` — the tokens do not appear in the file. Those `corpus/knowledge/claim-package-contract.md` rows are contract-by-convention. | grep of `claim-check.mjs` for `schema_version\|policy_sha256\|external_effects\|reward\|severity\|mission_id` → only `title` (183, 194) matches | `claim-package-contract.md:13,15,33-38` (implies gate-enforced) |
+ | 9.9 | Tier collision bound: `reward.min ≥ 1e9` breaks the priority/continue/curated separation (no guard). Observed max `reward.min` = 10000 → `1e7`, five orders under the curated tier. | 110 + census §2.2 | — |
+@@ -451,7 +451,7 @@ Supersedes column names the audit-time target, not current text.
+ | Prior claim | Location | Status |
+ |---|---|---|
+ | claim-check gate list + error-based discovery | `claim-gates.md:3-6, 8-74` | MATCHES (this entry adds exact trigger conditions, numeric bounds, and per-gate line numbers) |
+-| EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
++| EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:827-848` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
+ | shared constants table | `corpus/knowledge/ops-invariants.md:17-25` | MATCHES (adds exact marker list and the 3500-byte truncation stub shape) |
+ | queue score incl. `is_live(1)` | `corpus/knowledge/intake-surface.md:80-85`, `corpus/knowledge/mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
+ | six-file package contract | `corpus/knowledge/claim-package-contract.md:9-16` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
+rc=0

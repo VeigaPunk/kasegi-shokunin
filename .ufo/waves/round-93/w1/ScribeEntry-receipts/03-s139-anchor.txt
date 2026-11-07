@@ -1,0 +1,87 @@
+# Round-93 ScribeEntry receipt 03 — S139 capture facts (committed bytes)
+$ sha256sum corpus/source-snapshots/round-93/S139.txt
+154a7e1535b4a245e45e3f82705c271344f59aa6c344807645fa0bc4d1e1b188  corpus/source-snapshots/round-93/S139.txt
+$ stat -c "%s bytes" corpus/source-snapshots/round-93/S139.txt
+25370 bytes
+$ wc -l corpus/source-snapshots/round-93/S139.txt ; awk "END{print NR}" corpus/source-snapshots/round-93/S139.txt
+414 corpus/source-snapshots/round-93/S139.txt
+awk NR=414
+$ tail -c 12 corpus/source-snapshots/round-93/S139.txt | xxd
+00000000: 6572 206c 6963 656e 7365 730a            er licenses.
+
+$ sed -n "83,88p" corpus/source-snapshots/round-93/S139.txt | nl -ba -v83
+    83	GitLab Secret Detection identifies secrets using two approaches: rule-based detection and generic detection.
+    84	Rule-based detection
+    85	Rule-based detection identifies secrets by matching scanned content against a known pattern for each
+    86	credential type, called a rule. For example, a GitLab personal access token is identified by the pattern
+    87	glpat- followed by a 20-character string. GitLab supports
+    88	200+ rules covering popular vendors by default.
+
+$ grep -n glpat corpus/source-snapshots/round-93/S139.txt
+87:glpat- followed by a 20-character string. GitLab supports
+$ grep -c -i -E "alphabet|alphanumeric|A-Za-z" corpus/source-snapshots/round-93/S139.txt  (rc 1 = no match)
+0
+rc=1
+$ grep -o -i character corpus/source-snapshots/round-93/S139.txt | wc -l
+1
+$ grep -c "Secret detection" corpus/source-snapshots/round-93/S139.txt
+3
+
+$ cat corpus/source-snapshots/round-93/manifest.json
+{
+  "schema_version": 1,
+  "note": "Round-93 C2 manifest: S139, the GitLab Docs statement of the personal access token pattern (`glpat-` followed by a 20-character string) that grounds the round-93 `gitlab-pat` shape. Captured 2026-11-07 by capture-source.py through the round-90 intake gate; the page's generic-detection teaching samples matched the gate's `credential` and `bearer` shapes, so four digest-bound allowlist rows for this exact path were read in context by the L1 before the capture (the samples are fabricated examples: an api_key query sample, an --api-token sample, a Bearer JWT sample and the finding-type prose). Pre-capture refusal receipt and the rows: corpus/instruments/capture-secret-allow.tsv and .ufo/waves/round-93/controls/capture-intake-r93.txt. Re-scanned with the frozen round-93 candidate scanner --files before the freeze: hits=0.",
+  "sources": [
+    {
+      "id": "S139",
+      "url": "https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/",
+      "capture_url": "https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/",
+      "http": {
+        "status": 200,
+        "final_url": "https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/"
+      },
+      "kind": "html",
+      "fetch_method": "capture-source.py --kind html, default instrument UA; raw 156159 bytes, snapshot 25370 bytes",
+      "fetched_utc": "2026-11-07T13:55:21Z",
+      "path": "S139.txt",
+      "sha256": "154a7e1535b4a245e45e3f82705c271344f59aa6c344807645fa0bc4d1e1b188",
+      "bytes": 25370,
+      "lines": 415,
+      "quotes": [
+        {
+          "id": "Q01-glpat-20",
+          "quote": "glpat- followed by a 20-character string",
+          "anchor": 87
+        },
+        {
+          "id": "Q02-pattern-rule",
+          "quote": "Rule-based detection identifies secrets by matching scanned content against a known pattern for each",
+          "anchor": 85
+        }
+      ]
+    }
+  ]
+}
+
+$ cat .ufo/waves/round-93/controls/source-recheck-r93.txt
+S139:sha256 OK
+S139:Q01-glpat-20 OK occurrences=1 anchor=87-ok
+S139:Q02-pattern-rule OK occurrences=1 anchor=85-ok
+
+$ sed -n "1,10p;30,33p" .ufo/waves/round-93/controls/capture-intake-r93.txt (refusal + capture + scan)
+# Round-93 S139 capture intake receipt (before the freeze)
+
+## 1. Intake gate refusal of the page as served (no allowlist rows yet)
+
+$ python3 -B corpus/instruments/capture-source.py --id S139 \
+    --url https://docs.gitlab.com/user/application_security/secret_detection/detected_secrets/ \
+    --out corpus/source-snapshots/round-93/S139.txt --kind html
+INTAKE-REFUSED S139 shape=bearer line=124 out=corpus/source-snapshots/round-93/S139.txt written=no
+INTAKE-REFUSED S139 shape=credential line=116 out=corpus/source-snapshots/round-93/S139.txt written=no
+rc=3
+
+$ python3 -B <candidate>/capture-secret-scan.py --files \
+    corpus/source-snapshots/round-93/S139.txt corpus/source-snapshots/round-93/manifest.json
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=4 unused_allow=19 rc=0
+$ grep -c "round-93/S139.txt" corpus/instruments/capture-secret-allow.tsv
+4

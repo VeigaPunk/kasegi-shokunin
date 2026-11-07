@@ -1,0 +1,27 @@
+# Receipt 10 — same-tree oracle service lifecycle (ExecC1Indep, 2026-11-07)
+
+Started a named background service `resolve-rerun` (pid 276716) running the lane's
+own `corpus/instruments/resolve.py` on both archive trees for a definitive
+same-tree per-token oracle:
+
+```
+cp committed citation-survival.tsv copies aside (433377 bytes each, identical)
+cmp -> COMMITTED-CENSUS-IDENTICAL-BOTH-TREES
+python3 $S/base/corpus/instruments/resolve.py $S/base
+python3 $S/after/corpus/instruments/resolve.py $S/after
+```
+
+Observed: the service printed `COMMITTED-CENSUS-IDENTICAL-BOTH-TREES` and was
+still inside the base pass when the seat settled (>10 min; the instrument's
+glob/brace existence probes over the 237 MB tracked `.ufo` tree are slow — the
+first attempt hit the 300 s job cap). Freshness check at 2026-11-07 11:42 -03:
+
+```
+-rw-r--r-- 433377 2026-11-07 11:15:32 -0300  $S/after/corpus/instruments/citation-survival.tsv
+-rw-r--r-- 433377 2026-11-07 07:31:40 -0300  $S/base/corpus/instruments/citation-survival.tsv
+```
+
+(both still carry archive/commit mtimes — no fresh TSV written). Service killed
+via proc://resolve-rerun/kill before scratch teardown; it wrote only inside
+scratch. The committed-census oracle (receipt 09) already covers the semantic
+comparison: 0 disagreements on 1082 shared tokens.

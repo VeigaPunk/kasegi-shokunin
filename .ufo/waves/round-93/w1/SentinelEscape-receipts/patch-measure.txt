@@ -1,0 +1,84 @@
+old boundary: b'(?:(?<![A-Za-z0-9_])|(?<=\\\\[ntr])|(?<=\\\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))'
+new boundary: b'(?:(?<![A-Za-z0-9_])|(?<=\\\\[ntrfb])|(?<=\\\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=%25[0-9A-Fa-f]{2})|(?<=%u[0-9A-Fa-f]{4})|(?<=\\\\x[0-9A-Fa-f]{2})|(?<=\\\\[0-7]{3})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))'
+a01	HIT	gitlab-pat	gitlab-pat
+a02	HIT	gitlab-pat	gitlab-pat
+a03	HIT	credential,gitlab-pat	credential,gitlab-pat
+a04	HIT	gitlab-pat	gitlab-pat
+a05	HIT	gitlab-pat	gitlab-pat
+a06	HIT	gitlab-pat	gitlab-pat
+a07	HIT	gitlab-pat	gitlab-pat
+a08	HIT	gitlab-pat	gitlab-pat
+a09	HIT	gitlab-pat	gitlab-pat
+a10	HIT	gitlab-pat	gitlab-pat
+a11	HIT	gitlab-pat	gitlab-pat
+a12	HIT	gitlab-pat	gitlab-pat
+a13	HIT	gitlab-pat	gitlab-pat
+a14	HIT	gitlab-pat	gitlab-pat
+a15	HIT	gitlab-pat	gitlab-pat
+a16	HIT	gitlab-pat	gitlab-pat
+a17	HIT	gitlab-pat	gitlab-pat
+a18	HIT	gitlab-pat	gitlab-pat
+a19	UNNAMED	none	gitlab-pat
+a20	UNNAMED	none	gitlab-pat
+a21	UNNAMED	none	gitlab-pat
+a22	UNNAMED	none	gitlab-pat
+a23	UNNAMED	none	gitlab-pat
+a24	UNNAMED	none	gitlab-pat
+a25	UNNAMED	none	gitlab-pat
+a26	UNNAMED	gitlab-pat	gitlab-pat
+a27	UNNAMED	gitlab-pat	gitlab-pat
+a28	MISS-named	none	none
+a29	HIT	gitlab-pat	gitlab-pat
+a30	HIT	gitlab-pat	gitlab-pat
+a31	HIT	gitlab-pat	gitlab-pat
+a32	MISS-named	none	none
+a33	MISS-named	none	none
+a34	HIT	gitlab-pat	gitlab-pat
+b01	HIT	github-token	github-token
+b02	HIT	github-token	github-token
+b03	HIT	github-token	github-token
+b04	HIT	github-token	github-token
+b05	HIT	github-token	github-token
+b06	HIT	github-token	github-token
+b07	HIT	github-token	github-token
+b08	HIT	github-token	github-token
+b09	HIT	github-token	github-token
+b10	HIT	github-token	github-token
+b11	HIT	github-token	github-token
+b12	HIT	github-token	github-token
+b13	UNNAMED	none	github-token
+b14	UNNAMED	none	github-token
+b15	UNNAMED	none	github-token
+b16	UNNAMED	none	github-token
+b17	UNNAMED	none	github-token
+b18	HIT	github-token	github-token
+b19	UNNAMED	github-token	github-token
+b20	MISS-named	none	none
+b21	UNNAMED	github-token	github-token
+b22	HIT	github-token	github-token
+b25	HIT	github-token	github-token
+b23	MISS-named	none	none
+b24	MISS-named	none	none
+c01	UNNAMED	gitlab-pat	gitlab-pat
+c02	UNNAMED	gitlab-pat	gitlab-pat
+c03	MISS-named	none	none
+c04	MISS-named	none	none
+c05	MISS-named	none	none
+c06	MISS-named	none	none
+c07	MISS-named	none	none
+c08	HIT	gitlab-pat	gitlab-pat
+FLIP-COUNT 12
+FLIP a19 expected=UNNAMED old=none new=gitlab-pat :: double percent-encoded colon %253A
+FLIP a20 expected=UNNAMED old=none new=gitlab-pat :: double percent-encoded space %2520
+FLIP a21 expected=UNNAMED old=none new=gitlab-pat :: C-style hex escape \x20
+FLIP a22 expected=UNNAMED old=none new=gitlab-pat :: legacy percent-u escape %u0020
+FLIP a23 expected=UNNAMED old=none new=gitlab-pat :: octal escape \040
+FLIP a24 expected=UNNAMED old=none new=gitlab-pat :: JSON \f (form feed) escape
+FLIP a25 expected=UNNAMED old=none new=gitlab-pat :: JSON \b (backspace) escape
+FLIP b13 expected=UNNAMED old=none new=github-token :: JSON \f escape
+FLIP b14 expected=UNNAMED old=none new=github-token :: JSON \b escape
+FLIP b15 expected=UNNAMED old=none new=github-token :: C-style \x20 escape
+FLIP b16 expected=UNNAMED old=none new=github-token :: double-encoded %2520
+FLIP b17 expected=UNNAMED old=none new=github-token :: %u0020 escape
+NAMED-NEGATIVE-REGRESSIONS 0 []
+REV-SCAN-PATCHED rc=0 lines=CAPTURE-SECRET-SCAN mode=rev:9225954a6e3f177af46bdb9d811c062a4353a552 scanned=1957 hits=0 files=0 allowed=24 unused_allow=0 rc=0

@@ -1,0 +1,37 @@
+# CriticHarm r93 item 3: ReDoS cost, landed scanner (7d9d7309...) vs base (e15996b) scanner
+# one line per fixture, no embedded newline; each run is a fresh process
+# (`python3 -B capture-secret-scan.py --files <fixture>`), wall seconds.
+# 1 MiB = 1048576 bytes. Each near-miss fixture is a repeated near-miss unit: the
+# expected hit set is empty and every run printed no HIT line and exited 0 (asserted).
+# blank/5-rep rows below are 5 interleaved base/landed repetitions on a shared host
+# (min is the least-noisy figure); scaling rows are 2 interleaved repetitions each.
+
+fixture                           bytes  base_min  base_med  land_min  land_med  land_ms/MiB
+flat-A                          1048576    0.3782    0.4938    0.3915    0.4098        391.5
+ghp-35-nearmiss                 1048576    0.2839    0.4371    0.3733    0.5259        373.3
+glpat-19-nearmiss               1048576    0.2994    0.3062    0.4339    0.4657        433.9
+mixed-nearmiss                  1048576    0.2919    0.3467    0.3924    0.4037        392.4
+ghp-35-nearmiss-2MiB            2097152    0.5818    0.8556    0.9020    1.2015        451.0
+
+## scaling, one ghp_+35-char near-miss line of N MiB
+size=1MiB bytes=1048576 base_min=0.3357 base_ms_per_MiB=335.7 land_min=0.5847 land_ms_per_MiB=584.7
+size=2MiB bytes=2097152 base_min=0.9957 base_ms_per_MiB=497.9 land_min=1.6614 land_ms_per_MiB=830.7
+size=4MiB bytes=4194304 base_min=1.4983 base_ms_per_MiB=374.6 land_min=2.9610 land_ms_per_MiB=740.3
+size=8MiB bytes=8388608 base_min=2.8905 base_ms_per_MiB=361.3 land_min=4.3995 land_ms_per_MiB=549.9
+
+VERDICT: cost is linear in input size within measurement noise (landed ms/MiB is flat
+at 1/2/4/8 MiB); the new shape adds a fixed per-position constant, no nested
+quantifier and no super-linear blowup. Absolute times are inflated by peer load.
+
+## single-process regex scaling (regex.finditer over one near-miss line, no process start)
+## data are repeated near-miss units; finditer runs to exhaustion; min of 3 reps;
+## us_per_KiB = microseconds per 1024 bytes; ratio_8x = us/KiB at 8 MiB / at 1 MiB.
+
+base github-token              matches_per_MiB=0 us_per_KiB_by_size=1MiB:17.6,2MiB:17.2,4MiB:16.9,8MiB:18.0 ratio_8x=1.02
+land github-token              matches_per_MiB=0 us_per_KiB_by_size=1MiB:36.4,2MiB:39.0,4MiB:40.8,8MiB:39.0 ratio_8x=1.07
+land github-token escaped      matches_per_MiB=0 us_per_KiB_by_size=1MiB:37.5,2MiB:36.2,4MiB:39.5,8MiB:44.0 ratio_8x=1.18
+land gitlab-pat                matches_per_MiB=0 us_per_KiB_by_size=1MiB:37.7,2MiB:39.9,4MiB:38.3,8MiB:37.9 ratio_8x=1.01
+land gitlab-pat escaped        matches_per_MiB=0 us_per_KiB_by_size=1MiB:46.7,2MiB:40.2,4MiB:41.9,8MiB:37.6 ratio_8x=0.81
+
+VERDICT: us/KiB is flat across 1/2/4/8 MiB (ratio_8x near 1) for both the widened
+github boundary and the new gitlab shape: fixed-width lookbehinds, linear scan.

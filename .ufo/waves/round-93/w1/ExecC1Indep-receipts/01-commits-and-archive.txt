@@ -1,0 +1,45 @@
+# Receipt 01 — commit verification, ancestry, archives (ExecC1Indep, 2026-11-07)
+
+All git commands: `git -C /home/vgpnk/Projects/shokunin/kasegi-shokunin ...` (read-only). Scratch S=/fast/scratch/hyaku/kasegi-r93/ExecC1Indep, TMPDIR=$S.
+
+```
+$ git rev-parse --verify e15996bfd2f6eca4af39507a7c5973afbeca8347^{commit}
+e15996bfd2f6eca4af39507a7c5973afbeca8347
+$ git rev-parse --verify 5bad9e55d3d9319446e3d9b63bc2dece633cdb68^{commit}
+5bad9e55d3d9319446e3d9b63bc2dece633cdb68
+$ git rev-parse --verify ae53b3c6e7e2ce070c2f022d01c1677a8908df1b^{commit}
+ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+$ git rev-parse --verify 9225954a6e3f177af46bdb9d811c062a4353a552^{commit}
+9225954a6e3f177af46bdb9d811c062a4353a552
+$ git merge-base --is-ancestor e15996bfd2f6eca4af39507a7c5973afbeca8347 5bad9e55d3d9319446e3d9b63bc2dece633cdb68 && echo OK-base-ancestor-of-freeze
+OK-base-ancestor-of-freeze
+$ git merge-base --is-ancestor 5bad9e55d3d9319446e3d9b63bc2dece633cdb68 ae53b3c6e7e2ce070c2f022d01c1677a8908df1b && echo OK-freeze-ancestor-of-C1
+OK-freeze-ancestor-of-C1
+$ git archive e15996bfd2f6eca4af39507a7c5973afbeca8347 | tar -x -C $S/base
+$ git archive ae53b3c6e7e2ce070c2f022d01c1677a8908df1b | tar -x -C $S/after
+ARCHIVES-OK
+$ git diff --name-status e15996bfd2f6eca4af39507a7c5973afbeca8347..ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+A	.ufo/waves/round-93/c1/knowledge-meter.py
+A	.ufo/waves/round-93/c1/labels.tsv
+A	.ufo/waves/round-93/c1/repair-map.tsv
+A	.ufo/waves/round-93/c2/candidate-capture-secret-scan.py
+A	.ufo/waves/round-93/c2/candidate-row.txt
+A	.ufo/waves/round-93/c2/capability-check.py
+A	.ufo/waves/round-93/claims.json
+A	.ufo/waves/round-93/controls/c1-controls-r93.py
+A	.ufo/waves/round-93/controls/c1-controls-r93.txt
+A	.ufo/waves/round-93/controls/c2-controls-r93.py
+A	.ufo/waves/round-93/controls/c2-controls-r93.txt
+A	.ufo/waves/round-93/controls/c2-forgeries-r93.py
+A	.ufo/waves/round-93/controls/capture-intake-r93.txt
+A	.ufo/waves/round-93/controls/census-start-r93.txt
+A	.ufo/waves/round-93/controls/source-recheck-r93.txt
+A	.ufo/waves/round-93/make-wave-r93.py
+M	corpus/SOURCES.md
+M	corpus/instruments/capture-secret-allow.tsv
+M	corpus/knowledge/triage-thresholds.md
+A	corpus/source-snapshots/round-93/S139.txt
+A	corpus/source-snapshots/round-93/manifest.json
+```
+
+Note: base..after spans the pre-freeze wave-support commits plus the C1 landing commit. The landing commit alone is isolated in receipt 02.

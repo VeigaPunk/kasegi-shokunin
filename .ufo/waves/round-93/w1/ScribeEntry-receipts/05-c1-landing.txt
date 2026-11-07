@@ -1,0 +1,44 @@
+# Round-93 ScribeEntry receipt 05 — C1 landing ae53b3c6 (LOG/Gate context only; not this seat's verdict)
+$ git diff-tree --no-commit-id --name-only -r ae53b3c6
+corpus/knowledge/triage-thresholds.md
+$ git show --numstat --format="" ae53b3c6
+5	5	corpus/knowledge/triage-thresholds.md
+$ git show ae53b3c6 | grep -E "^[-+].*(SKILL\\\\.md|9\\\\.[56])" | cut -c1-150
+-| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:117` |
++| attempts exhausted | `attempts(id) >= MAX_ATTEMPTS` (MAX_ATTEMPTS = 2) | 103, 46 | MATCHES: `SKILL.md:191` |
+-| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:117` |
++| `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:191` |
+-| 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `intake-surface.md:75-76` ("`reward.min` present on 48"), `SK
+-| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `mission-control.md:37-38` (`openai-oauth/gpt-6
++| 9.5 | `reward.min` numeric on **14** records; `reward` object on 48. | census §2.2 | `corpus/knowledge/intake-surface.md:89-93` (round-13 correcti
++| 9.6 | Peak-window model is `openai-codex/gpt-6-astra:max`. | `[lost-base] fleet-dispatch.mjs:300` | `corpus/knowledge/mission-control.md:55-57` (pe
+-| EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, 
++| EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:827-848` | MATCHES (adds 6-decimal `fmt`, 10-input print order, 
+
+$ cat .ufo/waves/round-93/l1/c1-landing-r93.txt
+KNOWLEDGE-METER base=1007/2001 after=1009/2000 base_target=1007/2001 target=1009/2000 sites=5 labels=8 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1007/2001
+LIMB M1 pass after=1009/2000
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=5 unbound=none
+LIMB M10 pass labelled=8 want=5 mapped=5 kinds=cell-repair=2,no-edit=3,range=3 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=7ab66a7fc8a90cf92d026d0ba1abaa23461b10a3bbd79d003ee4a33961eb3b76
+KNOWLEDGE-METER-RESULT pass rc=0
+
+$ grep -nE "^CONTROL|^C1-CONTROLS-RESULT" .ufo/waves/round-93/controls/c1-controls-r93.txt
+1:CONTROL candidate rc=0 want=0 PASS
+11:CONTROL do-nothing rc=1 want=1 PASS
+21:CONTROL partial-437-unmapped rc=1 want=1 PASS
+31:CONTROL map-454-noop rc=1 want=1 PASS
+41:CONTROL no-edit-pair-mapped rc=1 want=1 PASS
+51:CONTROL cell-437-noop rc=1 want=1 PASS
+61:CONTROL duplicate-map-row rc=1 want=1 PASS
+71:CONTROL wrong-key-454 rc=1 want=1 PASS
+81:CONTROL missing-labels rc=2 want=2 PASS
+83:CONTROL wrong-map-sha rc=1 want=1 PASS
+94:CONTROL m3-labelled-file-scope rc=1 want=1 PASS
+96:C1-CONTROLS-RESULT pass controls=11

@@ -1,0 +1,77 @@
+# Round-93 ScribeEntry receipt 04 — C2 capability row at the landing 9225954a vs the frozen candidate row
+$ git show 9225954a:SCORECARD.md | awk "/^\\| capture-secret-scan \\|/" > $S/landed-row.txt ; sha256sum
+6d18d57978f3ae8e45da85fcf9ef6cdf2a523f1ec50955c7d496e85741e3fb40  /fast/scratch/hyaku/kasegi-r93/ScribeEntry/landed-row.txt
+$ sha256sum .ufo/waves/round-93/c2/candidate-row.txt
+6d18d57978f3ae8e45da85fcf9ef6cdf2a523f1ec50955c7d496e85741e3fb40  .ufo/waves/round-93/c2/candidate-row.txt
+$ diff <candidate-row> <landed-row> ; echo rc
+diff-rc=0
+$ wc -c landed-row.txt
+2731 /fast/scratch/hyaku/kasegi-r93/ScribeEntry/landed-row.txt
+
+$ grep -o -E "gitlab-pat|S139|escape terminator|github-token. left boundary. round 93|\\| 87 \\|$" landed-row.txt
+gitlab-pat
+S139
+escape terminator
+`github-token` left boundary, round 93
+| 87 |
+
+$ grep -o -E "round (87|88|89|91|92|93)" landed-row.txt | sort | uniq -c
+      2 round 87
+      2 round 88
+      2 round 89
+      2 round 91
+      2 round 92
+      2 round 93
+
+$ git show 9225954a -- SCORECARD.md | grep -E "^\\+\\|" | cut -c1-90
++| capture-secret-scan | Scans captured evidence (source snapshots, practice-package evide
+
+$ tail -5 .ufo/waves/round-93/l1/c2-landing-r93.txt
+LIMB K7 pass seed=9191 rc=1 missing=none extra=none
+LIMB K8 pass clauses=50 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+
+$ grep -c "CAPABILITY-CHECK-RESULT pass rc=0" .ufo/waves/round-93/l1/c2-landing-r93.txt
+3
+$ grep -E "^LIMB K8|^landed sha256|^frozen candidate|^row-equal" .ufo/waves/round-93/l1/c2-landing-r93.txt | sort -u
+frozen candidate sha256: 7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5
+landed sha256: 7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5  corpus/instruments/capture-secret-scan.py
+LIMB K8 pass clauses=50 failing=none
+row-equal yes
+
+$ grep -nE "glpat|_GL_LB|_ESC_LB|_GH_LB" corpus/instruments/capture-secret-scan.py
+98:  gitlab-pat             (round 93) a GitLab personal access token: `glpat-`
+108:GitLab token prefixes (S139 line 86 names only `glpat-`), an encoded prefix
+109:separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+169:_ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+170:_GH_LB = _ESC_LB
+174:        _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
+177:_GL_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
+179:    ("gitlab-pat", re.compile(_GL_LB + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+386:        ("gl-pat-prose", b"use glpat-" + b"AbC0123456789_-xyZq0" + b" as the password", {"gitlab-pat"}),
+387:        ("gl-pat-json", b'{"t":"glpat-' + b"0123456789abcdefghij" + b'"}', {"gitlab-pat"}),
+388:        ("gl-pat-after-pct20", b"q=%20glpat-" + b"0123456789abcdefghij", {"gitlab-pat"}),
+389:        ("gl-pat-after-u0026", b'"q":"a\\u0026glpat-' + b"0123456789abcdefghij" + b'"', {"gitlab-pat"}),
+390:        ("gl-pat-19-chars", b"glpat-" + b"0123456789abcdefghi ", set()),
+391:        ("gl-pat-21-chars", b"glpat-" + b"0123456789abcdefghijk", set()),
+392:        ("gl-pat-right-underscore", b"glpat-" + b"0123456789abcdefghij" + b"_", set()),
+394:        ("gl-pat-bare-prefix", b"identified by the pattern glpat- followed by a 20-character string", set()),
+395:        ("gl-pat-letter-before", b"xglpat-" + b"0123456789abcdefghij", set()),
+
+$ grep -nE "^CONTROL|^C2-CONTROLS-RESULT" .ufo/waves/round-93/controls/c2-controls-r93.txt
+2:CONTROL candidate rc=0 want=0 PASS
+13:CONTROL do-nothing rc=1 want=1 PASS
+24:CONTROL G1-no-gitlab rc=1 want=1 PASS
+35:CONTROL G10-always-clean rc=1 want=1 PASS
+46:CONTROL G2-gl-loose-length rc=1 want=1 PASS
+57:CONTROL G3-gl-no-right-boundary rc=1 want=1 PASS
+68:CONTROL G4-gl-any-prefix rc=1 want=1 PASS
+79:CONTROL G5-escape-tab-only rc=1 want=1 PASS
+90:CONTROL G6-escape-letter rc=1 want=1 PASS
+101:CONTROL G7-literal-keyed rc=1 want=1 PASS
+112:CONTROL G8-path-keyed rc=1 want=1 PASS
+123:CONTROL G9-tampered-no-logic-change rc=1 want=1 PASS
+134:CONTROL row-round92 rc=1 want=1 PASS
+145:CONTROL s139-allow-rows-removed rc=1 want=1 PASS
+156:C2-CONTROLS-RESULT pass controls=14

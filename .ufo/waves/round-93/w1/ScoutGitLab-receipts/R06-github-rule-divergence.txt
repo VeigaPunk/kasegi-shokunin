@@ -1,0 +1,26 @@
+### R21 GitLab's own ruleset (rules/mit/github/github.toml) vs the landed scanner
+source=https://gitlab.com/api/v4/projects/60960406/repository/files/rules%2Fmit%2Fgithub%2Fgithub.toml/raw?ref=main
+  GitLab rule Github Personal Access Token         regex="ghp_[0-9a-zA-Z]{36}"
+  GitLab rule Github OAuth Access Token            regex="gho_[0-9a-zA-Z]{36}"
+  GitLab rule Github App Token                     regex="(ghu|ghs)_[0-9a-zA-Z]{36}"
+  GitLab rule Github Refresh Token                 regex="ghr_[0-9a-zA-Z]{76}"
+  GitLab rule GithubFineGrainedPersonalAccessToken regex='''\bgithub_pat_[0-9A-Za-z]{22}_[0-9A-Za-z]{59}\b'''
+  GitLab rule GithubAppInstallationToken           regex='''\bv1\.[0-9A-Fa-f]{40}\b'''
+
+value taken from GitLab's own rule examples      landed scanner
+ghr_ refresh token (GitLab rule: 76 chars)       NO-HIT        
+ghu_ app token (GitLab rule: 36 chars)           HIT           
+github_pat_ fine-grained (GitLab rule)           NO-HIT        
+ghp_ classic (GitLab rule: 36 chars)             HIT           
+v1. app installation (GitLab rule)               NO-HIT        
+
+landed github-token regex: (?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,})
+
+### R22 the landed scanner's github_pat_ named limit, verbatim
+  'fine-grained `github_pat_` tokens (S136 line 163; neither opened
+   source states their length or alphabet)'
+
+### R23 custom-prefix divergence detail
+GitLab's own example, custom prefix          GitLab_rule=MATCH    landed=NO-HIT
+GitLab's own example, plain                  GitLab_rule=MATCH    landed=HIT
+plain letter immediately before (no hyphen)  GitLab_rule=no       landed=NO-HIT

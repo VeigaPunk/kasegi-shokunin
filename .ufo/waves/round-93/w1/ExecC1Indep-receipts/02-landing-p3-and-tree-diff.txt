@@ -1,0 +1,36 @@
+# Receipt 02 — C1 landing commit isolation, P3 reproduction, full-tree file diff (ExecC1Indep, 2026-11-07)
+
+```
+$ diff -rq $S/base $S/after        # full extracted trees (base=e15996b, after=ae53b3c)
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments/capture-secret-allow.tsv and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/knowledge/triage-thresholds.md and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dangling-usedby/corpus/instruments/capture-secret-allow.tsv and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dangling-usedby/corpus/knowledge/triage-thresholds.md and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dup-id/corpus/instruments/capture-secret-allow.tsv and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dup-id/corpus/knowledge/triage-thresholds.md and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dup-url/corpus/instruments/capture-secret-allow.tsv and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dup-url/corpus/knowledge/triage-thresholds.md and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/pre/corpus/instruments/capture-secret-allow.tsv and .../after/... differ
+Files .../base/.ufo/waves/round-31/wave1/ExecCensusDry/validate/pre/corpus/knowledge/triage-thresholds.md and .../after/... differ
+Only in .../after/.ufo/waves: round-93
+Files .../base/corpus/SOURCES.md and .../after/corpus/SOURCES.md differ
+Files .../base/corpus/instruments/capture-secret-allow.tsv and .../after/corpus/instruments/capture-secret-allow.tsv differ
+Files .../base/corpus/knowledge/triage-thresholds.md and .../after/corpus/knowledge/triage-thresholds.md differ
+Only in .../after/corpus/source-snapshots: round-93
+
+$ git show --no-patch --format=%H%n%P%n%s ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+5bad9e55d3d9319446e3d9b63bc2dece633cdb68
+round-93: C1 landing — tranche 8 (437/438 cell repairs, 454 second token, 58/144 lane-root repoints), cell-repair + lane-root counter kinds, meter 1007/2001 -> 1009/2000
+
+$ git show --name-status --format= ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+M	corpus/knowledge/triage-thresholds.md
+
+$ git diff-tree --no-commit-id --name-only -r ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+corpus/knowledge/triage-thresholds.md          <- exactly 1 path (P3 shape reproduced)
+
+$ git diff --name-status 5bad9e55d3d9319446e3d9b63bc2dece633cdb68..ae53b3c6e7e2ce070c2f022d01c1677a8908df1b
+M	corpus/knowledge/triage-thresholds.md
+```
+
+All non-triage differences between the base and after archives come from commits already between base and the freeze (wave support: claims.json, counters, controls, SOURCES.md, capture-secret-allow.tsv, S139 snapshot, and tracked round-31 validate copies). The C1 landing commit itself touches exactly the one tracked path the frozen P3 names.

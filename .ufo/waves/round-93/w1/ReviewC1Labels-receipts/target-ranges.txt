@@ -1,0 +1,178 @@
+=== SKILL.md:152-164
+   152	the default: 430/486.
+   153	`claim-check.mjs` enforces all of it (authoritative list:
+   154	`corpus/knowledge/claim-gates.md`): required-file presence, `report.md`
+   155	"Scope excerpt" + "no submission performed" markers, per-artifact sha256 +
+   156	path/symlink confinement + same-digest redaction receipts (producer ≠
+   157	verifier), non-empty custodian chain where every `scope_signal` is exactly
+   158	`NO_SCOPE_OBJECTION` and `head_sha256` == last decision ==
+   159	`manifest.expected_head_sha256`, a secrets regex over all package text, and
+   160	`status.json` — `DONE` + `claimable:true` + `finding_count≥1` +
+   161	`manifest_sha256` binding + `APPROVED` review by a distinct `kx-reviewer`
+   162	(role, requested/resolved model, fallback flag) + four hard gates + two
+   163	subchecks PASS + not-claimable heuristics + a global duplicate-submission scan
+   164	across all `claims/*/*/status.json` + `submit/BLOCKED.md` and nested-readiness
+
+=== SKILL.md:180-192
+   180	board datasets 358 h stale at round 11, 359.4 h at the round-13 live re-run
+   181	(the counter grows between runs; 26 h threshold, AR4 alarm standing).
+   182	Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+   183	`priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+   184	ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+   185	text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+   186	1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+   187	`priority.json` (14) is a strict subset of the 50 continue programs, so the
+   188	9e12 tier only breaks ties inside the continue cohort. Canonical derivation:
+   189	`corpus/knowledge/triage-thresholds.md`. Real state is
+   190	`ledger/missions.jsonl` + `fleets/run/`, real termination is
+   191	status-file TERMINAL + telemetry `attempts()≥2`.
+   192	
+
+=== SKILL.md:222-228
+   222	## Mission ledger & audit store
+   223	
+   224	`ledger/missions.jsonl` is the append-only hunter-contract state machine
+   225	(writer: `ops/shared.mjs::appendLedger`, 3500-byte line cap for O_APPEND
+   226	atomicity). Transition census (718 lines / 260 missions):
+   227	`SCOPED` 232 → `PLANNED` 219 → `LEARNED` 244 dominates;
+   228	`SCOPED→PLANNED→LEARNED` alone is 207 missions. Deep path
+
+=== SKILL.md:248-270
+   248	
+   249	## Mission control plane
+   250	
+   251	`ops/fleet-dispatch.mjs` is the `/loop` engine: tmux panes under
+   252	`ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
+   253	rotation on terminal status, `reconcile()` rebuilds from leases + pane
+   254	titles on restart. Queue score = priority(9e12) > continue(2e12) >
+   255	curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+   256	terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+   257	magnitude) — EV orders, never gates (AR12). Dispatcher
+   258	is the sole committer to `claims/` (P21) gated on fresh `claim-check.mjs`
+   259	(P20), tags `claim-ready/<id>/<slug>` and pushes atomically after proving
+   260	the tagged commit's bytes match (`claim_tag_rejected` telemetry on
+   261	mismatch). Mission L1s are 584 generated `fleets/missions/<program>.md`
+   262	assignments reporting back through the file protocol
+   263	`fleets/run/<program>.status.json` (703 files: PARKED 646, DONE 27,
+   264	SCOPING 20, RETIRED 6, plus `_`-prefixed seat statuses). Model routing is a
+   265	time-windowed decree (UTC-3 12:00–22:00 → deepseek-v4-pro, else
+   266	gpt-6-astra) + strict log-signature limit detection → grok-4.6:low lane.
+   267	Sibling L1s: `fleets/claimer-mission.md` (CDP browser submissions,
+   268	operator-authed), `fleets/review-mission.md` (486-item drop/continue/leave
+   269	sweep). Audit lanes: `.ufo-mission-report-bh*.md` (22 readiness audits:
+   270	20 BLOCKED, 2 READY — intigriti-yahoo + hackerone-superhuman, both
+
+=== SKILL.md:318-348
+   318	
+   319	## Ops integrity layer — invariants, intake, finalize
+   320	
+   321	`ops/shared.mjs` (mirror: 41 lines, sha256 `2497578a44e5`) owns the
+   322	constants every ops file imports: `BANNED = ['cursor','opencode']`
+   323	(`[lost-base] ops/shared.mjs:7`), enforced as a word-boundary scan
+   324	`(^|[^a-z])<b>([^a-z]|$)` (`[lost-base] ops/validate.mjs:56`); `PARKED = []` — empty
+   325	since the chatgpt park lifted 2026-09-04 (`[lost-base] ops/shared.mjs:8`), which makes
+   326	the parked check **vacuous by construction**: `PARKED_TOKEN` falls back to
+   327	`/(?!)/`, a never-match (`[lost-base] ops/validate.mjs:28`); `K3_SEATS = ['judge',
+   328	'planner']` (`ops/shared.mjs:9`) with the route regex
+   329	`/kimi-code\/k3|kimi-k3|moonshot\/kimi-k3/i` (`[lost-base] ops/shared.mjs:11`);
+   330	`sha256File` = digest of exact bytes, `null` when absent
+   331	(`[lost-base] ops/shared.mjs:25-31`); `appendLedger` caps a line at **3500 bytes** so
+   332	concurrent cross-session `O_APPEND` writes stay atomic within POSIX
+   333	`PIPE_BUF` (`[lost-base] ops/shared.mjs:33-34`), replaces an oversize entry with a
+   334	`truncated:true` stub (`[lost-base] ops/shared.mjs:38`) and appends to
+   335	`ledger/<kind>.jsonl` (`[lost-base] ops/shared.mjs:39`). `gitMutationBlocker`
+   336	(fail-closed on rebase/merge/cherry-pick or non-main HEAD) is **absent from
+   337	the mirror** — 0 hits repo-wide; it existed only in the lost tree
+   338	(`[lost-tree] ops/shared.mjs:55`, `corpus/knowledge/ops-invariants.md:24`).
+   339	
+   340	**`TELEMETRY_EVENTS` is a decorative whitelist** (round-15 finding,
+   341	mirror-verified): `[lost-base] ops/shared.mjs:13-22` declares 8 event names
+   342	(`lane_parked`, `lane_degraded`, `operator_decree`, `xask_dry`,
+   343	`board_imported`, `binding_verified`, `reroute_drill`, `provenance_drift`),
+   344	but `grep -rn TELEMETRY_EVENTS --include='*.mjs' --include='*.sh'` over the
+   345	mirror returns **only that declaration** — nothing imports it, and
+   346	`appendLedger` never checks the event name (`[lost-base] ops/shared.mjs:36-41`). The ops
+   347	scripts actually append **17** distinct `event:` values (`mission_failed` ×3
+   348	sites, `model_reroute` ×2, `claim_rejected` ×2, then `reroute_drill`,
+
+=== SKILL.md:820-835
+   820	`e724186c1330`) matches at `DEFAULTS :55-59`. `ops/fleet-dispatch.mjs` is 330
+   821	lines vs the lost 427 (`corpus/knowledge/mission-control.md:3`) and diverges
+   822	in content, so its anchors are cited twice and every lost-tree anchor is
+   823	written `[lost-tree] <path>:<line>` — a token that cannot resolve against the
+   824	mirror by accident. Counts from the lost DATA half carry [corpus-attested
+   825	as-of 2026-09-28T23:32Z; source tree absent].
+   826	
+   827	```
+   828	p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+   829	gross_value  = p_success × expected_reward
+   830	total_cost   = effort_hours × opportunity_rate + direct_cost + delay_cost
+   831	               + expected_risk_cost
+   832	adjusted_ev  = gross_value − total_cost
+   833	```
+   834	
+   835	Terms: `[lost-base] ops/ev-report.mjs:77` (`p_success` — left-fold
+
+=== SKILL.md:905-945
+   905	as_of}, ranked, unknown}` (`ops/rank.mjs:143-148`). Every queued mission
+   906	appends `{mission_id:'mission-<id>', transition:'RANKED',
+   907	producer:'kx-executor', model:'alibaba-token-plan/qwen3.8-max:xhigh',
+   908	adjusted_ev, basis, artifact_sha256}` (`ops/rank.mjs:186-190`; the digest is
+   909	taken over the artifact bytes at `[lost-base] ops/rank.mjs:178`) — the attestation binds
+   910	the ranking file, not just the number. `stateOrder` (`[lost-base] ops/rank.mjs:179`) is
+   911	the 12-step pre-terminal ladder DISCOVERED → NORMALIZED → DEDUPED → SCOPED →
+   912	RANKED → PLANNED → AUTHORIZED → EXECUTED → EVIDENCED → VERIFIED →
+   913	SUBMISSION_PREPARED → LEARNED: it carries `AUTHORIZED`, which the live ledger
+   914	never recorded a transition for, and omits both the operator-only
+   915	SUBMITTED/DISCLOSED_FREE and the terminal PARKED/FAILED/RETIRED
+   916	[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]. The top 5
+   917	RANKED curated candidates also get `evidence/<id>/custodian-input.json`,
+   918	written only if absent (`[lost-base] ops/rank.mjs:216-219`): a
+   919	`custodian-input-skeleton/v1` for one `read_public_policy` action
+   920	(`[lost-base] ops/rank.mjs:223`, `[lost-base] ops/rank.mjs:229`), impact ceiling "none — read-only
+   921	public metadata", `data_classes: ['public']`, `credential_binding` and
+   922	`external_effect` both none, `scope_snapshot.note: 'no live fetch'`
+   923	(`[lost-base] ops/rank.mjs:231-235`, `[lost-base] ops/rank.mjs:241`), window = now + 7 days
+   924	(`[lost-base] ops/rank.mjs:214`, `7 * 864e5`). The AR14 bounded passive policy read is
+   925	pre-staged as a skeleton that itself fetches nothing.
+   926	
+   927	| `rank.mjs` admission condition | outcome | cite |
+   928	|---|---|---|
+   929	| `reward.min` not a finite number | filed `unknown`, reason `no verified reward floor` | `[lost-base] ops/rank.mjs:92-96` |
+   930	| curated `ev_inputs` missing any of the 9 PROB+COST keys | filed `unknown`, reason names the missing keys | `[lost-base] ops/rank.mjs:105-108` |
+   931	| `adjusted_ev ≤ 0` | not in `positives`, never queued | `[lost-base] ops/rank.mjs:151`, `[lost-base] ops/rank.mjs:164` |
+   932	| positive but `inputs_basis === 'default_estimate'` | **held**, not queued — "not sufficiently evidenced" | `[lost-base] ops/rank.mjs:164-165`, `[lost-base] ops/rank.mjs:247` |
+   933	| positive + curated, last ledger line already `RANKED` with the same `adjusted_ev` | duplicate attestation suppressed (counted, not appended; malformed history lines fail open) | `[lost-base] ops/rank.mjs:185`, `[lost-base] ops/rank.mjs:175` |
+   934	| positive + curated + `mission_state === 'DISCOVERED'` | advanced to `RANKED`; any state ≥ RANKED never regresses | `[lost-base] ops/rank.mjs:200-204` |
+   935	| in the top 5 of the RANKED curated set | custodian skeleton written unless it exists | `[lost-base] ops/rank.mjs:209-219` |
+   936	
+   937	`adjusted_ev` is derived-only, never persisted: `ev_inputs` is pinned
+   938	`additionalProperties: false` (`[lost-base] bounty-map/schema.json:34`, block
+   939	`[lost-base] bounty-map/schema.json:32-52`) with no such property, ev-report writes no
+   940	file (`[lost-base] ops/ev-report.mjs:17`), and 0/1088 records carry the key
+   941	[corpus-attested as-of 2026-09-28T23:32Z; source tree absent]. The dispatcher
+   942	reads it anyway — `rec.ev_inputs?.adjusted_ev` (mirror
+   943	`[lost-base] ops/fleet-dispatch.mjs:152`; `[lost-tree] ops/fleet-dispatch.mjs:200`) — and
+   944	logs `adjusted_ev: ev ?? 'unknown'` (mirror `[lost-base] ops/fleet-dispatch.mjs:155`), so
+   945	every `mission_dispatched` line records `"unknown"` and `ev_note` is dead code.
+
+=== SKILL.md:996-1004
+   996	- `~/Projects/bounties/ops/{claim-check,claim-index,prepare-claims,ev-report}.mjs` — fail-closed gates
+   997	- `~/Projects/bounties/claims/cantina-pendle/ingestion-20260915/` — complete positive-blocked exemplar
+   998	- `~/Projects/bounties/claims/bugcrowd-seek/honest-zero/` — complete honest-zero exemplar
+   999	- `~/Projects/bounties/bounty-map/schema.json` — program record schema (draft-07, fail-closed `additionalProperties:false`)
+  1000	- `~/Projects/bounties/ledger/{missions,telemetry,candidates,imports}.jsonl` — append-only mission state machine + dispatcher heartbeat + hunter intake + board-import binding. Round-13: telemetry line counts grow between runs (`[lost-base] check-freshness.mjs:61` appends one `freshness_check` line per invocation — round-14 as-of: **7227 lines at 2026-09-28T23:32:32.720Z**; the +2 mid-round lines are `freshness_check` 23:32:22Z + a judge-lane `reroute_drill` (simulated) 23:32:32Z — same minute as an mtime-only touch on `docs/claim-ready-index.md`, bytes unchanged HEAD==worktree, actor [UNVERIFIED], not lane-originated); the worktree copy also carries 3 committed merge-conflict marker lines from a 2026-09-06 merge (JSON.parse fails on exactly those 3; the sole in-repo consumer `attempts()` is regex-only, so the fleet never notices); `rankings-*.json` = 234 artifacts / 229 stamps with zero consumers.
+  1001	- `~/Projects/bounties/evidence/<program>/` — per-program audit store (592 dirs; scope-snapshots, envelopes, custodian pairs, honest-zero records)
+  1002	- `~/Projects/bounties/ops/shared.mjs` — `appendLedger` (3500B O_APPEND cap) + `gitMutationBlocker` + `TELEMETRY_EVENTS`
+  1003	- `~/Projects/bounties/ops/fleet-dispatch.mjs` — the `/loop` dispatcher: leases, slot rotation, sole claims/ committer, tag+push proof, model-window routing
+  1004	- `~/Projects/bounties/fleets/{missions/<id>.md,run/,leases.json,claimer-mission.md,review-mission.md,priority.json,state-snapshots/}` — generated L1 assignments, status file-protocol, sibling-lane contracts
+
+=== SKILL.md:1160-1166
+  1160	| name | type | entry command | verdict map | self-test | pinned-value path | write scope | owner |
+  1161	|---|---|---|---|---|---|---|---|
+  1162	| r46-c1-gate.py | counter | aggregate: run `corpus/instruments/r46-c1-gate.py` with --root TREE --baseline BASE [--work DIR]; one `gate L<n> pass=<0 or 1> read=` line (L1-L7) then `c1-gate fixed=K/7 exit=C`; per-entry: run `corpus/instruments/r46-c1-gate.py` with --entry corpus/knowledge/X.md [--ro
+  1163	| r46-c2-gate.py | counter | run `corpus/instruments/r46-c2-gate.py` with --root TREE; one `gate G<n> pass=<0 or 1> read=` line (G1-G7) then `c2-gate fixed=K/7 exit=C` | exit 0 only when fixed=7 (G1 28 admitted frontier rows and F28 sourced to S073; G2 entry trio, exact recheck line, four sections w
+  1164	| r46-landing-gate.py | gate | run `corpus/instruments/r46-landing-gate.py` with --pre-report --lane DIR --branch master --round N, or --post-report --lane DIR --branch master --report PATH --fleet DIR [--tip REV]; one `check <id> pass=<0 or 1> read=` line each then `landing-gate mode=<m> checks=<n>
+  1165	| r46-counters-selftest-c1.py | selftest | run `corpus/instruments/r46-counters-selftest-c1.py` with --lane DIR --pure DIR [--counter FILE] [--work DIR]; one `case` line each, then `residual-false-greens=` and `selftest cases=N failures=F` | exit 0 only when failures=0; residual mechanical limits (c
+  1166	| r46-counters-selftest-c2.py | selftest | run `corpus/instruments/r46-counters-selftest-c2.py` with --lane DIR --pure DIR [--counter FILE] [--do-nothing-control]; one line per control, mutant or probe, then `selftest cases=N failures=F` | exit 0 only when failures=0; probes the counter ACCEPTS are 
+rc=0

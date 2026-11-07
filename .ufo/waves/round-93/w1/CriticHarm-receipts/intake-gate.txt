@@ -1,0 +1,24 @@
+# CriticHarm r93 item 6: capture-source.py intake gate at tip (9225954)
+# capture-source.py sha256=0630d32b98d40bd07c4716b0062babfaa1a8cee6b8bb4103c582b71d41d53dbf
+# scanner imported from corpus/instruments sha256=7d9d7309d5a5eddde59dbbb49767d71f43ec78667f1c3aa05bb1c76a45f683c5
+# committed allowlist /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/capture-secret-allow.tsv sha256=a5abeb53b3765a5061ce543f07bd48e2cc20be14b2ec8acbe53cb2caf9707c3c
+# fixture values are fabricated; the planted ghp tail is 36 base62 chars and the
+# planted glpat tail is 20 chars of A-Za-z0-9_- (never printed in full here).
+# each run: python3 -B corpus/instruments/capture-source.py --id T93 --url
+#   http://127.0.0.1:<ephemeral>/<case>.txt --out <scratch>/out-<case>.txt --kind text
+#   --allow <committed allowlist>; local HTTP server serves the scratch fixtures.
+
+case=clean rc=0 out_written=True bytes=20
+  T93 status=200 fetched_bytes=20 snapshot_bytes=20 sha256=6fe4afe61b310812d17d40bd8f68c51f136181f11d2ee0a429f0ca082cdf6964 utc=2026-11-07T14:26:39Z out=/fast/scratch/hyaku/kasegi-r93/CriticHarm/intake/out-clean.txt
+
+case=github rc=3 out_written=False
+  INTAKE-REFUSED T93 shape=github-token line=1 out=/fast/scratch/hyaku/kasegi-r93/CriticHarm/intake/out-github.txt written=no
+
+case=gitlab rc=3 out_written=False
+  INTAKE-REFUSED T93 shape=gitlab-pat line=1 out=/fast/scratch/hyaku/kasegi-r93/CriticHarm/intake/out-gitlab.txt written=no
+
+case=both rc=3 out_written=False
+  INTAKE-REFUSED T93 shape=github-token line=1 out=/fast/scratch/hyaku/kasegi-r93/CriticHarm/intake/out-both.txt written=no
+  INTAKE-REFUSED T93 shape=gitlab-pat line=2 out=/fast/scratch/hyaku/kasegi-r93/CriticHarm/intake/out-both.txt written=no
+
+VERDICT: gate refuses both planted token families and still admits clean text

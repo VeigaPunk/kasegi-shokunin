@@ -1,0 +1,29 @@
+=== K7 generated section ===
+def generated(seed):
+    """Return (plants, expected hit set) with values drawn from random.Random(seed)."""
+    r = random.Random(seed)
+    cfsig = "".join(r.choice(URLSAFE) for _ in range(r.randint(172, 344)))
+    kpi = "K" + "".join(r.choice(UPPER) for _ in range(r.randint(12, 20)))
+    asig = base64.b64encode(bytes(r.getrandbits(8) for _ in range(32))).decode().replace("=", "%3D")
+    exp = str(r.randint(1767000000, 1799999999))
+    host = "d%s.cloudfront.net" % "".join(r.choice(string.ascii_lowercase + string.digits) for _ in range(13))
+    pre = "&".join("%s=%d" % (r.choice(["color", "size", "w", "h", "v"]) + str(i), r.randint(0, 999)) for i in range(r.randint(0, 4)))
+    pre = (pre + "&") if pre else ""
+    plants = {
+        "g/x-receipts/live-g1.txt": "https://%s/a.jpg?%sExpires=%s&Signature=%s&Key-Pair-Id=%s\n" % (host, pre, exp, cfsig, kpi),
+        "g/x-receipts/live-g2.json": '{"u":"https://%s/a.mp4?%sKey-Pair-Id=%s\\u0026Expires=%s\\u0026Signature=%s"}\n' % (host, pre.replace("&", "\\u0026"), kpi, exp, cfsig),
+        "g/x-receipts/live-g3.json": '{"u":"https://acct.blob.core.windows.net/c/b.txt?sp=rw\\u0026st=2026-11-07T00:00:00Z\\u0026se=2026-11-08T00:00:00Z\\u0026spr=https\\u0026sv=2022-11-02\\u0026sr=b\\u0026sig=%s"}\n' % asig,
+        "g/x-receipts/live-n1.txt": "https://%s/a.jpg?%sExpires=%s&Signature=%s\n" % (host, pre, exp, cfsig),
+        "g/x-receipts/live-n2.txt": "https://%s/a.jpg?expires=%s&signature=%s&key-pair-id=%s\n" % (host, exp, cfsig, kpi),
+        "g/x-receipts/live-n3.txt": "https://acct.blob.core.windows.net/c/b.txt?sp=rw\\u0026sr=b\\u0026sig=%s\n" % asig,
+    }
+    # round 91: signed cookies and user-delegation SAS with skdutid
+    cksig = "".join(r.choice(URLSAFE) for _ in range(r.randint(40, 344)))
+    asig2 = base64.b64encode(bytes(r.getrandbits(8) for _ in range(32))).decode().replace("=", "%3D")
+    guid = "%08x-%04x-%04x-%04x-%012x" % (r.getrandbits(32), r.getrandbits(16), r.getrandbits(16), r.getrandbits(16), r.getrandbits(48))
+    sv = "%d-%02d-%02d" % (r.randint(2025, 2030), r.randint(1, 12), r.randint(1, 28))
+    eight = "".join(r.choice(string.ascii_lowercase) for _ in range(8))
+    plants.update({
+        "g/x-receipts/live-g4.txt": "Set-Cookie: CloudFront-Signature=%s; Domain=%s; Path=/; Secure; HttpOnly\n" % (cksig, host),
+        "g/x-receipts/live-g5.txt": "Cookie: CloudFront-Policy=eyJTdGF0ZW1lbnQiOltdfQ__; CloudFront-Signature=%s; CloudFront-Key-Pair-Id=%s\n" % (cksig, kpi),
+        "g/x-receipts/live-g6.txt": "https://acct.blob.core.windows.net/c/b.txt?sv=%s&sr=b&skdutid=%s&sig=%s\n" % (sv, guid, a

@@ -1,0 +1,9 @@
+### R16 landed scanner vs GitLab's authoritative rule, on GitLab's own published examples
+case                           value                                          gitlab_std    landed_scanner gitlab_routable
+GitLab example (custom prefix) acme-glpat-REDACTED-r93                MATCH         NO-HIT         no          
+GitLab example (plain)         glpat-REDACTED-r93                     MATCH         HIT            no          
+GitLab routable example        glpat-REDACTED-r93    no            NO-HIT         MATCH       
+GitLab versioned routable      glpat-REDACTED-r93 no            NO-HIT         no          
+custom prefix (host-style)     mycompany-glpat-REDACTED-r93           MATCH         NO-HIT         no          
+
+landed scanner gitlab-pat regex: (?:(?<![A-Za-z0-9_-])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])

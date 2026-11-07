@@ -1,0 +1,46 @@
+# CriticHarm r93 item 5: C1 citation-class movement in corpus/knowledge, base vs landing
+# method: every backticked path-like token in every file under corpus/knowledge at each
+# extracted rev tree (git archive e15996b / ae53b3c), classified with the lane's own
+# resolve.py classify(token, lane_root, mirror_root); mirror root absent on this host
+# resolve.MIRROR_ROOT=~/Projects/the-bounty-hunter MIRROR_ABSENT=True
+
+base(e15996b) files=103 tokens_distinct=2001 occurrences=3315 GONE=994 resolving=1007 classes={'GONE': 994, 'INTERNAL': 984, 'RESOLVES': 23}
+landing(ae53b3c) files=103 tokens_distinct=2000 occurrences=3316 GONE=991 resolving=1009 classes={'GONE': 991, 'INTERNAL': 986, 'RESOLVES': 23}
+
+tokens only at base: 6; resolving at base (lost citations): 3
+  BASE-ONLY SKILL.md:111                                                   class_at_base=INTERNAL
+  BASE-ONLY SKILL.md:117                                                   class_at_base=INTERNAL
+  BASE-ONLY SKILL.md:494-506                                               class_at_base=INTERNAL
+  BASE-ONLY intake-surface.md:75-76                                        class_at_base=GONE
+  BASE-ONLY mission-control.md:37-38                                       class_at_base=GONE
+  BASE-ONLY openai-oauth/gpt-6-astra:max                                   class_at_base=GONE
+
+tokens only at landing: 5
+  LANDING-ONLY SKILL.md:176-178                                            class_at_landing=INTERNAL
+  LANDING-ONLY SKILL.md:191                                                class_at_landing=INTERNAL
+  LANDING-ONLY SKILL.md:827-848                                            class_at_landing=INTERNAL
+  LANDING-ONLY corpus/knowledge/intake-surface.md:89-93                    class_at_landing=INTERNAL
+  LANDING-ONLY corpus/knowledge/mission-control.md:55-57                   class_at_landing=INTERNAL
+
+tokens present at both with class change:
+  none
+
+resolving citations lost (non-GONE at base, absent or GONE at landing): 3
+
+triage-thresholds.md: distinct tokens 198 -> 198
+  TRIAGE-ADDED   SKILL.md:176-178                                             class_at_landing=INTERNAL
+  TRIAGE-ADDED   SKILL.md:191                                                 class_at_landing=INTERNAL
+  TRIAGE-ADDED   SKILL.md:827-848                                             class_at_landing=INTERNAL
+  TRIAGE-ADDED   corpus/knowledge/intake-surface.md:89-93                     class_at_landing=INTERNAL
+  TRIAGE-ADDED   corpus/knowledge/mission-control.md:55-57                    class_at_landing=INTERNAL
+  TRIAGE-ADDED   openai-oauth/                                                class_at_landing=GONE
+  TRIAGE-REMOVED SKILL.md:111                                                 class_at_landing=absent
+  TRIAGE-REMOVED SKILL.md:117                                                 class_at_landing=absent
+  TRIAGE-REMOVED SKILL.md:494-506                                             class_at_landing=absent
+  TRIAGE-REMOVED intake-surface.md:75-76                                      class_at_landing=absent
+  TRIAGE-REMOVED mission-control.md:37-38                                     class_at_landing=absent
+  TRIAGE-REMOVED openai-oauth/gpt-6-astra:max                                 class_at_landing=absent
+triage base: GONE=80 resolving=118 classes={'GONE': 80, 'INTERNAL': 118}
+triage landing: GONE=78 resolving=120 classes={'GONE': 78, 'INTERNAL': 120}
+
+VERDICT: LOST/DOWNGRADED citations exist

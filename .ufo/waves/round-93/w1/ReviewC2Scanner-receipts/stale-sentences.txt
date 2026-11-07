@@ -1,0 +1,37 @@
+=== old 190-215 ===
+   190	    spec.loader.exec_module(mod)
+   191	    return tuple(mod.SECRET_PATTERNS)
+   192	
+   193	
+   194	def patterns():
+   195	    return gate_patterns() + AWS_PATTERNS + CLOUD_PATTERNS + GITHUB_PATTERNS
+   196	
+   197	
+   198	def is_capture_path(rel):
+   199	    parts = rel.split("/")
+   200	    return (rel.startswith("corpus/source-snapshots/")
+   201	            or (len(parts) >= 5 and parts[:2] == ["corpus", "practice"] and parts[3] == "evidence")
+   202	            or any(p.endswith("-receipts") for p in parts[:-1])
+   203	            or parts[-1].startswith("live-"))
+   204	
+   205	
+   206	def scan_bytes(data, pats, path="", allow=None, used=None):
+   207	    """Return ([(shape, line)] first non-allowed match per shape, allowed count)."""
+   208	    allow = allow or {}
+   209	    found, allowed = [], 0
+   210	    for name, rx in pats:
+   211	        for m in rx.finditer(data):
+   212	            if m.group(0) in ALLOWED_VALUES:
+   213	                continue
+   214	            key = (path, name, hashlib.sha256(m.group(0)).hexdigest())
+   215	            if key in allow:
+
+=== committed sentences that may be falsified ===
+4:verified-at: 2026-11-07 (re-opened at the pinned bytes: `sha256sum corpus/source-snapshots/round-92/S136.txt corpus/source-snapshots/round-92/S137.txt` prints `f0edd23c8d6d…` and `e4aaf2280203…`, equal to the manifest `sha256`; `python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-92/manifest.json --source S136` prints `S136:sha256 OK`, `S136:Q01-prefix-rule OK occurrences=1 anchor=158-ok`, `S136:Q02-stateless-40 OK occurrences=1 anchor=160-ok`, rc 0, and `--source S137` prints `sha256 OK` plus three `Q0n … OK occurrences=1 anchor=N-ok` lines, rc 0; `python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-92/S136.txt corpus/source-snapshots/round-92/S137.txt` prints `CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=19 rc=0`; `git show 58c0c115342877ee556cae19928d69839b0b29f0:corpus/instruments/capture-secret-scan.py | sha256sum` prints `04666f67…`, the frozen candidate digest, and the same file at the round-92 base `0628fd247914555838a42c02ba5d4ac08b7e095d` prints `89e283c6…` and carries no `github` shape; the landed instrument's `--selftest` prints `SELFTEST-RESULT pass cases=68`; FC-1 to FC-6 below are the runs).
+29:S137 states why the separator is an underscore: it is not a base64 character, so encoded data cannot reproduce a token by accident (`corpus/source-snapshots/round-92/S137.txt:162`). The scanner's boundary is a related but separate choice — it refuses a match preceded or followed by `[A-Za-z0-9_]`, so a token is never carved out of a longer identifier (`corpus/instruments/capture-secret-scan.py:156`, `:160`). That boundary is lane design, not a vendor rule; the vendor sentence is what makes the prefix plus underscore a stable byte anchor.
+93:- classic: `gh[pousr]_` + exactly 36 base62 characters, left boundary not `[A-Za-z0-9_]` except the `n` of a JSON `\n` escape, right boundary not `[A-Za-z0-9_]` (`corpus/instruments/capture-secret-scan.py:84-89`, lookbehind at `:156`);
+100:**Selftest.** The round-92 cases are pinned at `corpus/instruments/capture-secret-scan.py:341-355`: six positives (`gh-classic-pat-prose`, `gh-oauth-json`, `gh-user-to-server`, `gh-installation-json-joined`, `gh-refresh-line-start`, `gh-stateless-installation`) and nine negatives (`gh-stateless-short-segments`, `gh-doc-placeholder`, `gh-bare-prefix`, `gh-35-chars`, `gh-37-chars`, `gh-upper-prefix`, `gh-unknown-prefix`, `gh-letter-before`, `gh-fine-grained-known-limit`). Measured 2026-11-07: fifteen `SELFTEST gh-… ok` lines with those `got=` values, then `SELFTEST-RESULT pass cases=68` (FC-4).
+238:Measured 2026-11-07: fifteen `SELFTEST gh-… ok` lines — six `got=github-token` (`gh-classic-pat-prose`, `gh-oauth-json`, `gh-user-to-server`, `gh-installation-json-joined`, `gh-refresh-line-start`, `gh-stateless-installation`) and nine `got=none` (`gh-stateless-short-segments`, `gh-doc-placeholder`, `gh-bare-prefix`, `gh-35-chars`, `gh-37-chars`, `gh-upper-prefix`, `gh-unknown-prefix`, `gh-letter-before`, `gh-fine-grained-known-limit`) — then `SELFTEST-RESULT pass cases=68`, rc 0.
+--- intake-gate thirteen ---
+105:The shape set is the scanner's `patterns()` — the claim-package gate's six `SECRET_PATTERNS` plus two AWS shapes plus three cloud shapes at the round-90 landing: `private-key`, `op-ref`, `bearer`, `authorization`, `credential`, `session-cookie`, `aws-sts-session-token`, `aws-access-key-id`, `gcs-signed-url-signature`, `azure-sas-signature`, `cloudfront-signed-url-signature` — eleven names, which the counter derives from the scanner rather than restating (`LIMB G0 pass shapes=11 missing=none extra=none`, `.ufo/waves/round-90/l1/c2-landing-r90.txt:4`). Round 91 added a fourth cloud shape, `cloudfront-signed-cookie-signature` (`corpus/instruments/capture-secret-scan.py:186-195` now returns twelve), and the gate inherits it through `patterns()` without a change to `capture-source.py`: the round-90 counter at the round-91 landing prints `G0 FAIL shapes=12 missing=cloudfront-signed-cookie-signature` (its derived list predates the shape) while G1–G6 pass, and a loopback capture of a signed-cookie header is refused with that shape (`.ufo/waves/round-91/w1/CriticHarm.md`, item 2).
+246:1. **"A clean capture is credential-free."** Rejected: the gate runs the shapes `patterns()` returns — thirteen at round 92 (six gate shapes, two AWS, four cloud, `github-token`) — at fixed bounds over the converted text (`corpus/instruments/capture-secret-scan.py:95-102`, `:186-195`); a clean run says no shape matched (Claim 6).

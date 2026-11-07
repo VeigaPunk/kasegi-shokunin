@@ -1,0 +1,83 @@
+=== worktree modified knowledge files (NOT in landing) ===
+ M .ufo/waves/round-93/make-wave-r93.py
+ M corpus/knowledge/capture-intake-gate.md
+ M corpus/knowledge/cloud-signed-cookies-and-user-bound-sas.md
+ M corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md
+ M corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md
+ M corpus/knowledge/presigned-url-credentials-in-captured-evidence.md
+?? .ufo/waves/round-93/l1/
+?? .ufo/waves/round-93/w1-dispatch.json
+?? .ufo/waves/round-93/w1-spec.json
+?? .ufo/waves/round-93/w1.ready
+?? .ufo/waves/round-93/w1.ready.dispatched
+?? .ufo/waves/round-93/w1/
+
+=== diff of knowledge files vs landing ===
+ corpus/knowledge/capture-intake-gate.md            | 32 +++++-----
+ .../cloud-signed-cookies-and-user-bound-sas.md     | 28 ++++-----
+ ...-signed-url-credentials-in-captured-evidence.md | 32 +++++-----
+ .../github-prefixed-tokens-in-captured-evidence.md | 68 +++++++++++-----------
+ ...esigned-url-credentials-in-captured-evidence.md |  2 +-
+ 5 files changed, 81 insertions(+), 81 deletions(-)
+
+=== sample diff github-prefixed ===
+diff --git i/corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md w/corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md
+index 064ff30..ac48058 100644
+--- i/corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md
++++ w/corpus/knowledge/github-prefixed-tokens-in-captured-evidence.md
+@@ -26,7 +26,7 @@ The five classic prefixes are the blog's five token types, one line each (`corpu
+ 
+ Lane reading: five prefixes are in the classic shape and the sixth is not (Claim 6). The blog's sentence is about design intent, not about which prefixes exist today; the docs table is the current list, and it is why the fine-grained prefix is a named limit rather than a covered case.
+ 
+-S137 states why the separator is an underscore: it is not a base64 character, so encoded data cannot reproduce a token by accident (`corpus/source-snapshots/round-92/S137.txt:162`). The scanner's boundary is a related but separate choice — it refuses a match preceded or followed by `[A-Za-z0-9_]`, so a token is never carved out of a longer identifier (`corpus/instruments/capture-secret-scan.py:156`, `:160`). That boundary is lane design, not a vendor rule; the vendor sentence is what makes the prefix plus underscore a stable byte anchor.
++S137 states why the separator is an underscore: it is not a base64 character, so encoded data cannot reproduce a token by accident (`corpus/source-snapshots/round-92/S137.txt:162`). The scanner's boundary is a related but separate choice — it refuses a match preceded or followed by `[A-Za-z0-9_]`, so a token is never carved out of a longer identifier (`corpus/instruments/capture-secret-scan.py:169-170`, `:174`). That boundary is lane design, not a vendor rule; the vendor sentence is what makes the prefix plus underscore a stable byte anchor.
+ 
+ > "With this prefix alone, we anticipate the false positive rate for secret scanning will be down to 0.5%." — `corpus/source-snapshots/round-92/S137.txt:164`
+ 
+@@ -42,7 +42,7 @@ The alphabet is named by the entropy arithmetic, which multiplies the size of `a
+ 
+ > "Math.log(((“a”..“z”).to_a + (“A”..“Z”).to_a + (0..9).to_a).length)/Math.log(2) * 30 = 178" — `corpus/source-snapshots/round-92/S137.txt:173`
+ 
+-Sixty-two characters over 30 positions, plus a 6-character checksum, is 36 base62 characters after the prefix; the 62-character class, the 30 and the 6 are all stated on the two lines cited, and the scanner's classic alternative is exactly that arithmetic (`corpus/instruments/capture-secret-scan.py:84-85`, `:160`):
++Sixty-two characters over 30 positions, plus a 6-character checksum, is 36 base62 characters after the prefix; the 62-character class, the 30 and the 6 are all stated on the two lines cited, and the scanner's classic alternative is exactly that arithmetic (`corpus/instruments/capture-secret-scan.py:84-85`, `:174`):
+ 
+ > "followed by exactly 36 base62 characters" — `corpus/instruments/capture-secret-scan.py:84-85`
+ 
+@@ -52,7 +52,7 @@ The docs make the arithmetical consequence concrete for a reader whose code assu
+ 
+ > "If your application expects or relies on installation tokens being exactly 40 characters long, it may not handle this new token format correctly." — `corpus/source-snapshots/round-92/S136.txt:160`
+ 
+-Lane reading: 4 characters of prefix (`ghp_`) plus 36 of body is 40, which is the length S136 names, and it is the same length the blog says is unchanged (`:174`). The checksum is checkable offline (`:166`), so a matching string can be confirmed fake without a network call; it cannot be confirmed *live* offline, which is Claim 4's distinction. A 35-character or 37-character tail is therefore a shape miss by construction, and the selftest pins both (`corpus/instruments/capture-secret-scan.py:350-351`).
++Lane reading: 4 characters of prefix (`ghp_`) plus 36 of body is 40, which is the length S136 names, and it is the same length the blog says is unchanged (`:174`). The checksum is checkable offline (`:166`), so a matching string can be confirmed fake without a network call; it cannot be confirmed *live* offline, which is Claim 4's distinction. A 35-character or 37-character tail is therefore a shape miss by construction, and the selftest pins both (`corpus/instruments/capture-secret-scan.py:368-369`).
+ 
+ ## Claim 3 — the stateless installation form is `ghs_` + numeric app id + a three-segment JWT
+ 
+@@ -60,11 +60,11 @@ Lane reading: 4 characters of prefix (`ghp_`) plus 36 of body is 40, which is th
+ 
+ The same paragraph says the change is why a 40-character assumption breaks, and that GitHub shipped a temporary request header to turn the format on for a caller's own validation (`corpus/source-snapshots/round-92/S136.txt:160`). The rollout is staged, so both forms coexist: a capture taken after 2026-04-27 can hold either.
+ 
+-The scanner admits the stateless form as a second alternative of the same shape: `ghs_`, then 1 to 20 digits, then `_`, then three dot-separated base64url segments of 10 or more characters each (`corpus/instruments/capture-secret-scan.py:160-161`; segment class `_JWT_SEG` at `:157`). The digits are the app id, the three segments are the JWT, and the whole branch shares the classic branch's left boundary (`corpus/instruments/capture-secret-scan.py:156`).
++The scanner admits the stateless form as a second alternative of the same shape: `ghs_`, then 1 to 20 digits, then `_`, then three dot-separated base64url segments of 10 or more characters each (`corpus/instruments/capture-secret-scan.py:174-175`; segment class `_JWT_SEG` at `:171`). The digits are the app id, the three segments are the JWT, and the whole branch shares the classic branch's left boundary (`corpus/instruments/capture-secret-scan.py:169-170`).
+ 
+-Lane reading: the two alternatives carry different bounds. The classic branch bounds the tail on both sides — 36 base62 characters, not preceded or followed by a letter, digit or `_` (`corpus/instruments/capture-secret-scan.py:87-89`) — while the stateless branch has no trailing boundary after its third segment (`corpus/instruments/capture-secret-scan.py:160-161`), so a longer dotted string whose first three segments satisfy the branch still matches (measured: FC-5's `K-4seg`). That is a widening, not a miss: it cannot hide a token, and it can flag a non-JWT dotted value that begins with `ghs_<digits>_`.
++Lane reading: the two alternatives carry different bounds. The classic branch bounds the tail on both sides — 36 base62 characters, not preceded or followed by a letter, digit or `_` (`corpus/instruments/capture-secret-scan.py:87-92`) — while the stateless branch has no trailing boundary after its third segment (`corpus/instruments/capture-secret-scan.py:174-175`), so a longer dotted string whose first three segments satisfy the branch still matches (measured: FC-5's `K-4seg`). That is a widening, not a miss: it cannot hide a token, and it can flag a non-JWT dotted value that begins with `ghs_<digits>_`.
+ 
+-The docstring states the same boundaries as negatives — the page's own placeholder, a bare prefix, a 35- or 37-character tail, an upper-cased prefix, an unknown prefix, a letter-prefixed token, short JWT segments and the fine-grained form are not hits (`corpus/instruments/capture-secret-scan.py:86-96`, cases at `:341-355`) — and the selftest pins each one (FC-4).
++The docstring states the same boundaries as negatives — the page's own placeholder, a bare prefix, a 35- or 37-character tail, an upper-cased prefix, an unknown prefix, a letter-prefixed token, short JWT segments and the fine-grained form are not hits (`corpus/instruments/capture-secret-scan.py:86-109`, cases at `:359-373`) — and the selftest pins each one (FC-4).
+ 
+ ## Claim 4 — a capture holding one is treated as a live grant until the owner says otherwise
+ 
+@@ -82,55 +82,55 @@ Two qualifiers keep this claim honest. First, the grant is scoped: a `ghp_` clas
+ 
+ ## Claim 5 — what the landed scanner detects, and where it looks
+ 
+-The docstring at `corpus/instruments/capture-secret-scan.py:1-120` is the specification this entry reads; the instrument's sha256 at `58c0c11` is `04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e`.
++The docstring at `corpus/instruments/capture-secret-scan.py:1-133` is the specification this entry reads; the instrument's sha256 at `58c0c11` is `04666f676c09cc3d32e41d506c8198936ac04aff33b207813aab39304baf3a9e`.
+ 
+-**Scope.** `--rev REV` reads a git tree without checkout and scans capture-class paths only: anything under `corpus/source-snapshots/`, anything under a practice package's evidence directory, any path with a directory segment ending in `-receipts`, and any file whose name starts with `live-` (`corpus/instruments/capture-secret-scan.py:14-21`, `is_capture_path` at `:198-203`). `--files PATH...` scans exactly the named working-tree files whatever their path, and the docstring's instruction is to run it "on every capture before the commit that first adds it" (`:19-21`). A path outside both classes is not scanned by `--rev`: a token pasted into a knowledge entry or a lesson is outside the capture classes, and the gate's own secret shapes are keyed by an adjacent parameter name (`corpus/instruments/claim-package-check.py:135-142`), so neither reaches a bare prefixed token there — only `--files` on that specific file does.
++**Scope.** `--rev REV` reads a git tree without checkout and scans capture-class paths only: anything under `corpus/source-snapshots/`, anything under a practice package's evidence directory, any path with a directory segment ending in `-receipts`, and any file whose name starts with `live-` (`corpus/instruments/capture-secret-scan.py:14-21`, `is_capture_path` at `:216-221`). `--files PATH...` scans exactly the named working-tree files whatever their path, and the docstring's instruction is to run it "on every capture before the commit that first adds it" (`:19-21`). A path outside both classes is not scanned by `--rev`: a token pasted into a knowledge entry or a lesson is outside the capture classes, and the gate's own secret shapes are keyed by an adjacent parameter name (`corpus/instruments/claim-package-check.py:135-142`), so neither reaches a bare prefixed token there — only `--files` on that specific file does.
+ 
+-**The shape.** One shape name, `github-token`, with two alternatives (`corpus/instruments/capture-secret-scan.py:81-94`, patterns at `:156-162`):
++**The shape.** One shape name, `github-token`, with two alternatives (`corpus/instruments/capture-secret-scan.py:81-97`, patterns at `:169-180`):
+ 
+ > "github-token (round 92) a GitHub token in the prefixed format:" — `corpus/instruments/capture-secret-scan.py:81-82`

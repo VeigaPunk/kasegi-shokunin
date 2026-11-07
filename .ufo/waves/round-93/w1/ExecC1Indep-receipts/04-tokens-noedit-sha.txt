@@ -1,0 +1,35 @@
+# Receipt 04 — old-token uniqueness on base lines and no-edit rows (ExecC1Indep, 2026-11-07)
+
+```
+$ for spec in "58:SKILL.md:117" "144:SKILL.md:117" "437:intake-surface.md:75-76" "438:mission-control.md:37-38" "454:SKILL.md:494-506"; do
+    ln=${spec%%:*}; tok=${spec#*:}
+    n=$(sed -n "${ln}p" $S/base/corpus/knowledge/triage-thresholds.md | grep -o -F "$tok" | wc -l)
+    echo "base line $ln token [$tok] occurrences=$n"; done
+base line 58 token [SKILL.md:117] occurrences=1
+base line 144 token [SKILL.md:117] occurrences=1
+base line 437 token [intake-surface.md:75-76] occurrences=1
+base line 438 token [mission-control.md:37-38] occurrences=1
+base line 454 token [SKILL.md:494-506] occurrences=1
+
+$ cmp -s $S/base/corpus/knowledge/citation-bases.md $S/after/corpus/knowledge/citation-bases.md && echo IDENTICAL
+corpus/knowledge/citation-bases.md IDENTICAL
+$ cmp -s $S/base/corpus/knowledge/japanese-domestic-disclosure-workflow.md $S/after/corpus/knowledge/japanese-domestic-disclosure-workflow.md && echo IDENTICAL
+corpus/knowledge/japanese-domestic-disclosure-workflow.md IDENTICAL
+```
+
+# Receipt 05 — frozen labels integrity (ExecC1Indep, 2026-11-07)
+
+```
+$ sha256sum /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-93/c1/labels.tsv
+51b4f3eb3ccc44c9138c29a1052dbb08f951001c9cc0f9dd2971c25f0b670dff  /home/vgpnk/Projects/shokunin/kasegi-shokunin/.ufo/waves/round-93/c1/labels.tsv
+```
+Frozen labels_sha256 (claims.json C1): 51b4f3eb3ccc44c9138c29a1052dbb08f951001c9cc0f9dd2971c25f0b670dff — equal.
+
+# Receipt 05b — line counts of the target file in both trees
+
+```
+$ wc -l $S/base/corpus/knowledge/triage-thresholds.md $S/after/corpus/knowledge/triage-thresholds.md
+  487 .../base/corpus/knowledge/triage-thresholds.md
+  487 .../after/corpus/knowledge/triage-thresholds.md
+  974 total
+```
