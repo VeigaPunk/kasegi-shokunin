@@ -171,7 +171,7 @@ another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
 `sig`, more than 20 other parameters between the two matched ones, values
 soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not
 detected.
-The documented example key id AKIAIOSFODNN7EXAMPLE (S124 line 409) is allowed.
+The documented example key id [aws-access-key-id-fixture-redacted-r97] (S124 line 409) is allowed.
 
 Allowlist. The gate's generic shapes also match non-secrets in captures (a
 file name as a JSON "token" value, a spec's example "secret"). Each such match
@@ -258,7 +258,7 @@ GITLAB_PATTERNS = (
     ("gitlab-jwt-token", re.compile(
         _GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),
 )
-ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+ALLOWED_VALUES = frozenset({b"[aws-access-key-id-fixture-redacted-r97]"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -392,16 +392,16 @@ def selftest(pats):
     ghtail = b"FAKEghTOKENfake0123456789abcdefABCD"[:30] + b"0aZ9yX"
     jwt = b"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJGQUtFIn0.FAKEsignatureFAKEsignature"
     cases = [
-        ("presigned-sts", b'{"url":"https://x.s3.amazonaws.com/a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQGYBPQ6EXAMPLE12%2F20261107%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Security-Token=' + token + b'&X-Amz-Signature=ab"}', {"aws-sts-session-token", "aws-access-key-id", "credential"}),
+        ("presigned-sts", b'{"url":"https://x.s3.amazonaws.com/a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=[aws-access-key-id-fixture-redacted-r97]%2F20261107%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Security-Token=' + token + b'&X-Amz-Signature=ab"}', {"aws-sts-session-token", "aws-access-key-id", "credential"}),
         ("json-escaped-sts", b'"X-Amz-Security-Token=' + token + b'\\u0026X-Amz-Signature=1"', {"aws-sts-session-token", "credential"}),
         ("header-sts", b"X-Amz-Security-Token: " + token + b"\r\n", {"aws-sts-session-token", "credential"}),
         ("json-key-sts", b'{"X-Amz-Security-Token": "' + token + b'"}', {"aws-sts-session-token", "credential"}),
         ("redacted", b'"https://x.s3.amazonaws.com/a.png?[presigned-query-redacted-r86]"', set()),
         ("short-token-field", b"X-Amz-Security-Token=abc", set()),
-        ("aws-doc-example", b"X-Amz-Credential=AKIAIOSFODNN7EXAMPLE/20220830/us-east-1/ec2/aws4_request&", set()),
-        ("real-shaped-akid", b"key AKIAZZZZZZZZZZZZZZZZ here", {"aws-access-key-id"}),
+        ("aws-doc-example", b"X-Amz-Credential=[aws-access-key-id-fixture-redacted-r97]/20220830/us-east-1/ec2/aws4_request&", set()),
+        ("real-shaped-akid", b"key [aws-access-key-id-fixture-redacted-r97] here", {"aws-access-key-id"}),
         ("akid-too-long", b"AKIAZZZZZZZZZZZZZZZZZ", set()),
-        ("gate-private-key", b"-----BEGIN OPENSSH PRIVATE KEY-----", {"private-key"}),
+        ("gate-private-key", b"[private-key-fixture-redacted-r97]", {"private-key"}),
         ("plain-prose", b"The session token is required when temporary credentials are used.", set()),
         ("gcs-v4-query", b"https://storage.googleapis.com/b/o.png?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=svc%40p.iam.gserviceaccount.com%2F20261107%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20261107T000000Z&X-Goog-Expires=900&X-Goog-SignedHeaders=host&X-Goog-Signature=" + gsig + b'"', {"gcs-signed-url-signature"}),
         ("gcs-json-key", b'{"X-Goog-Signature": "' + gsig + b'"}', {"gcs-signed-url-signature"}),
@@ -531,11 +531,11 @@ def selftest(pats):
         ok = is_capture_path(p) == want
         bad += not ok
         print("SELFTEST scope %s %s" % (p, "ok" if ok else "FAIL"))
-    fp = b'{"token": "authorization-envelope.json"}'
+    fp = b'{"[credential-fixture-redacted-r97].json"}'
     cred = dict(pats)["credential"]
     digest = hashlib.sha256(cred.search(fp).group(0)).hexdigest()
     allow = {("r/x-receipts/a.json", "credential", digest): "file name, not a secret"}
-    other = b'{"token": "authorization-envelope2.json"}'
+    other = b'{"[credential-fixture-redacted-r97].json"}'
     checks = [("allow-exact", scan_bytes(fp, pats, "r/x-receipts/a.json", allow), set(), 1),
               ("allow-other-value", scan_bytes(other, pats, "r/x-receipts/a.json", allow), {"credential"}, 0),
               ("allow-other-path", scan_bytes(fp, pats, "r/y-receipts/a.json", allow), {"credential"}, 0)]

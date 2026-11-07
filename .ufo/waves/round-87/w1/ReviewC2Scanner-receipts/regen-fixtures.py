@@ -112,7 +112,7 @@ rel = "corpus/source-snapshots/round-87/S124.txt"; p = os.path.join(D3, rel)
 os.makedirs(os.path.dirname(p), exist_ok=True)
 m = b"Authorization" + b": AWS4-HMAC-SHA256"; allow = os.path.join(S, "fx4-allow.tsv")
 open(allow, "w").write("%s\tauthorization\t%s\texample header\n" % (rel, hashlib.sha256(m).hexdigest()))
-for label, body in (("documented example line", "Authorization" + ": AWS4-HMAC-SHA256\n" + "Credential=" + "AKIAIOSFODNN7EXAMPLE" + "/20220830/us-east-1/ec2/aws4_request,\n"),
+for label, body in (("documented example line", "Authorization" + ": AWS4-HMAC-SHA256\n" + "Credential=" + "[aws-access-key-id-fixture-redacted-r97]" + "/20220830/us-east-1/ec2/aws4_request,\n"),
                     ("other key id, same scheme", "Authorization" + ": AWS4-HMAC-SHA256 " + "Credential=" + "AKIA" + "ZZZZZZZZZZZZZZZZ" + "/20260101/us-east-1/s3/aws4_request,\n")):
     open(p, "w").write(body)
     q = subprocess.run([sys.executable, "-B", INST, "--files", rel, "--allow", allow], capture_output=True, text=True, cwd=D3)
