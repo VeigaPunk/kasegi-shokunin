@@ -85,7 +85,7 @@ Spot-check result: pending the round-99 non-author closure.
   earlyoom at 3.5 GiB. The scanner's session-cookie window now matches S140's
   assignment-context form (probe 0/12 → 12/12, ten boundary negatives clean),
   selftest 170 → 192.
-- **discernment: improved** — seven mistakes mined (M99-1…M99-7), including two
+- **discernment: improved** — nine mistakes mined (M99-1…M99-9), including two
   the round's own controls caught before the landing (the confined-HOME
   propagation and the census body's scratch path) and one that recurs from
   round 98 (a new shape exposing old receipts). The round-98 spot-check's
@@ -99,9 +99,11 @@ Spot-check result: pending the round-99 non-author closure.
 | M99-2 | fixture-design | the `write-not-ancestor` control first passed (rc 0) because the fixture's `git commit` ran on the clone's `master` HEAD and advanced the branch, so the "dangling" commit was the tip; `git merge-base --is-ancestor` returned 0 | the control's own rc (0 where 2 was expected) | the fixture detaches before committing (`checkout --detach master`), then returns to `master`; the control prints `rev-not-ancestor rc=2` (`.ufo/waves/round-99/controls/c1-layout-memory-controls-r99.txt`) |
 | M99-3 | scratch-leak (M98-1 class) | the census body embedded the confined HOME path in resolve.py's "Mirror root" line (`/fast/scratch/…/w1/home/Projects/the-bounty-hunter`), so the clean and dirty bodies differed and `--check` printed `body-mismatch` | the first dirty-layout run (rc 1 where 0 was expected) | the body rewrites the home dir to `<confined-home>/` beside the extract-path rewrite; `grep -c 'fast/scratch' corpus/instruments/citation-survival.md` prints 0 |
 | M99-4 | layout-dependence (R157's body half) | even with the pinned rate confined, the body's aggregate counts moved (INTERNAL 2608 vs 2610) because `../` rows resolved against the caller's work dir | the dirty-layout diff of the two bodies | the extract lives under a private parent (`<work>/extract-<rev12>/tree`) that holds only the extract, so a `../` walk-out is absent on every host; both layouts now print the same body digest |
-| M99-5 | shape-exposes-old-receipts (M98-4 class) | the new session-cookie window matched 53 synthetic 64-hex values in four round-98 sentinel receipts; the landing scan printed `hits=4 files=4` (one hit per file) | K4's clean-run limb at the first C2 landing | all 53 values redacted structurally (one `[session-cookie-fixture-redacted-r99]` marker per value, line numbering preserved, before/after digests in `.ufo/waves/round-99/controls/redaction-r99.txt`); the post-redaction scan prints `hits=0 unused_allow=0` |
+| M99-5 | shape-exposes-old-receipts (M98-4 class) | the new session-cookie window matched 57 synthetic 64-hex values in four round-98 sentinel receipts; the landing scan printed `hits=4 files=4` (one hit per file) | K4's clean-run limb at the first C2 landing | all 57 values redacted structurally (one `[session-cookie-fixture-redacted-r99]` marker per value, line numbering preserved, before/after digests in `.ufo/waves/round-99/controls/redaction-r99.txt`); the post-redaction scan prints `hits=0 unused_allow=0` |
 | M99-6 | counter-expressibility | the poisoned-cache class was first not expressible against the round-98 format (`header_lines()` required a `home:` line the round-98 census has no such line for), so the base scored 6/12 for the wrong reason | the harness's `NOT-EXPRESSIBLE` line | `header_lines()` treats `home:` as optional and the fake cache is built from the census's own pinned numbers; the base now scores 5/12 and the poisoned-cache class is a real survivor on it |
 | M99-7 | claim-transcription | both claims' `controls` field was hand-typed in a `CONTROL <name> rc=… want=… PASS` form the round-99 receipts do not print (they print `TAMPER-RESULT` / `PROBE-RESULT` / `SELFTEST-RESULT` lines), so the field was not a verbatim copy of the executed receipt (R148) | the round's own R148 check, run while assembling the report | an `erratum` on each claim quotes the receipts' verbatim lines and states that no predicate, target, kill rule or pin changes (`.ufo/waves/round-99/claims.json`); the receipts are the authority |
+| M99-8 | misroot | the SentinelCookie seat wrote `cli-checks.txt` into the fleet root (`/home/vgpnk/Projects/shokunin/cli-checks.txt`, 575 bytes, mtime 19:27) instead of its report dir; the file's content names `/fast/scratch/hyaku/kasegi-r99/SentinelCookie/` | the pre-report misroot sweep (`git -C /home/vgpnk/Projects/shokunin status --porcelain` listed it) | copied byte-exact to `kasegi-shokunin/cli-checks.txt` (`cmp` ok), the fleet copy deleted, the bytes committed with the wave evidence; the seat's later receipts copy differs (it rewrote the file), so the preserved root copy is a distinct sequence |
+| M99-9 | write-scope | the CriticClaimsC1 seat's D2 symlink test pointed `resolve.py`'s extract root at the lane, overwriting `corpus/instruments/citation-survival.md` and `.tsv` with the r18-format output (2560 + 5941 changed lines; the header lost `measured-at`/`home`/the digests) | `git status --porcelain` in the lane during the wave (`M corpus/instruments/citation-survival.md`, `M ...tsv`) | both files rewritten from the branch (`git show master:<path> > <path>`) and `--check` re-passes; the seat acknowledged the clobber and restored both files (sha256 equal to `git show HEAD:` per ExecC1Indep's `clobber-evidence.txt`), and the L1 re-ran the branch rewrite and `--check`; round 100's context adds the explicit "never point a fixture's extract root at the lane" line |
 
 ## Routed defects from the round-98 spot-check
 
@@ -131,4 +133,48 @@ Spot-check result: pending the round-99 non-author closure.
 
 ## Wave findings (round-99 w1, 13 seats)
 
-Pending WAVE-DONE.
+One v1 wave of 13 seats; twelve reports landed when this section was written (the
+thirteenth, ConnectorOverlap, is in the wave results). **C1 stands on P1–P4; C2
+stands on K1–K6 with a material statement erratum.**
+
+**C1.** CriticClaimsC1: P1–P4 STANDS (12/12 vs 5/12 reproduced, identical triple in
+both layouts, ancestor and scratch-path checks, 8.99 s / 514,764 KB); three attack
+classes accepted and routed — a symlinked extract *tree*, a pre-seeded extract reused
+across revisions, and a recomputed `header-sha256` over a false `home:` line.
+ExecC1Indep AGREES exactly (162/732, 2569/7624, 2607/8026, one `../` exclusion) and
+reproduces both tamper scores. ReviewC1Instrument MATCHES and passes P1–P4, with F3
+(`--check` writes the cache), F4 (the `home:` line is bound but not verified) and F5
+(the title/prose are unbound). MutC1Tamper leaves 8 of 12 instrument mutants alive
+against the artifact-level harness — the harness measures the check, not the
+instrument; an instrument-level mutant harness is routed. CriticHarm: NO HARM on the
+landing; one provenance harm (the redaction receipt recorded 4 of 57 lines) closed by
+appending per-line digests for all 57.
+
+**C2.** CriticClaimsC2: K1–K6 all PASS; the strict `_gitlab_session=` matcher is
+killed by the twelve payloads, the `.*` matcher by three negatives, the newline
+refusal is real; the `cell-<N>-` group and the right boundary are passable (V11/V4).
+SentinelCookie (192 cells, 4,000 fuzz cases): 7 MUST-FIX (left and right boundary,
+a 65-hex run behind `cell-N-`), 4 rune MUST-FIX (a 3+ multi-byte-rune gap is refused
+because `[^\n]` counts bytes where RE2's `.` counts runes), and 23 payload classes the
+round-98 scanner hit that the landing does not — including a TAB-separated Netscape
+cookie jar (landed `hits=0`, round-98 `hits=1`); remediation candidate B measured
+12/12, 0/10 and the jar recovered. MutC2Counter's one survivor (M05, the `cell-<N>-`
+group) corroborates V11. ExecC2Probe: 24/24 independent positives, 23/24 negatives
+clean, one extra hit on a 65–72-hex run. ReviewC2Scanner APPROVES.
+
+**The statement erratum.** ScoutSources F1: the pinned commit 59ada1f4 already
+carries `assignmentOperand = [="' :>\],\t.()\\?|]{1,10}` in
+`pkg/rules/assignment_regex.go`, not the MR !151 form the scanner implements (the L1
+re-fetched it: three fetches, 9,776 bytes, sha256 `91519731800ab8d9…`); F2: S150's
+anchor digest is nonce-bound. Corrections landed: S151 (the generator source at the
+pinned commit) is the byte-stable authority, the knowledge entry states both forms
+and their two-way difference, and the C2 erratum records the material correction
+while K1–K6 stand. ScribeGate found three defects in the round's appended
+corrections (word counts, the landing/integration conflation, the used-by
+enumeration) and the 53 → 57 redaction count; all corrected from its draft.
+
+**Routed to round 100:** S151's `assignmentOperand` in the scanner; a rune-aware
+window; a cookie-jar (TAB) limb; an instrument-level mutant harness for C1; the
+symlinked-extract, pre-seeded-extract and false-`home:` classes; the two pre-existing
+mis-anchors the re-anchor map exposed (`import os` cited for shape claims in
+`gitlab-routable-and-versioned-token-forms.md`).
