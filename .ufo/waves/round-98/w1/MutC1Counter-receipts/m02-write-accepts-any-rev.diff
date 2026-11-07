@@ -1,0 +1,11 @@
+--- pristine.py
++++ m02-write-accepts-any-rev.py
+@@ -248,7 +248,7 @@
+         return check(lane, a.check, work)
+     if a.write:
+         rev = a.rev or sh(["git", "-C", lane, "rev-parse", "HEAD"]).stdout.strip()
+-        if not re.fullmatch(r"[0-9a-f]{40}", rev or ""):
++        if not rev:
+             print("CENSUS-WRITE error reason=bad-revision rc=2")
+             return 2
+         return write_census(lane, rev, work, a.write)

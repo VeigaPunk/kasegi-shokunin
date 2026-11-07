@@ -1,0 +1,25 @@
+candidate rev=fac43d87ee970d54f373f9a1568633501d301ebe short=fac43d87ee97
+===== P1: M10 accepts a 12-character measured-at =====
+measured-at: fac43d87ee97
+CENSUS-CHECK fail reason=no-measured-at rc=1
+pristine rc=1
+CENSUS-CHECK pass rev=fac43d87ee97 skill=162/732 corpus=2550/7556 lane=2588/7958 host_owned=78
+m10 rc=0
+===== P2: M01 accepts a non-hex measured-at (tag) =====
+measured-at: cand
+CENSUS-CHECK fail reason=no-measured-at rc=1
+pristine rc=1
+CENSUS-CHECK pass rev=cand skill=162/732 corpus=2550/7556 lane=2588/7958 host_owned=78
+m01 rc=0
+===== P3: M02 accepts a non-hex --write revision =====
+CENSUS-WRITE error reason=bad-revision rc=2
+pristine rc=2
+CENSUS-WRITE ok rev=cand skill=162/732 lane=2588/7958 host_owned=78
+m02 rc=0
+measured-at: cand
+===== P4: M09 ignores resolve.py's non-zero exit =====
+fake-resolve rev=f62367a15a8bf4be7f91dce04d0851901472ac7e
+CENSUS error reason=resolve-rc1 rc=2
+pristine rc=2
+CENSUS rev=f62367a15a8bf4be7f91dce04d0851901472ac7e skill=1/1 corpus=0/1 lane=1/2 host_owned=1
+m09 rc=0

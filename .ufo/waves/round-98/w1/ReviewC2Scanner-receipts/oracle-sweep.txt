@@ -1,0 +1,56 @@
+/fast/scratch/hyaku/kasegi-r98/ReviewC2Scanner/landing/corpus/instruments/capture-secret-scan.py:184: SyntaxWarning: "\-" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\-"? A raw string is also an option.
+  (S140 line 480), right boundary `[^0-9a-zA-Z_\-]`/EOL.
+== right-boundary sweep: every byte 0x00..0xff, plus EOL ==
+gitlab-ci-build-token                    diffs=156 {'ours-only': (156, ['0x00', '0x01', '0x02', '0x03', '0x04', '0x05', '0x06', '0x07'])}
+gitlab-runner-registration-token         diffs=156 {'ours-only': (156, ['0x00', '0x01', '0x02', '0x03', '0x04', '0x05', '0x06', '0x07'])}
+gitlab-feed-token                        diffs=156 {'ours-only': (156, ['0x00', '0x01', '0x02', '0x03', '0x04', '0x05', '0x06', '0x07'])}
+gitlab-oauth-app-secret                  diffs=156 {'ours-only': (156, ['0x00', '0x01', '0x02', '0x03', '0x04', '0x05', '0x06', '0x07'])}
+gitlab-feed-token-v2                     diffs=156 {'ours-only': (156, ['0x00', '0x01', '0x02', '0x03', '0x04', '0x05', '0x06', '0x07'])}
+gitlab-scim-oauth-token                  diffs=156 {'ours-only': (156, ['0x00', '0x01', '0x02', '0x03', '0x04', '0x05', '0x06', '0x07'])}
+gitlab-iam-refresh-token                 diffs=0 {}
+gitlab-iam-authorization-code            diffs=0 {}
+
+== left-boundary sweep (prefix byte) ==
+gitlab-ci-build-token                    diffs=0 []
+gitlab-runner-registration-token         diffs=0 []
+gitlab-feed-token                        diffs=0 []
+gitlab-oauth-app-secret                  diffs=0 []
+gitlab-feed-token-v2                     diffs=0 []
+gitlab-scim-oauth-token                  diffs=0 []
+gitlab-iam-refresh-token                 diffs=0 []
+gitlab-iam-authorization-code            diffs=0 []
+
+== S140 grammar lengths, exact ==
+  ci-build prefix=0 ours=False ref=False
+  ci-build prefix=1 ours=True  ref=True 
+  ci-build prefix=2 ours=True  ref=True 
+  ci-build prefix=3 ours=True  ref=True 
+  ci-build prefix=4 ours=True  ref=True 
+  ci-build prefix=5 ours=True  ref=True 
+  ci-build prefix=6 ours=False ref=False
+  ci-build prefix=7 ours=False ref=False
+  ci-build tail=19 ours=False ref=False
+  ci-build tail=20 ours=True  ref=True 
+  ci-build tail=21 ours=False ref=False
+  iam-refresh a=42 ours=False ref=False
+  iam-refresh a=43 ours=True  ref=True 
+  iam-refresh a=44 ours=False ref=False
+  iam-refresh no-dot ours=False ref=False
+
+== widening direction: token + `_` / `-` / alnum ==
+  gitlab-ci-build-token                    _:ours=1 ref=1 -:ours=1 ref=1 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-runner-registration-token         _:ours=1 ref=1 -:ours=1 ref=1 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-feed-token                        _:ours=1 ref=1 -:ours=1 ref=1 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-oauth-app-secret                  _:ours=1 ref=1 -:ours=1 ref=1 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-feed-token-v2                     _:ours=1 ref=1 -:ours=1 ref=1 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-scim-oauth-token                  _:ours=1 ref=1 -:ours=1 ref=1 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-iam-refresh-token                 _:ours=0 ref=0 -:ours=0 ref=0 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1
+  gitlab-iam-authorization-code            _:ours=0 ref=0 -:ours=0 ref=0 x:ours=0 ref=0 9:ours=0 ref=0  :ours=1 ref=1 
+:ours=1 ref=1

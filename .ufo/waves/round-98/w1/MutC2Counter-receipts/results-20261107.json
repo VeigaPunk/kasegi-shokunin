@@ -1,0 +1,614 @@
+{
+ "seed": 20261107,
+ "plant_root": "/fast/scratch/hyaku/kasegi-r98/MutC2Counter/work/plant-04cjvrpevejp",
+ "plant_rev": "9bb678b824af63b029be4bbf45af5b2c64eee996",
+ "plant_files": 19,
+ "expect": [
+  "04cjvrpevejp-p1.txt|gitlab-ci-build-token",
+  "04cjvrpevejp-p2.txt|gitlab-iam-refresh-token",
+  "04cjvrpevejp-p3.html|gitlab-iam-authorization-code",
+  "04cjvrpevejp-p4.txt|gitlab-session-cookie",
+  "04cjvrpevejp-p5.txt|gitlab-runner-registration-token",
+  "04cjvrpevejp-p6.txt|gitlab-feed-token",
+  "04cjvrpevejp-p7.txt|gitlab-oauth-app-secret",
+  "04cjvrpevejp-p8.txt|gitlab-feed-token-v2",
+  "04cjvrpevejp-p9.txt|gitlab-scim-oauth-token"
+ ],
+ "pristine_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+ "baseline": {
+  "selftest": {
+   "rc": 0,
+   "result": "pass",
+   "cases": 170,
+   "fails": []
+  },
+  "k3": {
+   "rc": 1,
+   "hits": 9,
+   "missing": [],
+   "extra": [],
+   "ok": true
+  }
+ },
+ "mutants": [
+  {
+   "name": "M01-drop-ci-build",
+   "kind": "drop-shape",
+   "apply": "ok",
+   "mutant_sha256": "3afe27f0935492a298d4747d25e7639c6236e7c7ffdbec1f7264963a4c390537",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-ci-build",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p1.txt|gitlab-ci-build-token"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M02-drop-iam-refresh",
+   "kind": "drop-shape",
+   "apply": "ok",
+   "mutant_sha256": "966e87cf7bb26d98705484707bf6a33579743220284721abed6075abcbafa694",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-iam-refresh",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p2.txt|gitlab-iam-refresh-token"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M03-drop-iam-auth-code",
+   "kind": "drop-shape",
+   "apply": "ok",
+   "mutant_sha256": "eb3718fe5b3460c39f9cc09d8c0d9f5747b7944b43246b097550ef658957f910",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-iam-auth-code",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p3.html|gitlab-iam-authorization-code"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M04-drop-session-cookie",
+   "kind": "drop-shape",
+   "apply": "ok",
+   "mutant_sha256": "aaddb3b945d29e98aa67414f9bed74676127daf3a618845701177ffbecbb8b93",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-session-cookie",
+      "got": "none"
+     },
+     {
+      "case": "gl-session-cookie-cell",
+      "got": "none"
+     },
+     {
+      "case": "gl-session-cookie-geo",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p4.txt|gitlab-session-cookie"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M05-narrow-registration",
+   "kind": "narrow-boundary",
+   "apply": "ok",
+   "mutant_sha256": "c69d099d1231ac587633b33b75280cb6743e1024d4da907251d9ca482c26d268",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-registration-right-underscore",
+      "got": "none"
+     },
+     {
+      "case": "gl-registration-right-hyphen",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p5.txt|gitlab-runner-registration-token"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M06-narrow-feed-token",
+   "kind": "narrow-boundary",
+   "apply": "ok",
+   "mutant_sha256": "f2db8fc5961945bc55ae2c7bdf97c8a67ef83676fb76ae4d603f387d3620d245",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-feed-token-right-underscore",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p6.txt|gitlab-feed-token"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M07-narrow-oauth-app",
+   "kind": "narrow-boundary",
+   "apply": "ok",
+   "mutant_sha256": "331a433e00fad4ea9c817b4d516b079d424d82a8bea5820b2c82f5dec3d7e8a7",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-oauth-app-right-hyphen",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p7.txt|gitlab-oauth-app-secret"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M08-narrow-feed-v2",
+   "kind": "narrow-boundary",
+   "apply": "ok",
+   "mutant_sha256": "64517a2beb224db013dc92448d1279e1ed812a61f900c9a162941e67acaf69ff",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-feed-token-v2-right-underscore",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p8.txt|gitlab-feed-token-v2"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M09-narrow-scim",
+   "kind": "narrow-boundary",
+   "apply": "ok",
+   "mutant_sha256": "3b08e8a6cd7aaeb979750dd779e332857aa2bd68256ed6e94521b7241167a382",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-scim-oauth-right-hyphen",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p9.txt|gitlab-scim-oauth-token"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M10-drop-session-context",
+   "kind": "context",
+   "apply": "ok",
+   "mutant_sha256": "7db828fe43592fe431b45452120e13d0ee91d872bcc3738f59a071a3dff08bad",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-session-cookie",
+      "got": "none"
+     },
+     {
+      "case": "gl-session-cookie-cell",
+      "got": "none"
+     },
+     {
+      "case": "gl-session-cookie-geo",
+      "got": "none"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p4.txt|gitlab-session-cookie"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M11-43-to-42-refresh",
+   "kind": "length",
+   "apply": "ok",
+   "mutant_sha256": "5b62c1bda8d95b6550983fd66d78464a2fdb3d4ec06e23a155b4f7e22fa367e9",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-iam-refresh",
+      "got": "none"
+     },
+     {
+      "case": "gl-iam-refresh-short",
+      "got": "gitlab-iam-refresh-token"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 9,
+    "missing": [
+     "04cjvrpevejp-p2.txt|gitlab-iam-refresh-token"
+    ],
+    "extra": [
+     "04cjvrpevejp-n2.txt|gitlab-iam-refresh-token"
+    ],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M12-drop-ci-build-underscore",
+   "kind": "grammar",
+   "apply": "ok",
+   "mutant_sha256": "66b9467e4e0e003140d1266c6ee24a95ae44a95e4ac8df0499a38efd38f1f35c",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-jwt-clcbt",
+      "got": "gitlab-ci-build-token,gitlab-jwt-token"
+     },
+     {
+      "case": "gl-jwt-clcbt-custom",
+      "got": "gitlab-ci-build-token,gitlab-jwt-token"
+     },
+     {
+      "case": "gl-ci-build",
+      "got": "none"
+     },
+     {
+      "case": "gl-ci-build-no-underscore",
+      "got": "gitlab-ci-build-token"
+     },
+     {
+      "case": "gl-ci-build-short",
+      "got": "gitlab-ci-build-token"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p1.txt|gitlab-ci-build-token"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M13-session-hex-uppercase",
+   "kind": "class",
+   "apply": "ok",
+   "mutant_sha256": "13a67395509070a0c12386678495ee10285ace60c92d0121372f6dab3a646a32",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-session-cookie-upper",
+      "got": "gitlab-session-cookie"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 9,
+    "missing": [],
+    "extra": [],
+    "ok": true
+   },
+   "killed_by": [
+    "selftest"
+   ],
+   "verdict": "killed",
+   "gap": "selftest-only"
+  },
+  {
+   "name": "M14-narrow-ci-build-boundary",
+   "kind": "narrow-boundary",
+   "apply": "ok",
+   "mutant_sha256": "473443183c8f0e7968b1897c3871c1a8524a301c3a39701793a75e6bb20074cf",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 0,
+    "result": "pass",
+    "cases": 170,
+    "fails": []
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 9,
+    "missing": [],
+    "extra": [],
+    "ok": true
+   },
+   "killed_by": [],
+   "verdict": "SURVIVED",
+   "gap": "NEITHER"
+  },
+  {
+   "name": "M15-43-to-44-auth-code",
+   "kind": "length",
+   "apply": "ok",
+   "mutant_sha256": "e47c638b9d67ebaf024dd598494a3501f36be76e7815f45557ab981a3ebb7238",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 1,
+    "result": "fail",
+    "cases": 170,
+    "fails": [
+     {
+      "case": "gl-iam-auth-code",
+      "got": "none"
+     },
+     {
+      "case": "gl-iam-auth-code-44",
+      "got": "gitlab-iam-authorization-code"
+     }
+    ]
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 8,
+    "missing": [
+     "04cjvrpevejp-p3.html|gitlab-iam-authorization-code"
+    ],
+    "extra": [],
+    "ok": false
+   },
+   "killed_by": [
+    "selftest",
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "both"
+  },
+  {
+   "name": "M16-optional-session-context",
+   "kind": "context",
+   "apply": "ok",
+   "mutant_sha256": "568626b344b49e5bc44e086f8feb70f43fb7a4a49fdd234661b730ca9f30a50c",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 0,
+    "result": "pass",
+    "cases": 170,
+    "fails": []
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 9,
+    "missing": [],
+    "extra": [],
+    "ok": true
+   },
+   "killed_by": [],
+   "verdict": "SURVIVED",
+   "gap": "NEITHER"
+  },
+  {
+   "name": "M17-registration-20-to-21",
+   "kind": "length",
+   "apply": "ok",
+   "mutant_sha256": "7900b27fe5d58f1983f6ee6718b4e3e23a1dd9467253449189b05653663b16a8",
+   "restored_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e",
+   "selftest": {
+    "rc": 0,
+    "result": "pass",
+    "cases": 170,
+    "fails": []
+   },
+   "k3": {
+    "rc": 1,
+    "hits": 10,
+    "missing": [],
+    "extra": [
+     "04cjvrpevejp-n5.txt|gitlab-runner-registration-token"
+    ],
+    "ok": false
+   },
+   "killed_by": [
+    "k3"
+   ],
+   "verdict": "killed",
+   "gap": "k3-only"
+  }
+ ],
+ "final_sha256": "45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e"
+}

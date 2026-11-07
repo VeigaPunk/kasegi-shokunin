@@ -1,0 +1,55 @@
+S140 live file: 593 lines, sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+S140 committed capture: 564 lines, sha256 f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c
+
+per-rule live-vs-capture line offset (capture -> live):
+  gitlab_personal_access_token                   capture    2 -> live    2  (+0)
+  gitlab_personal_access_token_routable          capture   28 -> live   29  (+1)
+  gitlab_personal_access_token_routable_versioned capture   49 -> live   51  (+2)
+  gitlab_pipeline_trigger_token                  capture   71 -> live   74  (+3)
+  gitlab_runner_registration_token               capture   99 -> live  103  (+4)
+  gitlab_runner_auth_token                       capture  112 -> live  117  (+5)
+  gitlab_runner_auth_token_routable              capture  134 -> live  140  (+6)
+  gitlab_feed_token                              capture  158 -> live  165  (+7)
+  gitlab_oauth_app_secret                        capture  172 -> live  180  (+8)
+  gitlab_feed_token_v2                           capture  188 -> live  197  (+9)
+  gitlab_kubernetes_agent_token                  capture  211 -> live  221  (+10)
+  gitlab_incoming_email_token                    capture  227 -> live  238  (+11)
+  gitlab_deploy_token                            capture  253 -> live  265  (+12)
+  gitlab_scim_oauth_token                        capture  276 -> live  289  (+13)
+  gitlab_ci_build_token                          capture  291 -> live  305  (+14)
+  gitlab_runner_auth_token_legacy_partition      capture  306 -> live  321  (+15)
+  gitlab_deploy_token_routable                   capture  322 -> live  338  (+16)
+  gitlab_deploy_token_in_url                     capture  339 -> live  356  (+17)
+  gitlab_kubernetes_agent_token_routable         capture  356 -> live  374  (+18)
+  gitlab_workspace_token                         capture  373 -> live  392  (+19)
+  gitlab_feature_flags_client_token              capture  390 -> live  410  (+20)
+  gitlab_runner_controller_token                 capture  410 -> live  431  (+21)
+  gitlab_ci_build_token_jwt                      capture  428 -> live  450  (+22)
+  gitlab_stateless_access_token                  capture  445 -> live  468  (+23)
+  gitlab_iam_access_token                        capture  462 -> live  486  (+24)
+  gitlab_iam_refresh_token                       capture  478 -> live  503  (+25)
+  gitlab_iam_authorization_code                  capture  495 -> live  521  (+26)
+  gitlab_feed_token_path_dependent               capture  512 -> live  539  (+27)
+  gitlab_pipeline_trigger_token_in_url           capture  530 -> live  558  (+28)
+  gitlab_session_cookie                          capture  547 -> live  576  (+29)
+
+THE FOUR CITED RANGES (round-98 claim / SOURCES / knowledge entry):
+  gitlab_ci_build_token: cited 291-294 = live 305-308  offset +14   content(stripped) identical at both: False
+  gitlab_iam_refresh_token: cited 478-481 = live 503-506  offset +25   content(stripped) identical at both: False
+  gitlab_iam_authorization_code: cited 495-498 = live 521-524  offset +26   content(stripped) identical at both: False
+  gitlab_session_cookie: cited 547-551 = live 576-580  offset +29   content(stripped) identical at both: False
+
+WHAT AN AUDITOR SEES AT THE CITED LINE NUMBERS IN THE LIVE UPSTREAM FILE:
+  live L291  regex = "\\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+  live L293  type = "token"
+  live L294  maturity = "stable"
+  live L478  [rules.vendor]
+  live L480  category = ["source_control"]
+  live L481  [rules.scanningCapabilities]
+  live L495  [rules.vendor]
+  live L497  category = ["source_control"]
+  live L498  [rules.scanningCapabilities]
+  live L547  tags = ["gitlab", "gitlab_blocking"]
+  live L549  maturity = "stable"
+  live L550  [rules.vendor]
+  live L551  name = "GitLab"

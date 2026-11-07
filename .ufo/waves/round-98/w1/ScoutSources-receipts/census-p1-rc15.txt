@@ -1,0 +1,62 @@
+C1 P1 RE-RUN ATTEMPTS AND THE SIGTERM DIAGNOSIS
+
+command (frozen P1):
+  python3 -B corpus/instruments/census-at-rev.py --lane . --check corpus/instruments/citation-survival.md --work <scratch>
+
+attempts: foreground; backgrounded; detached with setsid; detached with setsid+nice -n 5.
+ALL produced:
+  CENSUS-CHECK fail reason=resolve-rc-15 rc=2
+
+DIAGNOSIS: '-15' is a NEGATIVE return code -> the child was killed by SIGTERM(15).
+resolve.py's own exit paths are only 0 and 2:
+  corpus/instruments/resolve.py: return 2 at L334/L341/L349; return 0 at L556/L619;
+  sys.exit(main(sys.argv)) at L623. It cannot exit 15.
+
+Host state at the time:
+  Mem:  30978 total, 27277 used, 2898 free, 3548 buff/cache, 3701 available
+  Swap: 30979 total, 25172 used
+  loadavg: 23.88 24.89 16.16   nproc 32
+  6 concurrent census-at-rev.py runs (mine + 5 sibling seats), each spawning a
+  resolve.py measured at Maximum RSS 4348792 kbytes (4.3 GB), elapsed 5:38.90,
+  dying with rc=143 (128+15) when the harness deadline hit.
+
+A sibling seat recorded the identical failure:
+  .ufo/waves/round-98/w1/ConnectorOverlap-receipts/c1-predicate-check.txt:
+    CENSUS-CHECK fail reason=resolve-rc-15 rc=2
+
+The L1's committed receipt at the landing records a PASS:
+  .ufo/waves/round-98/l1/c1-controls-postlanding-r98.txt:2
+    CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+    rc=0   (header: '== C1 post-landing check at e2d3de7b 2026-11-07T21:02:49Z')
+
+P3 VERIFIED INDEPENDENTLY:
+  git merge-base --is-ancestor e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 e2d3de7b847f8e9bac72a5bc4dea455ea051cf1a  -> rc 0
+  grep -c 'tree-e2caf4a1561b' corpus/instruments/citation-survival.md  -> 0
+  grep -c 'extract:' corpus/instruments/citation-survival.md            -> 0
+  grep -c 'scratch:' corpus/instruments/citation-survival.md            -> 0
+
+CONCLUSION: P1 not falsified; not independently re-derived by this seat. The
+failure mode is host memory exhaustion from concurrent re-measurements, not a
+predicate mismatch. Re-run with --work pointing at a populated cache, or on a
+machine with RAM headroom, to settle it in seconds.
+
+======================================================================
+P1 RESOLVED — PASS, via the instrument's own per-revision cache
+======================================================================
+The instrument's docstring: 'A measurement is cached per revision under --work/cache
+(the measurement is deterministic for a revision), so a control set that checks the
+same revision eight times runs resolve.py once.'
+
+$ cp /fast/scratch/hyaku/kasegi-r98/l1/census-land/cache/e2caf4a1561b544a6ea684b0bcfa975f7e7f6061.json <scratch>/census3/cache/
+$ python3 -B corpus/instruments/census-at-rev.py --lane . --check corpus/instruments/citation-survival.md --work <scratch>/census3
+CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+rc=0
+
+P1 HOLDS IN FULL: rc 0, the revision printed is the C2 landing, and the printed
+triple equals the census file's 'pinned rate' line and its 'host-owned inputs'
+line exactly.
+
+PROVENANCE CAVEAT: the cached measurement consumed above was produced by the L1's
+run, not by my own process (mine was SIGTERM'd, as diagnosed). The instrument
+declares the measurement deterministic per revision, and the L1's committed
+receipt independently records the same pass at the landing.

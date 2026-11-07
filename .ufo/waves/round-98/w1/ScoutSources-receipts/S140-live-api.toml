@@ -1,0 +1,592 @@
+[[rules]]
+id = "gitlab_personal_access_token"
+keywords = ["glpat"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-pat-fixture-redacted-r98]",
+  "[gitlab-pat-fixture-redacted-r98]",
+  "[gitlab-pat-fixture-redacted-r98]",
+  "[gitlab-pat-fixture-redacted-r98]",
+  "[gitlab-pat-fixture-redacted-r98]",
+  "[gitlab-pat-fixture-redacted-r98]",
+  "[gitlab-pat-fixture-redacted-r98]",
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+autoRevocation = true
+validityCheck = true
+
+[[rules]]
+id = "gitlab_personal_access_token_routable"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "[gitlab-pat-routable-fixture-redacted-r98]",
+  "[gitlab-pat-routable-fixture-redacted-r98]"
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+autoRevocation = true
+validityCheck = true
+
+[[rules]]
+id = "gitlab_personal_access_token_routable_versioned"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "[gitlab-pat-versioned-fixture-redacted-r98]",
+  "[gitlab-pat-versioned-fixture-redacted-r98]",
+  "[gitlab-pat-versioned-fixture-redacted-r98]"
+]
+tags = ["gitlab", "revocation_type", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+autoRevocation = true
+validityCheck = true
+
+[[rules]]
+id = "gitlab_pipeline_trigger_token"
+keywords = ["glptt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]",
+  "[gitlab-pipeline-trigger-token-fixture-redacted-r98]"
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_runner_registration_token"
+keywords = ["GR1348941"]
+regex = "\\b(GR1348941[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_runner_auth_token"
+keywords = ["glrt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-runner-auth-token-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_runner_auth_token_routable"
+keywords = ["glrt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+validationRegex = "(?i)gitlab"
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+examples = [
+  "[gitlab-runner-auth-token-versioned-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-versioned-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-versioned-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-versioned-fixture-redacted-r98]",
+  "[gitlab-runner-auth-token-versioned-fixture-redacted-r98]",
+]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_feed_token"
+keywords = ["feed_token"]
+regex = "\\b(feed_token=[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+# TODO: This is an old pattern
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+
+[[rules]]
+id = "gitlab_oauth_app_secret"
+keywords = ["gloas"]
+regex = "\\b(gloas-[0-9a-zA-Z_\\-]{64})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "client_secret"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_feed_token_v2"
+keywords = ["glft"]
+regex = "\\b(glft-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+examples = [
+  "[gitlab-feed-token-v2-fixture-redacted-r98]",
+  "[gitlab-feed-token-v2-fixture-redacted-r98]",
+  "[gitlab-feed-token-v2-fixture-redacted-r98]",
+  "[gitlab-feed-token-v2-fixture-redacted-r98]",
+  "[gitlab-feed-token-v2-fixture-redacted-r98]"
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_kubernetes_agent_token"
+keywords = ["glagent"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)'''
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_incoming_email_token"
+keywords = ["glimt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glimt-[0-9a-z]{20,25})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+  "[gitlab-incoming-email-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_deploy_token"
+keywords = ["gldt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-deploy-token-fixture-redacted-r98]",
+  "[gitlab-deploy-token-fixture-redacted-r98]",
+  "[gitlab-deploy-token-fixture-redacted-r98]",
+  "[gitlab-deploy-token-fixture-redacted-r98]",
+  "[gitlab-deploy-token-fixture-redacted-r98]"
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_scim_oauth_token"
+keywords = ["glsoat"]
+regex = "\\b(glsoat-[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_ci_build_token"
+keywords = ["glcbt"]
+regex = "\\b(glcbt-[0-9a-zA-Z]{1,5}_[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+
+[[rules]]
+id = "gitlab_runner_auth_token_legacy_partition"
+keywords = ["t1_", "t2_", "t3_"]
+regex = '''(?:(?m:^)|[^0-9a-zA-Z_\-\r\n])(t[1-3]_[1-9a-km-zA-HJ-NP-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "t1_HbrgaoMr-8LdYQrcEAiZ",
+  "t3_Ck8QxoWfJz3CVsMN_JqP",
+]
+tags = ["gitlab"]
+type = "token"
+maturity = "beta"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+
+[[rules]]
+id = "gitlab_deploy_token_routable"
+keywords = ["gldt-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "[gitlab-deploy-token-versioned-fixture-redacted-r98]",
+  "[gitlab-deploy-token-versioned-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_deploy_token_in_url"
+keywords = ["gitlab+deploy-token-"]
+regex = '''gitlab\+deploy-token-[0-9]+:([0-9a-zA-Z_\-]{20})@'''
+examples = [
+  "https://[gitlab-deploy-token-in-url-fixture-redacted-r98]gitlab.example.com/g/p.git",
+  "git clone https://[gitlab-deploy-token-in-url-fixture-redacted-r98]gitlab.com/group/project.git",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "connection_string"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_kubernetes_agent_token_routable"
+keywords = ["glagent-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "[gitlab-agent-token-versioned-fixture-redacted-r98]",
+  "[gitlab-agent-token-versioned-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_workspace_token"
+keywords = ["glwt-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+  "[gitlab-workspace-token-versioned-fixture-redacted-r98]",
+  "[gitlab-workspace-token-versioned-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_feature_flags_client_token"
+keywords = ["glffct-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glffct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-feature-flags-client-token-fixture-redacted-r98]",
+  "[gitlab-feature-flags-client-token-fixture-redacted-r98]",
+  "[gitlab-feature-flags-client-token-fixture-redacted-r98]",
+  "[gitlab-feature-flags-client-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+clientSide = true
+
+[[rules]]
+id = "gitlab_runner_controller_token"
+keywords = ["glrct-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrct-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-runner-controller-token-fixture-redacted-r98]",
+  "[gitlab-runner-controller-token-fixture-redacted-r98]",
+  "[gitlab-runner-controller-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_ci_build_token_jwt"
+keywords = ["glcbt-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glcbt-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+examples = [
+  "[gitlab-jwt-token-fixture-redacted-r98]",
+  "[gitlab-jwt-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_stateless_access_token"
+keywords = ["glsat-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glsat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+examples = [
+  "[gitlab-jwt-token-fixture-redacted-r98]",
+  "[gitlab-jwt-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_iam_access_token"
+keywords = ["gliamat-"]
+regex = '''\bgliamat-eyJ[0-9a-zA-Z_\-]{10,1000}\.eyJ[0-9a-zA-Z_\-]{10,1000}\.[0-9a-zA-Z_\-]{20,1000}'''
+examples = [
+  "[gitlab-jwt-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_iam_refresh_token"
+keywords = ["gliamrt-"]
+regex = '''\b(gliamrt-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-iam-refresh-token-fixture-redacted-r98]",
+  "[gitlab-iam-refresh-token-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_iam_authorization_code"
+keywords = ["gliamac-"]
+regex = '''\b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+  "[gitlab-iam-authorization-code-fixture-redacted-r98]",
+  "[gitlab-iam-authorization-code-fixture-redacted-r98]",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_feed_token_path_dependent"
+keywords = ["glft-"]
+regex = '''\b(?:[a-zA-Z0-9]{1,20}-)?glft-[0-9a-f]{64}-[0-9]{1,20}\b'''
+examples = [
+  "glft-24939095c70d53b336f6ad65fe6710c59fed5c79142a44b513b8a5a3ab969d03-4242",
+  "glft-a8cc74ccb0de004d09a968705ba49099229b288b3de43f26c473a9d8d7fb7693-1234",
+  "acme-glft-24939095c70d53b336f6ad65fe6710c59fed5c79142a44b513b8a5a3ab969d03-4242",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_pipeline_trigger_token_in_url"
+keywords = ["/trigger/pipeline?"]
+regex = '''/trigger/pipeline\?(?:[0-9a-zA-Z_.%\[\]=-]{1,100}&){0,10}token=([0-9a-f]{30})\b'''
+examples = [
+  "https://gitlab.example.com/api/v4/projects/42/trigger/pipeline?[credential-fixture-redacted-r98]&ref=main",
+  "curl -X POST 'https://gitlab.com/api/v4/projects/42/ref/main/trigger/pipeline?variables[X]=1&[credential-fixture-redacted-r98]'",
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "connection_string"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+
+[[rules]]
+id = "gitlab_session_cookie"
+keywords = ["_gitlab_session"]
+regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+assignmentContext.keywordGroupType = "raw"
+examples = [
+  "[gitlab-session-cookie-fixture-redacted-r98]",
+  "Cookie: [gitlab-session-cookie-fixture-redacted-r98];",
+]
+tags = ["gitlab"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true

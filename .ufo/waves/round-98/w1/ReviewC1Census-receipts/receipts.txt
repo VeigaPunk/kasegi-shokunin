@@ -1,0 +1,172 @@
+### independent script on e2caf4a1 extract (no lane instrument imported)
+$ python3 -B independent-census-fast.py $S/extract
+distinct=7961 internal=2589 gone=5068 abs=304 files=334
+SKILL internal=162/732
+CORPUS internal=2551/7559
+ALL internal=2589/7961
+DOTDOT '../' -> literal
+DOTDOT '../MISSION.md:49-56' -> None
+DOTDOT '../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md' -> None
+
+### independent script on 12bb2f9 (freeze) extract
+$ python3 -B independent-census-fast.py $S/extract-12bb2f9
+distinct=7958 internal=2588 gone=5066 abs=304 files=333
+SKILL internal=162/732
+CORPUS internal=2550/7556
+ALL internal=2588/7958
+DOTDOT '../' -> literal
+DOTDOT '../MISSION.md:49-56' -> None
+DOTDOT '../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md' -> None
+
+### P1: --check committed census, fresh work dir
+$ PYTHONPATH=$S/shim python3 -B corpus/instruments/census-at-rev.py --lane . --check corpus/instruments/citation-survival.md --work $S/workR1
+CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+rc=0
+
+### cross-rev: measured-at 12bb2f9 + 12bb2f9 pinned line (e2caf4a1 cache present in workR1)
+CENSUS-CHECK pass rev=12bb2f98cf9d07bcbc8b62985516cc3ff65d9ae8 skill=162/732 corpus=2550/7556 lane=2588/7958 host_owned=78
+rc=0
+
+### cross-rev: measured-at 12bb2f9 + e2caf4a1 pinned line
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2551/7559 = 33.75% | lane 2589/7961 = 32.52%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2550/7556 = 33.75% | lane 2588/7958 = 32.52%
+rc=1
+
+### --check body replaced by garbage (pinned line intact)
+CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+rc=0
+
+### --check host-inclusive + host-owned lines replaced by garbage (pinned line intact)
+CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+rc=0
+
+### scratch-parent dependence: work dir whose parent contains ../MISSION.md and ../.ufo/...
+$ ... --check corpus/instruments/citation-survival.md --work $S/workR2
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2551/7559 = 33.75% | lane 2589/7961 = 32.52%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2553/7559 = 33.77% | lane 2591/7961 = 32.55%
+rc=1
+
+### same revision, --write under that work dir
+CENSUS-WRITE ok rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 lane=2591/7961 host_owned=78
+rc=0
+6:pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2553/7559 = 33.77% | lane 2591/7961 = 32.55%
+118:| `../MISSION.md:49-56` | INTERNAL | `/home/vgpnk/Projects/shokunin/kasegi-shokunin/../MISSION.md` | 49-56 | 0 | OUT OF RANGE |
+
+### control harness (P2) re-run, shimmed
+CONTROL candidate rc=0 want=0 PASS reason=none declared=none
+CONTROL do-nothing rc=1 want=1 PASS reason=no-measured-at declared=no-measured-at
+CONTROL tampered-pinned rc=1 want=1 PASS reason=pinned-mismatch declared=pinned-mismatch
+CONTROL stale-rev rc=1 want=1 PASS reason=pinned-mismatch declared=pinned-mismatch
+CONTROL no-pinned-line rc=1 want=1 PASS reason=no-pinned-line declared=no-pinned-line
+CONTROL missing-file rc=2 want=2 PASS reason=missing-file declared=missing-file
+CONTROL bad-revision rc=2 want=2 PASS reason=bad-revision declared=bad-revision
+CONTROL no-resolve rc=2 want=2 PASS reason=no-resolve declared=no-resolve
+ATTRIBUTION pass fixtures=8
+C1-CONTROLS-RESULT pass controls=8 rc=0
+rc=0
+
+### hashes and claims pins
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502  corpus/instruments/census-at-rev.py
+86ca5da7884b4fa933f83cf9cda6b08c44b1b5eb108a194ebb860a53e7ebd5d6  corpus/instruments/citation-survival.md
+d97132684455aa6cca5bd65dd0e07a94942b8469801d05f219ba3a52b47ecc1a  .ufo/waves/round-98/controls/c1-controls-r98.py
+claims.json instrument_sha256 / harness_sha256:
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502
+d39a1fc8cc5ad189b5077dc03c1c3373bca59d77a120493163ccca63eb4f05e0
+git show 12bb2f9:harness | sha256sum:
+0488d79626e54731a8d5be3985fd1edad68b2b612a74d86454d5bca8a3950e7a  -
+git show e2d3de7:harness | sha256sum:
+d97132684455aa6cca5bd65dd0e07a94942b8469801d05f219ba3a52b47ecc1a  -
+git cat-file -t d39a1fc8...:
+fatal: Not a valid object name d39a1fc8cc5ad189b5077dc03c1c3373bca59d77a120493163ccca63eb4f05e0
+
+### committed TSV at the landing (stale?)
+5153
+citation	class	resolved_path	files_citing_count	method	domain	occurrences	scopes
+[~]	GONE		40		rel	94	+CORPUS
+census distinct citations: - distinct path-like citations: **7961** (total occurrences: 16435; a citation cited in both scopes counts once)
+TSV changed at landing?
+(empty = unchanged)
+
+### census body self-verification pipeline vs actual distinct count
+printed pipeline glob: corpus/README.md corpus/*/*.md (depth 2 only)
+7930
+corrected scope SKILL.md + corpus/**/*.md minus census:
+7946
+resolve.py distinct=7961
+
+### unshimmed runs on this host (no PYTHONPATH shim): SIGTERM under load
+job bg_5569: fresh resolve.py in extract -> rc=143 (signal 15), ELAPSED 178.50
+job bg_5568: instrument --write -> CENSUS-WRITE error reason=resolve-rc-15 rc=2, ELAPSED 190.20
+job bg_5596: resolve.py at 12bb2f9 -> rc=143 (signal 15), ELAPSED 188.66
+host: /home/vgpnk/Projects = 1,663,194 files, 64G; free -g: 30G total, 27G used
+glob.glob('/home/vgpnk/Projects/**', recursive=True) did not finish in 30s (timeout rc=124)
+
+### same command with the one-pattern shim (returns the base dir, the first sorted match)
+shimmed --write: ELAPSED 5.58, CENSUS-WRITE ok
+shimmed --check: ELAPSED 5.88, CENSUS-CHECK pass
+
+### cache poisoning, same revision
+poisoned cache rates -> skill 999/732, corpus 9999/9999, lane 9999/9999
+$ --check corpus/instruments/citation-survival.md --work workR5
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2551/7559 = 33.75% | lane 2589/7961 = 32.52%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 999/732 = 136.48% | corpus 9999/9999 = 100.00% | lane 9999/9999 = 100.00%
+rc=1
+$ --check poison-match.md --work workR5 (pinned line matches the poisoned cache)
+CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=999/732 corpus=9999/9999 lane=9999/9999 host_owned=78
+rc=0
+
+### truncated cache JSON
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+json.decoder.JSONDecodeError: Expecting ',' delimiter: line 1 column 23 (char 22)
+rc=1
+
+### cache keys are the full 40-hex revision
+12bb2f98cf9d07bcbc8b62985516cc3ff65d9ae8.json
+e2caf4a1561b544a6ea684b0bcfa975f7e7f6061.json
+
+### ../ citations: live-lane targets and fresh-extract classes
+-rw-r--r-- 1 vgpnk vgpnk 7493 Oct 14 20:39 /home/vgpnk/Projects/shokunin/.ufo/waves/shokunin12h-20261014-p1-repair/members/KasegiGateRepair.md
+-rw-r--r-- 1 vgpnk vgpnk 5040 Oct 19 21:10 /home/vgpnk/Projects/shokunin/MISSION.md
+source citations:
+corpus/knowledge/source-tree-loss-2026-09-28.md:315:  (`../MISSION.md:49-56`); this lane pushed nothing there.
+corpus/lessons/round-20-recensus.md:4:`../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md`.
+fresh extract TSV rows:
+GONE	../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md
+GONE	../MISSION.md:49-56
+round-19 live-lane TSV rows (old scope):
+INTERNAL	../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md
+INTERNAL	../MISSION.md:49-56
+
+### --check edge cases
+measured-at 0*40:
+CENSUS-CHECK fail reason=bad-revision rc=2
+rc=2
+base census (no measured-at):
+CENSUS-CHECK fail reason=no-measured-at rc=1
+rc=1
+
+### clean --write at e2caf4a1 and diff vs the committed census
+CENSUS-WRITE ok rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 lane=2589/7961 host_owned=78
+rc=0
+$ diff written-clean.md corpus/instruments/citation-survival.md
+186,187c186,187
+< | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3233 | in range |
+< | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3233 | in range |
+---
+> | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3230 | in range |
+> | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3230 | in range |
+diff rc=1
+
+### fresh resolve.py body vs committed body (instrument rewrite applied)
+$ diff fresh-body.md committed-body.md
+175,176c175,176
+< | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3233 | in range |
+< | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3233 | in range |
+---
+> | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3230 | in range |
+> | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3230 | in range |
+diff rc=1 (2 host-dependent cells)

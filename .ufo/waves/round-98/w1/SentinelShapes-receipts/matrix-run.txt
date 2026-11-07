@@ -1,0 +1,109 @@
+MATRIX cases=450
+CLASSES AGREE-HIT=359 AGREE-MISS=58 MUST-FIX=12 QUAL-MODEL-B=4 QUAL-S140A-ONLY=7 QUAL-SCANNER-ONLY=10
+
+MUST-FIX rows (S140_A hits a full real token, scanner misses):
+  len-cookie-cell0           gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session=cell--0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-ruby-hash-rocket        gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session => 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-eq                gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session%20=%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-colon             gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session%20:%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-after-eq          gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session=%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-paren-eq                gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session(=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef)\n'
+  ck-paren-gap               gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session ( = ) 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-comma-eq                gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session,=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pipe-eq                 gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session|=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-plus-eq                 gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session+=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-rocket-nospace          gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session=> 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-geo-pct20               gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session_geo_0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef%20=%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+
+QUAL-S140A-ONLY rows (S140_A hits, scanner misses, no full real token):
+  len-cookie65               gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdefa\n'
+  ck-geo-65                  gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session_geo_0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdefa=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-word-prefixed           gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  'x_gitlab_session=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-double-underscore       gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '__gitlab_session=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-hex-then-hex            gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0\n'
+  ck-semi-other-assign       gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session; foo=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-space-other-assign      gitlab-session-cookie    scan=-    s140A=gitlab-session-cookie  '_gitlab_session x=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+
+QUAL-SCANNER-ONLY rows (scanner hits, S140_A misses):
+  lb-gitlab-ci-build-token-06 gitlab-ci-build-token    s140A=-    scan=gitlab-ci-build-token  '%26[gitlab-ci-build-token-fixture-redacted-r98] '
+  lb-gitlab-ci-build-token-07 gitlab-ci-build-token    s140A=-    scan=gitlab-ci-build-token  '\\u0026[gitlab-ci-build-token-fixture-redacted-r98] '
+  lb-gitlab-iam-refresh-token-06 gitlab-iam-refresh-token s140A=-    scan=gitlab-iam-refresh-token '%26[gitlab-iam-refresh-token-fixture-redacted-r98] '
+  lb-gitlab-iam-refresh-token-07 gitlab-iam-refresh-token s140A=-    scan=gitlab-iam-refresh-token '\\u0026[gitlab-iam-refresh-token-fixture-redacted-r98] '
+  lb-gitlab-runner-registration-token-06 gitlab-runner-registration-token s140A=-    scan=gitlab-runner-registration-token '%26[gitlab-runner-registration-token-fixture-redacted-r98] '
+  lb-gitlab-runner-registration-token-07 gitlab-runner-registration-token s140A=-    scan=gitlab-runner-registration-token '\\u0026[gitlab-runner-registration-token-fixture-redacted-r98] '
+  lb-gitlab-oauth-app-secret-06 gitlab-oauth-app-secret  s140A=-    scan=gitlab-oauth-app-secret '%26[gitlab-oauth-app-secret-fixture-redacted-r98] '
+  lb-gitlab-oauth-app-secret-07 gitlab-oauth-app-secret  s140A=-    scan=gitlab-oauth-app-secret '\\u0026[gitlab-oauth-app-secret-fixture-redacted-r98] '
+  ck-cell-space              gitlab-session-cookie    s140A=-    scan=gitlab-session-cookie  '[gitlab-session-cookie-fixture-redacted-r98]\n'
+  ck-newline-eq              gitlab-session-cookie    s140A=-    scan=gitlab-session-cookie  '_gitlab_session\n=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+
+QUAL-MODEL-B rows (only the loose model B hits):
+  len-cookie-cellabc         gitlab-session-cookie    '_gitlab_session=cell-abc-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-geo-alone               gitlab-session-cookie    '_gitlab_session_geo_0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-fully-encoded     gitlab-session-cookie    '_gitlab_session%20%3D%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-form-encoded-eq         gitlab-session-cookie    '_gitlab_session%3D0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+
+AGREE-MISS with a full real token (both miss; S140's own grammar refuses): 16
+  sep-gitlab-iam-refresh-token-00 gitlab-iam-refresh-token 'gliamrt-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB_x'
+  sep-gitlab-iam-refresh-token-01 gitlab-iam-refresh-token 'gliamrt-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB-x'
+  sep-gitlab-iam-authorization-code-00 gitlab-iam-authorization-code 'gliamac-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC.DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD_x'
+  sep-gitlab-iam-authorization-code-01 gitlab-iam-authorization-code 'gliamac-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC.DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD-x'
+  lb-gitlab-ci-build-token-01 gitlab-ci-build-token    '_glcbt-Ab3_kQ7z-9LmN0pR2sT4uV6w '
+  lb-gitlab-ci-build-token-02 gitlab-ci-build-token    'Aglcbt-Ab3_kQ7z-9LmN0pR2sT4uV6w '
+  lb-gitlab-ci-build-token-03 gitlab-ci-build-token    '9glcbt-Ab3_kQ7z-9LmN0pR2sT4uV6w '
+  lb-gitlab-iam-refresh-token-01 gitlab-iam-refresh-token '_gliamrt-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB '
+  lb-gitlab-iam-refresh-token-02 gitlab-iam-refresh-token 'Agliamrt-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB '
+  lb-gitlab-iam-refresh-token-03 gitlab-iam-refresh-token '9gliamrt-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB '
+  lb-gitlab-runner-registration-token-01 gitlab-runner-registration-token '_GR1348941EEEEEEEEEEEEEEEEEEEE '
+  lb-gitlab-runner-registration-token-02 gitlab-runner-registration-token 'AGR1348941EEEEEEEEEEEEEEEEEEEE '
+  lb-gitlab-runner-registration-token-03 gitlab-runner-registration-token '9GR1348941EEEEEEEEEEEEEEEEEEEE '
+  lb-gitlab-oauth-app-secret-01 gitlab-oauth-app-secret  '_gloas-GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG '
+  lb-gitlab-oauth-app-secret-02 gitlab-oauth-app-secret  'Agloas-GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG '
+  lb-gitlab-oauth-app-secret-03 gitlab-oauth-app-secret  '9gloas-GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG '
+
+SWEEPS (ASCII 0x00-0x7f), S140_A vs landed scanner:
+  pre-gitlab-ci-build-token          s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-ci-build-token         s140A_only=-
+                                     scanner_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f both=38 neither=62
+  pre-gitlab-iam-refresh-token       s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-iam-refresh-token      s140A_only=-
+                                     scanner_only=- both=64 neither=64
+  pre-gitlab-iam-authorization-code  s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-iam-authorization-code s140A_only=-
+                                     scanner_only=- both=64 neither=64
+  pre-gitlab-runner-registration-token s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-runner-registration-token s140A_only=-
+                                     scanner_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f both=38 neither=62
+  pre-gitlab-feed-token              s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-feed-token             s140A_only=-
+                                     scanner_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f both=38 neither=62
+  pre-gitlab-oauth-app-secret        s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-oauth-app-secret       s140A_only=-
+                                     scanner_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f both=38 neither=62
+  pre-gitlab-feed-token-v2           s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-feed-token-v2          s140A_only=-
+                                     scanner_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f both=38 neither=62
+  pre-gitlab-scim-oauth-token        s140A_only=-
+                                     scanner_only=- both=65 neither=63
+  post-gitlab-scim-oauth-token       s140A_only=-
+                                     scanner_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x7f both=38 neither=62
+  cookie-sep                         s140A_only=-
+                                     scanner_only=\x09\x0a\x0b\x0c\x0d "'; both=2 neither=117
+  cookie-gap-before-op               s140A_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f!#$%&()*+,-./0123456789<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f
+                                     scanner_only=\x0a both=10 neither=0
+  cookie-gap-after-op                s140A_only=\x00\x01\x02\x03\x04\x05\x06\x07\x08\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f!#$%&()*+,-./0123456789<>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f
+                                     scanner_only=\x0a both=10 neither=0
+  cookie-value-right                 s140A_only=0123456789abcdef
+                                     scanner_only=- both=112 neither=0
+  cookie-kw-left                     s140A_only=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz
+                                     scanner_only=- both=65 neither=0
+
+ASSERT prefixed-shape sweeps: S140_A-only cells = 0 (expected 0)
+
+WROTE receipts/matrix.tsv rows=450 and receipts/sweeps.tsv rows=21

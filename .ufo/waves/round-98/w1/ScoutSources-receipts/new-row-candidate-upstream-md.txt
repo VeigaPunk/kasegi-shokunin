@@ -1,0 +1,35 @@
+UPSTREAM PER-RULE PROSE DOCS — candidate new source row
+repo: gitlab-org/security-products/secret-detection/secret-detection-rules
+path prefix: rules/mit/gitlab/<rule_id>.md
+pinned commit: 59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+fetch: GitLab API raw URL, ref=<commit>, HTTP 200 for all 30 .md files
+
+gitlab_iam_refresh_token.md      bytes=1190   lines=26   sha256=9b37df1ebb06fd96a1ebefd0e8ba2dc0ae9d7f4e44ebce91c7bd4bec87aba456
+gitlab_iam_authorization_code.md bytes=1322   lines=27   sha256=52348dd60e586a08b6dc9188e573cc86a204da05636e2550c2028a4901bfc1c7
+gitlab_iam_access_token.md       bytes=1210   lines=25   sha256=58777dbd6eb15337484208b21b5254363899be4687cb75f72f2a1d2a81b5ff0d
+gitlab_session_cookie.md         bytes=1028   lines=23   sha256=b50856e4413c392ffe47fd0f212d5dd22067d52db710a7a8f93a11e9182ac319
+gitlab_ci_build_token.md         bytes=1059   lines=18   sha256=d77ac7c36a8efd5bf32c0fe5b58bc28d1b9cbece47c34dcf1e7796f723b6e308
+
+VERBATIM QUOTES (Description section):
+  gitlab_iam_refresh_token.md:5  (17 words)  A GitLab IAM OAuth refresh token was identified. The token starts with `gliamrt-`. The GitLab IAM service
+  gitlab_iam_authorization_code.md:5  (16 words)  A GitLab IAM OAuth authorization code was identified. The code starts with `gliamac-`. The GitLab IAM
+  gitlab_iam_access_token.md:5  (19 words)  A GitLab IAM OAuth access token was identified. The token starts with `gliamat-` followed by a JSON Web Token
+  gitlab_session_cookie.md:6  (13 words)  The value is a 64-character hexadecimal session ID, with an optional `cell-<ID>-` prefix.
+
+tier note: these pages state the PREFIX and (for the session cookie) the value
+LENGTH+alphabet, but NOT the IAM 43.43 length. Per the registry's own convention
+(S139 tier A = 'GitLab's own rule statement for the ... token format'), the
+session-cookie page grounds the 64-hex + cell-<ID>- shape in prose at tier A;
+the two IAM pages ground the PREFIX only, so they are tier B for the shape
+(same standing as S144).
+
+THE ROUND-98 SOURCES ASSERTION (working tree line 358) SAYS:
+  "Round 98: no new row — the two IAM forms (`gliamrt-`, `gliamac-`) are stated
+   only by the rules file, and S144's prefix table names no IAM prefix, length
+   or alphabet."
+
+MEASURED AGAINST THE UPSTREAM REPO AT THE SAME PINNED COMMIT: the claim that
+the IAM forms are 'stated only by the rules file' is FALSE — the repo ships
+rules/mit/gitlab/gitlab_iam_refresh_token.md and gitlab_iam_authorization_code.md,
+which state both prefixes in prose, and rules/mit/gitlab/gitlab_session_cookie.md,
+which states the 64-hex value length and the cell-<ID>- prefix in prose.

@@ -1,0 +1,40 @@
+== landed scanner shapes (landing e2caf4a corpus/instruments/capture-secret-scan.py) ==
+-- line 302-322 --
+    ("gitlab-ci-build-token", re.compile(
+        _GL_LB + rb"glcbt-[A-Za-z0-9]{1,5}_[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
+    ("gitlab-iam-refresh-token", re.compile(
+        _GL_LB + rb"gliamrt-[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])")),
+    ("gitlab-iam-authorization-code", re.compile(
+        _GL_LB + rb"gliamac-[A-Za-z0-9_-]{43}\.[A-Za-z0-9_-]{43}(?![A-Za-z0-9_-])")),
+    ("gitlab-session-cookie", re.compile(
+        _GL_LB + rb"_gitlab_session(?:_geo_[0-9a-f]{64})?[\s\"'=:;]+"
+        rb"(?:cell-[0-9]+-)?[0-9a-f]{64}(?![0-9a-f])")),
+    ("gitlab-runner-registration-token", re.compile(
+        _GL_LB + rb"GR1348941[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
+    ("gitlab-feed-token", re.compile(
+        _GL_LB + rb"feed_token=[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
+    ("gitlab-oauth-app-secret", re.compile(
+        _GL_LB + rb"gloas-[A-Za-z0-9_-]{64}(?![A-Za-z0-9])")),
+    ("gitlab-feed-token-v2", re.compile(
+        _GL_LB + rb"glft-[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
+    ("gitlab-incoming-email-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glimt-[a-z0-9]{20,25}(?![A-Za-z0-9_-])")),
+    ("gitlab-scim-oauth-token", re.compile(
+        _GL_LB + rb"glsoat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9])")),
+-- line 380-395 scan_bytes --
+def scan_bytes(data, pats, path="", allow=None, used=None):
+    """Return ([(shape, line)] first non-allowed match per shape, allowed count)."""
+    allow = allow or {}
+    found, allowed = [], 0
+    for name, rx in pats:
+        for m in rx.finditer(data):
+            if m.group(0) in ALLOWED_VALUES:
+                continue
+            key = (path, name, hashlib.sha256(m.group(0)).hexdigest())
+            if key in allow:
+                allowed += 1
+                if used is not None:
+                    used.add(key)
+                continue
+            found.append((name, data.count(b"\n", 0, m.start()) + 1))
+            break

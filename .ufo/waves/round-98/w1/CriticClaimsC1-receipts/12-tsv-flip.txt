@@ -1,0 +1,21 @@
+### same rev e2caf4a1, two work dirs: the two citations that flip GONE -> INTERNAL
+### Captured 18:21 from ReviewC1Census/workS and workD before that seat cleaned its scratch.
+### Independently reproduced self-contained in 04-layout-instability.txt (my own fixture).
+
+--- workS (clean parent: only the tree + cache):
+1075:../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md	GONE		1		rel	1	+CORPUS
+1076:../MISSION.md:49-56	GONE		1		rel	1	+CORPUS
+    class matrix: RESOLVES 78 | GONE 5294 | INTERNAL 2589
+
+--- workD (parent also contains MISSION.md and .ufo/.../KasegiGateRepair.md):
+5990:../.ufo/waves/shokunin12h-20261014-p1-repair/members/Kasegi*.md	INTERNAL	/fast/scratch/hyaku/kasegi-r98/ReviewC1Census/workD/tree-e2caf4a1561b/../.ufo/waves/shokunin12h-20261014-p1-repair/members/KasegiGateRepair.md	1	glob	rel	1	+CORPUS
+5991:../MISSION.md:49-56	INTERNAL	/fast/scratch/hyaku/kasegi-r98/ReviewC1Census/workD/tree-e2caf4a1561b/../MISSION.md	1	literal	rel	1	+CORPUS
+    class matrix: RESOLVES 78 | GONE 5292 | INTERNAL 2591
+
+--- workD parent files (both 0 bytes, created by the peer seat):
+-rw-r--r-- 1 vgpnk vgpnk 0 Nov  7 18:19 /fast/scratch/hyaku/kasegi-r98/ReviewC1Census/workD/MISSION.md
+-rw-r--r-- 1 vgpnk vgpnk 0 Nov  7 18:19 /fast/scratch/hyaku/kasegi-r98/ReviewC1Census/workD/.ufo/waves/shokunin12h-20261014-p1-repair/members/KasegiGateRepair.md
+
+--- the two citations come from the measured tree itself:
+corpus/knowledge/source-tree-loss-2026-09-28.md:315 cites `../MISSION.md:49-56`
+(the `.ufo/.../members/Kasegi*.md` citation is in the same file's lesson text)

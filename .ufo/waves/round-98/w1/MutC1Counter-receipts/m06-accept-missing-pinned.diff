@@ -1,0 +1,13 @@
+--- pristine.py
++++ m06-accept-missing-pinned.py
+@@ -213,8 +213,8 @@
+     rev = m.group(1)
+     p = re.search(r"^pinned rate \(INTERNAL only; revision-stable\): (.+)$", text, re.M)
+     if not p:
+-        print("CENSUS-CHECK fail reason=no-pinned-line rc=1")
+-        return 1
++        print("CENSUS-CHECK pass rev=%s (no pinned line)" % rev)
++        return 0
+     rates, body, err = measure(lane, rev, work)
+     if err:
+         print("CENSUS-CHECK fail reason=%s rc=2" % err)

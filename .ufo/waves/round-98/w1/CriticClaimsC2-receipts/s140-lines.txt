@@ -1,0 +1,59 @@
+$ grep -n S140 rule ids
+291:id = "gitlab_ci_build_token"
+478:id = "gitlab_iam_refresh_token"
+495:id = "gitlab_iam_authorization_code"
+547:id = "gitlab_session_cookie"
+$ sed -n 285,300p;475,500p;545,555p
+[rules.scanningCapabilities]
+pipeline = true
+clientSide = true
+[rules.postDetectionActions]
+validityCheck = true
+[[rules]]
+id = "gitlab_ci_build_token"
+keywords = ["glcbt"]
+regex = "\\b(glcbt-[0-9a-zA-Z]{1,5}_[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "client_side_sd"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_iam_refresh_token"
+keywords = ["gliamrt-"]
+regex = '''\b(gliamrt-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]
+tags = ["gitlab", "gitlab_blocking"]
+type = "token"
+maturity = "stable"
+[rules.vendor]
+name = "GitLab"
+category = ["source_control"]
+[rules.scanningCapabilities]
+pipeline = true
+pushProtection = true
+[[rules]]
+id = "gitlab_iam_authorization_code"
+keywords = ["gliamac-"]
+regex = '''\b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+pushProtection = true
+[[rules]]
+id = "gitlab_session_cookie"
+keywords = ["_gitlab_session"]
+regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+assignmentContext.keywordGroupType = "raw"
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+]

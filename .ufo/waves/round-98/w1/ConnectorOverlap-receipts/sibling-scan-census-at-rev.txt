@@ -1,0 +1,26 @@
+=== SIBLING OVERLAP SCAN: census-at-rev ===
+Total sibling lanes checked: 20
+audio-shokunin: 0 hits
+chousa-shokunin: 0 hits
+game-dev-2d-shokunin: 0 hits
+game-dev-3d-shokunin: 0 hits
+kagi-shokunin: 0 hits
+kaidoku-shokunin: 0 hits
+kake-shokunin: 0 hits
+kama-shokunin: 0 hits
+kengaku-shokunin: 0 hits
+kotoba-shokunin: 0 hits
+kotodama-shokunin: 0 hits
+kumitate-shokunin: 0 hits
+lore-shokunin: 0 hits
+mado-shokunin: 0 hits
+mori-shokunin: 0 hits
+revenger-shokunin: 0 hits
+souji-shokunin: 0 hits
+tabi-shokunin: 0 hits
+tameshi-shokunin: 0 hits
+
+--- tsukuroi-shokunin: HITS FOUND ---
+  .ufo/waves/round-47/w1-results.json:262:   "output": "{\n  \"seat\": \"C2ExecSelftest\",\n  \"item\": \"C2-K5\",\n  \"verdict\": \"supports\",\n  \"report\": \"/home/vgpnk/Projects/shokunin/tsukuroi-shokunin/.ufo/waves/round-47/w1/C2ExecSelftest.md\",\n  \"receipts_dir\": \"/home/vgpnk/Projects/shokunin/tsukuroi-shokunin/.ufo/waves/round-47/w1/C2ExecSelftest/\",\n  \"declared_run\": {\n    \"cmd\": \"python3 tools/score-census-identity-r46.py --revision 77e9e2b2e96b85d8f048ae2087e246a542b71611 --scratch /fast/scratch/hyaku/tsukuroi-r47/C2ExecSelftest/s\",\n    \"rc\": 0,\n    \"wall_s\": 26,\n    \"verdict\": \"PASS\"\n  },\n  \"legs\": {\n    \"identity_ok\": 1,\n    \"tracks_ok\": 1,\n    \"symlink_ok\": 1,\n    \"unverifiable_ok\": 1,\n    \"cli_ok\": 1,\n    \"nowrite_ok\": 1,\n    \"selftest_pass\": 1,\n    \"selftest_r46\": 8\n  },\n  \"selftest_last_line\": \"TSUKUROI_CENSUS_SELFTEST: PASS (164 cases, 164 passed, 0 failed)\",\n  \"census_sha256\": \"adb1b4ce2325c38da2acbb815d820d3d8d6a0dd45b34796d808590c8ab32ce41\",\n  \"counter_sha256_frozen\": \"7c406eb5f4ba1f6265649f7102e7376882483180c161a66abc68e08cad9524ba\",\n  \"discriminating_pairs\": {\n    \"impl_space_free_counter\": \"PASS 164/164\",\n    \"base_space_free_counter\": \"PASS 162/162\",\n    \"impl_space_scratch_counter\": \"PASS 164/164 rc0\",\n    \"base_space_scratch_counter\": \"FAIL 162 cases, 13 passed, 149 failed rc1\"\n  },\n  \"findings\": [\n    \"F1: SCORECARD.md:3066 kill rule says six (R46-C1) cases; base and impl both carry eight (counter selftest_r46=8); all eight pass\",\n    \"F2: SCORECARD.md:3066 says no committed tool writes under a hardcoded /tmp, but census-at-rev.sh:2055-2059 hardcodes st_base=/tmp fallback (documented at :411-412); needs an explicit ruling\",\n    \"F3: the r46 counter's selftest leg cannot detect the C2 defect with a space-free --scratch (base also PASS); only a space in --scratch discriminates\"\n  ],\n  \"not_done\": [\n    \"declared C2 counting command against the worktree path\",\n    \"adjacency-anchor gate\",\n    \"digit-stripped live-output comparison\",\n    \"census exit-map probe\",\n    \"r47 C1 admission counter\"\n  ],\n  \"tools_installed\": \"none\",\n  \"scratch_removed\": true\n}",
+  .ufo/waves/round-47/w1/C2ExecSelftest.md:48:- The two new pinning cases pass at impl: `selftest-impl-164cases.log:165` `PASS selftest: the fixture base classifies absolute even when TMPDIR contains a space (R47-C2)`, `:166` `PASS selftest: a space in a root override stays unsafe by design (R47-C2)` (source `census-at-rev.sh:3473-3483`, base derivation `:2050-2059`).
+  .ufo/waves/round-47/w1/C2ExecSelftest.md:55:- **F2 — the C2 kill rule and the /tmp fallback.** `SCORECARD.md:3066` also requires "no committed tool writes under a hardcoded /tmp". The impl census hardcodes `/tmp` as the fixture-base fallback: `census-at-rev.sh:2055-2059` (`local st_base=${TMPDIR:-/tmp}` … `*[!A-Za-z0-9._/+-]*) st_base=/tmp ;;`), and its own header documents it (`:411-412`, "or /tmp itself when TMPDIR holds characters the root-override locator refuses — R47-C2"). Under a space TMPDIR the selftest therefore does write its fixture tree under `/tmp`; `mktemp -d` creates it mode 0700 (observed `drwx------`; S252 `mktemp.html:78-79`: "Files are created u+rw, and directories u+rwx, minus umask restrictions"), and the EXIT trap `census-at-rev.sh:2062` removes it. Read literally the kill rule is contradicted by the implementation; read as "no fixed /tmp path outside mktemp" it holds. This needs an explicit ruling, not a silent pass.

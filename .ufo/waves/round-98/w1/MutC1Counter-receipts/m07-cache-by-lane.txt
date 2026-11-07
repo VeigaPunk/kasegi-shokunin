@@ -1,0 +1,16 @@
+CONTROL candidate rc=0 want=0 PASS reason=none declared=none
+CONTROL do-nothing rc=1 want=1 PASS reason=no-measured-at declared=no-measured-at
+CONTROL tampered-pinned rc=1 want=1 PASS reason=pinned-mismatch declared=pinned-mismatch
+CONTROL stale-rev rc=0 want=1 FAIL reason=none declared=pinned-mismatch
+CENSUS-CHECK pass rev=b06af5e07efbd961a8449f7de6b57eeea62c6bd3 skill=162/732 corpus=2550/7556 lane=2588/7958 host_owned=78
+
+CONTROL no-pinned-line rc=1 want=1 PASS reason=no-pinned-line declared=no-pinned-line
+CONTROL missing-file rc=2 want=2 PASS reason=missing-file declared=missing-file
+CONTROL bad-revision rc=0 want=2 FAIL reason=none declared=bad-revision
+CENSUS rev=0000000000000000000000000000000000000000 skill=162/732 corpus=2550/7556 lane=2588/7958 host_owned=78
+
+CONTROL no-resolve rc=0 want=2 FAIL reason=none declared=no-resolve
+CENSUS rev=94c8a11ee9a9c078fbac7c47b4775b5342cd16e8 skill=162/732 corpus=2550/7556 lane=2588/7958 host_owned=78
+
+ATTRIBUTION fail fixtures=8
+C1-CONTROLS-RESULT fail controls=8 rc=1

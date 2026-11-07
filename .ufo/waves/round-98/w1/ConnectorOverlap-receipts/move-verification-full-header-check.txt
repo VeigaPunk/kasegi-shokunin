@@ -1,0 +1,18 @@
+=== PART A: UNPATCHED INSTRUMENT BLIND SPOTS ===
+Test 'original': rc=0
+  stdout: CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+Test 'tampered-host-inclusive': rc=0
+  stdout: CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+  VULNERABILITY CONFIRMED: unpatched --check returned rc=0 on tampered-host-inclusive!
+Test 'tampered-host-owned': rc=0
+  stdout: CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+  VULNERABILITY CONFIRMED: unpatched --check returned rc=0 on tampered-host-owned!
+Test 'tampered-body': rc=0
+  stdout: CENSUS-CHECK pass rev=e2caf4a1561b544a6ea684b0bcfa975f7e7f6061 skill=162/732 corpus=2551/7559 lane=2589/7961 host_owned=78
+  VULNERABILITY CONFIRMED: unpatched --check returned rc=0 on tampered-body!
+
+=== PART B: ENHANCED FULL-HEADER CHECKER ===
+Enhanced check 'original': rc=0 reason=pass
+Enhanced check 'tampered-host-inclusive': rc=1 reason=host-inclusive-mismatch
+Enhanced check 'tampered-host-owned': rc=1 reason=host-owned-mismatch
+Enhanced check 'tampered-body': rc=1 reason=body-root-mismatch

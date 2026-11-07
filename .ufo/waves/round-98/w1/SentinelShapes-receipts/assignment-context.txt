@@ -1,0 +1,35 @@
+== assignment-context semantics (GitLab MR !151, fetched 2026-11-07, HTTP 200) ==
+Generated Regex:
+(?:API_SECRET_KEY|api_secret_key|apiSecretKey|SECERT_KEY|secret_key|secretKey).{0,8}[:=].{0,8}([a-z]{32})\b
+
+keywordGroupType raw: 'inject keywordGroup directly as provided'
+rule.regex is the RHS; during distribution it is replaced by the assignment regex pattern.
+
+== lane knowledge entry (corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md) ==
+boundary that decides whether a real token is seen at all:
+
+- the CI build token is `glcbt-` + 1-5 alphanumerics + `_` + exactly 20
+  characters — a different grammar from the JWT form (`glcbt-eyJ…`) the lane
+  already holds, because the underscore separator is mandatory;
+- the IAM refresh token and the IAM authorization code are two 43-character
+  segments joined by a dot (`gliamrt-…`, `gliamac-…`);
+- the session cookie is not a prefixed token at all: the value is 64 lower-case
+  hex characters, optionally behind a `cell-<N>-` prefix, and the rule only
+  fires where the assignment context names `_gitlab_session` (optionally with
+  a `_geo_<64 hex>` suffix). A bare 64-hex string is not the shape.
+
+The rules file also settles the right boundary the round-97 shapes got wrong:
+`(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)` admits `_` and `-` after the tail,
+because both are ASCII punctuation. A matcher that refuses them misses a real
+- S140:497 — `regex = '''\b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''`
+- S140:549 — `regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''`
+- S140:550 — `assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''`
+
+The two documentation rows S144 states are the prefix table's own cells:
+`CI/CD Job tokenglcbt-` (line 356) and `GitLab session cookies_gitlab_session=`
+(line 362). S144's table names no prefix, length or alphabet for the two IAM
+- The IAM forms' alphabet and lengths are stated by the rules file only; no
+  GitLab documentation page opened this round states them.
+- The session-cookie rule is context-bound (`assignmentContext.keywordGroupType
+  = "raw"`), so a cookie value separated from its name by a line break is out
+  of scope — the rule's own context window is the same line.

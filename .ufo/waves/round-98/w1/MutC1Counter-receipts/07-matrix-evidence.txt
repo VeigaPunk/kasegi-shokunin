@@ -1,0 +1,53 @@
+== mutant sha256 and diff hunk count ==
+084f0a716a4c6c8ca673b973ad659ea10a8891adbb296b18268a09a498a5552c  m01-no-measured-at-format  hunks=1
+8db7feb355d2868d091b633d7c8c6fd86e3bd4e337283b9f8c29699fba91c236  m02-write-accepts-any-rev  hunks=1
+0710e95b540ea3eccab1cd04837a609dabb625c46a3f5cb3bb69a350ef9b87ef  m03-no-pinned-compare  hunks=1
+6caeaecad20525689ce3108d0515210edc2d99f663434e06d43939d5e8e923e4  m04-compare-only-skill  hunks=1
+785d38250a227504883ff13ced6e04cb998a4172e1f437ec1ab8d905b89a7356  m05-no-host-owned-line  hunks=1
+6f145e5358a95bd90d7509a32ca37ceae78fea159daa74e1ce0c37c078643623  m06-accept-missing-pinned  hunks=1
+0a7122a0c745c4ae56c3fac87e8626b6f91afc50b9d79285ca77dde5546b5490  m07-cache-by-lane  hunks=1
+c0e54f895955bb3a70a3bdb2af2468963cff0c8c32beb8448fbd04dcfe3a077a  m08-body-from-lane-tree  hunks=1
+7a485b24ca27c9e4ae782b7ee2d4b5b82d09203cf32cb94796774b292605c2ab  m09-ignore-resolve-rc  hunks=1
+bf1cd83138f57df239d7c384cdb5e84e855d435d5c9f149e1921aa8116251010  m10-accept-12-char-rev  hunks=1
+3dc9247fa02b624525bae6b55c561b65bc762c00ae575bc5cfea5f9d9caffc4e  m11-pinned-uses-host-inclusive  hunks=1
+bb5063cd1dd4fbb04663c23252d1b71578a5dcdf2e973f3ddbda4fef08ac7073  m12-check-trusts-cli-rev  hunks=3
+
+== baseline4 fixture instrument copy ==
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502  runs/baseline4/fixture/corpus/instruments/census-at-rev.py
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502  pristine.py
+
+== survivor artifacts ==
+--- m05-no-host-owned-line header:
+measured-at: eb7ccb7d08d3ff7d45079f723a5b57fa66f56c05
+pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2550/7556 = 33.75% | lane 2588/7958 = 32.52%
+host-inclusive rate (resolve.py's definition): SKILL 168/732 = 22.95% | corpus 2627/7556 = 34.77% | lane 2666/7958 = 33.50%
+
+---
+
+--- m05-no-host-owned-line body scope/totals:
+Scope: `SKILL.md` + `corpus/**/*.md` (333 files).
+- distinct path-like citations: **7958** (total occurrences: 16426; a citation cited in both scopes counts once)
+--- m08-body-from-lane-tree header:
+measured-at: 42ea0bb2255bbb8e0b5ec0916553440773a9e229
+pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2550/7556 = 33.75% | lane 2588/7958 = 32.52%
+host-inclusive rate (resolve.py's definition): SKILL 168/732 = 22.95% | corpus 2627/7556 = 34.77% | lane 2666/7958 = 33.50%
+host-owned inputs: 78 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
+
+---
+--- m08-body-from-lane-tree body scope/totals:
+Scope: `SKILL.md` + `corpus/**/*.md` (224 files).
+- distinct path-like citations: **5152** (total occurrences: 10931; a citation cited in both scopes counts once)
+--- m11-pinned-uses-host-inclusive header:
+measured-at: aa0ea4c2d22b4c6ddf71e0312aa35651220ee19d
+pinned rate (INTERNAL only; revision-stable): SKILL 168/732 = 22.95% | corpus 2627/7556 = 34.77% | lane 2666/7958 = 33.50%
+host-inclusive rate (resolve.py's definition): SKILL 168/732 = 22.95% | corpus 2627/7556 = 34.77% | lane 2666/7958 = 33.50%
+host-owned inputs: 78 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
+
+---
+--- m11-pinned-uses-host-inclusive body scope/totals:
+Scope: `SKILL.md` + `corpus/**/*.md` (333 files).
+- distinct path-like citations: **7958** (total occurrences: 16426; a citation cited in both scopes counts once)
+
+== M04 stale-rev numbers (from receipts/m03-no-pinned-compare.txt) ==
+CONTROL stale-rev rc=0 want=1 FAIL reason=none declared=pinned-mismatch
+CENSUS-CHECK pass rev=b06af5e07efbd961a8449f7de6b57eeea62c6bd3 skill=162/732 corpus=2527/7497 lane=2565/7899 host_owned=77

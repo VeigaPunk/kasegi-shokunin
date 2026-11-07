@@ -1,0 +1,11 @@
+--- pristine.py
++++ m07-cache-by-lane.py
+@@ -83,7 +83,7 @@
+ 
+ def measure(lane, rev, work):
+     """Return (rates, body, error). Cached per revision under work/cache."""
+-    cache = os.path.join(work, "cache", rev + ".json")
++    cache = os.path.join(work, "cache", "lane.json")
+     if os.path.isfile(cache):
+         with open(cache, encoding="utf-8") as fh:
+             c = json.load(fh)

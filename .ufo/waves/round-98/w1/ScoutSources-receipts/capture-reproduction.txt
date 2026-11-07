@@ -1,0 +1,13 @@
+REPRODUCTION OF THE COMMITTED S140 CAPTURE FROM THE LIVE UPSTREAM BYTES
+live: 20228 bytes  sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+recipe: drop the 30 blank lines; strip the 2-space indent of the 82 example-element lines
+STEP1 bytes 20034  sha256 53c50a78daac13b0c565425a2b05b30e5eb2867806581616612b515914d0517c
+       manifest pin: 04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921  (MATCH)
+recipe: replace each of the 82 example-element lines with the one fixed marker
+STEP2 bytes 25537  sha256 f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c
+       committed capture: 25537 bytes  f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c  (MATCH)
+diff STEP2 corpus/source-snapshots/round-94/S140.txt -> IDENTICAL (diff clean)
+
+=> the capture is fully reproducible from the live file; the ONLY defect is the
+   'line numbering preserved' wording, which holds for STEP1->STEP2 but not
+   raw->STEP1. Upstream line numbers run 4 to 29 lines higher than capture ones.

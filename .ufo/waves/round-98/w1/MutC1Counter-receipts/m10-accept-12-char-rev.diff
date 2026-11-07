@@ -1,0 +1,11 @@
+--- pristine.py
++++ m10-accept-12-char-rev.py
+@@ -206,7 +206,7 @@
+         return 2
+     with open(path, encoding="utf-8") as fh:
+         text = fh.read()
+-    m = re.search(r"^measured-at: ([0-9a-f]{40})$", text, re.M)
++    m = re.search(r"^measured-at: ([0-9a-f]{12,40})$", text, re.M)
+     if not m:
+         print("CENSUS-CHECK fail reason=no-measured-at rc=1")
+         return 1

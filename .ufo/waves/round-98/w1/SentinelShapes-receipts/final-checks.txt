@@ -1,0 +1,26 @@
+MATRIX-ROWS 450
+
+PER-SHAPE CLASS COUNTS
+  gitlab-ci-build-token                {'AGREE-HIT': 51, 'AGREE-MISS': 12, 'QUAL-SCANNER-ONLY': 2}
+  gitlab-feed-token                    {'AGREE-HIT': 36, 'AGREE-MISS': 3}
+  gitlab-feed-token-v2                 {'AGREE-HIT': 36, 'AGREE-MISS': 3}
+  gitlab-iam-authorization-code        {'AGREE-HIT': 33, 'AGREE-MISS': 6}
+  gitlab-iam-refresh-token             {'AGREE-HIT': 47, 'AGREE-MISS': 11, 'QUAL-SCANNER-ONLY': 2}
+  gitlab-oauth-app-secret              {'AGREE-HIT': 50, 'AGREE-MISS': 6, 'QUAL-SCANNER-ONLY': 2}
+  gitlab-runner-registration-token     {'AGREE-HIT': 51, 'AGREE-MISS': 6, 'QUAL-SCANNER-ONLY': 2}
+  gitlab-scim-oauth-token              {'AGREE-HIT': 36, 'AGREE-MISS': 3}
+  gitlab-session-cookie                {'AGREE-HIT': 19, 'AGREE-MISS': 8, 'QUAL-S140A-ONLY': 7, 'MUST-FIX': 12, 'QUAL-MODEL-B': 4, 'QUAL-SCANNER-ONLY': 2}
+
+FULL-GATE CHECK (39 patterns) ON MUST-FIX PAYLOADS
+  len-cookie-cell0         full_hits=-      payload='_gitlab_session=cell--0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-ruby-hash-rocket      full_hits=-      payload='_gitlab_session => 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-eq              full_hits=-      payload='_gitlab_session%20=%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-colon           full_hits=-      payload='_gitlab_session%20:%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pct20-after-eq        full_hits=-      payload='_gitlab_session=%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-paren-eq              full_hits=-      payload='_gitlab_session(=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef)\n'
+  ck-paren-gap             full_hits=-      payload='_gitlab_session ( = ) 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-comma-eq              full_hits=-      payload='_gitlab_session,=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-pipe-eq               full_hits=-      payload='_gitlab_session|=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-plus-eq               full_hits=-      payload='_gitlab_session+=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-rocket-nospace        full_hits=-      payload='_gitlab_session=> 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'
+  ck-geo-pct20             full_hits=-      payload='_gitlab_session_geo_0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef%20=%200123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef\n'

@@ -1,0 +1,54 @@
+S140 FETCH LEDGER — every URL I opened, with observed status/bytes/sha256
+lane repo: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+date: 2026-11-07 (UTC times are the fetch times as recorded by curl -w)
+
+A. commit-pinned GitLab API raw URL (the URL pinned in
+   corpus/source-snapshots/round-94/manifest.json as capture_url):
+   https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39
+   HTTP 200  bytes 20228  sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+   -> IDENTICAL to the manifest's own pinned 'raw' digest. The source is live-verifiable.
+
+B. the /-/raw/ commit-pinned web URL the L1 and the round-98 lesson cite:
+   https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/raw/59ada1f4ca53d5a69fafb9cb0f10bb893720ce39/rules/mit/gitlab/gitlab.toml
+   HTTP 403  bytes 6078  (Cloudflare 'Just a moment...' interstitial)
+   5 plain retries: all HTTP 403 / 6078 bytes.
+   3 retries with a browser UA: all HTTP 403 / 6227 bytes.
+   NOTE: the 403 body is NOT byte-stable — its sha256 differs on every fetch
+   (42828ea4..., 974dc5f3..., cd3e355a... for three consecutive fetches; the
+   round-98 L1 receipt pins 6ab31380..., the round-97 L1 receipt recorded no
+   digest at all). The body carries a per-response Cloudflare nonce, so a
+   pinned sha256 of it is not reproducible and proves nothing about the source.
+
+C. MAIN-BRANCH /-/raw/ URL — NOT the commit-pinned path:
+   https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/raw/main/rules/mit/gitlab/gitlab.toml
+   HTTP 200  bytes 20228  sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+   3 retries: all HTTP 200 / 20228 bytes.
+   -> main serves BYTE-IDENTICAL bytes to the pinned commit: the upstream file
+      is unchanged at 59ada1f4 AND at main, so the round-98 'live fetch 403,
+      therefore the committed capture is the citation base' premise is weaker
+      than stated: a live fetch WAS possible this round, and it agrees.
+
+D. main-branch API raw URL:
+   .../repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=main
+   HTTP 200  bytes 20228  sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+
+E. commit-pinned /-/blob/ HTML URL:
+   HTTP 403  bytes 6156 (same Cloudflare interstitial family)
+
+F. S144 https://docs.gitlab.com/security/tokens/
+   HTTP 200  bytes 67805  sha256 765becf33995fd344ae5939ac6f6e35715b7c2a348b32f708a0a32472b17f4b6
+   -> identical to the round-98 L1 receipt and to the SOURCES.md round-98 row.
+   re-captured through the lane's own instrument:
+     python3 -B corpus/instruments/capture-source.py --id S144 --url https://docs.gitlab.com/security/tokens/ --out <scratch>/S144-recheck.txt --kind html
+     -> status=200 fetched_bytes=67805 snapshot_bytes=17591
+        sha256=d6e529275deb3ecf4ea2c3edaff2caa882760cf23c1a134424e6acffdb83d
+     -> BYTE-IDENTICAL to the committed capture
+        corpus/source-snapshots/round-96/S144.txt (diff clean).
+
+G. upstream per-rule prose docs (rules/mit/gitlab/<rule_id>.md), 30 files at
+   the pinned commit, all HTTP 200 via the API raw URL; the five of interest:
+   gitlab_iam_refresh_token.md      sha256 9b37df1ebb06fd96a1ebefd0e8ba2dc0ae9d7f4e44ebce91c7bd4bec87aba456
+   gitlab_iam_authorization_code.md sha256 52348dd60e586a08b6dc9188e573cc86a204da05636e2550c2028a4901bfc1c7
+   gitlab_iam_access_token.md       sha256 58777dbd6eb15337484208b21b5254363899be4687cb75f72f2a1d2a81b5ff0d
+   gitlab_session_cookie.md         sha256 b50856e4413c392ffe47fd0f212d5dd22067d52db710a7a8f93a11e9182ac319
+   gitlab_ci_build_token.md         sha256 d77ac7c36a8efd5bf32c0fe5b58bc28d1b9cbece47c34dcf1e7796f723b6e308

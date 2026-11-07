@@ -1,0 +1,22 @@
+# Full gate, wrong instrument V7b (right boundary dropped on gitlab-feed-token,
+# gitlab-oauth-app-secret and gitlab-scim-oauth-token only), pin args omitted.
+# Fixture commit v7b = b939b52f81bc3642158d0f2bce8e534699caa18d
+# Command: python3 -B .ufo/waves/round-98/c2/capability-check.py --lane $S/lane --rev b939b52f81bc3642158d0f2bce8e534699caa18d --work $S/gw7b
+CAPABILITY-CHECK-REV rev=b939b52f81bc3642158d0f2bce8e534699caa18d seed=310595348
+LIMB K1 ok selftest=pass cases=170
+LIMB K2 FAIL rc=1 scanned=3280 hits=4 allowed=27 unused_allow=0
+LIMB K3 ok rc=1 hits=9 missing=none extra=none
+LIMB K4 ok base_new_shape_hits=0 old_shapes_missing=none
+LIMB K7 ok base_widened_hits=0 landing_widened_hits=5 missing=none
+LIMB K5 ok rows=1 last=87 named=True
+LIMB K6 ok rc=1 shapes=aws-access-key-id,aws-sts-session-token,credential
+CAPABILITY-CHECK-RESULT fail rc=1
+RC=1
+
+# The four K2 hits (extracted V7b instrument on the landing):
+# HIT shape=gitlab-feed-token path=.ufo/waves/round-97/w1/ExecC2Probe-receipts/fixture-bytes.txt line=11
+# HIT shape=gitlab-oauth-app-secret path=.ufo/waves/round-97/w1/ExecC2Probe-receipts/fixture-bytes.txt line=17
+# HIT shape=gitlab-scim-oauth-token path=.ufo/waves/round-97/w1/ExecC2Probe-receipts/fixture-bytes.txt line=35
+# HIT shape=gitlab-scim-oauth-token path=.ufo/waves/round-97/w1/MutC2Counter-receipts/09-receipt-index.txt line=38
+# The values are 21/65-character over-long fixtures and a filename-like `glsoat-no-left-boundary-nopin`
+# string: K2 binds the boundary for these three shapes even though K3's negatives are short.

@@ -1,0 +1,77 @@
+== ScribeGate receipts — 2026-11-07T21:27:27Z ==
+
+## instrument/gate/harness sha256
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502  corpus/instruments/census-at-rev.py
+45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e  corpus/instruments/capture-secret-scan.py
+8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  corpus/instruments/claim-package-check.py
+d97132684455aa6cca5bd65dd0e07a94942b8469801d05f219ba3a52b47ecc1a  .ufo/waves/round-98/controls/c1-controls-r98.py
+a0c4b952812269f2d01771fe6d4ff5ae577fa877ff48b5e21206ae5220b21c15  .ufo/waves/round-98/c2/capability-check.py
+harness at freeze 12bb2f9:
+0488d79626e54731a8d5be3985fd1edad68b2b612a74d86454d5bca8a3950e7a  -
+harness at C1 landing e2d3de7:
+d97132684455aa6cca5bd65dd0e07a94942b8469801d05f219ba3a52b47ecc1a  -
+instrument at C1 landing e2d3de7:
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502  -
+instrument at C2 landing e2caf4a:
+45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e  -
+gate at C2 landing e2caf4a:
+8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  -
+
+## S140 capture digest and line count
+f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c  corpus/source-snapshots/round-94/S140.txt
+563 corpus/source-snapshots/round-94/S140.txt
+
+## S140 quoted lines
+id = "gitlab_ci_build_token"
+keywords = ["glcbt"]
+regex = "\\b(glcbt-[0-9a-zA-Z]{1,5}_[0-9a-zA-Z_\\-]{20})(?:[[:punct:]]|[[:space:]]|[[:blank:]]|$)"
+tags = ["gitlab", "client_side_sd"]
+id = "gitlab_iam_refresh_token"
+keywords = ["gliamrt-"]
+regex = '''\b(gliamrt-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+id = "gitlab_iam_authorization_code"
+keywords = ["gliamac-"]
+regex = '''\b(gliamac-[0-9a-zA-Z_\-]{43}\.[0-9a-zA-Z_\-]{43})(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+id = "gitlab_session_cookie"
+keywords = ["_gitlab_session"]
+regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+assignmentContext.keywordGroupType = "raw"
+
+## S144 quoted lines
+CI/CD Job tokenglcbt-
+GitLab session cookies_gitlab_session=
+S144 IAM prefix hits (want 0):
+0
+
+## registry rows
+base 2133f5b: 147
+working tree: 147
+
+## S140/S144 status, opened, recheck
+base  S140 status= mined opened= 2026-11-07 recheck= 180d 
+base  S144 status= mined opened= 2026-11-07 recheck= 180d 
+tree  S140 status= mined opened= 2026-11-07 recheck= 180d 
+tree  S144 status= mined opened= 2026-11-07 recheck= 180d 
+
+## S140 used-by: base vs working tree
+base:  corpus/instruments/capture-secret-scan.py 
+tree:  corpus/instruments/capture-secret-scan.py, corpus/knowledge/gitlab-remaining-token-families.md, corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md 
+
+## S144 used-by: base vs working tree
+base:  corpus/instruments/capture-secret-scan.py, corpus/knowledge/gitlab-routable-and-versioned-token-forms.md 
+tree:  corpus/instruments/capture-secret-scan.py, corpus/knowledge/gitlab-routable-and-versioned-token-forms.md, corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md 
+
+## knowledge entries citing S140 / S144
+corpus/knowledge/github-refresh-tokens-and-gitlab-jwt-tokens.md
+corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md
+corpus/knowledge/gitlab-remaining-token-families.md
+corpus/knowledge/gitlab-routable-and-versioned-token-forms.md
+---
+corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md
+corpus/knowledge/gitlab-remaining-token-families.md
+corpus/knowledge/gitlab-routable-and-versioned-token-forms.md
+round-97 entry S144 cite:
+55:S144 (round 96) states the prefix set and that the prefixes are standard

@@ -1,0 +1,35 @@
+GITLEAKS 8.30.1 ground-truth differential vs the landed instrument
+oracle: gitleaks 8.30.1, config = the 9 relevant rules taken verbatim from
+        S140 at commit 59ada1f4 (examples arrays emptied), source =
+        corpus/source-snapshots/round-94/S140.txt rules, upstream sha256
+        14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5
+probes: 1048 = 8 shapes x (127 ASCII chars + EOL + U+00E9 + U+20AC + U+1F600)
+probes compared: 1048   mismatches: 180
+
+  gitlab_ci_build_token              gitleaks=False instrument=True  n= 30  e.g. ['ci_01.txt', 'ci_02.txt', 'ci_03.txt', 'ci_04.txt']
+  gitlab_feed_token                  gitleaks=False instrument=True  n= 30  e.g. ['ft_01.txt', 'ft_02.txt', 'ft_03.txt', 'ft_04.txt']
+  gitlab_feed_token_v2               gitleaks=False instrument=True  n= 30  e.g. ['fv2_01.txt', 'fv2_02.txt', 'fv2_03.txt', 'fv2_04.txt']
+  gitlab_oauth_app_secret            gitleaks=False instrument=True  n= 30  e.g. ['oa_01.txt', 'oa_02.txt', 'oa_03.txt', 'oa_04.txt']
+  gitlab_runner_registration_token   gitleaks=False instrument=True  n= 30  e.g. ['rr_01.txt', 'rr_02.txt', 'rr_03.txt', 'rr_04.txt']
+  gitlab_scim_oauth_token            gitleaks=False instrument=True  n= 30  e.g. ['sc_01.txt', 'sc_02.txt', 'sc_03.txt', 'sc_04.txt']
+
+ALL mismatches are instrument-True / gitleaks-False: the instrument is MORE
+permissive than upstream on these tails (C0 controls other than the whitespace
+set, DEL, and any non-ASCII). It never misses a hit gitleaks makes.
+
+The two IAM shapes show ZERO divergence: upstream's
+(?:[^0-9a-zA-Z_\-]|$) right boundary and the instrument's
+(?![A-Za-z0-9_-]) agree on every probe.
+
+THE ROUND-97 DEFECT, CONFIRMED AGAINST UPSTREAM (the whole point of C2):
+  sc_5f.txt      tail=0x5f '_'  gitleaks fires = True
+  ci_5f.txt      tail=0x5f '_'  gitleaks fires = True
+  rr_5f.txt      tail=0x5f '_'  gitleaks fires = True
+  ft_5f.txt      tail=0x5f '_'  gitleaks fires = True
+  oa_5f.txt      tail=0x5f '_'  gitleaks fires = True
+  fv2_5f.txt     tail=0x5f '_'  gitleaks fires = True
+  sc_2d.txt      tail=0x2d '-'  gitleaks fires = True
+  ci_2d.txt      tail=0x2d '-'  gitleaks fires = True
+  => upstream DOES fire on a real token followed by _ or -; the round-97
+     instrument's (?![A-Za-z0-9_-]) wrongly refused them. The landed
+     instrument's (?![A-Za-z0-9]) accepts them. The fix direction is right.

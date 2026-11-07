@@ -1,0 +1,61 @@
+/fast/scratch/hyaku/kasegi-r98/CriticClaimsC2/land/capture-secret-scan.py:184: SyntaxWarning: "\-" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\-"? A raw string is also an option.
+  (S140 line 480), right boundary `[^0-9a-zA-Z_\-]`/EOL.
+PLANTS root=/fast/scratch/hyaku/kasegi-r98/CriticClaimsC2/attack/plant-cykwdgzx30x5 rev=2097cc1c0f727a3af806737a1b1f17ba82aab412 files=19 expect=9
+EXPECT cykwdgzx30x5-p1.txt gitlab-ci-build-token
+EXPECT cykwdgzx30x5-p2.txt gitlab-iam-refresh-token
+EXPECT cykwdgzx30x5-p3.html gitlab-iam-authorization-code
+EXPECT cykwdgzx30x5-p4.txt gitlab-session-cookie
+EXPECT cykwdgzx30x5-p5.txt gitlab-runner-registration-token
+EXPECT cykwdgzx30x5-p6.txt gitlab-feed-token
+EXPECT cykwdgzx30x5-p7.txt gitlab-oauth-app-secret
+EXPECT cykwdgzx30x5-p8.txt gitlab-feed-token-v2
+EXPECT cykwdgzx30x5-p9.txt gitlab-scim-oauth-token
+LEFT-BOUNDARY b'(?:(?<![A-Za-z0-9_])|(?<=\\\\[ntr])|(?<=\\\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))'
+VARIANT V0-landing K3=PASS hits=9 missing=none extra=none | SELFTEST rc=0 pass cases=170 fails=0
+VARIANT V1-literal-locked K3=FAIL hits=0 missing=[('cykwdgzx30x5-p1.txt', 'gitlab-ci-build-token'), ('cykwdgzx30x5-p2.txt', 'gitlab-iam-refresh-token'), ('cykwdgzx30x5-p3.html', 'gitlab-iam-authorization-code'), ('cykwdgzx30x5-p4.txt', 'gitlab-session-cookie'), ('cykwdgzx30x5-p5.txt', 'gitlab-runner-registration-token'), ('cykwdgzx30x5-p6.txt', 'gitlab-feed-token'), ('cykwdgzx30x5-p7.txt', 'gitlab-oauth-app-secret'), ('cykwdgzx30x5-p8.txt', 'gitlab-feed-token-v2'), ('cykwdgzx30x5-p9.txt', 'gitlab-scim-oauth-token')] extra=none | SELFTEST skipped
+  PROBE selftest-literal payload=b'[gitlab-ci-build-token-fixture-redacted-r98] end' correct=['gitlab-ci-build-token'] variant=['gitlab-ci-build-token'] same
+  PROBE plant-p1 payload=b'[gitlab-ci-build-token-fixture-redacted-r98] end' correct=['gitlab-ci-build-token'] variant=none DIVERGES
+V2TYPES []
+VARIANT V2-session-nocontext K3=FAIL hits=10 missing=none extra=[('cykwdgzx30x5-n10.txt', 'gitlab-session-cookie')] | SELFTEST rc=1 fail cases=170 fails=5
+  SELFTEST-FAIL SELFTEST gcs-v4-query FAIL got=gcs-signed-url-signature,gitlab-session-cookie
+  SELFTEST-FAIL SELFTEST gcs-json-key FAIL got=gcs-signed-url-signature,gitlab-session-cookie
+  SELFTEST-FAIL SELFTEST gcs-doc-wrapped FAIL got=gitlab-session-cookie
+  SELFTEST-FAIL SELFTEST cf-amz-signature-beside-kpi FAIL got=gitlab-session-cookie
+  SELFTEST-FAIL SELFTEST gl-session-cookie-no-context FAIL got=gitlab-session-cookie
+  PROBE bare-64-hex payload=b'x=0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a\n' correct=none variant=['gitlab-session-cookie'] DIVERGES
+  PROBE bare-64-hex-upper payload=b'x=0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A\n' correct=none variant=none same
+VARIANT V3-session-keyword-only K3=PASS hits=9 missing=none extra=none | SELFTEST rc=1 fail cases=170 fails=2
+  SELFTEST-FAIL SELFTEST gl-session-cookie-cell FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-session-cookie-geo FAIL got=none
+  PROBE geo payload=b'[gitlab-session-cookie-fixture-redacted-r98]\n' correct=['gitlab-session-cookie'] variant=none DIVERGES
+  PROBE cell payload=b'[gitlab-session-cookie-fixture-redacted-r98]\n' correct=['gitlab-session-cookie'] variant=none DIVERGES
+VARIANT V4-ci-build-strict-boundary K3=PASS hits=9 missing=none extra=none | SELFTEST rc=0 pass cases=170 fails=0
+  PROBE token-then-underscore payload=b'[gitlab-ci-build-token-fixture-redacted-r98]_x\n' correct=['gitlab-ci-build-token'] variant=none DIVERGES
+  PROBE token-then-hyphen payload=b'[gitlab-ci-build-token-fixture-redacted-r98]-x\n' correct=['gitlab-ci-build-token'] variant=none DIVERGES
+VARIANT V5-ci-build-zero-prefix K3=PASS hits=9 missing=none extra=none | SELFTEST rc=0 pass cases=170 fails=0
+  PROBE zero-prefix payload=b'glcbt-_kkkkkkkkkkkkkkkkkkkk end\n' correct=none variant=['gitlab-ci-build-token'] DIVERGES
+VARIANT V6-iam-second-43plus K3=PASS hits=9 missing=none extra=none | SELFTEST rc=0 pass cases=170 fails=0
+  PROBE second-44 payload=b'gliamrt-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n' correct=none variant=['gitlab-iam-refresh-token'] DIVERGES
+  PROBE second-44-auth payload=b'gliamac-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n' correct=none variant=['gitlab-iam-authorization-code'] DIVERGES
+VARIANT V7-widened-no-boundary K3=FAIL hits=11 missing=none extra=[('cykwdgzx30x5-n5.txt', 'gitlab-runner-registration-token'), ('cykwdgzx30x5-n8.txt', 'gitlab-feed-token-v2')] | SELFTEST rc=1 fail cases=170 fails=1
+  SELFTEST-FAIL SELFTEST gl-feed-token-v2-long FAIL got=gitlab-feed-token-v2
+  PROBE 21-chars payload=b'GR1348941AAAAAAAAAAAAAAAAAAAAA\n' correct=none variant=['gitlab-runner-registration-token'] DIVERGES
+VARIANT V8-widened-strict-boundary K3=FAIL hits=4 missing=[('cykwdgzx30x5-p5.txt', 'gitlab-runner-registration-token'), ('cykwdgzx30x5-p6.txt', 'gitlab-feed-token'), ('cykwdgzx30x5-p7.txt', 'gitlab-oauth-app-secret'), ('cykwdgzx30x5-p8.txt', 'gitlab-feed-token-v2'), ('cykwdgzx30x5-p9.txt', 'gitlab-scim-oauth-token')] extra=none | SELFTEST rc=1 fail cases=170 fails=6
+  SELFTEST-FAIL SELFTEST gl-registration-right-underscore FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-registration-right-hyphen FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-feed-token-right-underscore FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-oauth-app-right-hyphen FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-feed-token-v2-right-underscore FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-scim-oauth-right-hyphen FAIL got=none
+  PROBE token-then-underscore payload=b'[gitlab-runner-registration-token-fixture-redacted-r98]_x\n' correct=['gitlab-runner-registration-token'] variant=none DIVERGES
+VARIANT V7b-no-boundary-three K3=PASS hits=9 missing=none extra=none | SELFTEST rc=0 pass cases=170 fails=0
+  PROBE feed-21 payload=b'feed_token=BBBBBBBBBBBBBBBBBBBBB&\n' correct=none variant=['gitlab-feed-token'] DIVERGES
+  PROBE oauth-65 payload=b'gloas-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC \n' correct=none variant=['gitlab-oauth-app-secret'] DIVERGES
+  PROBE scim-21 payload=b'glsoat-FFFFFFFFFFFFFFFFFFFFF \n' correct=none variant=['gitlab-scim-oauth-token'] DIVERGES
+VARIANT V9-do-nothing-base K3=FAIL hits=0 missing=[('cykwdgzx30x5-p1.txt', 'gitlab-ci-build-token'), ('cykwdgzx30x5-p2.txt', 'gitlab-iam-refresh-token'), ('cykwdgzx30x5-p3.html', 'gitlab-iam-authorization-code'), ('cykwdgzx30x5-p4.txt', 'gitlab-session-cookie'), ('cykwdgzx30x5-p5.txt', 'gitlab-runner-registration-token'), ('cykwdgzx30x5-p6.txt', 'gitlab-feed-token'), ('cykwdgzx30x5-p7.txt', 'gitlab-oauth-app-secret'), ('cykwdgzx30x5-p8.txt', 'gitlab-feed-token-v2'), ('cykwdgzx30x5-p9.txt', 'gitlab-scim-oauth-token')] extra=none | SELFTEST rc=1 fail cases=170 fails=12
+  SELFTEST-FAIL SELFTEST gl-ci-build FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-iam-refresh FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-iam-auth-code FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-session-cookie FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-session-cookie-cell FAIL got=none
+  SELFTEST-FAIL SELFTEST gl-session-cookie-geo FAIL got=none

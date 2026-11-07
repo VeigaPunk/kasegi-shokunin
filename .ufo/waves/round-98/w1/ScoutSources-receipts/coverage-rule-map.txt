@@ -1,0 +1,38 @@
+UPSTREAM RULES (30) vs LANE GITLAB SHAPES (33)
+lane shapes: aws-access-key-id, aws-sts-session-token, azure-sas-signature, cloudfront-signed-cookie-signature, cloudfront-signed-url-signature, gcs-signed-url-signature, github-refresh-token, github-token, gitlab-agent-token-versioned, gitlab-ci-build-token, gitlab-deploy-token, gitlab-deploy-token-in-url, gitlab-deploy-token-versioned, gitlab-feature-flags-client-token, gitlab-feed-token, gitlab-feed-token-v2, gitlab-iam-authorization-code, gitlab-iam-refresh-token, gitlab-incoming-email-token, gitlab-jwt-token, gitlab-kubernetes-agent-token, gitlab-oauth-app-secret, gitlab-pat, gitlab-pat-routable, gitlab-pat-versioned, gitlab-pipeline-trigger-token, gitlab-runner-auth-token, gitlab-runner-auth-token-versioned, gitlab-runner-controller-token, gitlab-runner-registration-token, gitlab-scim-oauth-token, gitlab-session-cookie, gitlab-workspace-token-versioned
+
+  gitlab_personal_access_token                   -> gitlab-pat                             OK
+  gitlab_personal_access_token_routable          -> gitlab-pat-routable                    OK
+  gitlab_personal_access_token_routable_versioned -> gitlab-pat-versioned                   OK
+  gitlab_pipeline_trigger_token                  -> gitlab-pipeline-trigger-token          OK
+  gitlab_runner_registration_token               -> gitlab-runner-registration-token       OK
+  gitlab_runner_auth_token                       -> gitlab-runner-auth-token               OK
+  gitlab_runner_auth_token_routable              -> gitlab-runner-auth-token-versioned     OK
+  gitlab_feed_token                              -> gitlab-feed-token                      OK
+  gitlab_oauth_app_secret                        -> gitlab-oauth-app-secret                OK
+  gitlab_feed_token_v2                           -> gitlab-feed-token-v2                   OK
+  gitlab_kubernetes_agent_token                  -> gitlab-kubernetes-agent-token          OK
+  gitlab_incoming_email_token                    -> gitlab-incoming-email-token            OK
+  gitlab_deploy_token                            -> gitlab-deploy-token                    OK
+  gitlab_scim_oauth_token                        -> gitlab-scim-oauth-token                OK
+  gitlab_ci_build_token                          -> gitlab-ci-build-token                  OK
+  gitlab_runner_auth_token_legacy_partition      -> (KNOWN LIMIT t1_/t2_/t3_)              OK
+  gitlab_deploy_token_routable                   -> gitlab-deploy-token-versioned          OK
+  gitlab_deploy_token_in_url                     -> gitlab-deploy-token-in-url             OK
+  gitlab_kubernetes_agent_token_routable         -> gitlab-agent-token-versioned           OK
+  gitlab_workspace_token                         -> gitlab-workspace-token-versioned       OK
+  gitlab_feature_flags_client_token              -> gitlab-feature-flags-client-token      OK
+  gitlab_runner_controller_token                 -> gitlab-runner-controller-token         OK
+  gitlab_ci_build_token_jwt                      -> gitlab-jwt-token                       OK
+  gitlab_stateless_access_token                  -> gitlab-jwt-token                       OK
+  gitlab_iam_access_token                        -> gitlab-jwt-token                       OK
+  gitlab_iam_refresh_token                       -> gitlab-iam-refresh-token               OK
+  gitlab_iam_authorization_code                  -> gitlab-iam-authorization-code          OK
+  gitlab_feed_token_path_dependent               -> (KNOWN LIMIT path-dependent glft-)     OK
+  gitlab_pipeline_trigger_token_in_url           -> (KNOWN LIMIT /trigger/pipeline? URL)   OK
+  gitlab_session_cookie                          -> gitlab-session-cookie                  OK
+
+rules with NO lane shape: none
+the 3 without a shape are exactly the 3 the lane's known-limits list declares
+(corpus/knowledge/gitlab-remaining-token-families.md:87-89). No upstream rule is
+silently unhandled.

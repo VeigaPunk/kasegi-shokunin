@@ -1,0 +1,15 @@
+### same rev 6486f8f5, two work-dir layouts
+--- layout A (parent has only the tree):
+pinned rate (INTERNAL only; revision-stable): SKILL 0/3 = 0.00% | corpus 0/0 = n/a | lane 0/3 = 0.00%
+--- layout B (parent also has MISSION.md):
+pinned rate (INTERNAL only; revision-stable): SKILL 1/3 = 33.33% | corpus 0/0 = n/a | lane 1/3 = 33.33%
+--- isoA census checked with isoB cache:
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 0/3 = 0.00% | corpus 0/0 = n/a | lane 0/3 = 0.00%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 1/3 = 33.33% | corpus 0/0 = n/a | lane 1/3 = 33.33%
+rc=1
+--- isoB census checked with isoA cache:
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 1/3 = 33.33% | corpus 0/0 = n/a | lane 1/3 = 33.33%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 0/3 = 0.00% | corpus 0/0 = n/a | lane 0/3 = 0.00%
+rc=1

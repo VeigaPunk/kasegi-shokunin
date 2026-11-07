@@ -1,0 +1,11 @@
+--- pristine.py
++++ m09-ignore-resolve-rc.py
+@@ -92,8 +92,6 @@
+     if err:
+         return None, None, err
+     r = sh([sys.executable, "-B", os.path.join(d, RESOLVE), d])
+-    if r.returncode != 0:
+-        return None, None, "resolve-rc%d" % r.returncode
+     tsv = os.path.join(d, TSV)
+     if not os.path.isfile(tsv):
+         return None, None, "no-tsv"

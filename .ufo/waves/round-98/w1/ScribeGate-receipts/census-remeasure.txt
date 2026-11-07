@@ -1,0 +1,37 @@
+== census re-measurement — 2026-11-07T21:45:36Z ==
+
+## instrument --check path (two attempts, both SIGTERM to the child resolve.py)
+attempt 1 (concurrent with other work): CENSUS-CHECK fail reason=resolve-rc-15 rc=2
+attempt 2 (alone):                     CENSUS-CHECK fail reason=resolve-rc-15 rc=2 (real 6m12s)
+host memory at the time: 10/30 GiB used
+
+## direct resolve.py on the e2caf4a1 extract (the revision the census names)
+cmd: python3 -B tree-e2caf4a1561b/corpus/instruments/resolve.py tree-e2caf4a1561b > /dev/null
+rc=0 real 6m59s; TSV lines: 7962 (header + 7961 rows)
+rows=7961 host_owned=78
+PINNED: SKILL 162/732 = 22.13% | corpus 2551/7559 = 33.75% | lane 2589/7961 = 32.52%
+HOST  : SKILL 166/732 = 22.68% | corpus 2629/7559 = 34.78% | lane 2667/7961 = 33.50%
+
+## file's lines (corpus/instruments/citation-survival.md 6-8)
+pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2551/7559 = 33.75% | lane 2589/7961 = 32.52%
+host-inclusive rate (resolve.py's definition): SKILL 166/732 = 22.68% | corpus 2629/7559 = 34.78% | lane 2667/7961 = 33.50%
+host-owned inputs: 78 absolute-path citations resolve outside the lane (reported separately; not revision-stable)
+
+## direct resolve.py on the base extract (2133f5b)
+rc=0 real 11m46s; TSV lines: 7959 (header + 7958 rows)
+rows=7958 host_owned=78
+PINNED: SKILL 162/732 = 22.13% | corpus 2550/7556 = 33.75% | lane 2588/7958 = 32.52%
+HOST  : SKILL 166/732 = 22.68% | corpus 2628/7556 = 34.78% | lane 2666/7958 = 33.50%
+
+## P3 corrected and frozen commands on the landed file
+grep -c 'tree-e2caf4a1561b' -> 0
+grep -c '/fast/scratch' (frozen P3) -> 0
+measured-at ancestor of HEAD: yes
+Lane root line:
+13:Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (measured from the git-archive extract of `e2caf4a1561b544a6ea684b0bcfa975f7e7f6061`)
+
+## old census at base (2133f5b)
+Scope: `SKILL.md` + `corpus/**/*.md` (224 files).
+- SKILL.md alone: **132/701 = 18.83%**
+- corpus alone: **1202/4766 = 25.22%**
+- lane total (SKILL.md + corpus): **1227/5152 = 23.82%**
