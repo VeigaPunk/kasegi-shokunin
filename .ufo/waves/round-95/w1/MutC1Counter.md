@@ -48,8 +48,9 @@ recorded but do not count as kills (`05-limb-deltas.txt`).
 ## Result: 18 mutants, 8 killed, 10 survived
 
 Source of the killed/survived column: `05-summary.tsv`; per-control limb deltas:
-`05-limb-deltas.txt`; diffs: `04-mutants-manifest.json` and `06-mutants/`
-(18 `.py` + 18 `.diff`); run order/rc: `08-run-log.txt`.
+`05-limb-deltas.txt`; per-mutant diffs: `04-mutants-manifest.json` (18 full
+unified diffs) plus the per-mutant control logs in `06-mutants/`; run order/rc:
+`08-run-log.txt`.
 
 | mutant | sha16 | single-point change | killed by (observed verdict flips) | manifest prediction | verdict |
 |---|---|---|---|---|---|
@@ -108,7 +109,10 @@ is a claim change; both are routed controls.
 
 * **Coverage:** manifest 18 = summary 18 = 18 distinct `=== RUN` lines in
   `08-run-log.txt` (+ `pristine53`); no mutant is not-run. `06-mutants/` holds
-  18 `.py` + 18 `.diff`.
+  the 18 per-mutant control logs (`*-controls.txt` + `*.log`). Mutant `.py`
+  bytes were scratch-only and are not retained (the scratch `mutants/` is now
+  empty); each mutant is exactly reconstructable from its full unified diff in
+  `04-mutants-manifest.json` against the frozen counter `c0799f4c…`.
 * **Frozen C1 inputs unchanged:** counter `c0799f4c…`, map `8545eba2…`, labels
   `cf739497…` all equal the `00-…` freeze values after all 18 runs
   (`07-lane-integrity.txt`).
@@ -117,10 +121,10 @@ is a claim change; both are routed controls.
   records that the live-vs-committed diff is fixture commit ids and work dir
   only and that control verdicts are identical, and that the probe executes the
   harness code sha `090deb24…`, not the receipt text.
-* **Scratch:** `/fast/scratch/hyaku/kasegi-r95/MutC1Counter` was left in place
-  with `cand53` and `mutants/` (`07-lane-integrity.txt` inventory: 19 mutant
-  files); every output cited here is already copied into
-  `MutC1Counter-receipts/`, so the scratch is disposable.
+* **Scratch:** `/fast/scratch/hyaku/kasegi-r95/MutC1Counter` remains (measured
+  `57G` with `du -sh` after this report; the pinned `cand53` clone plus per-run
+  work dirs; its `mutants/` is now empty). Every output cited here is already
+  copied into `MutC1Counter-receipts/`, so the scratch is disposable.
 * **Tooling:** none installed (`00-…`: python 3.14.8, git 2.56.0; no
   pacman/uv/npm transaction).
 * **This report** adds no executions: it transcribes `00`–`08`.
