@@ -188,17 +188,24 @@ CLOUD_PATTERNS = (
 _ESC_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
 _GH_LB = _ESC_LB
 _JWT_SEG = rb"[A-Za-z0-9_-]{10,}"
+_GH_REFRESH = rb"ghr_[A-Za-z0-9]{76}(?![A-Za-z0-9_])"
 GITHUB_PATTERNS = (
     ("github-token", re.compile(
         _GH_LB + rb"(?:gh[pousr]_[A-Za-z0-9]{36}(?![A-Za-z0-9_])|ghs_[0-9]{1,20}_"
         + _JWT_SEG + rb"\." + _JWT_SEG + rb"\." + _JWT_SEG + rb")")),
+    ("github-refresh-token", re.compile(_GH_LB + _GH_REFRESH)),
 )
 _GL_LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\[ntr])|(?<=\\u[0-9A-Fa-f]{4})|(?<=%[0-9A-Fa-f]{2})|(?<=&#[0-9]{2};)|(?<=&#[xX][0-9A-Fa-f]{2};))"
 _GL_PREFIX = rb"(?:[A-Za-z0-9]{1,20}-)?"
+_GJ_SEG = rb"[A-Za-z0-9_-]{10,1000}"
+_GJ_TAIL = rb"[A-Za-z0-9_-]{20,1000}"
+_GJ_HEAD = _GL_LB + rb"(?:" + _GL_PREFIX + rb"(?:glcbt|glsat)|gliamat)-eyJ" + _GJ_SEG
 GITLAB_PATTERNS = (
     ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
     ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
     ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-jwt-token", re.compile(
+        _GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),
 )
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
@@ -427,6 +434,22 @@ def selftest(pats):
         ("gl-deploy", b"gldt-" + b"0123456789abcdefghij", {"gitlab-deploy-token"}),
         ("gl-deploy-19-chars", b"gldt-" + b"0123456789abcdefghi ", set()),
         ("gl-deploy-21-chars", b"gldt-" + b"0123456789abcdefghijk", set()),
+        # round 95: GitHub refresh token (ghr_ 76, S142) and the GitLab JWT
+        # family (glcbt-/glsat-/gliamat-, S140 lines 429, 446, 463)
+        ("gh-refresh-76", b"ghr_" + b"aB3"*25 + b"a", {"github-refresh-token"}),
+        ("gh-refresh-75", b"ghr_" + b"aB3"*25, set()),
+        ("gh-refresh-77", b"ghr_" + b"aB3"*25 + b"aa", set()),
+        ("gh-refresh-36-classic", b"ghr_" + ghtail, {"github-token"}),
+        ("gh-refresh-escape-u0020", b'"v":"\\u0020ghr_' + b"aB3"*25 + b"a" + b'"', {"github-refresh-token"}),
+        ("gl-jwt-clcbt", b"glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+        ("gl-jwt-clcbt-custom", b"acme-glcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+        ("gl-jwt-glsat", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+        ("gl-jwt-gliamat", b"gliamat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, {"gitlab-jwt-token"}),
+        ("gl-jwt-not-eyj", b"glcbt-abcdefghij.eyJyyyyyyyyyy.zzzzzzzzzzzzzzzzzzzz", set()),
+        ("gl-jwt-short-head", b"glcbt-eyJabc.eyJyyyyyyyyyy." + b"z"*30, set()),
+        ("gl-jwt-third-19-chars", b"glsat-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*19 + b" ", set()),
+        ("gl-jwt-letter-before", b"xglcbt-eyJ" + b"x"*20 + b".eyJ" + b"y"*20 + b"." + b"z"*30, set()),
+        ("gl-jwt-doc-placeholder", b"glcbt-eyJ<header>.<payload>.<signature>", set()),
     ]
     bad = 0
     for name, data, want in cases:
