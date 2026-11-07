@@ -47,6 +47,22 @@ Candidates considered this round:
    its discovery pointer instead. Flip: none (the page is the source either
    way).
 
+5. **S151 — GitLab secret-detection-rules, the assignment-context generator
+   `pkg/rules/assignment_regex.go` at commit 59ada1f4** — opened this round
+   (three fetches, HTTP 200, 9,776 bytes, sha256
+   `91519731800ab8d96a00a03fff44e72c1c16a3bad12c9e017d7d679a8fad756d`, byte-identical
+   each time). URL:
+   `https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/pkg%2Frules%2Fassignment_regex.go/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39`.
+   Opened 2026-11-07. Quotes (each under 25 words):
+   - line 27 — `assignmentOperand specifies the possible delimiters, used between the LHS and RHS variables in an assignment.`
+   - line 28 — `assignmentOperand = [="' :>\],\t.()\\?|]{1,10}`
+   - line 29 — `terminalRegex     = `(?:\\['"rn]|['"\x60; \s]|</|$)``
+   Admitted: kind `code`, tier A, status `mined`, used-by
+   `corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md`. The row
+   supersedes S150's *form* claim: the pinned commit already carries
+   `assignmentOperand`, not the MR !151 `.{0,8}[:=].{0,8}` form, and S150's own
+   anchor digest is nonce-bound (the MR HTML page yields a different sha256 on
+   every fetch), so S151 is the byte-stable authority.
 Status / used-by changes this round, old → new:
 
 - S150: new row, status `mined`, used-by
@@ -54,9 +70,9 @@ Status / used-by changes this round, old → new:
 - S140: no cell change (re-opened from the capture; live fetch 403).
 - S148: no cell change (re-opened from the capture).
 
-Registry 149 → 150 rows:
+Registry 149 → 151 rows (S150 and S151):
 `grep -cE '^ {0,3}\| S[0-9]{3} \|' corpus/SOURCES.md` prints 149 at the base
-and 150 in the working tree. Census at round start and at round end:
+and 151 in the working tree. Census at round start and at round end:
 
 ```text
 $ bash scripts/sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi
