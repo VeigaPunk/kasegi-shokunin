@@ -140,7 +140,7 @@ Consequences, all derived from the expression at line 110:
 |---|---|---|---|
 | `MAX` (`--max`) | default `5` | 29 | — |
 | `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | — |
-| `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:526` |
+| `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:251-253` |
 | `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:191` |
 | `TERMINAL` | `['DONE','PARKED','FAILED','RETIRED']` | 47 | MATCHES: `corpus/knowledge/mission-control.md:36` |
 | `MODEL` (initial) | `alibaba-token-plan/deepseek-v4-pro:max` | 34 | MATCHES: `corpus/knowledge/mission-control.md:54-56` |
@@ -148,9 +148,9 @@ Consequences, all derived from the expression at line 110:
 | poll interval | `setTimeout(tick, 30000)` = 30 s | 409 | MATCHES: `corpus/knowledge/mission-control.md:17` |
 | `--sync` cadence | `tickCount % 10 === 0` (~5 min at 30 s ticks) | 352-353 | MATCHES: `corpus/knowledge/mission-control.md:68-71` |
 | `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `corpus/knowledge/mission-control.md:68-71` |
-| grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:526` |
+| grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:251-253` |
 | limit-log window | log `mtimeMs` within `15 * 60e3` = 900,000 ms = 15 min; tail = last `20000` chars | 276-277 | MATCHES: `corpus/knowledge/mission-control.md:61` |
-| off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `corpus/knowledge/mission-control.md:54-55`, `SKILL.md:14-15` |
+| off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `corpus/knowledge/mission-control.md:54-55`, `SKILL.md:264-266` |
 | off-peak model | `alibaba-token-plan/deepseek-v4-pro:max` | 300 | MATCHES: `corpus/knowledge/mission-control.md:54-56` |
 | peak model | `openai-codex/gpt-6-astra:max` | 300 | MATCHES: `corpus/knowledge/mission-control.md:56-57` |
 | limit-fallback model | `xai-oauth/grok-4.6:low` | 281 | MATCHES: `corpus/knowledge/mission-control.md:66` |
@@ -217,7 +217,7 @@ exact file bytes (37) — used later for the status binding (4.8).
 |---|---|---|---|---|
 | chain present | `chain = receipts.chain ?? receipts.decisions ?? []` not a non-empty array | `custodian-receipts.json: claim package requires a non-empty decision chain` | 77-79 | MATCHES: `corpus/knowledge/claim-gates.md:31` |
 | hard stop | `String(d.scope_signal).trim().toUpperCase() === 'HARD_STOP'` (checked first, own message) | `custodian HARD_STOP present: <action> — package must park, not ship` | 82-83 | MATCHES: `corpus/knowledge/claim-gates.md:32-33` |
-| scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `corpus/knowledge/claim-gates.md:32-33`, `SKILL.md:90-91` |
+| scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `corpus/knowledge/claim-gates.md:32-33`, `SKILL.md:157-158` |
 | grant id | `matched_grant_id` empty after trim | `custodian decision <action>: matched_grant_id is required` | 85 | MATCHES: `corpus/knowledge/claim-gates.md:33-34` |
 | decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `corpus/knowledge/claim-gates.md:35` |
 | head digest | `head_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian-receipts.json: missing valid head_sha256` | 88 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
@@ -264,7 +264,7 @@ Decoded pattern: keyword (`api key`/`apikey`/`api-key`, `secret`, `token`,
 | manifest binding | `manifest_sha256` fails `/^[a-f0-9]{64}$/i` OR `!== sha256File(evidence/manifest.json)` at run time | `status.json manifest_sha256 does not bind the current evidence/manifest.json` | 122-123 | MATCHES: `corpus/knowledge/claim-gates.md:69` |
 | review outcome | `String(claim_review.outcome).toUpperCase() !== 'APPROVED'` OR `claim_review.claim_ready !== true` | `status.json requires an APPROVED claim_review with claim_ready: true` | 126-127 | MATCHES: `corpus/knowledge/claim-gates.md:70-71` |
 | producer | `claim_review.producer_identity` empty after trim | `status.json claim_review must name producer_identity` | 132 | MATCHES: `corpus/knowledge/claim-gates.md:71` |
-| reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` | 133-141 | MATCHES: `corpus/knowledge/claim-gates.md:72-73`, `SKILL.md:94-95` |
+| reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` | 133-141 | MATCHES: `corpus/knowledge/claim-gates.md:72-73`, `SKILL.md:161-162` |
 | identity separation | `producer_identity === reviewer.identity` (both non-empty, exact compare, untrimmed equality after per-field trim) | `status.json claim_review reviewer must differ from producer` | 142-143 | MATCHES: `corpus/knowledge/claim-gates.md:74` |
 | hard gates | each of `written_scope`, `authorization`, `evidence_integrity`, `no_duplicate_or_prior_submission` uppercased ≠ `'PASS'` — one error per gate | `status.json claim_review hard gate <gate> must be PASS` | 145-155 | MATCHES: `corpus/knowledge/claim-gates.md:75-76`, `corpus/knowledge/claim-package-contract.md:52-53` |
 | subchecks | each of `no_secrets`, `operator_attribution` uppercased ≠ `'PASS'` | `status.json claim_review subcheck <subcheck> must be PASS` | 156-160 | MATCHES: `corpus/knowledge/claim-gates.md:77`, `corpus/knowledge/claim-package-contract.md:54` |
@@ -307,10 +307,10 @@ run's error set is path-dependent — not a full partition of violations.
 
 | Term | Exact expression | Finite-input requirement | Line | Corpus tie |
 |---|---|---|---|---|
-| `p_success` | `p_in_scope × p_reproducible × p_unique × p_accepted` (`reduce((a,b)=>a*b, 1)`) | all 4 finite | 77 | MATCHES: `corpus/knowledge/ev-model.md:14`, `SKILL.md:498` |
-| `gross_value` | `p_success × expected_reward` | `p_success` finite AND `expected_reward` finite | 78 | MATCHES: `corpus/knowledge/ev-model.md:15`, `SKILL.md:499` |
-| `total_cost` | `effort_hours × opportunity_rate + direct_cost + delay_cost + expected_risk_cost` | all 5 finite | 79-81 | MATCHES: `corpus/knowledge/ev-model.md:16-17`, `SKILL.md:500-501` |
-| `adjusted_ev` | `gross_value − total_cost` | both finite | 82 | MATCHES: `corpus/knowledge/ev-model.md:18`, `SKILL.md:502` |
+| `p_success` | `p_in_scope × p_reproducible × p_unique × p_accepted` (`reduce((a,b)=>a*b, 1)`) | all 4 finite | 77 | MATCHES: `corpus/knowledge/ev-model.md:14`, `SKILL.md:828` |
+| `gross_value` | `p_success × expected_reward` | `p_success` finite AND `expected_reward` finite | 78 | MATCHES: `corpus/knowledge/ev-model.md:15`, `SKILL.md:829` |
+| `total_cost` | `effort_hours × opportunity_rate + direct_cost + delay_cost + expected_risk_cost` | all 5 finite | 79-81 | MATCHES: `corpus/knowledge/ev-model.md:16-17`, `SKILL.md:830-831` |
+| `adjusted_ev` | `gross_value − total_cost` | both finite | 82 | MATCHES: `corpus/knowledge/ev-model.md:18`, `SKILL.md:832` |
 
 `isNum(v) = typeof v === 'number' && Number.isFinite(v)` (46): `NaN`,
 `±Infinity`, numeric strings, `null`, `undefined` are all non-finite → the term
@@ -352,7 +352,7 @@ reviewer derivation).
 
 | Field / constraint | Exact rule | Line | Corpus tie |
 |---|---|---|---|
-| record | `additionalProperties: false` at top level | 5 | MATCHES: `SKILL.md:522` |
+| record | `additionalProperties: false` at top level | 5 | MATCHES: `SKILL.md:999` |
 | required keys | `id, name, source_kind, official_url, freshness, lane, mission_state` | 6 | MATCHES: `SKILL.md:522` |
 | `id` | pattern `^[a-z0-9-]+$` | 8 | — |
 | `name` | `minLength: 1` | 9 | — |
@@ -371,7 +371,7 @@ reviewer derivation).
 | `as_of` | `format: date-time` | 49 | MATCHES: `corpus/knowledge/ev-model.md:22-23` |
 | `sources` | `object`, free-form (basis provenance per input) | 50 | MATCHES: `corpus/knowledge/ev-model.md:22-23` |
 | `lane` | `string` | 53 | — |
-| `mission_state` | enum, 12 values in order: `DISCOVERED, NORMALIZED, DEDUPED, SCOPED, RANKED, PLANNED, AUTHORIZED, EXECUTED, EVIDENCED, VERIFIED, SUBMISSION_PREPARED, LEARNED` | 54 | MATCHES: `SKILL.md:111-112` (decorative in practice) |
+| `mission_state` | enum, 12 values in order: `DISCOVERED, NORMALIZED, DEDUPED, SCOPED, RANKED, PLANNED, AUTHORIZED, EXECUTED, EVIDENCED, VERIFIED, SUBMISSION_PREPARED, LEARNED` | 54 | MATCHES: `SKILL.md:910-913` (decorative in practice) |
 | `board_ref` | required `dataset, record_id, refresh_run_id, evidence_id` | 55-58 | — |
 | `board_ref.dataset` | enum `independent_programs \| platform_programs \| web3_programs` | 60 | — |
 | `board_ref.evidence_id` | pattern `^[0-9a-f]{64}$` | 63 | — |
@@ -387,14 +387,14 @@ schema-mandated one.
 
 | Export | Value | Line | Corpus tie |
 |---|---|---|---|
-| `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `corpus/knowledge/ops-invariants.md:18`, `SKILL.md:525` |
+| `BANNED` | `['cursor', 'opencode']` | 9 | MATCHES: `corpus/knowledge/ops-invariants.md:18`, `SKILL.md:321-324` |
 | `PARKED` | `[]` (chatgpt park lifted 2026-09-04) | 10 | MATCHES: `corpus/knowledge/ops-invariants.md:19` |
 | `K3_SEATS` | `['judge', 'planner']` | 11 | MATCHES: `corpus/knowledge/ops-invariants.md:20` |
 | `K3_TOKEN` | `/kimi-code\/k3\|kimi-k3\|moonshot\/kimi-k3/i` | 13 | MATCHES: `corpus/knowledge/ops-invariants.md:21` |
-| `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `corpus/knowledge/ops-invariants.md:22`, `SKILL.md:525` |
+| `TELEMETRY_EVENTS` | 8 registry kinds: `lane_parked, lane_degraded, operator_decree, xask_dry, board_imported, binding_verified, reroute_drill, provenance_drift` | 15-24 | MATCHES: `corpus/knowledge/ops-invariants.md:22`, `SKILL.md:340-346` |
 | `sha256File` | sha256 hex of exact file bytes; `null` when path absent/unreadable | 27-33 | MATCHES: `corpus/knowledge/ops-invariants.md:23` |
 | `gitMutationBlocker` | markers `rebase-merge, rebase-apply, MERGE_HEAD, CHERRY_PICK_HEAD` → `{code:'ACTIVE_GIT_OPERATION'}`; detached HEAD → `{code:'HEAD_NOT_ON_MAIN'}`; branch ≠ `main` → `{code:'HEAD_NOT_ON_MAIN'}`; else `null` | 36-48 (markers 37, codes 40/44/46) | MATCHES: `corpus/knowledge/ops-invariants.md:24`, `SKILL.md:245-247` |
-| `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `corpus/knowledge/ops-invariants.md:25`, `SKILL.md:146`, `SKILL.md:246` |
+| `appendLedger` | appends `{ts, ...entry}` to `ledger/<kind>.jsonl`; if the serialized line exceeds **3500 bytes** it is replaced by a `{truncated:true, …}` stub recording `bytes` (POSIX `PIPE_BUF` atomicity guard) | 53-58 (cap 55) | MATCHES: `corpus/knowledge/ops-invariants.md:25`, `SKILL.md:224-226`, `SKILL.md:331-335` |
 
 `gitMutationBlocker` is the reason the live tree's stalled rebase blocks every
 dispatcher git path (`fleet-dispatch.mjs:123, 216, 255, 354`).
@@ -443,7 +443,7 @@ Supersedes column names the audit-time target, not current text.
 | 9.11 | `report.md` "no submission" is a **prose phrase** regex (`/no submission (performed\|made)/i`, 29), distinct from the `no_submission_performed` JSON guard listed in observed statuses. | 29 | `corpus/knowledge/claim-package-contract.md:24-26` |
 | 9.12 | `HARD_STOP` emits two errors for one decision (its own message plus the `NO_SCOPE_OBJECTION` message). | 83-84 | `corpus/knowledge/claim-gates.md:32-33` ("`HARD_STOP` gets its own message" — it gets both) |
 | 9.13 | claim-check aborts the artifact loop on the first path/existence/symlink failure per artifact, and skips oversize files without scanning, so a single run's error set is path-dependent, not a full partition of violations. | 46-49, 111 | `corpus/knowledge/claim-gates.md:57-61` (no-early-exit framing is accurate for the gate list, not per-artifact) |
-| 9.14 | "~1040 records" contribute 0 or 1 points — the census says **1024** (796 zero + 228 one), plus 13 reward-band records at ≤1e7. | census §2.2 | `SKILL.md:115` |
+| 9.14 | "~1040 records" contribute 0 or 1 points — the census says **1024** (796 zero + 228 one), plus 13 reward-band records at ≤1e7. | census §2.2 | `SKILL.md:184-187` |
 | 9.15 | `priority.json` is a strict subset of the continue-verdict programs (14/14), so the 9e12 tier only orders *within* the continue cohort; it is not a disjoint class. | 90-96 + census §2.2 | — (new) |
 
 ## 10. Overlap register (MATCHES ties, consolidated)
@@ -456,8 +456,8 @@ Supersedes column names the audit-time target, not current text.
 | queue score incl. `is_live(1)` | `corpus/knowledge/intake-surface.md:80-85`, `corpus/knowledge/mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
 | six-file package contract | `corpus/knowledge/claim-package-contract.md:9-16` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
 | dispatcher runtime shape | `corpus/knowledge/mission-control.md:13-46` | MATCHES except §9.6/9.7 |
-| appendLedger 3500 B cap / gitMutationBlocker | `SKILL.md:146, 245-247` | MATCHES |
-| `attempts() ≥ 2` as real termination | `SKILL.md:113-117` | MATCHES |
+| appendLedger 3500 B cap / gitMutationBlocker | `SKILL.md:224-226,335-338` | MATCHES |
+| `attempts() ≥ 2` as real termination | `SKILL.md:191` | MATCHES |
 
 ## Source basis
 
