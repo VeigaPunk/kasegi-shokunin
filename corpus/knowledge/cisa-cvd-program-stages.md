@@ -128,7 +128,7 @@ The expansion assigns CVD triage, CVE assignment, remediation and advisory publi
 
 ## Scope and limits
 
-- Pin: `corpus/source-snapshots/round-40/S023.txt`, 213 lines, 14,357 bytes, sha256 `52a6671fb24842e606b808e5cd4c77030c9c5e4f4f8af3082b31fcc927cb6087`, bound by the round-40 manifest record (id `S023`, path `corpus/source-snapshots/round-40/S023.txt`, same digest, the program URL, `fetched_utc` 2026-10-26T21:16:01Z, HTTP 200, `text/html; charset=utf-8`). Normalization as recorded: tags stripped, entities unescaped, runs of space/tab/NBSP collapsed, blank lines dropped.
+- Pin: `corpus/source-snapshots/round-40/S023.txt`, 213 lines, 14,357 bytes, sha256 `52a6671fb24842e606b808e5cd4c77030c9c5e4f4f8af3082b31fcc927cb6087`, bound by the round-40 manifest record (id `S023`, path `S023.txt`, same digest, the program URL, `fetched_utc` 2026-10-26T21:16:01Z, HTTP 200, `text/html; charset=utf-8`). Normalization as recorded: tags stripped, entities unescaped, runs of space/tab/NBSP collapsed, blank lines dropped.
 - Body text is L88-L171; L1-L87 and L172-L213 are navigation, resource blurbs and footer, and are not quoted as content except where the page's own resource list restates another document's role (L157-L171).
 - `verified-at: 2026-10-26` is the day this entry was written and its quotes re-located in the pin, not a page date.
 - Documentation only: the capture carries no credential, session or private URL, and this entry quotes none; the contact addresses it names (`central@cisa.gov`, `cvd@cisa.dhs.gov`, L175) are public CISA inboxes. Nothing here authorises probing, scanning, login or submission against any target.
