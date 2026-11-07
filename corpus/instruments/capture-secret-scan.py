@@ -95,6 +95,17 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          base64url JWT segments of 10+ characters each. The
                          page's own `ghs_APPID_JWT` placeholder and a bare
                          prefix are not hits.
+  github-refresh-token   (round 95) a GitHub refresh token: `ghr_` followed by
+                         exactly 76 base62 characters (S142 line 169 states the
+                         prefix, "The token starts with `ghr_`"; the length is
+                         GitLab's machine-readable copy of GitHub's shapes,
+                         S143 line 72 `ghr_[0-9a-zA-Z]{76}`, tier B), not
+                         preceded or followed by a letter, digit or `_` (the
+                         same escape-terminator left boundary as
+                         `github-token`). A 75- or 77-character value is not a
+                         hit; the 36-character classic matcher cannot detect
+                         this form because its right boundary fails at
+                         character 37.
   gitlab-pat             (round 93; round 94 custom prefix) a GitLab personal
                          access token: `glpat-` followed by a 20-character
                          string drawn from `A-Za-z0-9_-` (S140 line 4 states
@@ -117,11 +128,21 @@ claim-package-check.py beside this file, so the two never drift), plus:
   gitlab-deploy-token    (round 94) a GitLab deploy token: `gldt-` then 20
                          characters of `A-Za-z0-9_-` (S140 line 255), with the
                          same boundaries and optional custom instance prefix.
+  gitlab-jwt-token       (round 95) the GitLab JWT-form tokens: `glcbt-` or
+                         `glsat-` (optional 1-20 character instance prefix) or
+                         `gliamat-`, then `eyJ` + 10-1000 characters, `.eyJ` +
+                         10-1000 characters, `.` + 20-1000 characters of
+                         `A-Za-z0-9_-` (S140 lines 429/446/463 name the three
+                         rules; the grammars are on 430/447/464), with the
+                         escape-terminator left boundary and a right boundary
+                         that refuses a further token character. A non-`eyJ`
+                         head or a 19-character third segment is not a hit; the
+                         documentation placeholders (`glcbt-eyJ<header>...`) are
+                         not hits.
 Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
 source states their length or alphabet), the routable and versioned-routable
 token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
-tail; S140 lines 30, 51, 136, 324), the JWT-form GitLab tokens (`glcbt-eyJ…`,
-`glsat-eyJ…`, `gliamat-eyJ…`; S140 lines 430, 447, 464), the remaining GitLab
+tail; S140 lines 30, 51, 136, 324), the remaining GitLab
 prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
 `glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
 174, 412), an encoded prefix
