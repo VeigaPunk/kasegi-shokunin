@@ -1,0 +1,17 @@
+# round-88 C2 landing receipt 2026-11-07T03:39:32Z: base=6beead9148945fa695cf3139e8fc9d8e91cc5fd0 C1-landing=fd33e1bfe26ad9af13c138feb87c9f222be957cb C2-landing=b43dc2154bc09470da2209fb626021da3af3593e
+## P1 counter at the landing
+CAPABILITY-CHECK rev=b43dc2154bc09470da2209fb626021da3af3593e instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1414,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=1 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=6 new_caught_by_base=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+## P2 byte equality at the landing
+P2 capture-secret-scan.py equal
+P2 capture-secret-allow.tsv equal
+P2 scorecard-row equal
+## P3 landing scope
+LANDING-SCOPE from=fd33e1bf to=b43dc215 changed=2 outside=0 verdict=PASS exit=0

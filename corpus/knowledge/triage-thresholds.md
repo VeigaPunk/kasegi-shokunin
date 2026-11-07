@@ -147,7 +147,7 @@ Consequences, all derived from the expression at line 110:
 | stagger/round-robin | `--models-rr m1,m2,m3 --rr-until <epochMs>`; active only while `Date.now() < RR_UNTIL` | 38-44 | MATCHES: `mission-control.md:38-40` |
 | poll interval | `setTimeout(tick, 30000)` = 30 s | 409 | MATCHES: `mission-control.md:13-14` |
 | `--sync` cadence | `tickCount % 10 === 0` (~5 min at 30 s ticks) | 352-353 | MATCHES: `mission-control.md:42-46` |
-| `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `corpus/knowledge/mission-control.md:43-46` |
+| `SYNC_PATHS` | 11 entries: `claims/README.md, evidence, ledger, docs, ops, fleets/missions, bounty-map, fleets/registry.json, fleets/mission-template.md, README.md, .gitignore` | 348 | MATCHES: `mission-control.md:43-46` |
 | grid/session | `SESSION='ufo_sighting'`, `GRID='formation'` | 27, 65 | MATCHES: `SKILL.md:526` |
 | limit-log window | log `mtimeMs` within `15 * 60e3` = 900,000 ms = 15 min; tail = last `20000` chars | 276-277 | MATCHES: `mission-control.md:40-45` |
 | off-peak window | `h = (getUTCHours() − 3 + 24) % 24; offpeak = h >= 12 && h < 22` (UTC−3) | 298-299 | MATCHES: `mission-control.md:36-38`, `SKILL.md:14-15` |
@@ -174,7 +174,7 @@ sites across 8 gate families.
 | Gate | Trigger (fails when) | Error template | Line | Corpus tie |
 |---|---|---|---|---|
 | arg/dir | no arg, or dir does not exist | `claim-check: usage: node ops/claim-check.mjs claims/<program-id>/<slug>` + exit 1 | 14-15 | MATCHES: `corpus/knowledge/claim-gates.md:4-5` |
-| package root | `realpathSync(dir)` resolves the package once for symlink confinement | — | 16 | MATCHES: `corpus/knowledge/claim-gates.md:21-23` |
+| package root | `realpathSync(dir)` resolves the package once for symlink confinement | — | 16 | MATCHES: `claim-gates.md:21-23` |
 | required files | any of `report.md`, `claim_checklist.md`, `custodian-receipts.json`, `provenance.json`, `status.json` missing | `missing <f>` | 22-23 | MATCHES: `claim-gates.md:10-11`, `claim-package-contract.md:9-16` |
 | manifest file | `evidence/manifest.json` missing | `missing evidence/manifest.json` | 24 | MATCHES: `claim-gates.md:10-11` |
 
@@ -219,10 +219,10 @@ exact file bytes (37) — used later for the status binding (4.8).
 | hard stop | `String(d.scope_signal).trim().toUpperCase() === 'HARD_STOP'` (checked first, own message) | `custodian HARD_STOP present: <action> — package must park, not ship` | 82-83 | MATCHES: `corpus/knowledge/claim-gates.md:32-33` |
 | scope signal | uppercased/trimmed `scope_signal !== 'NO_SCOPE_OBJECTION'` | `custodian decision <action>: scope_signal must be exactly NO_SCOPE_OBJECTION` | 84 | MATCHES: `corpus/knowledge/claim-gates.md:32-33`, `SKILL.md:90-91` |
 | grant id | `matched_grant_id` empty after trim | `custodian decision <action>: matched_grant_id is required` | 85 | MATCHES: `corpus/knowledge/claim-gates.md:33-34` |
-| decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `corpus/knowledge/claim-gates.md:34` |
+| decision digest | `decision_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian decision lacks a valid decision_sha256: <action>` | 86 | MATCHES: `claim-gates.md:34` |
 | head digest | `head_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian-receipts.json: missing valid head_sha256` | 88 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
 | head chain-end | `chain.at(-1).decision_sha256 !== custodianHead` | `custodian-receipts.json: head_sha256 does not match the final decision` | 89 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
-| manifest binding | `manifest.expected_head_sha256 !== custodianHead` (three-way binding) | `manifest expected_head_sha256 does not bind the custodian decision-chain head` | 90 | MATCHES: `corpus/knowledge/claim-gates.md:35-36`, `corpus/knowledge/claim-package-contract.md:14` |
+| manifest binding | `manifest.expected_head_sha256 !== custodianHead` (three-way binding) | `manifest expected_head_sha256 does not bind the custodian decision-chain head` | 90 | MATCHES: `claim-gates.md:35-36`, `corpus/knowledge/claim-package-contract.md:14` |
 | unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | MATCHES: `claim-gates.md:29-36` |
 
 `action` defaults to `'(unnamed action)'` (81). Note `HARD_STOP` emits **both**
@@ -266,15 +266,15 @@ Decoded pattern: keyword (`api key`/`apikey`/`api-key`, `secret`, `token`,
 | producer | `claim_review.producer_identity` empty after trim | `status.json claim_review must name producer_identity` | 132 | MATCHES: `claim-gates.md:55` |
 | reviewer shape | `reviewer.role !== 'kx-reviewer'` (exact) OR empty `identity`/`requested_model`/`resolved_model` OR `typeof reviewer.fallback !== 'boolean'` | `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` | 133-141 | MATCHES: `claim-gates.md:56-58`, `SKILL.md:94-95` |
 | identity separation | `producer_identity === reviewer.identity` (both non-empty, exact compare, untrimmed equality after per-field trim) | `status.json claim_review reviewer must differ from producer` | 142-143 | MATCHES: `claim-gates.md:58-59` |
-| hard gates | each of `written_scope`, `authorization`, `evidence_integrity`, `no_duplicate_or_prior_submission` uppercased ≠ `'PASS'` — one error per gate | `status.json claim_review hard gate <gate> must be PASS` | 145-155 | MATCHES: `claim-gates.md:59-61`, `corpus/knowledge/claim-package-contract.md:28-29` |
+| hard gates | each of `written_scope`, `authorization`, `evidence_integrity`, `no_duplicate_or_prior_submission` uppercased ≠ `'PASS'` — one error per gate | `status.json claim_review hard gate <gate> must be PASS` | 145-155 | MATCHES: `claim-gates.md:59-61`, `claim-package-contract.md:28-29` |
 | subchecks | each of `no_secrets`, `operator_attribution` uppercased ≠ `'PASS'` | `status.json claim_review subcheck <subcheck> must be PASS` | 156-160 | MATCHES: `claim-gates.md:61`, `claim-package-contract.md:30` |
 
 ### 4.8 `status.json` — claimability, duplication, blockers (`L162-225`)
 
 | Gate | Trigger (any one) | Error template | Line | Corpus tie |
 |---|---|---|---|---|
-| not-claimable heuristics | `claimable === false`; `not_claimable === true`; `do_not_submit === true`; truthy `claimability_gap`; `finding_count === 0`; `verdict` matching `/not[-_\s]?claimable\|honest[-_\s]?zero/i` | `status.json explicitly marks this package not claimable` | 163-171 | MATCHES: `corpus/knowledge/claim-gates.md:63-66` |
-| prior submission | `submission_performed === true` OR truthy `submitted_url` OR uppercased `submission_state === 'SUBMITTED'` | `status.json records a prior submission; duplicate submission is forbidden` | 174-179 | MATCHES: `corpus/knowledge/claim-gates.md:66-67` |
+| not-claimable heuristics | `claimable === false`; `not_claimable === true`; `do_not_submit === true`; truthy `claimability_gap`; `finding_count === 0`; `verdict` matching `/not[-_\s]?claimable\|honest[-_\s]?zero/i` | `status.json explicitly marks this package not claimable` | 163-171 | MATCHES: `claim-gates.md:63-66` |
+| prior submission | `submission_performed === true` OR truthy `submitted_url` OR uppercased `submission_state === 'SUBMITTED'` | `status.json records a prior submission; duplicate submission is forbidden` | 174-179 | MATCHES: `claim-gates.md:66-67` |
 | global duplicate | scans every `claims/<program>/<slug>/status.json` (root = `resolve(dir,'..','..')`, self skipped, unparseable skipped): another package has a prior-submission record AND (`slug === currentSlug` OR (`currentTitle.length >= 16` AND lowercased titles equal)) | `global duplicate guard: matching finding already has a submission record at <program>/<slug>` | 181-199 | MATCHES: `claim-gates.md:67-70` |
 | blockers | truthy `blocked_reason`, `submission_blocker`, `blocking_record`, OR `submit/BLOCKED.md` exists | `status.json or submit/BLOCKED.md records an unresolved readiness blocker` | 201-208 | MATCHES: `claim-gates.md:70-71` |
 | nested readiness | over the truthy contexts `claim_review`, `claim_wave`, `claim_attempt`, `submission`: `String(ctx.outcome ?? ctx.state).toUpperCase() === 'BLOCKED'` OR `ctx.claim_ready === false` OR `ctx.submission_ready === false` | `status.json contains a blocked nested readiness decision` | 210-220 | MATCHES: `claim-gates.md:71-74` |

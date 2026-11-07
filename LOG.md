@@ -2975,3 +2975,14 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 - Sources: S124 (AWS SigV4 signed-request page) and S125 (IAM unique-ID prefixes) opened 2026-11-07, captured, `mined` (registry 123 → 125). Rejected: the S3 SigV4 query-auth URL (meta-refresh shell, no capturable text).
 - r86 routed defects: 1 answered (C2), 2 recorded as a named rule-2 correction in `corpus/SOURCES.md`, 3 corrected in the lesson, 4 avoided, 5 prose rule stated, 6 carried.
 - Mistakes: M87-1 (pipe deadlock in the candidate, caught by forgery controls), M87-2 (unscoped landing path list). Lesson: `corpus/lessons/round-87.md`.
+
+## Round 88 — C1 (sibling-entry repoint tranche 3, 50-key map, meter 703/1754 → 742/1743; 8 WRONG sites reverted after landing), C2 (capture-secret-scan: GCS V4 and Azure SAS signatures, practice-evidence scope; sourced on S126/S127)
+
+- Read first: the r87 closure (`rejected-honest-stop`, C1 failed frozen P3) and `corpus/lessons/round-87-verifier-spotcheck.md` routed defects 1–7. Freeze `7f2ebebf` holds claims, counters, map, candidates and executed controls (`.ufo/waves/round-88/controls/`):
+  - C1 controls: do-nothing 703/1754, partial 722/1748, pad 743/1744, drift-forge (M8+M1), not-entry forge (M4+M1), `.ufo/` copy (M4), wrong map sha (M6) each rc 1; positive 742/1743 rc 0.
+  - C2 controls: do-nothing (base), wrong pin, no SCORECARD row, r87 instrument, no practice scope, GCS pattern disabled, SAS without `sv` context, `\u0026` separator dropped, GCS floor 12, `--files` blind, STS allow row accepted, always-clean each rc 1; positive rc 0.
+- C1 landing `fd33e1bf` (8 `corpus/knowledge/` files only, scope check PASS): counter pass 742/1743, 15/15 pins. ReviewC1Semantics: 41 CORRECT / 8 WRONG / 1 UNCLEAR; the 8 WRONG sites reverted to base bytes in the integration commit (M88-1, QUALITY R140).
+- C2 landing `b43dc215` (scanner + SCORECARD row only, scope check PASS): K1–K6 pass, byte-equal candidates. ReviewC2Scanner F1: the `\u0026` clause holds only for a first-position match; routed (M88-2).
+- Sources: S126 (Google Cloud Storage Signed URLs) and S127 (Azure Create a service SAS) opened 2026-11-07, captured, `mined` (registry 125 → 127). Rejected as C2 sources: the Azure SAS overview (example URI is an image) and the GCS Signatures page.
+- Admitted: `corpus/knowledge/cloud-signed-url-credentials-in-captured-evidence.md` (ScribeEntry, L1-reviewed, one limit added). Fixed: three stale sentences in `corpus/knowledge/presigned-url-credentials-in-captured-evidence.md` (CriticHarm H2).
+- Mistakes: M88-1 (lexical proxy passes wrong anchors), M88-2 (statement clause not bound by the counter). Lesson: `corpus/lessons/round-88.md`.

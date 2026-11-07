@@ -3180,3 +3180,24 @@ Frozen claims: `.ufo/waves/round-87/claims.json` (freeze `afb13a88e6fbc8e2f8a0c1
 - **Quality criteria added:** R138 (scan every capture before its first commit), R139 (landing path list from the claim scope; landing-scope check).
 - **Saturation / retired:** unchanged / none.
 - **Census of record:** `corpus/instruments/citation-survival.md` still reads 132/701; not regenerated. Carried.
+
+## Round 88 — C1 VERIFIED-pending-closure (sibling-entry repoint tranche 3, knowledge-scope meter 703/1754 → 742/1743 at landing `fd33e1bf`; semantic qualifier: 8/50 keys WRONG, their sites reverted after landing); C2 VERIFIED-pending-closure (capture-secret-scan gains `gcs-signed-url-signature`, `azure-sas-signature` and the practice-evidence scope, K1–K6 pass at `b43dc215`; `\u0026` clause qualifier)
+
+Frozen claims: `.ufo/waves/round-88/claims.json` (freeze `7f2ebebf7588ead4f4248478f18b989983e94b69`, base `6beead9148945fa695cf3139e8fc9d8e91cc5fd0`). Every listed control was executed and committed in the freeze (`.ufo/waves/round-88/controls/`). Landings: `.ufo/waves/round-88/landing.json`.
+
+| Claim | Axis | Before | After | Verdict | Counting command | Evidence |
+|---|---|---|---|---|---|---|
+| C1 | depth:verifiability (lowest) | score 4; knowledge-scope meter 703/1754 (scratch-clone root) | score 4 held; 742/1743 at `fd33e1bf` (M1–M6, M8 pass; 50 keys); P3 `changed=8 outside=0 verdict=PASS` | VERIFIED-pending-closure on P1–P3 (CriticClaims re-run). Qualifier: ReviewC1Semantics 41 CORRECT / 8 WRONG / 1 UNCLEAR; the 8 WRONG sites reverted to base bytes in the integration commit (lesson M88-1, QUALITY R140) | `python3 -B .ufo/waves/round-88/c1/knowledge-meter.py --lane <clone of fd33e1bf> --base-rev 6beead9148945fa695cf3139e8fc9d8e91cc5fd0 --map .ufo/waves/round-88/c1/repair-map.json --target 742/1743 --map-sha256 5a731401a1f9145e24898a13c8a47be2135beabedde4352170cf2d2daa5d7960` | `.ufo/waves/round-88/l1/c1-landing-r88.txt`; `.ufo/waves/round-88/w1/ReviewC1Semantics.md` |
+| C2 | coverage 8 held; capability extension | capture-secret-scan: gate + AWS shapes; no cloud signed-URL shape; practice evidence out of scope; no `--files` limb | `gcs-signed-url-signature`, `azure-sas-signature`, `corpus/practice/*/evidence/` scope; K1–K6 pass at `b43dc215`; base instrument misses all 5 round-88 plant entries (K6) | VERIFIED-pending-closure on P1–P3; sourced on S126, S127. Qualifier: `\u0026` holds only for a first-position match (ReviewC2Scanner F1; lesson M88-2) | `python3 -B .ufo/waves/round-88/c2/capability-check.py --lane . --rev b43dc2154bc09470da2209fb626021da3af3593e --work <scratch> --instrument-sha256 d73495364f90f78fa5ee6ad28b83fce772a349a5339d240b21db4d5d04425417 --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` | `.ufo/waves/round-88/l1/c2-landing-r88.txt`; `.ufo/waves/round-88/w1/ReviewC2Scanner.md` |
+| — | depth:density | 273.2 | 273.2 | unchanged (SKILL.md untouched) | `python3 corpus/instruments/density.py SKILL.md --label x` | `.ufo/waves/round-88/w1/CriticHarm.md` §1 |
+
+- **Capabilities:** `capture-secret-scan` row extended (two cloud shapes, practice-evidence scope; first-working round stays 87).
+- **Quality criteria added:** R140 (a proxy-selected repoint map needs a non-author hand-labelled sample with no WRONG key before the freeze).
+- **Saturation / retired:** unchanged / none.
+- **Census of record:** `corpus/instruments/citation-survival.md` still reads 132/701; not regenerated. Carried.
+
+Planned round 89 (not frozen):
+- C2 counter amendment and scanner fix: `\u0026`/`%26` start positions (ReviewC2Scanner F1/F6), a generated-value limb (CriticClaims D4), the 20-parameter window and wrapped-value limits named (F3/F4, SentinelRegex D2), an optional literal prefilter (SentinelRegex D1).
+- New shapes from ScoutSources leads: CloudFront `Signature=`, GCS V2 `GoogleAccessId`/`Signature`, Azure user-delegation SAS `skv=`.
+- Intake gate in `capture-source.py` (considerthese/2026-10-24.md:49-52).
+- C1 tranche 4: re-anchor the drifted keys from `.ufo/waves/round-88/w1/ExecReanchor-receipts/reanchor-candidate.json` and ReviewC1Semantics' corrected lines, under R140; a stricter M8 (CriticClaims D2) and a commit-bound P1 (D1).

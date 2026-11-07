@@ -1,0 +1,17 @@
+# R140 shown able to fail: the frozen r88 map against the non-author labels (expected FAIL)
+R140 WRONG claim-gates.md:21-23
+R140 WRONG claim-gates.md:34
+R140 WRONG claim-gates.md:35-36
+R140 WRONG claim-gates.md:63-66
+R140 WRONG claim-gates.md:66-67
+R140 WRONG claim-package-contract.md:28-29
+R140 WRONG japanese-domestic-disclosure-workflow.md
+R140 WRONG mission-control.md:43-46
+R140 map_keys=50 labelled=50 wrong=8 unclear=1 min=15 verdict=FAIL exit=1
+rc=1
+# control: the same map without the 8 keys labelled WRONG (scratch copy; expected PASS)
+R140 map_keys=42 labelled=42 wrong=0 unclear=1 min=15 verdict=PASS exit=0
+rc=0
+# control: the first 10 label rows only (9 of them are keys of this map; expected FAIL, under --min 15)
+R140 map_keys=42 labelled=9 wrong=0 unclear=0 min=15 verdict=FAIL exit=1
+rc=1

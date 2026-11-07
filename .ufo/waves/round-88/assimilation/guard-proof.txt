@@ -1,0 +1,17 @@
+== §10 id-collision guard: failure-mode proof ==
+fixture registry: /fast/scratch/hyaku/kasegi-r88/l1/fx.QviIZF/fixture-SOURCES.md (row S002 is INDENTED by two spaces)
+fixture staged:   /fast/scratch/hyaku/kasegi-r88/l1/fx.QviIZF/fixture-staged.md (carries S002 at column 0)
+
+-- A. GUARD PATTERN (0-3 leading spaces: '^ {0,3}\|[[:space:]]*S[0-9]{3,}') --
+a-reg-ids:    S001 S002 
+a-staged-ids: S002 S003 
+a-collisions lines=1
+S002
+
+-- B. COLUMN-ZERO-ONLY PATTERN ('^\|[[:space:]]*S[0-9]{3,}') over identical fixtures --
+b-reg-ids:    S001 
+b-staged-ids: S002 S003 
+b-collisions lines=0
+
+-- C. VERDICT --
+PASS: Guard pattern detected collision (S002); column-zero-only pattern missed it (0 collisions).
