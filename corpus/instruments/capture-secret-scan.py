@@ -44,6 +44,12 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          or `%26` separator, so a JSON-escaped SAS whose first
                          matched parameter is not the query's first parameter
                          (S127 line 605's order, sv sixth) is detected.
+                         Round 91: parameter names between `sv` and `sig` are
+                         2-7 letters, so a user-delegation SAS that carries the
+                         7-letter `skdutid` field (the tenant of a user-bound
+                         SAS, version 2025-07-05 and later; S133 lines 177,
+                         566-571) is detected; an 8-letter name still ends the
+                         window (known limit).
   cloudfront-signed-url-signature  (round 89) a `Signature=<value>` query
                          parameter of 40+ CloudFront URL-safe base64 characters
                          (`A-Za-z0-9`, `-`, `_`, `~`: CloudFront replaces `+`,
@@ -58,11 +64,27 @@ claim-package-check.py beside this file, so the two never drift), plus:
                          files its policy covers (S130 lines 163-165). A
                          `Signature=` preceded by `-` (`X-Amz-Signature=`) never
                          starts a match.
+  cloudfront-signed-cookie-signature  (round 91) a `CloudFront-Signature=<value>`
+                         cookie name-value pair (a `Set-Cookie:` or `Cookie:`
+                         header, or any text) whose value is 40+ CloudFront
+                         URL-safe base64 characters (`A-Za-z0-9`, `-`, `_`, `~`),
+                         cookie name case-sensitive, not preceded by a letter,
+                         digit, `_` or `-` unless that is the `n` of a JSON `\\n`
+                         escape (several Set-Cookie values joined in one JSON
+                         string) or the end of a `\\u0026`/`%26` separator: the
+                         signature cookie of an Amazon CloudFront signed cookie,
+                         "a hashed, signed, and base64-encoded version of the
+                         JSON policy statement" (S134 lines 19, 40, 96-98, 428).
+                         The documentation's 28-character example value (S134
+                         line 123) and its prose placeholder (line 40) are not
+                         hits.
 Known limits: GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
-cookies (`CloudFront-Signature`), percent-encoded parameter names or `=`
-(a whole URL percent-encoded inside another URL's query), more than 20 other
-parameters between the two matched ones, values soft-wrapped across lines,
-and gzip/UTF-16/base64-wrapped captures are not detected.
+cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
+percent-encoded parameter names or `=` (a whole URL percent-encoded inside
+another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
+`sig`, more than 20 other parameters between the two matched ones, values
+soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not
+detected.
 The documented example key id AKIAIOSFODNN7EXAMPLE (S124 line 409) is allowed.
 
 Allowlist. The gate's generic shapes also match non-secrets in captures (a
@@ -97,7 +119,7 @@ AWS_PATTERNS = (
     ("aws-access-key-id", re.compile(rb"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
 )
 _SEP = rb"(?:&amp;|&|\\u0026)"
-_PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,6}=[^&\s\"'<>\\]*){0,20}?"
+_PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,7}=[^&\s\"'<>\\]*){0,20}?"
 _SIG = rb"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}"
 _SV = rb"sv=\d{4}-\d{2}-\d{2}"
 _LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\u0026)|(?<=%26))"
@@ -105,6 +127,7 @@ _CF_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\u0026)|(?<=%26))"
 _CF_PARAM = rb"(?:" + _SEP + rb"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\s\"'<>\\]*){0,20}?"
 _CF_SIG = rb"Signature=[A-Za-z0-9_~-]{40,}"
 _CF_KPI = rb"Key-Pair-Id=[A-Z0-9]{8,32}(?![A-Za-z0-9_-])"
+_CK_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\n)|(?<=\\u0026)|(?<=%26))"
 CLOUD_PATTERNS = (
     ("gcs-signed-url-signature", re.compile(
         rb"(?i)X-Goog-Signature(?:=|\\?[\"']?\s*:\s*\\?[\"']?)[0-9a-f]{64,}")),
@@ -112,6 +135,8 @@ CLOUD_PATTERNS = (
         rb"(?i)" + _LB + rb"(?:" + _SV + _PARAM + _SEP + _SIG + rb"|" + _SIG + _PARAM + _SEP + _SV + rb")")),
     ("cloudfront-signed-url-signature", re.compile(
         _CF_LB + rb"(?:" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb"|" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb")")),
+    ("cloudfront-signed-cookie-signature", re.compile(
+        _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
 )
 ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
 NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
@@ -279,6 +304,16 @@ def selftest(pats):
         ("cf-amz-signature-beside-kpi", b"https://x.s3.amazonaws.com/a?X-Amz-Signature=" + b"ab" * 32 + b"&Key-Pair-Id=K2JCJMDEHXQW5F", set()),
         ("cf-short-sig", b"https://d1.cloudfront.net/a.mp4?Signature=abcDEF123~-_&Key-Pair-Id=K2JCJMDEHXQW5F", set()),
         ("cf-lowercase-names", b"https://d1.cloudfront.net/a.mp4?signature=" + cfsig + b"&key-pair-id=K2JCJMDEHXQW5F", set()),
+        ("azure-skdutid-user-bound", b"https://a.blob.core.windows.net/c/b.txt?sp=rw&skoid=11111111-2222-3333-4444-555555555555&sktid=66666666-7777-8888-9999-000000000000&skt=2026-11-07T00:00:00Z&ske=2026-11-08T00:00:00Z&sks=b&skv=2025-07-05&spr=https&sv=2025-07-05&sr=b&sduoid=11111111-2222-3333-4444-555555555555&skdutid=66666666-7777-8888-9999-000000000000&sig=" + asig, {"azure-sas-signature"}),
+        ("azure-skdutid-sig-first", b"https://a.blob.core.windows.net/c/b.txt?sig=" + asig + b"&skdutid=66666666-7777-8888-9999-000000000000&sv=2025-07-05", {"azure-sas-signature"}),
+        ("azure-eight-letter-name", b"https://a.blob.core.windows.net/c/b.txt?sv=2025-07-05&abcdefgh=1&sig=" + asig, set()),
+        ("cf-cookie-set-cookie", b"Set-Cookie: CloudFront-Signature=" + cfsig + b"; Domain=d111111abcdef8.cloudfront.net; Path=/; Secure; HttpOnly", {"cloudfront-signed-cookie-signature"}),
+        ("cf-cookie-request-header", b"Cookie: CloudFront-Policy=eyJTdGF0ZW1lbnQiOltdfQ__; CloudFront-Signature=" + cfsig + b"; CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F", {"cloudfront-signed-cookie-signature"}),
+        ("cf-cookie-doc-example", b"Set-Cookie: CloudFront-Signature=dtKhpJ3aUYxqDIwepczPiDb9NXQ_; Domain=example.org; Path=/; Secure; HttpOnly", set()),
+        ("cf-cookie-doc-placeholder", b"CloudFront-Signature=hashed and signed version of the policy statement;", set()),
+        ("cf-cookie-lowercase-name", b"cloudfront-signature=" + cfsig, set()),
+        ("cf-cookie-prefixed-name", b"X-CloudFront-Signature=" + cfsig, set()),
+        ("cf-cookie-json-joined", b'{"set-cookie":"CloudFront-Key-Pair-Id=K2JCJMDEHXQW5F; Path=/\\nCloudFront-Signature=' + cfsig + b'; Path=/"}', {"cloudfront-signed-cookie-signature"}),
     ]
     bad = 0
     for name, data, want in cases:
