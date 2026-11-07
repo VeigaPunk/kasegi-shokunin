@@ -1,0 +1,71 @@
+{
+ "round": 86,
+ "lane": "kasegi",
+ "attempt": 1,
+ "base": "d7296645c2cd9f631329fa8e2f38328a4c9c89a5",
+ "history_read": [
+  "corpus/lessons/round-85-verifier-spotcheck.md (routed defects 1-4: e2e counter subject binding with a failing wrong-subject control; re-review after CHANGES-REQUESTED; 'distinct' wording; stale census of record)",
+  "corpus/lessons/round-85.md (M85-1..3; routed to r86)",
+  "SCORECARD.md Round 85 'Planned round 86'",
+  ".ufo/waves/round-85/w1/ExecC1Hunt.md and ExecC1Hunt-r86-candidates.json (31 SKILL candidates, all rule B command-invocation tokens: not repointed, a command string is not a citation)"
+ ],
+ "controls": {
+  "census_start": ".ufo/waves/round-86/controls/census-start-r86.txt",
+  "c1": [
+   ".ufo/waves/round-86/controls/c1-controls-r86.sh",
+   ".ufo/waves/round-86/controls/c1-controls-r86.txt"
+  ],
+  "c2": [
+   ".ufo/waves/round-86/controls/c2-controls-r86.sh",
+   ".ufo/waves/round-86/controls/c2-controls-r86.txt"
+  ]
+ },
+ "instruments": {
+  ".ufo/waves/round-86/c1/knowledge-meter.py": "03df491be611e8b9a3328cb7df673d9b54e93e4d1d1b856b5e678ad7949e50ee",
+  ".ufo/waves/round-86/c1/apply-map.py": "2a11c1c6afedd3b8621b34d0e99a8b39b33f05303cc746c08e0e7abe64babf5f",
+  ".ufo/waves/round-86/c1/build-map.py": "222f92e6a6e1973aee175d763c43ac38a38516441a1157e0e4e4984b149aaa77",
+  ".ufo/waves/round-86/c1/repair-map.json": "dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12",
+  ".ufo/waves/round-86/c2/e2e-check.py": "b4a97e095da1d869a0e8c0b82f758ba8d517ae2d10cf72e48e7fc4962578a834",
+  "corpus/instruments/resolve.py": "db5e0767c60ce00ea6c9cfb4ddd3e159e9a86525e5c8417c4a0a73e2e6d45667",
+  "corpus/instruments/claim-package-check.py": "8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6",
+  "corpus/source-snapshots/round-86/manifest.json": "8d3b7d3569797ccf7855f003cc05d436147f5dae4d29375761c260641b17d3e0",
+  "corpus/source-snapshots/round-86/S122.txt": "ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1",
+  "corpus/source-snapshots/round-86/S123.txt": "22a7d5bed4d4081db7e94e4c788a5aaf12ed8dc8f7607536ef4ad36828de4ab5"
+ },
+ "claims": [
+  {
+   "id": "C1",
+   "axis": "depth:verifiability",
+   "axis_score": "4 (lowest non-retired). The claim reads resolve.py's own classification over a new scope, corpus/knowledge/*.md; the integer score is not claimed to move.",
+   "statement": "Repoint the 203 distinct bare snapshot citations in .ufo/waves/round-86/c1/repair-map.json (each `S<digits>.txt` with an optional :N/:N-M anchor, GONE under resolve.py at base, whose bare name is the basename of exactly one tracked lane file, under corpus/source-snapshots/, with every anchor inside that file's line count) to their full lane paths, so the resolve.py meter over the corpus/knowledge/*.md scope moves from 398/1721 (23.13%) to exactly 596/1716 (34.73%), with no other knowledge-scope citation added, removed or changed. 89 GONE bare snapshot tokens whose basename is not unique (S029, S040, S041, S069, S100, S102) are excluded and listed in c1/excluded.json.",
+   "counting_command": "S=/fast/scratch/hyaku/kasegi-r86/verify && rm -rf $S/land && git clone -q --shared /home/vgpnk/Projects/shokunin/kasegi-shokunin $S/land && git -C $S/land checkout -q <landing> && python3 -B $S/land/.ufo/waves/round-86/c1/knowledge-meter.py --lane $S/land --base-rev d7296645c2cd9f631329fa8e2f38328a4c9c89a5 --map $S/land/.ufo/waves/round-86/c1/repair-map.json --target 596/1716 --map-sha256 dd40455a379eb53b75bf5a15772fe675efae79eda2516ea7fac50f86420bce12 --work $S/w",
+   "predicate": {
+    "P1": "the counting command over the landing commit (a git clone --shared checkout with .git, placed under /fast/scratch/hyaku/kasegi-r86/, whose parent holds no MISSION.md) prints 'KNOWLEDGE-METER base=398/1721 after=596/1716 target=596/1716 keys=203', LIMB M1-M6 pass, 'KNOWLEDGE-METER-RESULT pass rc=0', exit 0.",
+    "P2": "frozen instrument bytes at landing equal the sha256 values in this file's instruments block.",
+    "P3": "git diff <freeze> <landing> -- corpus/knowledge touches only lines that hold a repair-map key (M3 is the machine form).",
+    "P4": "python3 corpus/instruments/density.py SKILL.md --label x mean at landing >= base (no depth:density harm)."
+   },
+   "kill_rule": "Any of P1-P4 false at the landing commit -> C1 fails; no target, map, limb or measuring root is changed after the freeze.",
+   "do_nothing": "base scope as after: 398/1721, M1/M2/M3 FAIL, rc 1 (controls/c1-controls-r86.txt). Forgeries fail rc 1: partial half map 494/1716, de-cite 398/1518, pad +2 resolving cites 597/1717, wrong-file repoint (S071.txt:117 -> round-44/S069.txt:117, M4), wrong map sha (M6). Positive: frozen map applied gives 596/1716 rc 0.",
+   "host_note": "mirror roots absent on this host (mirror_absent=True). Root dependence measured pre-freeze: the base token `../MISSION.md:49-56` classifies INTERNAL when the lane sits in the fleet root and GONE in a scratch clone (lane root gives 399/1721); the frozen root is the scratch clone (lesson M85-3 class)."
+  },
+  {
+   "id": "C2",
+   "axis": "coverage (capability extension of priced-claim-package: a subject-bound counter and a payer-resolved second package)",
+   "axis_score": "8 (held; the coverage denominator is operator-owned)",
+   "source": "S122 https://hackerone.com/reports/1997312.json and S123 https://daniel.haxx.se/blog/2026/01/26/the-end-of-the-curl-bug-bounty/, both opened 2026-11-07 HTTP 200; captures + manifest corpus/source-snapshots/round-86/ (S122 ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1, S123 22a7d5bed4d4081db7e94e4c788a5aaf12ed8dc8f7607536ef4ad36828de4ab5); S120/S121 (round 85) and S052 (round 35) reused unchanged.",
+   "statement": "Build the six-file practice package corpus/practice/curl-ibb-h1-1997312/ for disclosed HackerOne report 1997312 (team ibb, the Internet Bug Bounty record for CVE-2023-28319): it prices the payer side the round-85 package left open (payer internet-bug-bounty, platform bounty flag true, original report 1913733, reward ended 2026-01-31), passes the r43 package gate and the frozen subject-bound counter c2/e2e-check.py (limbs E0-E5, where E0 binds the report subject and the frozen B3-class wrong-subject controls fail), LOG.md records the task, SHONEN.md box 2 cites the package path, and S122/S123 move queued -> mined.",
+   "counting_command": "cd <landing checkout> && python3 -B .ufo/waves/round-86/c2/e2e-check.py --lane . --pkg corpus/practice/curl-ibb-h1-1997312",
+   "predicate": {
+    "P1": "the counting command at the landing commit prints LIMB E0-E5 pass and 'E2E-RESULT pass limbs=6 rc=0', exit 0.",
+    "P2": "python3 corpus/instruments/claim-package-check.py corpus/practice/curl-ibb-h1-1997312 prints 'verdict=WELL-FORMED' and exits 0.",
+    "P3": "python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-86/manifest.json --source S122|S123 each exit 0 at landing.",
+    "P4": "git diff <freeze> <landing> -- corpus/SOURCES.md changes only the S122 and S123 rows (queued -> mined, used-by -> corpus/practice/curl-ibb-h1-1997312/report.md) and appends Registry-changes lines; registry row count 123 at freeze and landing.",
+    "P5": "sources-census.sh validate --root /home/vgpnk/Projects/shokunin kasegi exits 0 at landing.",
+    "P6": "the frozen controls in controls/c2-controls-r86.sh, re-run at landing, still give positive rc 0 and all 22 negatives rc 1 (including b3-wrong-subject and b3-url-added)."
+   },
+   "kill_rule": "Any of P1-P6 false at the landing commit -> C2 fails; no field, limb, control or subject is changed after the freeze.",
+   "do_nothing": "package absent: E0-E5 FAIL rc 1. The round-85 package unchanged: rc 1. r43 exemplar: rc 1. B3-class wrong subject (r85 package + S122/S123 evidence bound + fully correct r86 Pricing): E2/E3/E4 pass, E0 FAIL, rc 1; with the 1997312 URL added and the heading still 1913733: E0 FAIL rc 1. 17 pricing forgeries (each field, wrong heading, stray report URL, duplicate key, two Pricing sections, short quotes, forged quote, no S123 quote) rc 1; positive pricing rc 0."
+  }
+ ]
+}
