@@ -1,0 +1,68 @@
+PROBE	FAMILY	FORM	REALISM	CLASS	VERDICT	LANDED_SHAPE	BASE_SHAPE	FIXTURE_SHA256
+cf01	cf-cookie	Set-Cookie baseline (doc S134 form)	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	f34d4a89e37e688f1b1730b047934b662800edacb470688779353ee1fa4aa0e1
+cf02	cf-cookie	HAR name/value object	high	documented-limit	OUT-OF-SCOPE	none	none	4db448f0a79f6bd601a9f40603dfa92456d3ae1cf717b5e462394910e05e1d7e
+cf03	cf-cookie	HAR raw Set-Cookie header value	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	368ffa2b5077b4b92db2554bc8c2994852de2c874e94fe4421faf3c153e29be0
+cf04	cf-cookie	HAR cookies array (browser HAR 'cookies' view)	high	documented-limit	OUT-OF-SCOPE	none	none	7ca84fb1b6256cb3bdecf56669eb3fbdef693095431aac2c5b2cd49bd9d2274b
+cf05	cf-cookie	name and '=' percent-encoded as %3D	high	documented-limit	OUT-OF-SCOPE	none	none	df9359306cd6b64c33239c9ff3f276cdf12efb7009c1c7040a85c83bd103e8ae
+cf06	cf-cookie	whole Cookie header percent-encoded	med	documented-limit	OUT-OF-SCOPE	none	none	a6d8a2a75dbde6b790b8e3c8b80af534928a9401441337325ec3b74015e94c3b
+cf07	cf-cookie	quoted cookie value (RFC 6265 cookie-value allows DQUOTE)	med	undocumented	BYPASS	none	none	73fa4fd81961dff7ed62c6ee6acbd4e5386b4baec55c4e0039cee719c73ece8e
+cf08	cf-cookie	OWS around '=' (name = value)	low	undocumented	BYPASS	none	none	bd02ca652d8db26c0d07282e41e970f1fbc34e9970b3692524c5c254dc82baa7
+cf09	cf-cookie	';' separator, no space	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	f26cc9f8ecdd98d97a022ca592002c4e8cc9d6b227b9ed69feea8edf4559ec24
+cf10	cf-cookie	'; ' separator	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	843f49ab54c7e80364497973db5152c1c05e0e23b609486e32f3ba337eda703d
+cf11	cf-cookie	real CRLF between Set-Cookie headers	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	5a47e5cb6716c8d968f49b60cf3eb84464ce1e9d0974c4026dac0f38ab209595
+cf12	cf-cookie	obsolete line fold, continuation space	low	undocumented	DETECTED	cloudfront-signed-cookie-signature	none	a87d00317512054ecc21c2a811a5eb18e07eea214039dc5346612604f5652f40
+cf13	cf-cookie	HTML entity for '='	low	undocumented	BYPASS	none	none	4a453aadaf5ef50a047e0eff2361482b77b14e9f052003b72d8b7d50fdb702c5
+cf14	cf-cookie	JSON \u003d for '='	low	undocumented	BYPASS	none	none	971b7e89093aade6b92aa975b3fdc0b334a84946dd30eacf476507392efa7388
+cf15	cf-cookie	python bytes repr of a header line	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	e7a29c9d0a43f273814a0342f2939bca9fa68bbb92d805daedc5ee1325df1283
+cf16	cf-cookie	curl -b command line	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	c4854de7d9d24e5a98f410ec33fcc97b2487e328b904fb5e571587971c879730
+cf17	cf-cookie	python dict repr of a cookie jar	high	undocumented	BYPASS	none	none	a4b2fde2c0bd8171e1757433d469d2e26ae898903ddb900eba521b6ffb1ebe06
+cf18	cf-cookie	JS console object repr (name/value)	med	undocumented	BYPASS	none	none	e2da88f69be0288ce6381e50071dbd9bd8f32b9f99ee869137a12a2bb704459c
+cf19	cf-cookie	Netscape cookies.txt jar (tab columns)	med	undocumented	BYPASS	none	none	1e82b58a390dda36f15d93721b55d1b6696169b601e4d505a06d6efab6484106
+cf20	cf-cookie	JSON \r\n join of two Set-Cookie values	med	contract	DETECTED	cloudfront-signed-cookie-signature	none	b04c7c1c83217290f6bc48421ff37b4da4d2a6f26d489f25a584289e6292ae71
+cf21	cf-cookie	JSON \n join of two Set-Cookie values	med	contract	DETECTED	cloudfront-signed-cookie-signature	none	cea1842c8d19b1a58e06d111fd1a21be5e38193d5ccfcd6b12fe5704936a31f0
+cf22	cf-cookie	value 39 chars (one under the floor)	high	documented-limit	OUT-OF-SCOPE	none	none	29eb62673f552c651d6c95e65caddbd8ce469a738ca9e203b924a37c3302eeb1
+cf23	cf-cookie	value exactly 40 chars	high	contract	DETECTED	cloudfront-signed-cookie-signature	none	ed1509bfb97e45dd6468673466c7924bf6cf9093558b0fed03b2ad9062799111
+cf24	cf-cookie	doc example value (28 chars, S134 line 123)	high	claim-negative	OUT-OF-SCOPE	none	none	9fb4fb831cd7d3587f9a79bdc1635de29612aed7ce2e1310c294022972e8dfd9
+cf25	cf-cookie	doc prose placeholder (S134 line 40)	high	claim-negative	OUT-OF-SCOPE	none	none	3c44c70a171d23b5db15e9f3fd68c9535ee273bdfa951d1e9a1869689524ee10
+cf26	cf-cookie	lower-case cookie name	low	claim-negative	OUT-OF-SCOPE	none	none	1213ad18c3297dcd57a96d1ed72f733cbeb50a6d6ade86bd7f6b78c07976a1a8
+cf27	cf-cookie	prefixed name X-CloudFront-Signature	low	claim-negative	OUT-OF-SCOPE	none	none	fe1103f9ee041280bf3d0268594163e10689f35182346efb1be15fa4e6b262cd
+cf28	cf-cookie	value soft-wrapped across lines	med	documented-limit	OUT-OF-SCOPE	none	none	52979f5944e496f63dc4c0bc24c16cbba1bae6740ec25389729789ff189a396a
+cf29	cf-cookie	cookie string with attributes first	low	contract	DETECTED	cloudfront-signed-cookie-signature	none	9e3d486db474945f301a8f960baab74f28efba09f0c19bc23d703ed03e1f7013
+cf30	cf-cookie	XML name/value element	low	undocumented	BYPASS	none	none	fe80cb65ba4f0b541f3a760621fb88da351e6b72076d161e3871d9a4f801c724
+az01	azure-sas	sv..skdutid..sig baseline	high	contract	DETECTED	azure-sas-signature	none	8c4a48e2537d4bc8bb9bca0661517ca29ba07df7d2e3cbe1f380730b77c2bfad
+az02	azure-sas	sig before sv, skdutid between	high	contract	DETECTED	azure-sas-signature	none	0981929795ea9e09909f5a00d2414250c8a538efc7b9f0f793abbb8121348072
+az03	azure-sas	20 parameters between sv and sig (exact window bound)	med	contract	DETECTED	azure-sas-signature	none	8cb17ec1d6ca2fe0aea9f4c50fdf92cda2e9cf865e96c7e0d286350e4fd68185
+az04	azure-sas	21 parameters between sv and sig (one over)	low	documented-limit	OUT-OF-SCOPE	none	none	1aec31525e20cefcd4f44e3d6f9ffd3191b2048c1eaaea41a7b822d54429be35
+az05	azure-sas	mixed-case parameter names	med	contract	DETECTED	azure-sas-signature	none	fd346b42c034712c9c73684e483ea68cbb0844c679bc442d46683899669f5f25
+az06	azure-sas	whole query joined by %26	med	documented-limit	OUT-OF-SCOPE	none	none	ae5648f27d35690ce98182edcc56a2cee7510322116cb2a337caf5eb5988f7a5
+az07	azure-sas	%26 between sv and sig only	low	documented-limit	OUT-OF-SCOPE	none	none	d12cfe99a8f32175d973795bc52a4bb8decbb044ce1c0742d4a82168c89f8ddd
+az08	azure-sas	HTML &amp; separators	high	contract	DETECTED	azure-sas-signature	none	46c78371a0107b16b8b4e3a5f27a5ae134d8cd5a5498ff1caa1a0a305dd2d11c
+az09	azure-sas	HTML numeric entity &#38; separators	low	undocumented	BYPASS	none	none	9f0b1db0facf851c310aecf7c47d24b74af2a0065f5401e12e2bf40fb247a971
+az10	azure-sas	8-letter parameter between sv and sig	low	documented-limit	OUT-OF-SCOPE	none	none	c1ba40367a9dd52930a7138473b07c09ef91269f25ecb9dfd7363d80baa9b64e
+az11	azure-sas	8-letter name after skdutid	low	documented-limit	OUT-OF-SCOPE	none	none	100552a25db88ba2bb82045d4514f19023348abb4a9d399ba0ecf42b44b1f26c
+az12	azure-sas	base64url sig ('-' at offset 8)	low	undocumented	BYPASS	none	none	17bbedad7e918dd2ca28c07259b764bf9c9cd4beed9ac5c2d1ad5e2547c7bbbc
+az13	azure-sas	base64url sig ('-' after 60 chars)	low	undocumented	DETECTED	azure-sas-signature	azure-sas-signature	a7a02984856cbf0b7e6cc6dbb2979abf463d6840f6a251af36645a6d8da47ecb
+az14	azure-sas	sig 39 chars	high	documented-limit	OUT-OF-SCOPE	none	none	7ed4d9bcee088247eb611943ee1220eff572514634b6997c073aa84573ad5832
+az15	azure-sas	empty parameter between (&&)	low	undocumented	BYPASS	none	none	f5d111b38ec2edb5afa9879a671ae659ce575972fc7184f42b8f7d93aee32264
+az16	azure-sas	semicolon-separated SAS token	low	undocumented	BYPASS	none	none	7a7826c249429421d0e0531e6104ca4f359332ceacf54da2774d91317d336131
+az17	azure-sas	python dict repr of query params	med	undocumented	BYPASS	none	none	e55813bae1c7a0929ddbcce87da5b957b1b6a95ee468cf95dd4394107e0e4bde
+az18	azure-sas	realistic full SAS, skdutid last before sig	high	contract	DETECTED	azure-sas-signature	none	4102415ffe830902430e12b3f8406930ca316070dc632ff689b77b2395988cb1
+az19	azure-sas	sig with %2B/%2F/%3D encoding	high	contract	DETECTED	azure-sas-signature	azure-sas-signature	45c00eba74543604715d87cae753234515466f76d689cd14bfc19e1ad2d3547e
+az20	azure-sas	JSON \u0026 separators, sig last	high	contract	DETECTED	azure-sas-signature	none	dc710e3fc54492b9581c4ca3e871b9b43468eb76e421fe6d06fee8fc180b7f47
+cf31	cf-cookie	JSON \u0026 separator before the pair	med	contract	DETECTED	cloudfront-signed-cookie-signature	none	b16989879d762b2a039f24d1d1ca5ed7f04d10e2f17d02de99928821594f228b
+cf32	cf-cookie	%26 separator before the pair	med	contract	DETECTED	cloudfront-signed-cookie-signature	none	f28cf0fc81918eee3c0c1c57374f7d8e47e6adf9136ea544a04e995062a62890
+cf33	cf-cookie	raw CRLF inside a JSON string value	med	contract	DETECTED	cloudfront-signed-cookie-signature	none	d8fe3931e1b848f6318bdf2b55ab6b4ca1eddc8e34c9ebde764d58a4bd1ceb67
+cf34	cf-cookie	whole capture base64-wrapped	low	documented-limit	OUT-OF-SCOPE	none	none	6cae29ac7b095a6595cc31ecee4b308b3822e32cd45a98f27449ec94ab9bbcab
+cf35	cf-cookie	mitmproxy-style request dump block	med	contract	DETECTED	cloudfront-signed-cookie-signature	none	358ba4fa019659c1f6134d95a8a22abec2f42a769da62043e14af208d4ae23fa
+cf36	cf-cookie	value followed by a comma (comma-joined cookies)	low	contract	DETECTED	cloudfront-signed-cookie-signature	none	a32eaa9b2b26285d5f0f730c6d4b41dd3f12b4dbbcc3db06500218b05873a64e
+az21	azure-sas	19 params then skdutid (last inside the window)	med	contract	DETECTED	azure-sas-signature	none	7615a7500b115f59549ed275e49cb964d850e43e847274c928881bd3a774cb5d
+az22	azure-sas	hyphenated name between sv and sig	low	undocumented	BYPASS	none	none	fb4af6889092e54ef37627d09ee47b329507a2aed7e9a652b3edef09d493b794
+az23	azure-sas	digit in a name between sv and sig	low	undocumented	BYPASS	none	none	1ae91bc063edd851761fb36302618a6df07ec5d7efcf750af8053c6502a3b08d
+az24	azure-sas	parse_qs-style dict repr of the query	high	undocumented	BYPASS	none	none	747afaa0e9d07caf0d33650169782b533bf90ca7f8d201c969611a7b926ad9a9
+az26	azure-sas	sig with raw '+' and '/' (unencoded base64)	med	contract	DETECTED	azure-sas-signature	azure-sas-signature	e5005f26ce57ed255d7247d00d13ec1d7508788fece8e2c1ce65dbd8fbb9695f
+az27	azure-sas	sig ending in %3D%3D padding	high	contract	DETECTED	azure-sas-signature	azure-sas-signature	8ab1e7dbeb6767159f1dc9b3a5d1fb264bec58a55400a9a5fb9d90086a6e6be7
+cf40	cf-cookie	UTF-16LE encoded capture	low	documented-limit	OUT-OF-SCOPE	none	none	6f4ae14b882b681f6a61596fb1b70bfbc708c6333fd290fcb5029c3cdf62fcc5
+cf41	cf-cookie	gzip-wrapped capture	low	documented-limit	OUT-OF-SCOPE	none	none	abc8f8a1f03b5fc9e968825e225f4525f1141f95900e4f366848fdd39621abd6
+cf42	cf-cookie	selenium get_cookies() list of name/value dicts	high	documented-limit	OUT-OF-SCOPE	none	none	2e2ca652f16fcb28df51994b5577f507db7885cf90cb60b135af6d983941d9ee
+az28	azure-sas	bare sig with no sv anywhere (shape design boundary)	med	claim-negative	OUT-OF-SCOPE	none	none	c06350567e44e492dd71103d5ce2d0c4264c77483dd05acb5153178f3d70ac51
+az25	azure-sas	YAML block of query params	med	undocumented	BYPASS	none	none	ec8ce99827c487029ea756cb7ab54674af24e5b9ae9fd5f45e8ac3dabc045bff

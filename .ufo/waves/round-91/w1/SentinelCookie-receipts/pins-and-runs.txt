@@ -1,0 +1,32 @@
+# SentinelCookie round-91 pins and controls (all values read from the lane at the named rev)
+# lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+
+## instrument pins
+landed 1dd0723 capture-secret-scan.py   89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7  (frozen candidate 89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7)
+landed 1dd0723 claim-package-check.py   8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  (frozen gate 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6)
+landed 1dd0723 capture-secret-allow.tsv 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985  rows=19
+base   bb4309f capture-secret-scan.py   95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec
+base   bb4309f claim-package-check.py   8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+base   bb4309f capture-secret-allow.tsv 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+
+## selftest
+landed: SELFTEST-RESULT pass cases=53
+base:   SELFTEST-RESULT pass cases=43
+
+## probe run (67 fixtures, --files, allowlist default):
+landed: CAPTURE-SECRET-SCAN mode=files scanned=67 hits=29 files=29 allowed=0 unused_allow=19 rc=1
+base:   CAPTURE-SECRET-SCAN mode=files scanned=67 hits=4 files=4 allowed=0 unused_allow=19 rc=1
+
+## --rev at the landing commit (read-only; no mutation)
+command: python3 -B capture-secret-scan.py --lane <lane> --rev 1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70 --allow capture-secret-allow.tsv
+CAPTURE-SECRET-SCAN mode=rev:1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70 scanned=1734 hits=0 files=0 allowed=20 unused_allow=0 rc=0
+elapsed=3s  git-status sha256 before=96b58ba0af7c63fe402b5e58e55d4e867dd1f55d1e0b54aee776c6205f0ffdac after=same  __pycache__ dirs 8->8
+
+## negative control: the round-91 source snapshots themselves
+python3 -B capture-secret-scan.py --files corpus/source-snapshots/round-91/S133.txt corpus/source-snapshots/round-91/S134.txt -> CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+
+## this seat's wave files, scanned with the landed instrument before landing
+python3 -B capture-secret-scan.py --files SentinelCookie.md SentinelCookie-receipts/probe-matrix.tsv SentinelCookie-receipts/scope-map.tsv SentinelCookie-receipts/repro.py SentinelCookie-receipts/pins-and-runs.txt
+CAPTURE-SECRET-SCAN mode=files scanned=5 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+% note: the 67 fixture .bin files are scratch-only and were never copied into the wave dir (contract: no credential-shaped
+% literal in a wave file); probe-matrix.tsv identifies each probe by id, encoding and sha256 only.

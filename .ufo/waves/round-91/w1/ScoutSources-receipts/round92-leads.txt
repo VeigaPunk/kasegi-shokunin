@@ -1,0 +1,387 @@
+Kasegi round 91 — ScoutSources — round-92 leads receipt
+Seat: ScoutSources (scout). Attempt 1, wave w1. Axis judged: depth:verifiability, coverage.
+Scratch root used: /fast/scratch/hyaku/kasegi-r91/ScoutSources (deleted before yield; see the
+"scratch" section at the end). No snapshot bytes, no fixture bytes, no scanner/counter copy
+appears in this file — digests, line anchors, quotes and the scanner's HIT/summary lines only.
+
+================================================================================
+PART A — live re-fetch of the round-91 committed sources (S133, S134)
+================================================================================
+Instrument: corpus/instruments/capture-source.py (lane's own), default instrument UA.
+Fetch date (all captures below): 2026-11-07 (UTC; see per-capture utc= stamps).
+
+A.1 S133 — Microsoft Learn, Create a user delegation SAS
+  url            https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas
+  http           status=200  final_url identical to url
+  fetched_bytes  118382      snapshot_bytes 60089      snapshot lines 954
+  live sha256    56d858ac8c2988fdf95a045b5a75f13cc5a28a1f71b3786638522775b1786cd6
+  manifest sha256 (corpus/source-snapshots/round-91/manifest.json, record S133)
+                 56d858ac8c2988fdf95a045b5a75f13cc5a28a1f71b3786638522775b1786cd6   EQUAL
+  committed file corpus/source-snapshots/round-91/S133.txt
+                 sha256 56d858ac8c2988fdf95a045b5a75f13cc5a28a1f71b3786638522775b1786cd6
+  byte compare live vs committed: IDENTICAL (cmp exit 0)
+  manifest bytes/lines fields: bytes=60089 lines=954 — match the committed file.
+
+A.2 S134 — Amazon CloudFront Developer Guide, Set signed cookies using a custom policy
+  url            https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html
+  http           status=200  final_url identical to url
+  fetched_bytes  51673       snapshot_bytes 21243      snapshot lines 441
+  live sha256    ddf45b805c7f67f29cf15f60f805fd636968f14734f4e342c697760f8b49f1cc
+  manifest sha256 (manifest.json, record S134)
+                 ddf45b805c7f67f29cf15f60f805fd636968f14734f4e342c697760f8b49f1cc   EQUAL
+  committed file corpus/source-snapshots/round-91/S134.txt
+                 sha256 ddf45b805c7f67f29cf15f60f805fd636968f14734f4e342c697760f8b49f1cc
+  byte compare live vs committed: IDENTICAL (cmp exit 0)
+  manifest bytes/lines fields: bytes=21243 lines=441 — match the committed file.
+
+A.3 Recheck of the pinned quotes — corpus/instruments/source-recheck.py
+  command: python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-91/manifest.json
+  rc=0
+  S133:sha256 OK
+  S133:Q01-skdutid-version OK occurrences=1 anchor=571-ok
+  S133:Q02-skdutid-tenant OK occurrences=1 anchor=567-ok
+  S134:sha256 OK
+  S134:Q01-signature-cookie OK occurrences=1 anchor=97-ok
+  S134:Q02-three-pairs OK occurrences=1 anchor=17-ok
+
+A.4 Reproduction of the pre-freeze capture-scan control (hits=0) against the landed scanner
+  command: python3 -B corpus/instruments/capture-secret-scan.py --files <live S133> <live S134> <live S135> <L1c> <L2> <L3c>
+  CAPTURE-SECRET-SCAN mode=files scanned=6 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+  (frozen pre-freeze control .ufo/waves/round-91/controls/capture-scan-r91.txt reads
+   "CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=19 rc=0")
+  Landed scanner digest at HEAD (bcbfbde63b83c9336e845001323b5c92419e526a) and at the C2
+  landing (1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70) are the same bytes:
+   89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7
+  (equals the --instrument-sha256 pin in the frozen C2 command).
+
+================================================================================
+PART B — S135 re-opened: the rejection reason in corpus/SOURCES.md
+================================================================================
+S135 — Amazon CloudFront Developer Guide, Set signed cookies using a canned policy
+  url            https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-setting-signed-cookie-custom-policy.html
+                 (canned-policy page: .../private-content-setting-signed-cookie-canned-policy.html)
+  http           status=200
+  fetched_bytes  36439       snapshot_bytes 13229      snapshot lines 240
+  live sha256    d6fccb868f4a8367da95912ee818d2a00807575ed23419c7b2395c5aaff3994c
+  The SOURCES.md row S135 anchor cell and the round-91 lesson both record the scratch capture
+  digest as "d6fccb86…" — the live re-fetch REPRODUCES that digest exactly (it is not a
+  nonce-bound instance digest; it is byte-stable across two independent fetches).
+
+VERDICT: AGREE with the recorded rejection reason.
+The row's reason: "its signature cookie has the same name and value form as S134's, so it adds
+no detectable shape; the extra CloudFront-Expires pair is a timestamp, not credential material."
+
+Measured evidence for each clause, from the live capture:
+  (i)  same cookie NAME: S135 line 37 reads
+       "CloudFront-Signature=hashed and signed version of the policy statement;"
+       and S134 line 40 reads the same string. The name CloudFront-Signature is identical.
+  (ii) same VALUE FORM: the signature value in S135 line 110 and in S134 line 123 are each
+       28 characters long (measured), i.e. the documentation's short example value, in both
+       pages. The landed scanner's cloudfront-signed-cookie-signature shape has a 40-character
+       floor, so NEITHER page's example value is a hit — the two pages cannot differ in
+       detectability on their own examples.
+  (iii) the extra pair is a timestamp: S135 line 109 shows the Expires pair carrying a Unix
+       seconds value, and S135 line 31 describes the Expires field as "date and time in Unix
+       time format (in seconds)". No credential material.
+  (iv) the three-pair structure matches S134: S135 lines 16-18 name the same three name-value
+       pairs S134 names at lines 17-19, with the Expires pair in place of the Policy pair.
+  (v)  the flip clause in the row is preserved verbatim and is still accurate.
+Measured companion-invariance of the landed scanner (scratch fixtures, cookie form only):
+  the scanner detects the CloudFront-Signature cookie identically whether the companion pair
+  is the custom-policy Policy pair, the canned-policy Expires pair, or absent. So a round that
+  binds the cookie shape to its companion pairs is exactly what the flip names, and the
+  rejection is not weakened by the round-91 landing.
+
+Qualifier (not a defect in the rejection, a scope-completeness note): the S135 page also
+documents an optional fourth pair, the Hash-Algorithm pair (S135 lines 18-19, 48-50 and
+103-106), which the S135 row's scope cell does not name. CORPUS.md rule 2 makes `scope`
+immutable, so a scope correction would need a new superseding row. The rejected status, the
+reason, the flip and the used-by cell (—) are all consistent with the lane's own conventions
+for a rejected row; no path cites it, so mined would be wrong.
+
+================================================================================
+PART C — three round-92 leads for the capture scanner's known limits
+================================================================================
+Every lead below was captured with the lane's own instrument (capture-source.py), so the
+intake gate ran on each; every access date is 2026-11-07. Every lead carries: URL, access
+date, sha256, line anchors, one located quote of <=25 words, and the MEASURED landed-scanner
+behaviour on a scratch fixture of that form.
+
+--------------------------------------------------------------------------------
+LEAD A — GitHub Docs, About authentication to GitHub  [OPEN: a real uncovered class]
+--------------------------------------------------------------------------------
+  url            https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github
+  access date    2026-11-07   (fetched_bytes 202839, snapshot_bytes 13895, snapshot lines 178)
+  sha256         f0edd23c8d6d53a066a6bb90fe4f4f754746df418d833acfc48c44d13943cca0
+  captured with  the default allowlist — the intake gate accepts this page with NO allowlist row
+  determinism     two independent captures produced byte-identical files (cmp exit 0)
+
+  line anchors (in the 178-line snapshot)
+    157  "GitHub's token formats" (section heading)
+    158  the sentence that states the prefix rule
+    160  the stateless-format rollout note (a 2026-04-27 rollout of a JWT-shaped installation
+         token; a token form that did not exist when the scanner's shapes were written)
+    161  the token-type / prefix / more-information table header
+    162  Personal access token (classic)          -> ghp_
+    163  Fine-grained personal access token        -> github_pat_
+    164  OAuth access token                       -> gho_
+    165  User access token for a GitHub App        -> ghu_
+    166  Installation access token for a GitHub App -> ghs_
+    167  Refresh token for a GitHub App            -> ghr_
+
+  LOCATED QUOTE (line 158, 13 words):
+    "GitHub issues tokens that begin with a prefix to indicate the token's type."
+
+  MEASURED LANDED-SCANNER BEHAVIOUR on scratch fixtures of that form
+  The landed scanner has NO provider-prefix shape of its own: a bare prefixed value that is
+  not adjacent to a generic key name is not detected. Every fixture below is a syntactically
+  valid prefixed value of the documented length, planted ALONE in a file, with no key name.
+    F-GH2  a bare classic-PAT-shaped value in prose      -> NO HIT
+    F-GH3  a bare OAuth-prefixed value                   -> NO HIT
+    F-GH4  a bare fine-grained-PAT-shaped value          -> NO HIT
+    F-GH6  a bare JWT-shaped installation value           -> NO HIT
+    F-GH7  a bare fine-grained value with the documented separator and length -> NO HIT
+    F-GH8  a bare GitLab-prefixed value                  -> NO HIT
+    F-GH9  a bare npm-prefixed value                    -> NO HIT
+    F-GH10 a bare Slack-prefixed value                  -> NO HIT
+  Contrast — the same values are caught only when a GENERIC gate shape happens to fire:
+    F-GH1  the value preceded by an Authorization header -> HIT shape=bearer line=2
+                                                        -> HIT shape=authorization line=2
+    F-GH5  the value preceded by a token-named key       -> HIT shape=credential line=1
+  Aggregate, two invocations over the bare-prefix fixtures (F-GH8, F-GH9, F-GH10 formed a
+  third batch of three):
+    batch A — F-GH2, F-GH3, F-GH4, F-GH6, F-GH7 (all bare-prefix) plus F-HAR1 (the HAR object
+    fixture of Lead C, which is also a miss):
+      CAPTURE-SECRET-SCAN mode=files scanned=6 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+    batch B — F-GH8, F-GH9, F-GH10 (all bare-prefix):
+      CAPTURE-SECRET-SCAN mode=files scanned=3 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+    One run over the two contrast fixtures plus F-AZ1, F-HAR2 and F-CF3:
+      CAPTURE-SECRET-SCAN mode=files scanned=9 hits=6 files=5 allowed=0 unused_allow=19 rc=1
+    Every bare-prefix fixture is in a batch whose rc is 0 and whose hit count is 0.
+  Conclusion: the class is genuinely uncovered, not merely rare. A first-party page states the
+  prefix rule and enumerates the prefixes, so the class can be sourced.
+
+  OPERATIONAL FACT ROUND 92 MUST PLAN FOR — the sibling GitHub pattern-catalogue page is
+  refused by the intake gate, reproducibly:
+    url          https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
+    access date  2026-11-07   (fetched_bytes 827097, snapshot_bytes 19263, snapshot lines 688)
+    sha256       77f388961f48b660e374701cd7667931f592bbfe215c7071c109d333cfda06eb
+                 (identical to the digest the round-90 ScoutSources seat recorded for the same
+                  page — it reproduces byte-for-byte)
+    Without an allowlist row the capture is refused:
+      INTAKE-REFUSED L1cat shape=private-key line=596 out=... written=no
+    The refusal is a TRUE POSITIVE on the shape, not on a secret: the matched bytes are the
+    27-byte literal PEM private-key header NAME that the page prints as a pattern description.
+    matched-bytes sha256 3021d90eb9437b2d8f30e8363695c4418b5e5f1870801b5c317e9398ee0f572d
+    matched bytes length 27, at line 596 of the normalized snapshot.
+    A one-row, digest-bound allowlist keyed to the LANE-RELATIVE out path makes the same
+    capture succeed, and the key must be the lane-relative path (capture-source.py's
+    lane_rel()), not the absolute path:
+      path=corpus/source-snapshots/round-92/<id>.txt  shape=private-key
+      sha256=3021d90eb9437b2d8f30e8363695c4418b5e5f1870801b5c317e9398ee0f572d
+      reason=<documented literal header name in a pattern catalogue; no key material>
+    Verified both ways: with that row the same bytes scan clean (found=[]); without any row
+    the same bytes report [('private-key', 596)].
+    The catalogue's own text at line 616 states the push-protection scope rule and line 675
+    carries a client-pagination marker, so a snapshot-anchored row may cite the rule but not
+    any whole-catalogue count.
+    Lead A's own page (the authentication page) needs no allowlist row, so Lead A is
+    capturable today without touching the allowlist.
+
+--------------------------------------------------------------------------------
+LEAD B — Microsoft Learn, Create an account SAS  [CLOSED as a new shape: already detected]
+--------------------------------------------------------------------------------
+  url            https://learn.microsoft.com/en-us/rest/api/storageservices/create-account-sas
+  access date    2026-11-07   (fetched_bytes 69725, snapshot_bytes 24086, snapshot lines 645)
+  sha256         3c95457a4eba3b1cd99f7d32e2549232ef346fe61d2aa581d75588411d59f335
+  determinism     two independent captures produced byte-identical files (cmp exit 0)
+  captured with  the default allowlist — the intake gate accepts this page with NO allowlist row
+
+  line anchors (in the 645-line snapshot)
+    44    the account-SAS-URI definition (resource URI followed by the SAS token)
+    51-52 the SignedVersion field (sv), required, 2015-04-05 or later
+    587   the documented account SAS URI example (sv, ss, srt, sp, se, st, spr, sig)
+    619   the signature parameter in the same example
+
+  LOCATED QUOTE (line 44, 23 words):
+    "The account SAS URI consists of the URI to the resource for which the SAS will delegate access, followed by a SAS token."
+
+  MEASURED LANDED-SCANNER BEHAVIOUR on scratch fixtures of that form
+    F-AZ1  an account SAS URI with the documented short field set -> HIT shape=azure-sas-signature line=1
+    F-AZ5  the same with the IP field added                   -> HIT shape=azure-sas-signature line=1
+    F-AZ4  the same with the 7-letter delegated-tenant field   -> HIT shape=azure-sas-signature line=1
+    Reverse order (signature before version) also detects; measured hit=True.
+    Aggregate over the account-SAS variants:
+      CAPTURE-SECRET-SCAN mode=files scanned=4 hits=3 files=3 allowed=0 unused_allow=19 rc=1
+  Conclusion: the account SAS form is ALREADY covered by the landed azure-sas-signature shape.
+  Round 92 should NOT open an Azure seat for it.
+
+  Why the account SAS still closes the Azure question — the two Azure limits are measured
+  against the DOCUMENTED field set, and the documented set does not reach either limit:
+    (a) PARAMETER-NAME LENGTH window. Measured boundary on the landed scanner: a 7-letter
+        name between the version and signature parameters still detects; an 8-letter name
+        does not. The longest parameter name documented anywhere in the Azure user-delegation
+        and account-SAS pages is 7 letters (the delegated-tenant field). Every documented
+        Azure SAS field name is 2-7 lowercase letters, so the round-91 widening to 2-7
+        covers 100% of the documented names. Measured name-length sweep: 7 letters -> hit,
+        8 letters -> miss.
+    (b) PARAMETER-COUNT window. Measured boundary on the landed scanner: 20 intervening
+        parameters still detect, 21 do not. Clean sweep, each n being its own list of n
+        distinct 3-letter names between the version and signature parameters:
+        n=15 -> hit, n=16 -> hit, n=17 -> hit, n=18 -> hit, n=19 -> hit, n=20 -> hit,
+        n=21 -> miss, n=22 -> miss.
+        The union of ALL 21 documented Azure SAS field names (excluding the version and the
+        signature parameters) is 21, but that union is not a real token: several of those
+        fields are mutually exclusive alternatives. The widest realistic token measured — a
+        user-delegation SAS carrying 16 documented fields — detects.
+    So both Azure limits are unreachable with any token Microsoft documents. This is the
+    round-92 answer for the Azure axis: nothing to extend, and a name-length or count
+    widening would be un-motivated by the sources.
+
+  RULED OUT, so it is not re-chased next round: the hypothesis that a 9-letter Azure SAS
+  parameter exists ("sddistype") is NOT supported by Microsoft. The string does not appear in
+  the create-user-delegation-sas page, the create-account-sas page, the create-service-sas
+  page, the storage-sas-overview page, the authorize-with-azure-active-directory page, the
+  data-lake-storage-access-control-model page, or the Azure.Storage.Sas DataLakeSasQueryParameters
+  and DataLakeSasBuilder reference pages (measured count 0 on each). The real directory-depth
+  parameter is the 3-letter "sdd" (signedDirectoryDepth), present in the committed S133 capture
+  at line 260 and in the field table. Nothing 8+ letters is documented.
+
+--------------------------------------------------------------------------------
+LEAD C — HTTP Archive (HAR) format, cookie object  [OPEN, but tier-limited]
+--------------------------------------------------------------------------------
+  url            https://w3c.github.io/web-performance/specs/HAR/Overview.html
+                 This is the URL the document itself names as "This version" and "Latest
+                 version" (snapshot lines 5-10). The historical httpwg.org/specs/HAR-1.2/ URL
+                 now returns HTTP 404 and the www host fails certificate validation, so the
+                 self-named URL is the live one.
+  access date    2026-11-07   (fetched_bytes 50878, snapshot_bytes 23064, snapshot lines 440)
+  sha256         88211ff4f5980591315a6a22e7ae659f1ab1e5a02021f818c18df51cfee80743
+  determinism     the same bytes are served at https://webperfwg.org/specs/HAR/Overview.html;
+                  the two captures are byte-identical (cmp exit 0), same sha256
+  captured with  the default allowlist — the intake gate accepts this page with NO allowlist row
+
+  line anchors (in the 440-line snapshot)
+    4     the document's own date line ("Historical Draft August 14, 2012")
+    29-31 the document's own status statement (see the tier qualifier below)
+    189   the cookies array in the request object
+    215   the cookies array in the response object
+    225   the cookies object heading
+    226   the sentence describing what the object holds
+    227-238 a complete example cookie object with its name and value members
+    239   the definition of the name member
+    240   the definition of the value member
+
+  LOCATED QUOTE (line 226, 13 words):
+    "This object contains list of all cookies (used in <request> and <response> objects)."
+
+  MEASURED LANDED-SCANNER BEHAVIOUR on scratch fixtures of that form
+  The scanner detects the cookie only when the name and the value sit in one text run. In the
+  HAR object form the name and the value are SEPARATE members, so the cookie is not detected:
+    F-HAR1 a HAR cookie object, name member and value member separate -> NO HIT
+    F-HAR3 the same object in a request's cookies array          -> NO HIT
+  Contrast, both detected:
+    F-HAR2 the same value carried in a headers-array member whose text holds the joined
+          name and value                                      -> HIT shape=cloudfront-signed-cookie-signature line=1
+    F-HAR4 the same, in the response's headers array            -> HIT shape=cloudfront-signed-cookie-signature line=1
+    F-HAR5 the same value in a plain request Cookie header     -> HIT shape=cloudfront-signed-cookie-signature line=1
+  Aggregate over the five HAR fixtures:
+    CAPTURE-SECRET-SCAN mode=files scanned=5 hits=3 files=3 allowed=0 unused_allow=19 rc=1
+  Conclusion: the split name/value object form is a genuine gap, and it is exactly the form
+  the scanner's own known-limits list names (HAR/JSON name/value objects). The first-party
+  format document states the object shape, so the gap is sourceable.
+
+  TIER QUALIFIER, load-bearing for the L1's admission decision: the document declares its own
+  non-status. Snapshot lines 29-31 read, in the document's own words, that it is marked
+  DO NOT USE, was never published by the working group, and has been abandoned. It is
+  therefore NOT a first-party tier-A vendor specification and must not be admitted as tier A
+  on the strength of the shape being right. If a HAR-shaped row is opened, the honest tier
+  is the one this lane already gives non-normative community documents, and the row must
+  record the abandonment. A better-sourced route to the same object shape, if the L1 wants
+  tier A, is the browser-vendor or tool-vendor side; this seat did not open one, so that
+  search stays open.
+
+================================================================================
+PART D — routed findings for the L1 (defects and qualifiers, never re-scoring)
+================================================================================
+D1  QUALIFIER / INTEGRATION OBLIGATION — the two round-91 source rows are still un-migrated
+    in the committed registry.
+    corpus/SOURCES.md rows S133 and S134 read status=queued and used-by=— at HEAD
+    (bcbfbde63b83c9336e845001323b5c92419e526a). corpus/SOURCES.md has not changed since the
+    freeze commit 53ab692a7b544c35141e2b19f7413cbdb767c1ad.
+    The round-91 lesson corpus/lessons/round-91.md lines 23 and 31 each record the row change
+    as "status queued (freeze 53ab692a) -> mined (integration); used-by — ->
+    corpus/instruments/capture-secret-scan.py".
+    The instrument does cite both rows at the landed HEAD
+    (corpus/instruments/capture-secret-scan.py lines 50 and 77), and the cited path exists,
+    so `mined` is the correct status under CORPUS.md's own definition.
+    Two observations, both factual:
+      - the lesson file itself is NOT tracked at HEAD (git ls-files returns nothing for
+        corpus/lessons/round-91.md; it is present only in the working tree), so the old->new
+        change is currently recorded nowhere in the committed tree;
+      - the working-tree SOURCES.md is byte-identical to HEAD, so the migration has not
+        happened in the tree either.
+    This is not a failure of either frozen claim (C1's predicate names only
+    corpus/knowledge/triage-thresholds.md; C2's names only the scanner) and it is NOT a defect:
+    round 90 used the same two-commit shape. Round-90's C2 landing (643ddb4) landed the
+    instrument, corpus/instruments/README.md and SCORECARD.md and did NOT touch
+    corpus/SOURCES.md; the S131 migration to mined and the lesson landed later, in the separate
+    integration commit 124e5b4. Round 91 is at the same point in that sequence, with the
+    integration commit still to come. The obligation is that it must come and must carry the
+    row change the lesson already states. Verification for the L1 after the
+    integration commit:
+      git show <integration>:corpus/SOURCES.md | awk -F'|' '/^\| S13[34] / {print $2,$9,$12}'
+    must show status=mined and used-by=corpus/instruments/capture-secret-scan.py for both.
+    The lane's own census rule then applies: a mined row's used-by paths must exist — the
+    path exists, so that check stays green.
+
+D2  QUALIFIER (scope completeness, not a rejection defect) — S135's scope cell names three
+    cookie name-value pairs; the page also documents the optional Hash-Algorithm pair
+    (S135 lines 18-19, 48-50, 103-106). CORPUS.md rule 2 freezes the scope cell, so a
+    correction needs a new superseding row rather than an in-place edit. Recorded so the
+    L1 does not read the omission as an oversight and "fix" it in place.
+
+D3  OPERATIONAL, FOR ROUND-92 PLANNING — the GitHub pattern-catalogue page is refused by the
+    intake gate (PART C, Lead A). Any round-92 capture of that page needs a digest-bound
+    allowlist row keyed to the LANE-RELATIVE path. The alternative first-party page for the
+    same class (the authentication page, Lead A) needs no allowlist row at all, so the class
+    is reachable without touching the allowlist.
+
+D4  SCOPE NOTE, for the record on the round-91 sources — the committed S133/S134 snapshots
+    and their manifest records re-fetch byte-identically, and the pinned quotes re-verify at
+    their anchors. On the round-91 sources themselves this seat found NO defect: no anchor
+    drift, no digest drift, no intake-gate refusal, and the rejection reason of S135 holds.
+
+================================================================================
+EVERY COMMAND USED (all read-only against the lane tree; all lane scripts run with python3 -B)
+================================================================================
+  python3 -B corpus/instruments/capture-source.py --id S133 --url <learn.microsoft.com .../create-user-delegation-sas> --out $S/S133.txt
+  python3 -B corpus/instruments/capture-source.py --id S134 --url <docs.aws.amazon.com .../signed-cookie-custom-policy.html> --out $S/S134.txt
+  python3 -B corpus/instruments/capture-source.py --id S135 --url <docs.aws.amazon.com .../signed-cookie-canned-policy.html> --out $S/S135.txt
+  python3 -B corpus/instruments/capture-source.py --id L1cat --url <docs.github.com .../supported-secret-scanning-patterns> --out $S/L1cat.txt --allow $S/allow-cat.tsv
+  python3 -B corpus/instruments/capture-source.py --id L1c  --url <docs.github.com .../about-authentication-to-github> --out $S/L1c.txt
+  python3 -B corpus/instruments/capture-source.py --id L2   --url <learn.microsoft.com .../create-account-sas> --out $S/L2.txt
+  python3 -B corpus/instruments/capture-source.py --id L2c  --url <learn.microsoft.com .../storage-sas-overview> --out $S/L2c.txt
+  python3 -B corpus/instruments/capture-source.py --id L3   --url <webperfwg.org/specs/HAR/Overview.html> --out $S/L3.txt
+  python3 -B corpus/instruments/capture-source.py --id L3c  --url <w3c.github.io/web-performance/specs/HAR/Overview.html> --out $S/L3c.txt
+  python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-91/manifest.json
+  python3 -B corpus/instruments/capture-secret-scan.py --files <the fixture sets named above>
+  cmp / sha256sum over $S captures vs corpus/source-snapshots/round-91/{S133,S134}.txt
+  git log --oneline / git diff-tree --no-commit-id --name-only -r <revs> (read-only)
+  git show <rev>:<path> (read-only)
+  git ls-files corpus/lessons/round-91.md (read-only)
+
+  No git/jj write of any kind was performed. No file outside
+  .ufo/waves/round-91/w1/ScoutSources.md and
+  .ufo/waves/round-91/w1/ScoutSources-receipts/round92-leads.txt was created or modified.
+
+================================================================================
+SCRATCH
+================================================================================
+Scratch root: /fast/scratch/hyaku/kasegi-r91/ScoutSources
+All fixtures (the planted prefixed values, the SAS URIs, the HAR objects and the cookie
+headers) existed ONLY in that scratch tree and were deleted with it. They are not reproduced
+in this receipt or in the report. TMPDIR was set to that root for every command that could
+write a temporary file.
+SCRATCH DELETED BEFORE YIELD: yes — /fast/scratch/hyaku/kasegi-r91/ScoutSources removed
+(recursive removal, then verified absent).

@@ -1,0 +1,11 @@
+--- orig.py
++++ M4-01.py
+@@ -265,7 +265,7 @@
+         for f, n, old, new in rows:
+             tag = "%s:%d" % (f.rsplit("/", 1)[-1], n)
+             if new == DASH:
+-                if not (old.startswith("MATCHES: `") and KEYFILE.match(old[len("MATCHES: "):])):
++                if not (old.startswith("MATCHES:") and KEYFILE.match(old[len("MATCHES: "):])):
+                     m4bad.append(tag)
+                 continue
+             km, vm = KEYFILE.match(old), VAL.match(new)

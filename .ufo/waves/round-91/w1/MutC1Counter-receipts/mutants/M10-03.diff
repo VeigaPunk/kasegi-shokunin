@@ -1,0 +1,11 @@
+--- orig.py
++++ M10-03.py
+@@ -295,7 +295,7 @@
+         mapped = {"%s:%d" % (f, n) for f, n, _, _ in rows}
+         labelled = {s for s, _ in labels}
+         unapplied = sorted(labelled - mapped)
+-        unlabelled = sorted(mapped - labelled)
++        unlabelled = []
+         limbs.append(("M10", bool(labelled) and not unapplied and not unlabelled,
+                       "labelled=%d mapped=%d unapplied=%s unlabelled=%s" % (
+                           len(labelled), len(mapped), ",".join(s.rsplit(":", 1)[-1] for s in unapplied) or "none",

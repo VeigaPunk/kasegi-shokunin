@@ -1,0 +1,11 @@
+--- orig.py
++++ M10-05.py
+@@ -293,7 +293,7 @@
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+         # M10 completeness
+         mapped = {"%s:%d" % (f, n) for f, n, _, _ in rows}
+-        labelled = {s for s, _ in labels}
++        labelled = {s.rsplit(":", 1)[0] for s, _ in labels}
+         unapplied = sorted(labelled - mapped)
+         unlabelled = sorted(mapped - labelled)
+         limbs.append(("M10", bool(labelled) and not unapplied and not unlabelled,

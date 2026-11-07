@@ -1,0 +1,207 @@
+ReviewC1Sites receipts - C1 tranche 6 semantic row check
+lane=/home/vgpnk/Projects/shokunin/kasegi-shokunin
+freeze=53ab692a7b544c35141e2b19f7413cbdb767c1ad  landing=8a1a00c639ba808a701d1f186aac9ebd0045deaa  labels=e993fd181e320f1f21e06b05e16c68b0f07cff76
+date=2026-11-07T08:09:42Z
+
+### scope: files touched by the landing commit
+corpus/knowledge/triage-thresholds.md
+numstat:
+6	6	corpus/knowledge/triage-thresholds.md
+
+### after lines 141,142,226,368,454,457
+141: | `MAX` (`--max`) | default `5` | 29 | — |
+142: | `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | — |
+226: | unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | — |
+368: | `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | — |
+454: | EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
+457: | six-file package contract | `corpus/knowledge/claim-package-contract.md:9-16` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
+
+### SITE 141 (MAX default 5 -> em dash)
+-- mission-control.md @R, every 'max' occurrence:
+17:until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
+55:  12:00–22:00 → `alibaba-token-plan/deepseek-v4-pro:max`; peak →
+56:  `openai-codex/gpt-6-astra:max` (round-13 correction: source
+159:  onto devin/swe-2:max after a fleet-wide 403 spending-limit on
+-- corpus-wide '--max' (corpus/knowledge + SKILL.md):
+corpus/knowledge/anthropic-cvd-provenance-and-pacing.md:4:verified-at: 2026-10-26 (re-opened by me this day: `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` on the URL returned HTTP 200, text/html; charset=utf-8, 164,307 raw bytes, raw sha256 d7dbc1766f4b7cc3d600b42d87f1f140c44679d3495eb902434861d8a1110ded at 2026-10-26T21:16:37Z; converting that body with the lane's `corpus/instruments/capture-source.py html_to_text()` gave 32 lines / 4,550 bytes / sha256 7070a3635a04e209340a70382b682825144c6c431a03a9e2a78594fb57ea13b8 — the footer mission sentence at L28 came back in a different wording that day, and body lines L5-L17 were byte-identical to the landed capture, which is what every quote below cites)
+corpus/knowledge/cisa-bod-20-01-vdp-minimums.md:4:verified-at: 2026-10-26 (capture fetched this day with `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` — HTTP 200, `text/html; charset=utf-8`, 127,832 raw bytes, raw sha256 fc7267288c8de400d433d911c3336fc573f65ea50d74d1b1a56f82a0cc998a5d at 2026-10-26T21:15:57Z — then normalized by the lane's `capture-source.py`; this entry's quotes were re-located in that capture with a whitespace-collapsing matcher, each `occurrences=1` unless stated)
+corpus/knowledge/cisa-cvd-program-stages.md:4:verified-at: 2026-10-26 (capture fetched this day with `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` — HTTP 200, `text/html; charset=utf-8`, 75,587 raw bytes, raw sha256 383792fd393700210e2a6b8ac38f12c8bc249b85eb60bbbe1976667bab5ca6da at 2026-10-26T21:16:01Z, identical across two fetches — then normalized by the lane's `capture-source.py`; this entry's quotes were re-located in that capture with a whitespace-collapsing matcher)
+corpus/knowledge/cve-bench-agent-exploitation-benchmark.md:4:verified-at: 2026-10-26 (capture fetched this day with `curl -sS -L --max-time 90 -A kasegi-shokunin/1.0` as the arXiv PDF — HTTP 200, `application/pdf`, 602,933 raw bytes, raw sha256 334417c3bbc4fbaa1777df3a98b5c518e9187cac3b21714879116a0260f26cb1 at 2026-10-26T21:16:02Z, with the v4 URL byte-identical — then converted by the lane's `capture-source.py pdf_to_text()`; this entry's quotes were re-located in that capture with a whitespace-collapsing matcher, each `occurrences=1` unless stated)
+corpus/knowledge/mission-control.md:17:until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
+corpus/knowledge/triage-thresholds.md:141:| `MAX` (`--max`) | default `5` | 29 | — |
+-- corpus-wide 'default .5' / 'default `5':
+corpus/knowledge/triage-thresholds.md:141:| `MAX` (`--max`) | default `5` | 29 | — |
+
+### SITE 142 (STAGGER_S 20 s -> em dash)
+-- mission-control.md @R, stagger/20 s:
+(exit 1 = no match)
+-- corpus-wide 'stagger':
+corpus/knowledge/triage-thresholds.md:142:| `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | — |
+corpus/knowledge/triage-thresholds.md:147:| stagger/round-robin | `--models-rr m1,m2,m3 --rr-until <epochMs>`; active only while `Date.now() < RR_UNTIL` | 38-44 | MATCHES: `corpus/knowledge/mission-control.md:59-60` |
+corpus/knowledge/triage-thresholds.md:422:Console strings: `fleet-dispatch: <N> assignable programs, max <M>, stagger <S>s, model <model>[ (dry)][ (periodic sync enabled)]` (336) · `dry: would lease+launch …` (177) · `dispatched: <id> (pane <pane>, ufo_sighting:formation)` (206) · `claim-check REJECTED <id>/<slug> — not committed` (137) · `DONE: <id> -> claims commits <json>` (313) · `<STATE>: <id> — <detail>` (316) · `limit detected (<log>) — new launches on <model>` (283) · `window flip -> new launches on <model>` (389) · `tick: active <n>, pending <m>` (406) · `--once: missions running in tmux; next invocation sweeps` (407) · `queue exhausted — halt` (408) · `reconciled: <id> (<pane>)` (420).
+
+### SITE 226 (unreadable file -> em dash)
+-- claim-gates.md @R, readJson/unreadable:
+(exit 1 = no match)
+-- claim-gates.md @R lines 29-37 (custodian section):
+    29	## Custodian gates (L74–93)
+    30	
+    31	- `chain`/`decisions` non-empty array.
+    32	- Per decision: `scope_signal` exactly `NO_SCOPE_OBJECTION` (any other value
+    33	  errors; `HARD_STOP` gets its own message AND the exact-signal message —
+    34	  two errors for one decision, L83-84, round-13 correction); nonempty `matched_grant_id`;
+    35	  `decision_sha256` matches `/^[a-f0-9]{64}$/i`.
+    36	- `head_sha256` = final decision's `decision_sha256` =
+    37	  `manifest.expected_head_sha256` — three-way binding.
+-- corpus-wide 'present but unreadable':
+corpus/knowledge/triage-thresholds.md:226:| unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | — |
+corpus/knowledge/triage-thresholds.md:302:`missing <f>` (23) · `missing evidence/manifest.json` (24) · `<path>: unparseable — <msg>` (20, `readJson` on manifest/custodian/provenance/status) · `report.md: no scope excerpt section` (28) · `report.md: missing explicit "no submission performed" marker` (29) · `claim_checklist.md: missing OPERATOR-GATED marker` (32) · `manifest: missing sequence` (40) · `manifest: missing expected_head_sha256` (41) · `manifest artifact escapes package:` (46) · `manifest artifact missing on disk:` (47) · `manifest artifact symlink escapes package:` (49) · `manifest artifact hash mismatch:` (50) · `manifest artifact …: polarity must be positive|negative` (51) · `manifest artifact …: missing same-digest redaction receipt with distinct producer/verifier` (60) · `redaction receipt not bound to artifact digest:` (65) · `redaction receipt: producer and verifier identities are required` (66) · `redaction receipt: verifier must differ from producer` (67) · `redaction receipt does not bind a manifest artifact:` (68) · `manifest: claim package requires at least one positive-polarity artifact` (70) · `custodian-receipts.json: claim package requires a non-empty decision chain` (79) · `custodian HARD_STOP present: …` (83) · `custodian decision …: scope_signal must be exactly NO_SCOPE_OBJECTION` (84) · `custodian decision …: matched_grant_id is required` (85) · `custodian decision lacks a valid decision_sha256:` (86) · `custodian-receipts.json: missing valid head_sha256` (88) · `custodian-receipts.json: head_sha256 does not match the final decision` (89) · `manifest expected_head_sha256 does not bind the custodian decision-chain head` (90) · `custodian-receipts.json: present but unreadable` (92) · `provenance.json: no steps/transitions/agents recorded` (97) · `symlink is forbidden in claim package:` (105) · `oversize artifact (>5MB):` (111) · `possible secret in … — redact before commit` (113) · `status.json state is …, commits require DONE` (119) · `status.json must affirm claimable: true` (120) · `status.json finding_count must be a positive integer` (121) · `status.json manifest_sha256 does not bind the current evidence/manifest.json` (123) · `status.json requires an APPROVED claim_review with claim_ready: true` (127) · `status.json claim_review must name producer_identity` (132) · `status.json claim_review must bind kx-reviewer identity, requested/resolved model, and fallback provenance` (140) · `status.json claim_review reviewer must differ from producer` (143) · `status.json claim_review hard gate … must be PASS` (153) · `status.json claim_review subcheck … must be PASS` (158) · `status.json explicitly marks this package not claimable` (171) · `status.json records a prior submission; duplicate submission is forbidden` (179) · `global duplicate guard: matching finding already has a submission record at …` (196) · `status.json or submit/BLOCKED.md records an unresolved readiness blocker` (207) · `status.json contains a blocked nested readiness decision` (220) · `status.json contains unresolved nested readiness blockers` (223)
+
+### SITE 368 (six cost inputs number/unbounded -> em dash)
+-- ev-model.md @R 'unbounded':
+(exit 1 = no match)
+-- ev-model.md @R type/bound statements for cost fields (L49-51):
+    49	- Cost fields beyond effort: `direct_cost` (e.g. Cantina $100 submission fee
+    50	  belongs here), `delay_cost`, `expected_risk_cost`, `duration_p90`,
+    51	  `submission_buffer`, `deadline`, `opportunity_rate`.
+-- corpus-wide 'unbounded':
+corpus/knowledge/intake-surface.md:46:  Round-13 correction: "it never ran post-refresh" was an unbounded negative —
+corpus/knowledge/osv-affected-range-events.md:53:and no `fixed`/`last_affected`/`limit` event is still bounded — it is unbounded only under the
+corpus/knowledge/triage-thresholds.md:368:| `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | — |
+-- corpus 'expected_risk_cost':
+corpus/knowledge/ev-model.md:17:               + direct_cost + delay_cost + expected_risk_cost
+corpus/knowledge/ev-model.md:47:  direct_cost 0, delay_cost 0, expected_risk_cost 250 → default p_success
+corpus/knowledge/ev-model.md:50:  belongs here), `delay_cost`, `expected_risk_cost`, `duration_p90`,
+corpus/knowledge/mission-ledger.md:70:delay_cost 0, expected_risk_cost 250 (earlier text omitted opportunity_rate
+corpus/knowledge/source-tree-loss-2026-09-28.md:112:| `bounty-map/schema.json` | 68 | `1a2fd18e9c2d` | `ev_inputs` block = `:32-52` (`additionalProperties:false` `:34`, `p_*` bounds `:36-39`, `expected_reward`…`expected_risk_cost` `:40-45`, `deadline`/`duration_p90`/`submission_buffer` `:46-48`, `as_of` `:49`, `sources` `:50`) — corpus `corpus/knowledge/ev-model.md:37-38` wrote `:32-51`, off by one on the closing brace | **REVISION-IDENTICAL** (corpus cite off-by-one, repaired r15) |
+corpus/knowledge/triage-thresholds.md:312:| `total_cost` | `effort_hours × opportunity_rate + direct_cost + delay_cost + expected_risk_cost` | all 5 finite | 79-81 | MATCHES: `corpus/knowledge/ev-model.md:16-17`, `SKILL.md:500-501` |
+corpus/knowledge/triage-thresholds.md:325:`direct_cost`, `delay_cost`, `expected_risk_cost` (54-58). Each row is
+corpus/knowledge/triage-thresholds.md:368:| `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | — |
+SKILL.md:831:               + expected_risk_cost
+SKILL.md:875:opportunity_rate 25, direct_cost 0, delay_cost 0, expected_risk_cost 250.
+SKILL.md:966:| `expected_risk_cost` | `[lost-base] ops/ev-report.mjs:57` | `[lost-base] ops/rank.mjs:58` | 250 | `total_cost` `[lost-base] ops/ev-report.mjs:79-81` |
+
+### SITE 454 (EV formula + UNKNOWN fail-closed; new range ev-model.md:13-25)
+-- ev-model.md @R lines 13-25:
+    13	```
+    14	p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+    15	gross_value  = p_success × expected_reward
+    16	total_cost   = effort_hours × opportunity_rate
+    17	               + direct_cost + delay_cost + expected_risk_cost
+    18	adjusted_ev  = gross_value − total_cost
+    19	```
+    20	
+    21	Facts:
+    22	- Inputs live in `bounty-map/programs/<id>.json` → `ev_inputs`; schema pins
+    23	  `p_*` to [0,1], `as_of` datetime, free-form `sources` for provenance.
+    24	- Missing inputs print `UNKNOWN` for the affected term, never 0/1; verdict
+    25	  degrades to `unknown` — fail-closed reporting.
+
+-- SECOND TOKEN: SKILL.md @R lines 494-506 (what the row still points at):
+   494	(`[lost-base] ops/park-disposition.mjs:19`) → RETRY_TRANSIENT; else **REVIEW = no action**
+   495	(`[lost-base] ops/park-disposition.mjs:32`). The dry-run prints the five class counts
+   496	(`[lost-base] ops/park-disposition.mjs:36-39`).
+   497	
+   498	RETRY_* is a real requeue: `attempt_reset` + `mission_unparked` telemetry then
+   499	`rmSync` of the status file so the dispatcher re-picks it on the current window
+   500	model (`[lost-base] ops/park-disposition.mjs:45-49`). RETIRE_AUTH reads the program record
+   501	(`[lost-base] ops/park-disposition.mjs:52`) and writes
+   502	`docs/autopsies/<id>.md` (`[lost-base] ops/park-disposition.mjs:43`, `:53`) with a fixed
+   503	**seven-part** body — round-15 correction, this section previously said
+   504	"five-part" while listing seven: 4 bold metadata lines `**Outcome:**`
+   505	(`[lost-base] ops/park-disposition.mjs:56`), `**Program URL:**` (`:57`),
+   506	`**State at retirement:**` (`:58`), `**Reason (verbatim):**` (`:59`), then 3
+
+-- where the claim actually is: SKILL.md @R lines 826-855:
+   826	
+   827	```
+   828	p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+   829	gross_value  = p_success × expected_reward
+   830	total_cost   = effort_hours × opportunity_rate + direct_cost + delay_cost
+   831	               + expected_risk_cost
+   832	adjusted_ev  = gross_value − total_cost
+   833	```
+   834	
+   835	Terms: `[lost-base] ops/ev-report.mjs:77` (`p_success` — left-fold
+   836	`reduce((a,b)=>a*b, 1)` over the 4 factors mapped at
+   837	`[lost-base] ops/ev-report.mjs:73`), `[lost-base] ops/ev-report.mjs:78` (`gross_value`),
+   838	`[lost-base] ops/ev-report.mjs:79-81` (`total_cost`; the 5 `costKeys` at
+   839	`[lost-base] ops/ev-report.mjs:74`), `[lost-base] ops/ev-report.mjs:82` (`adjusted_ev`); all four
+   840	printed at `[lost-base] ops/ev-report.mjs:86-89`. Guards: `[lost-base] ops/ev-report.mjs:46`
+   841	`isNum = typeof v === 'number' && Number.isFinite(v)` — no coercion, so a
+   842	JSON string `"0.5"` prints UNKNOWN while numeric `0.5` prints;
+   843	`[lost-base] ops/ev-report.mjs:47` `fmt = String(Number(v.toFixed(6)))` — six decimals
+   844	then trailing-zero stripping: `0.0735`, never `0.073500`.
+   845	
+   846	Missing inputs print `UNKNOWN`, never 0/1; the affected term and the verdict
+   847	degrade to `unknown`, fail-closed (`[lost-base] ops/ev-report.mjs:47`,
+   848	`[lost-base] ops/ev-report.mjs:91`). Verdict is strict — `positive_adjusted_ev: true`
+   849	only when `adjusted_ev > 0`, `false` at ≤ 0 (exactly 0 → `false`), `unknown`
+   850	when either term is non-finite (`[lost-base] ops/ev-report.mjs:91`). Exits: 0 always on a
+   851	report (`[lost-base] ops/ev-report.mjs:92`); **2** for a missing program-id argument
+   852	(`[lost-base] ops/ev-report.mjs:23-26`) OR a missing program file
+   853	(`[lost-base] ops/ev-report.mjs:30-33`); unparseable file → `WARNING` + `rec = null`
+   854	(`[lost-base] ops/ev-report.mjs:38-41`) → `ev = {}` (`[lost-base] ops/ev-report.mjs:43`) → all 10
+   855	inputs and all 4 terms UNKNOWN, exit 0 — fail-closed on values, not on parse.
+
+-- grep SKILL.md @R for p_success / UNKNOWN / fail-closed (line numbers):
+44:package validator                         → ops/claim-check.mjs  (fail-closed)
+179:UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all three
+235:board imports to an `evidence_id` (fail-closed in `import-board.mjs`).
+336:(fail-closed on rebase/merge/cherry-pick or non-main HEAD) is **absent from
+828:p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+829:gross_value  = p_success × expected_reward
+835:Terms: `[lost-base] ops/ev-report.mjs:77` (`p_success` — left-fold
+842:JSON string `"0.5"` prints UNKNOWN while numeric `0.5` prints;
+846:Missing inputs print `UNKNOWN`, never 0/1; the affected term and the verdict
+847:degrade to `unknown`, fail-closed (`[lost-base] ops/ev-report.mjs:47`,
+855:inputs and all 4 terms UNKNOWN, exit 0 — fail-closed on values, not on parse.
+858:observed every exit code and every UNKNOWN path.
+861:`padEnd(10)` (`[lost-base] ops/ev-report.mjs:70`); `as_of` raw or UNKNOWN
+889:Under DEFAULTS p_success and total_cost are constant, so the sort at
+957:| `p_in_scope` | `[lost-base] ops/ev-report.mjs:55` | `[lost-base] ops/rank.mjs:56` | 0.7 | `p_success` `[lost-base] ops/ev-report.mjs:77` |
+958:| `p_reproducible` | `[lost-base] ops/ev-report.mjs:55` | `[lost-base] ops/rank.mjs:56` | 0.7 | `p_success` `[lost-base] ops/ev-report.mjs:77` |
+959:| `p_unique` | `[lost-base] ops/ev-report.mjs:55` | `[lost-base] ops/rank.mjs:56` | 0.25 | `p_success` `[lost-base] ops/ev-report.mjs:77` |
+960:| `p_accepted` | `[lost-base] ops/ev-report.mjs:55` | `[lost-base] ops/rank.mjs:56` | 0.6 | `p_success` `[lost-base] ops/ev-report.mjs:77` |
+983:| anchorcheck.py | gate\|probe | python3 corpus/instruments/anchorcheck.py <file.md> | fail-closed: exit 0 clean \| exit 1 on MISSING-FILE/PAST-EOF/OUTSIDE-BASE/PIN-BROKEN/BASE-ABSENT/BOUNTIES-ABSENT (LOST-RECORDED recorded, not fail; bounties base = `$KASEGI_BOUNTIES` override, else canonical `~/Projects/bounties`) | python3 corpus/instruments/anchorcheck.py --selftest -> one isolating fixture per limb, prints `selftest cases=N failures=0` | .ufo/waves/round-28/c1-receipt-index.txt | all inputs read-only + its own receipt dir | kasegi |
+996:- `~/Projects/bounties/ops/{claim-check,claim-index,prepare-claims,ev-report}.mjs` — fail-closed gates
+
+-- drift check: SKILL.md + the four entries between the labels rev and the landing (empty = none)
+(end drift)
+
+### SITE 457 (six-file package contract; new range claim-package-contract.md:9-16)
+-- claim-package-contract.md @R lines 9-16:
+     9	| File | Binding rules |
+    10	|---|---|
+    11	| `report.md` | Title; program + official URL; "Scope excerpt" = verbatim policy text + URL + observed_at + content sha256; vuln class; repro steps without secrets; impact tied to the policy's own severity/reward language; affected asset; suggested fix; disclosure timeline; literal marker "No submission performed". |
+    12	| `claim_checklist.md` | Per-program submission steps (portal route, fields, quirks); carries "OPERATOR-GATED"; names residual gates. |
+    13	| `evidence/manifest.json` | `schema_version: "evidence-manifest/v1"`. Per-artifact sha256 + `polarity` ∈ {positive, negative}; ≥1 positive required. `redactions[]`: one same-digest receipt per artifact with nonempty, distinct producer/verifier identities. `redactions:[]` is never claim-ready. Artifact paths are relative to `evidence/`, must stay inside the package, no symlink traversal. |
+    14	| `custodian-receipts.json` | Non-empty decision chain `{action, input_sha256, decision_sha256, matched_grant_id, scope_signal}`. Every action: nonempty `matched_grant_id` AND `scope_signal` exactly `"NO_SCOPE_OBJECTION"`. `head_sha256` == final decision digest == `manifest.expected_head_sha256`. |
+    15	| `provenance.json` | Agents + requested/resolved models per transition, commands + exit codes, pin (remote + commit), `policy_sha256`, `external_effects_performed: []`, secrets attestation. |
+    16	| `status.json` | `manifest_sha256` binds status to manifest bytes. `claim_review` holds `hard_gates` + `subchecks` + `reviewer` (distinct identity, requested/resolved model, fallback flag). |
+
+-- gloss target: triage-thresholds.md @R line 440 (S9.8) and line 457:
+| 9.8 | `claim-check.mjs` never validates manifest `schema_version`, `provenance.json` pins/`policy_sha256`/`external_effects_performed`, `status.severity`, or `status.reward` — the tokens do not appear in the file. Those `corpus/knowledge/claim-package-contract.md` rows are contract-by-convention. | grep of `claim-check.mjs` for `schema_version\|policy_sha256\|external_effects\|reward\|severity\|mission_id` → only `title` (183, 194) matches | `claim-package-contract.md:13,15,33-38` (implies gate-enforced) |
+| six-file package contract | `corpus/knowledge/claim-package-contract.md:9-16` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
+
+-- legend for the Corpus tie column: triage-thresholds.md @R lines 37-40:
+    37	`corpus/knowledge/ev-model.md` (EV), `corpus/knowledge/ops-invariants.md` (shared constants) — the `Corpus tie`
+    38	column records the round-13 audit verdict per row: `MATCHES` (agreed) or
+    39	`SUPERSEDES` (corrected the companion — every such target was repaired in
+    40	place round-13, marker "round-13 correction"; §9 is the ledger). Out of scope
+
+### ADJACENT ROWS (same table, NOT in tranche 6; base == after, verified)
+base 367: | `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `ev-model.md:15-16` |
+aftr 367: | `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `ev-model.md:15-16` |
+base 369: | `deadline` | `format: date-time` | 46 | MATCHES: `ev-model.md:22-23` |
+aftr 369: | `deadline` | `format: date-time` | 46 | MATCHES: `ev-model.md:22-23` |
+base 370: | `duration_p90`, `submission_buffer` | `number` | 47-48 | MATCHES: `ev-model.md:22-23` |
+aftr 370: | `duration_p90`, `submission_buffer` | `number` | 47-48 | MATCHES: `ev-model.md:22-23` |
+-- ev-model.md @R lines 15-16 (cited by row 367):
+    15	gross_value  = p_success × expected_reward
+    16	total_cost   = effort_hours × opportunity_rate
+-- ev-model.md @R lines 22-23 (cited by rows 369/370):
+    22	- Inputs live in `bounty-map/programs/<id>.json` → `ev_inputs`; schema pins
+    23	  `p_*` to [0,1], `as_of` datetime, free-form `sources` for provenance.
+-- 'deadline' in ev-model.md @R:
+51:  `submission_buffer`, `deadline`, `opportunity_rate`.

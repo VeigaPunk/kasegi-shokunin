@@ -1,0 +1,24 @@
+mutant	description	predicted	verdict	failing_limbs	commit	plant_if_survived
+M01-param-name-lower-1	Azure _PARAM name window {2,7} -> {1,7}	survive	survived	none	2e2c2e91cdb8	?sv=2025-07-05&x=1&sig=<ASIG> (1-letter intermediate parameter)
+M02-param-name-upper-9	Azure _PARAM name window {2,7} -> {2,9}	kill	killed	K1,K4,K7,K8	4579439c0049	
+M03-param-name-lower-3	Azure _PARAM name window {2,7} -> {3,7}	kill	killed	K1,K4,K7,K8	9e9ca892a2e3	
+M04-param-repeat-1	Azure _PARAM repetition cap {0,20}? -> {0,1}?	kill	killed	K1,K4,K7,K8	3ee5eb3ac631	
+M05-param-greedy	Azure _PARAM repetition {0,20}? -> {0,20} (greedy)	survive	survived	none	0b173294c992	see equivalence argument; nothing distinct to plant
+M06-param-name-digits	Azure _PARAM name class [A-Za-z] -> [A-Za-z0-9]	survive	survived	none	72667338027b	?sv=2025-07-05&x1=1&sig=<ASIG> (digit-bearing intermediate name)
+M07-param-value-class	Azure _PARAM value class [^&\s"'<>\\]* -> [^&\s]*	survive	survived	none	3e5928466ace	?sv=2025-07-05&a="&sig=<ASIG> (quote inside an intermediate value)
+M08-cklb-drop-pct26	_CK_LB drops the %26 join alternative	survive	survived	none	5a1e94d6b2b4	x?%26CloudFront-Signature=<CKSIG> (percent-encoded separator join)
+M09-cklb-weak-underscore	_CK_LB left lookbehind (?<![A-Za-z0-9_-]) -> (?<![A-Za-z0-9_])	kill	killed	K1,K4,K7,K8	c9c34934c2a3	
+M10-cklb-weak-alpha	_CK_LB left lookbehind (?<![A-Za-z0-9_-]) -> (?<![A-Za-z])	kill	killed	K1,K4,K7,K8	feb441a68b70	
+M11-cklb-json-crlf	_CK_LB JSON join (?<=\\n) -> (?<=\\r\\n)	kill	killed	K1,K4,K8	614c8a5da0f0	
+M12-cklb-reuse-cf	cookie entry boundary _CK_LB -> _CF_LB	kill	killed	K1,K4,K8	741bb983ce80	
+M13-cookie-class-drop-dash	cookie value class loses '-'	kill	killed	K1,K4,K8	ae4069af1982	
+M14-cookie-class-add-plus	cookie value class gains '+'	survive	survived	none	7a9e9b07077c	CloudFront-Signature=<40 chars with one '+'> (not CloudFront URL-safe)
+M15-cookie-floor-41	cookie value floor {40,} -> {41,}	kill	killed	K4,K8	38fe689ea260	
+M16-cookie-floor-32	cookie value floor {40,} -> {32,}	kill	killed	K4,K7,K8	939d1c6e653c	
+M17-cookie-floor-exact-40	cookie value floor {40,} -> {40} (exact)	survive	survived	none	a85677ace673	see equivalence argument (40-char prefix still matches)
+M18-cookie-name-lowercase	cookie literal name lowercased	kill	killed	K1,K4,K7,K8	1264f2fdacb7	
+M19-cookie-name-space-eq	cookie literal '=' -> '\s*='	survive	survived	none	7a1fd6b352fc	CloudFront-Signature = <CKSIG> (space before the value)
+M20-cookie-name-dash-or-underscore	cookie literal '-' -> '[-_]'	survive	survived	none	39fa61302009	CloudFront_Signature=<CKSIG> (underscore spelling)
+M21-cookie-shape-rename	cookie shape name -> cloudfront-signed-cookie	kill	killed	K1,K4,K7,K8	ee98d358b3f0	
+M22-cookie-entry-dropped	cookie entry removed from CLOUD_PATTERNS	kill	killed	K1,K4,K7,K8	b26bad3f2cac	
+M23-cookie-entry-before-cf-url	cookie entry moved before the CloudFront URL entry	survive	survived	none	997c5e2d3118	see equivalence argument (per-shape HIT set is order-free)

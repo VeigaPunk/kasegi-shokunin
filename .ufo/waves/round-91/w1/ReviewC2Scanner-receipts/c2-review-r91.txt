@@ -1,0 +1,115 @@
+ReviewC2Scanner — round-91 C2 code/source review receipt
+lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+base: bb4309fffbe9bf98153a2933af72c8f2c3f4b5b1
+freeze: 53ab692a7b544c35141e2b19f7413cbdb767c1ad
+C1 landing: 8a1a00c639ba808a701d1f186aac9ebd0045deaa
+C2 landing: 1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70
+receipts commit (HEAD): bcbfbde63b83c9336e845001323b5c92419e526a
+run: 2026-11-07, scratch removed at exit
+
+No credential-shaped value is written here: probes are described by case name and matched shape
+only; the scanner's own fixtures are never copied. The landed scanner was run over this receipt
+after writing (`--files`): see §9.
+
+§1 pins (all three equal the claim)
+  89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7  corpus/instruments/capture-secret-scan.py (landing = candidate = working tree)
+  8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6  corpus/instruments/claim-package-check.py
+  39deae670c72f52641b98a8a4dd1c877a4f1747ed6fe9138963ece3d1e37b6f0  .ufo/waves/round-91/c2/capability-check.py (claim counter_sha256)
+
+§2 P3 scope
+  git diff-tree --no-commit-id --name-only -r 1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70
+  -> SCORECARD.md
+     corpus/instruments/capture-secret-scan.py
+  git show 1dd0723f:SCORECARD.md | grep '^| capture-secret-scan |' | cmp - .ufo/waves/round-91/c2/candidate/scorecard-row.txt -> identical
+
+§3 selftest at the landing
+  python3 -B corpus/instruments/capture-secret-scan.py --selftest
+  -> SELFTEST-RESULT pass cases=53 ; rc=0
+  base instrument (bb4309f) --selftest -> SELFTEST-RESULT pass cases=43 (landing +10 cases)
+
+§4 frozen C2 command (three seeds)
+  python3 -B .ufo/waves/round-91/c2/capability-check.py --lane <lane> --rev 1dd0723f \
+    --work <scratch> --instrument-sha256 89e283c6… --gate-sha256 8b6f8493… [--seed N]
+  seed 2068659922 (run-time): K1 pass K2 pass K3 pass(1734,0,0,20,0) K4 pass K6 pass K7 pass K8 pass(13) K5 pass; RESULT pass rc=0
+  seed 9191:                 same limbs all pass; RESULT pass rc=0
+  seed 1:                    same limbs all pass; RESULT pass rc=0
+
+§5 source lines used for the code review
+  S134 19, 40, 96-98, 428  — cookie names, prose placeholder, definition, Set-Cookie instruction
+  S134 30-31               — "The names of cookie attributes are case-sensitive." (not cited by the docstring)
+  S134 110-111, 395-401, 409-415, 416-426 — default SHA1; RSA signing; base64; + → -, = → _, / → ~
+  S134 123                 — example value, length 28 (python3 len == 28), below the 40 floor
+  S133 56, 177, 179, 566-571 — user-bound user-delegation SAS, skdutid, version 2025-07-05 and later
+  S133 94-227              — SAS portion table: 26 distinct short names; longest skdutid=7 (177),
+                             next sduoid=6 (182); no 1-letter, no 8+-letter name
+  S133 grep: '&[a-z]{8,}=' -> &identifier=, &operation= only (other docs' examples, not SAS fields);
+             '&[a-z]=' -> none
+
+§6 behaviour probes at the landing (scratch; case name -> matched shape set; values are synthetic)
+  url-cookie-name-in-query                 -> cloudfront-signed-cookie-signature
+  url-shape-plain (Signature + Key-Pair-Id)-> cloudfront-signed-url-signature
+  prefixed-dash (X-CloudFront-Signature=)  -> none
+  cookie-name-after-backslash              -> cloudfront-signed-cookie-signature
+  cookie-name-after-letter                 -> none
+  cookie-name-after-backslash-n            -> cloudfront-signed-cookie-signature
+  cookie-name-after-json-escaped-backslash-n -> cloudfront-signed-cookie-signature
+  cookie-name-after-dot                    -> cloudfront-signed-cookie-signature
+  cookie-quoted-value                      -> none
+  cookie-urlencoded-eq (…%3D…)             -> none
+  har-name-value object                    -> none
+  floor-39                                 -> none
+  floor-40                                 -> cloudfront-signed-cookie-signature
+  az-7letter-between                       -> azure-sas-signature
+  az-8letter-between                       -> none
+  az-skdutid-between / az-skdutid-first    -> azure-sas-signature
+
+§7 anchor census (the F1 evidence)
+  Method: for each backticked token in each entry at 1dd0723f, the cited file is the token's own
+  path or the nearest path token before it on the same line; anchors naming
+  corpus/instruments/capture-secret-scan.py are resolved against the landing file.
+  Line-shift table base -> landing (anchor string, base line, landing line):
+    Known limits:        61 -> 81   (+20)
+    _SEP,_PARAM,_SIG,_SV,_LB,_CF_LB,_CF_PARAM,_CF_SIG,_CF_KPI  99-107 -> 121-129 (+22)
+    CLOUD_PATTERNS       108 -> 131 (+23)
+    ALLOWED_VALUES       116 -> 141 (+25)
+    def load_allow       121 -> 146 (+25)
+    def gate_patterns    139 -> 164 (+25)
+    def patterns         147 -> 172 (+25)
+    def scan_bytes       159 -> 184 (+25)
+    def tree_blobs       178 -> 203 (+25)
+    def report           209 -> 234 (+25)
+    def selftest         244 -> 269 (+25)
+    cf-doc-placeholder   277 -> 302 (+25)
+    cf-sig-without-kpi   278 -> 303 (+25)
+    gcs-doc-wrapped      263 -> 288 (+25)
+    azure-sig-without-sv 270 -> 295 (+25)
+    azure-json-escaped-s127-order 272 -> 297 (+25)
+  Strict explicit cites (token contains capture-secret-scan.py:N), start>=61 (now wrong):
+    cloud-signed-url-credentials-in-captured-evidence.md 20 explicit / 14 shifted:
+      entry 49:101, 79:61-65, 83:270, 84:263, 87:103, 124:106, 138:278, 157:61-65, 316:109-114,
+      317:61-65, 322:61-62, 327:61-65, 328:261-281, 331:106-114
+    capture-intake-gate.md 20 explicit / 15 shifted:
+      entry 53:159-160, 69:72-73, 71:73, 73:121-136, 105:139-148, 107:61-65, 109:61-62, 111:63-64,
+      122:269, 128:68-75, 246:61-65, 247:61-65, 248:72-73, 249:73, 252:101-114
+    presigned-url-credentials-in-captured-evidence.md 3 explicit / 0 shifted (all <61, pre-existing
+      stale since r88); r91-staled prose ranges: entry 13 "lines 32-42", entry 69 "instrument lines 77-82"
+  Continuation cites (bare :N after an instrument token on the same line): cloud 41 anchors/33
+    shifted; capture-intake 33/28; full per-line listing in the run log, not reproduced here.
+  Fewer than 61 shifted anchors do not exist; the strict 29 explicit cites alone are the finding.
+
+§8 anchorcheck at the landing (range-only, cannot see the shift)
+  python3 -B corpus/instruments/anchorcheck.py <entry>   (exit 0, no fail class)
+    cloud-signed-url-credentials-in-captured-evidence.md: 86 in-range cite instances, 0 bad; 64 distinct anchors
+    capture-intake-gate.md: 69 in-range cite instances, 0 bad; 50 distinct anchors
+    presigned-url-credentials-in-captured-evidence.md: 29 in-range cite instances, 0 bad; 20 distinct anchors
+  Example printed by the tool (wrong bytes shown as OK):
+    OK md:79 corpus/instruments/capture-secret-scan.py:61-65 [Hash-Algorithm) between: an Amazon CloudFront signed URL, …]
+    OK md:331 corpus/instruments/capture-secret-scan.py:106-114 [import argparse …]
+    OK md:53 capture-intake-gate.md corpus/instruments/capture-secret-scan.py:159-160 [raise OSError("allowlist row %d" % n) …]
+  No pin comment for the instrument exists in any of the three entries, so nothing fails closed.
+
+§9 hygiene self-check
+  python3 -B corpus/instruments/capture-secret-scan.py --files <this receipt> <the report>
+  -> CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+  Dummy probe values used only inside the scratch scanner process; the fixture definitions and the
+  lane's selftest bytes were never copied into the wave directory.

@@ -1,0 +1,22 @@
+Provenance check for the round-91 scanner docstring citations (read-only; line numbers only, no values copied).
+
+S134 = corpus/source-snapshots/round-91/S134.txt, "Set signed cookies using a custom policy - Amazon CloudFront"
+  :19     names the three cookie names (CloudFront-Policy, CloudFront-Signature, CloudFront-Key-Pair-Id)
+  :40     prose placeholder for the signature value (documented as not a hit)
+  :96-98  definition of the signature cookie value: hashed, signed, base64-encoded JSON policy statement
+  :123    Set-Cookie example whose signature value is 28 characters (< the 40-character floor; not a hit)
+  :428    the CloudFront-Signature= name-value pair
+  => every line the new shape's docstring cites supports the shape as stated; the 28-character example
+     and the :40 placeholder are correctly excluded.
+
+S133 = corpus/source-snapshots/round-91/S133.txt, "Create a user delegation SAS - Azure Storage | Microsoft Learn"
+  :177    skdutid (7 letters)
+  :566    skdutid is required only when the sduoid user's Entra tenant differs from the storage account tenant
+  :567    skdutid is the tenant ID of the principal that will use the SAS token
+  :568    the caller must present a Bearer token whose tid claim matches skdutid
+  :569    the DelegatedUserTid in the UserDelegationKey must also match skdutid
+  :570    tenant-level isolation rationale
+  :571    sduoid and skdutid are supported with version 2025-07-05 and later
+  => the 7-letter field and its version floor are as the docstring states.
+
+No value from either snapshot is reproduced in this receipt.

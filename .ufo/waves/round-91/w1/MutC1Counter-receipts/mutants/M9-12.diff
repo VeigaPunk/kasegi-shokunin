@@ -1,0 +1,16 @@
+--- orig.py
++++ M9-12.py
+@@ -157,11 +157,11 @@
+     if label.startswith("corpus/knowledge/"):
+         return "`%s`" % key, "`%s`" % label
+     if label == "content-repair":
+-        if FIXDASH.match(fix):
+-            return "MATCHES: `%s`" % key, DASH
+         m = FIXNAME.match(fix)
+         if m:
+             return "`%s`" % key, "`corpus/knowledge/%s`" % m.group(1)
++        if FIXDASH.match(fix):
++            return "MATCHES: `%s`" % key, DASH
+     return None
+ 
+ 

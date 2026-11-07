@@ -1,0 +1,15 @@
+# seed-1 landing sweep: 32 pass, 3 fail
+# failures
+== M23-K4-drop-E4-plant-only
+CAPABILITY-CHECK rev=1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70 instrument_present=True seed=1
+LIMB K4 FAIL rc=1 missing=corpus/practice/p/evidence/E4.json|cloudfront-signed-cookie-signature extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K8 FAIL clauses=13 failing=cookie: practice evidence, JSON-escaped newline between Set-Cookie values
+CAPABILITY-CHECK-RESULT fail rc=1
+== M24-K8-flip-S016
+CAPABILITY-CHECK rev=1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70 instrument_present=True seed=1
+LIMB K8 FAIL clauses=13 failing=cookie: documentation example value of 28 characters is not a hit (S134 line 123)
+CAPABILITY-CHECK-RESULT fail rc=1
+== M25-K8-flip-S019
+CAPABILITY-CHECK rev=1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70 instrument_present=True seed=1
+LIMB K8 FAIL clauses=13 failing=cookie: cookie name case-sensitive (S134 line 31)
+CAPABILITY-CHECK-RESULT fail rc=1

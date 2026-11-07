@@ -1,0 +1,11 @@
+--- orig.py
++++ M10-01.py
+@@ -296,7 +296,7 @@
+         labelled = {s for s, _ in labels}
+         unapplied = sorted(labelled - mapped)
+         unlabelled = sorted(mapped - labelled)
+-        limbs.append(("M10", bool(labelled) and not unapplied and not unlabelled,
++        limbs.append(("M10", not unapplied and not unlabelled,
+                       "labelled=%d mapped=%d unapplied=%s unlabelled=%s" % (
+                           len(labelled), len(mapped), ",".join(s.rsplit(":", 1)[-1] for s in unapplied) or "none",
+                           ",".join(s.rsplit(":", 1)[-1] for s in unlabelled) or "none")))

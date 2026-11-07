@@ -1,0 +1,11 @@
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -127,7 +127,7 @@
+ _CF_PARAM = rb"(?:" + _SEP + rb"[A-Za-z][A-Za-z0-9_-]{0,31}=[^&\s\"'<>\\]*){0,20}?"
+ _CF_SIG = rb"Signature=[A-Za-z0-9_~-]{40,}"
+ _CF_KPI = rb"Key-Pair-Id=[A-Z0-9]{8,32}(?![A-Za-z0-9_-])"
+-_CK_LB = rb"(?:(?<![A-Za-z0-9_-])|(?<=\\n)|(?<=\\u0026)|(?<=%26))"
++_CK_LB = rb"(?:(?<![A-Za-z])|(?<=\\n)|(?<=\\u0026)|(?<=%26))"
+ CLOUD_PATTERNS = (
+     ("gcs-signed-url-signature", re.compile(
+         rb"(?i)X-Goog-Signature(?:=|\\?[\"']?\s*:\s*\\?[\"']?)[0-9a-f]{64,}")),

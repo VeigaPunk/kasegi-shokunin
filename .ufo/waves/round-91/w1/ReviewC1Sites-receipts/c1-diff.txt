@@ -1,0 +1,48 @@
+ReviewC1Sites receipt: C1 landing diff (freeze -> landing), corpus/knowledge/triage-thresholds.md
+
+diff --git a/corpus/knowledge/triage-thresholds.md b/corpus/knowledge/triage-thresholds.md
+index 4322fae..b9f201e 100644
+--- a/corpus/knowledge/triage-thresholds.md
++++ b/corpus/knowledge/triage-thresholds.md
+@@ -138,8 +138,8 @@ Consequences, all derived from the expression at line 110:
+ 
+ | Constant | Value | Line | Corpus tie |
+ |---|---|---|---|
+-| `MAX` (`--max`) | default `5` | 29 | MATCHES: `mission-control.md:13-14` |
+-| `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | MATCHES: `mission-control.md:13-14` |
++| `MAX` (`--max`) | default `5` | 29 | — |
++| `STAGGER_S` (`--stagger`) | default `20` s; enforced as `STAGGER_S*1000 − (now − lastLaunch)` before the 2nd+ launch in a tick | 30, 399-400 | — |
+ | `LEASE_MS` | `2 * 3600 * 1000` = 7,200,000 ms = 2 h | 45 | MATCHES: `corpus/knowledge/mission-control.md:29`, `SKILL.md:526` |
+ | `MAX_ATTEMPTS` | `2` | 46 | MATCHES: `SKILL.md:117`, `mission-control.md:20-21` |
+ | `TERMINAL` | `['DONE','PARKED','FAILED','RETIRED']` | 47 | MATCHES: `corpus/knowledge/mission-control.md:36` |
+@@ -223,7 +223,7 @@ exact file bytes (37) — used later for the status binding (4.8).
+ | head digest | `head_sha256` fails `/^[a-f0-9]{64}$/i` | `custodian-receipts.json: missing valid head_sha256` | 88 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
+ | head chain-end | `chain.at(-1).decision_sha256 !== custodianHead` | `custodian-receipts.json: head_sha256 does not match the final decision` | 89 | MATCHES: `corpus/knowledge/claim-gates.md:35-36` |
+ | manifest binding | `manifest.expected_head_sha256 !== custodianHead` (three-way binding) | `manifest expected_head_sha256 does not bind the custodian decision-chain head` | 90 | MATCHES: `corpus/knowledge/claim-gates.md:36-37`, `corpus/knowledge/claim-package-contract.md:14` |
+-| unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | MATCHES: `claim-gates.md:29-36` |
++| unreadable file | file exists but `readJson` returned falsy | `custodian-receipts.json: present but unreadable` | 91-92 | — |
+ 
+ `action` defaults to `'(unnamed action)'` (81). Note `HARD_STOP` emits **both**
+ its own message and the `NO_SCOPE_OBJECTION` message — two errors for one
+@@ -365,7 +365,7 @@ reviewer derivation).
+ | `reward.currency` | pattern `^[A-Z]{3}$` | 27 | — |
+ | `ev_inputs` | `additionalProperties:false`, **no** `required` (so `{}` is schema-valid) | 32-34 | MATCHES: `corpus/knowledge/ops-invariants.md:34-40` (subset validator) |
+ | `p_in_scope`, `p_reproducible`, `p_unique`, `p_accepted` | `number`, `minimum: 0`, `maximum: 1` | 36-39 | MATCHES: `ev-model.md:15-16` |
+-| `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | MATCHES: `ev-model.md:21-23` |
++| `expected_reward`, `effort_hours`, `opportunity_rate`, `direct_cost`, `delay_cost`, `expected_risk_cost` | `number`, unbounded | 40-45 | — |
+ | `deadline` | `format: date-time` | 46 | MATCHES: `ev-model.md:22-23` |
+ | `duration_p90`, `submission_buffer` | `number` | 47-48 | MATCHES: `ev-model.md:22-23` |
+ | `as_of` | `format: date-time` | 49 | MATCHES: `corpus/knowledge/ev-model.md:22-23` |
+@@ -451,10 +451,10 @@ Supersedes column names the audit-time target, not current text.
+ | Prior claim | Location | Status |
+ |---|---|---|
+ | claim-check gate list + error-based discovery | `claim-gates.md:3-6, 8-74` | MATCHES (this entry adds exact trigger conditions, numeric bounds, and per-gate line numbers) |
+-| EV formula + UNKNOWN fail-closed | `ev-model.md:6-20`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
++| EV formula + UNKNOWN fail-closed | `corpus/knowledge/ev-model.md:13-25`, `SKILL.md:494-506` | MATCHES (adds 6-decimal `fmt`, 10-input print order, exit-2 paths, non-persistence) |
+ | shared constants table | `corpus/knowledge/ops-invariants.md:17-25` | MATCHES (adds exact marker list and the 3500-byte truncation stub shape) |
+ | queue score incl. `is_live(1)` | `corpus/knowledge/intake-surface.md:80-85`, `mission-control.md:19-21` | MATCHES (both are correct; §9.1/9.5 supersede their census tail) |
+-| six-file package contract | `claim-package-contract.md:9-16, 28-38` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
++| six-file package contract | `corpus/knowledge/claim-package-contract.md:9-16` | MATCHES for gate-enforced rows; §9.8 marks the convention-only rows |
+ | dispatcher runtime shape | `mission-control.md:13-46` | MATCHES except §9.6/9.7 |
+ | appendLedger 3500 B cap / gitMutationBlocker | `SKILL.md:146, 245-247` | MATCHES |
+ | `attempts() ≥ 2` as real termination | `SKILL.md:113-117` | MATCHES |

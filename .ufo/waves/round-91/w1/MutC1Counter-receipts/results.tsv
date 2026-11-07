@@ -1,0 +1,36 @@
+M9-01	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	FIXDASH optional MATCHES group dropped (MATCHES fixes no longer name an edit)
+M9-02	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	FIXDASH requires MATCHES (plain 'Replace with —' fixes no longer name an edit)
+M9-03	M9	survived	-	-	FIXDASH trailing space dropped (regex accepts a superset)
+M9-04	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	FIXDASH em dash replaced by ASCII hyphen (no fix matches)
+M9-05	M9	survived	-	-	FIXDASH '^' anchor dropped (re.match anchors anyway)
+M9-06	M9	survived	-	-	FIXNAME trailing \b dropped
+M9-07	M9	killed	candidate	no-work,partial-5-of-6,superset-unlabelled-edit,wrong-range-454,working-tree-only	FIXNAME optional range dropped (9-16 becomes 9)
+M9-08	M9	survived	-	-	FIXNAME range made mandatory (single-line fix names no edit)
+M9-09	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,label-ignored-457,working-tree-only	expected_edit range branch returns the fix column instead of the label column
+M9-10	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	expected_edit dash branch drops the MATCHES prefix
+M9-11	M9	killed	candidate	no-work,partial-5-of-6,superset-unlabelled-edit,wrong-range-454,working-tree-only	expected_edit FIXNAME branch drops the corpus/knowledge/ prefix
+M9-12	M9	survived	-	-	expected_edit tests FIXNAME before FIXDASH
+M9-13	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	key_of never strips the MATCHES prefix
+M9-14	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	key_of off-by-one on the MATCHES prefix (leaves a leading space)
+M9-15	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	load_labels header-row skip removed (header becomes a label)
+M9-16	M9	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	load_labels stores the evidence column as the fix
+M9-17	M9	detail-only	-	wrong-range-454	M9 binds the label row but drops the edit-equality test
+M9-18	M9	survived	-	-	load_labels accepts rows with more than 5 columns
+M9-19	M9	survived	-	-	expected_edit tests the corpus/ prefix instead of corpus/knowledge/
+M10-01	M10	survived	-	-	M10 drops the non-empty label-set requirement
+M10-02	M10	detail-only	-	partial-own-map	M10 never reports an unapplied label
+M10-03	M10	survived	-	-	M10 never reports an unlabelled site
+M10-04	M10	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	M10 compares citing files only, dropping the line number
+M10-05	M10	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	M10 compares label files only, dropping the line number
+M3-01	M3	survived	-	-	M3 drops the duplicate-row check
+M3-02	M3	survived	-	-	M3 drops the line-count check (zip truncates)
+M3-03	M3	survived	-	-	M3 forces the file-set check true
+M3-04	M3	survived	-	-	M3 drops the old-occurs-exactly-once check
+M3-05	M3	killed	candidate	no-work,partial-5-of-6,partial-own-map,superset-unlabelled-edit,wrong-range-454,label-ignored-457,working-tree-only	M3 ignores mapped sites entirely (every mapped line is a diff)
+M3-06	M3	detail-only	-	superset-unlabelled-edit	M3 only compares mapped lines (unmapped edits are invisible)
+M4-01	M4	survived	-	-	M4 dash branch relaxes the MATCHES prefix requirement
+M4-02	M4	survived	-	-	M4 drops the old-key/new-file name match
+M4-03	M4	survived	-	-	M4 drops the INTERNAL classification of the new token
+M4-04	M4	survived	-	-	M4 drops basename uniqueness (accepts a duplicated basename)
+M4-05	M4	survived	-	-	M4 drops the non-empty row requirement
+M5-01	M5	survived	-	-	M5 drops the upper-bound (anchor past EOF accepted)

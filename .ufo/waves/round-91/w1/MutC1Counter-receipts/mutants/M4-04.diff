@@ -1,0 +1,11 @@
+--- orig.py
++++ M4-04.py
+@@ -273,7 +273,7 @@
+                 m4bad.append(tag)
+                 continue
+             name, path = km.group(1), "corpus/knowledge/" + km.group(1)
+-            if not (vm.group(1) == name and bybase.get(name) == [path] and A["classify"](new[1:-1]) == "INTERNAL"):
++            if not (vm.group(1) == name and path in bybase.get(name, []) and A["classify"](new[1:-1]) == "INTERNAL"):
+                 m4bad.append(tag)
+                 continue
+             text = afiles.get(path)

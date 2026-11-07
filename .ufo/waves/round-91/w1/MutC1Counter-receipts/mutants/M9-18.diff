@@ -1,0 +1,11 @@
+--- orig.py
++++ M9-18.py
+@@ -146,7 +146,7 @@
+         if not ln.strip() or ln.startswith("#") or i == 0 and ln.startswith("line\t"):
+             continue
+         c = ln.split("\t")
+-        if len(c) != 5:
++        if len(c) < 5:
+             raise ValueError("label row has %d columns" % len(c))
+         out[(c[0], c[1])] = (c[2], c[3])
+     return out

@@ -1,0 +1,11 @@
+--- orig.py
++++ M3-06.py
+@@ -252,7 +252,7 @@
+                             missing += 1
+                         else:
+                             fwd = b.replace(old, new, 1)
+-                    if fwd != x:
++                    if fwd != x and (rel, i) in sites:
+                         bad += 1
+         limbs.append(("M3", same_files and bad == 0 and missing == 0 and dup == 0 and bool(rows),
+                       "same_files=%s bad_lines=%d old_not_once=%d dup_rows=%d" % (same_files, bad, missing, dup)))

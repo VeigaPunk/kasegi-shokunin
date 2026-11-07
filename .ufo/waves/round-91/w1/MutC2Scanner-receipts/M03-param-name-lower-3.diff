@@ -1,0 +1,11 @@
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -119,7 +119,7 @@
+     ("aws-access-key-id", re.compile(rb"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
+ )
+ _SEP = rb"(?:&amp;|&|\\u0026)"
+-_PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{2,7}=[^&\s\"'<>\\]*){0,20}?"
++_PARAM = rb"(?:" + _SEP + rb"[A-Za-z]{3,7}=[^&\s\"'<>\\]*){0,20}?"
+ _SIG = rb"sig=[A-Za-z0-9%+/]{40,}(?:=|%3D){0,2}"
+ _SV = rb"sv=\d{4}-\d{2}-\d{2}"
+ _LB = rb"(?:(?<![A-Za-z0-9_])|(?<=\\u0026)|(?<=%26))"

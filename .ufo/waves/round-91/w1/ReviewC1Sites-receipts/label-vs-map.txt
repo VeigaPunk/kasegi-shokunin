@@ -1,0 +1,39 @@
+ReviewC1Sites receipt: label file vs repair map, row by row
+labels: .ufo/waves/round-90/w1/ReviewC1Sites-receipts/round91-labels.tsv @ e993fd181e320f1f21e06b05e16c68b0f07cff76
+map   : .ufo/waves/round-91/c1/repair-map.tsv
+
+-- map sha256 (frozen --map-sha256 in the ticket command = 55d50b661bcf79ad5a435c7d7bc86e3954e9910f7dabc480236224170c8c0a7a)
+55d50b661bcf79ad5a435c7d7bc86e3954e9910f7dabc480236224170c8c0a7a  .ufo/waves/round-91/c1/repair-map.tsv
+-- labels blob sha256
+4f3ad6633ce3b24b5ee44e24e8e5d25a77d1b638b0eca7961227cfe27fe65506  -
+
+-- labels rows (first two columns are the site and the cited key; the fix column is prose)
+line	key	label
+corpus/knowledge/triage-thresholds.md:457	claim-package-contract.md:9-16, 28-38	content-repair
+corpus/knowledge/triage-thresholds.md:141	mission-control.md:13-14	content-repair
+corpus/knowledge/triage-thresholds.md:142	mission-control.md:13-14	content-repair
+corpus/knowledge/triage-thresholds.md:226	claim-gates.md:29-36	content-repair
+corpus/knowledge/triage-thresholds.md:368	ev-model.md:21-23	content-repair
+corpus/knowledge/triage-thresholds.md:454	ev-model.md:6-20	corpus/knowledge/ev-model.md:13-25
+
+-- map rows
+corpus/knowledge/triage-thresholds.md:141	MATCHES: `mission-control.md:13-14`	—
+corpus/knowledge/triage-thresholds.md:142	MATCHES: `mission-control.md:13-14`	—
+corpus/knowledge/triage-thresholds.md:226	MATCHES: `claim-gates.md:29-36`	—
+corpus/knowledge/triage-thresholds.md:368	MATCHES: `ev-model.md:21-23`	—
+corpus/knowledge/triage-thresholds.md:454	`ev-model.md:6-20`	`corpus/knowledge/ev-model.md:13-25`
+corpus/knowledge/triage-thresholds.md:457	`claim-package-contract.md:9-16, 28-38`	`corpus/knowledge/claim-package-contract.md:9-16`
+
+-- per-row join: label cites the key the map replaces; map new is the edit the label names
+labels rows=6 map rows=6
+corpus/knowledge/triage-thresholds.md:141 | cited=mission-control.md:13-14 in_map_old=True | label_fix_says=— | map_new=— | satisfied=True
+corpus/knowledge/triage-thresholds.md:142 | cited=mission-control.md:13-14 in_map_old=True | label_fix_says=— | map_new=— | satisfied=True
+corpus/knowledge/triage-thresholds.md:226 | cited=claim-gates.md:29-36 in_map_old=True | label_fix_says=— | map_new=— | satisfied=True
+corpus/knowledge/triage-thresholds.md:368 | cited=ev-model.md:21-23 in_map_old=True | label_fix_says=— | map_new=— | satisfied=True
+corpus/knowledge/triage-thresholds.md:454 | cited=ev-model.md:6-20 in_map_old=True | label_fix_says=ev-model.md:13-25 | map_new=`corpus/knowledge/ev-model.md:13-25` | satisfied=True
+corpus/knowledge/triage-thresholds.md:457 | cited=claim-package-contract.md:9-16, 28-38 in_map_old=True | label_fix_says=claim-package-contract.md:9-16 | map_new=`corpus/knowledge/claim-package-contract.md:9-16` | satisfied=True
+ALL SIX ROWS BIND AND SATISFY THE LABEL TEXT: True
+
+note: two label fix cells spell the target without the corpus/knowledge/ prefix; the map supplies it,
+which is the edit form M9 requires (knowledge-meter.py:34-38 docstring: a label naming <name>.md:N-M maps to
+new `corpus/knowledge/<name>.md:N-M`). Not a divergence.

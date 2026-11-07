@@ -1,0 +1,64 @@
+# Survivor disposition: equivalence proof or routed control (MutC1Counter, round-91 C1)
+# Detector = frozen C1 predicate (frozen map, map sha, labels rev, targets 890/1883 -> 891/1880)
+# over the 8 control variants rebuilt in a scratch clone (identical to c1-controls-r91.sh).
+# Baseline (frozen counter) reproduces the frozen transcript byte-for-byte on all 8 variants.
+
+## empirical probes behind the proofs
+M9-03 dash fixes matched by strict FIXDASH and by the wide (no trailing space) mutant:
+  [True, True, True, True, False] vs [True, True, True, True, False]   (4 dash fixes match both; the FIXNAME fix matches neither)
+M9-06 FIXNAME \b vs no-\b on "Replace with claim-package-contract.md:9-16abc":
+  \b captures claim-package-contract.md:9 ; no-\b captures claim-package-contract.md:9-16
+M9-06 on the frozen fix ("...md:9-16 (six-file table..."): both capture claim-package-contract.md:9-16
+M9-08 single-line fix "Replace with ev-model.md:13": strict FIXNAME matches True; range-mandatory mutant False
+
+## survivor table
+M9-03  PROOF      acceptance-widening only; all four dash fixes contain "with — " so both regexes match
+                  identically on every frozen label. Routed control (described): labels rev whose fix is
+                  exactly "Replace with —" with no trailing space -> orig names no edit (M9 FAIL), mutant
+                  names the removal (M9 pass).
+M9-05  PROOF      re.match anchors at position 0; dropping '^' cannot change any match. Identical for all inputs.
+M9-06  PROOF      on the frozen fix both capture "9-16" (probe above). Routed control (described): labels rev
+                  with fix "Replace with claim-package-contract.md:9-16abc" -> orig captures :9, mutant :9-16.
+M9-08  PROOF      the only FIXNAME label names a range (probe above). Routed control (described): labels rev
+                  with fix "Replace with ev-model.md:13" -> orig names :13, mutant names no edit.
+M9-12  PROOF      FIXDASH requires "Replace [MATCHES ]with — " (em dash) and FIXNAME requires "Replace with "
+                  followed by [A-Za-z0-9]; the match sets are disjoint, so order cannot matter.
+M9-18  PROOF      every frozen label row has exactly 5 columns (load_labels parses 6 rows, no ValueError).
+                  Routed control (described): labels rev with a 6-column row -> orig raises (rc=2), mutant
+                  silently truncates.
+M9-19  PROOF      frozen label column values are exactly "content-repair" or "corpus/knowledge/<name>...";
+                  "corpus/" and "corpus/knowledge/" agree on all of them. Routed control (described): labels
+                  rev with label "corpus/other/x.md:1-2".
+M10-01 PROOF      M9 requires every row bound to a label, so rows non-empty => labelled non-empty; M3 also
+                  requires bool(rows). The dropped term is unreachable when the other limbs hold.
+M10-03 PROOF      if M9 passes, every mapped site has a label at (site,key), so mapped is a subset of labelled
+                  and unlabelled is empty. The arm is dead code under M9; no control can isolate it.
+M3-01  CONTROL R3 killed by R3-dup-row: orig LIMB M3 FAIL dup_rows=1 rc=1; mutant LIMB M3 pass (dup_rows=1
+                  still printed) rc=0.
+M3-02  CONTROL R4 killed by R4-append-line (candidate + one appended blank line, rate-neutral): orig
+                  bad_lines=1 rc=1; mutant bad_lines=0 rc=0.
+M3-03  CONTROL R5 killed by R5-add-file (candidate + one citation-free corpus/knowledge/zz-probe.md): orig
+                  same_files=False rc=1; mutant same_files=True rc=0.
+M3-04  CONTROL R10 killed by R10-old-absent (map row at :56 whose old is absent from the base line, with a
+                  matching label at a custom labels rev): orig old_not_once=1 rc=1; mutant old_not_once=0 rc=0.
+M4-01  PROOF      M9 requires a dash row's old to be exactly "MATCHES: `<key>`", which already satisfies the
+                  relaxed prefix; KEYFILE is untouched by the mutant. Equivalent whenever M9 holds.
+M4-02  CONTROL R8b killed by R8b-cross-file (labels rev + map whose new names claim-gates.md while old names
+                  ev-model.md; target token uncited elsewhere in the file so the rate stays 891/1880): orig
+                  LIMB M4 FAIL rc=1; mutant LIMB M4 pass rc=0.
+M4-03  PROOF      the bybase check already requires corpus/knowledge/<name> to be a tracked file at after-rev;
+                  resolve.classify returns INTERNAL for an existing relative path (resolve.py:279-281), so the
+                  dropped classify call cannot change the verdict.
+M4-04  CONTROL R9 killed by R9-dup-basename (candidate + tracked corpus/probe/ev-model.md): orig LIMB M4 FAIL
+                  rc=1; mutant LIMB M4 pass rc=0.
+M4-05  PROOF      M3 and M9 both require bool(rows), so M4's own non-empty term is redundant.
+M5-01  CONTROL R7 killed by R7-out-of-range (labels rev + map naming ev-model.md:13-9999 against a 60-line
+                  entry; rate unchanged at 891/1880): orig LIMB M5 FAIL rc=1; mutant LIMB M5 pass rc=0.
+
+## detail-only mutants (limb output changes, exit code does not) and the control that isolates them
+M9-17  R2-wrongrange-own-sha: wrong-range map run with its OWN sha256 (the frozen control passes the frozen
+       map's sha, so M6 fails there and masks the M9 difference). orig M9 FAIL rc=1; mutant M9 pass rc=0.
+M10-02 R1-partial-own-sha: partial map run with its OWN sha256. orig M10 FAIL unapplied=457 rc=1; mutant M10
+       pass rc=0.
+M3-06  R6-prose-edit: candidate + one rate-neutral prose edit outside the map. orig bad_lines=1 rc=1; mutant
+       bad_lines=0 rc=0.

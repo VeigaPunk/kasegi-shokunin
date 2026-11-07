@@ -1,0 +1,41 @@
+# C1 truth check of the four removals and two repoints at the base rev (CriticClaims)
+## 141/142: MAX default 5 / STAGGER_S 20 s in mission-control.md
+17:until `active.size == --max` → `dispatcher_tick` telemetry → 30 s sleep.
+55:  12:00–22:00 → `alibaba-token-plan/deepseek-v4-pro:max`; peak →
+56:  `openai-codex/gpt-6-astra:max` (round-13 correction: source
+159:  onto devin/swe-2:max after a fleet-wide 403 spending-limit on
+## 226: readJson / unreadable-file precheck in claim-gates.md
+ABSENT
+## 368: ev-model.md L21-23 and L49-51 (cost-field types)
+Facts:
+- Inputs live in `bounty-map/programs/<id>.json` → `ev_inputs`; schema pins
+  `p_*` to [0,1], `as_of` datetime, free-form `sources` for provenance.
+- Cost fields beyond effort: `direct_cost` (e.g. Cantina $100 submission fee
+  belongs here), `delay_cost`, `expected_risk_cost`, `duration_p90`,
+  `submission_buffer`, `deadline`, `opportunity_rate`.
+## 454: ev-model.md L13-25 (formula block + UNKNOWN fail-closed)
+```
+p_success    = p_in_scope × p_reproducible × p_unique × p_accepted
+gross_value  = p_success × expected_reward
+total_cost   = effort_hours × opportunity_rate
+               + direct_cost + delay_cost + expected_risk_cost
+adjusted_ev  = gross_value − total_cost
+```
+
+Facts:
+- Inputs live in `bounty-map/programs/<id>.json` → `ev_inputs`; schema pins
+  `p_*` to [0,1], `as_of` datetime, free-form `sources` for provenance.
+- Missing inputs print `UNKNOWN` for the affected term, never 0/1; verdict
+  degrades to `unknown` — fail-closed reporting.
+## 457: claim-package-contract.md L9-16 (six-file table) and L28 (blank, start of the dropped 28-38 span)
+| File | Binding rules |
+|---|---|
+| `report.md` | Title; program + official URL; "Scope excerpt" = verbatim policy text + URL + observed_at + content sha256; vuln class; repro steps without secrets; impact tied to the policy's own severity/reward language; affected asset; suggested fix; disclosure timeline; literal marker "No submission performed". |
+| `claim_checklist.md` | Per-program submission steps (portal route, fields, quirks); carries "OPERATOR-GATED"; names residual gates. |
+| `evidence/manifest.json` | `schema_version: "evidence-manifest/v1"`. Per-artifact sha256 + `polarity` ∈ {positive, negative}; ≥1 positive required. `redactions[]`: one same-digest receipt per artifact with nonempty, distinct producer/verifier identities. `redactions:[]` is never claim-ready. Artifact paths are relative to `evidence/`, must stay inside the package, no symlink traversal. |
+| `custodian-receipts.json` | Non-empty decision chain `{action, input_sha256, decision_sha256, matched_grant_id, scope_signal}`. Every action: nonempty `matched_grant_id` AND `scope_signal` exactly `"NO_SCOPE_OBJECTION"`. `head_sha256` == final decision digest == `manifest.expected_head_sha256`. |
+| `provenance.json` | Agents + requested/resolved models per transition, commands + exit codes, pin (remote + commit), `policy_sha256`, `external_effects_performed: []`, secrets attestation. |
+| `status.json` | `manifest_sha256` binds status to manifest bytes. `claim_review` holds `hard_gates` + `subchecks` + `reviewer` (distinct identity, requested/resolved model, fallback flag). |
+--- L28 verbatim:
+0000000  \n
+0000001

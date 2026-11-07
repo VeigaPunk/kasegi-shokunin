@@ -1,0 +1,45 @@
+ReviewC1Sites receipt: meter limbs M5/M9/M10 as coded (what the frozen predicate does and does not check)
+file: .ufo/waves/round-91/c1/knowledge-meter.py
+
+
+Limbs (all must hold; one LIMB line each, then the verdict line):
+  M0 base      base rate equals the frozen --base-target exactly.
+  M1 meter     after rate equals the frozen --target exactly.
+  M3 linediff  same file set and line counts; every after line equals its base
+               line, except each mapped site line, which equals its base line
+               with `old` replaced by `new` once; each `old` occurs exactly once
+               on its base line.
+  M4 binding   a repoint row's `new` is a backticked `corpus/knowledge/<name>.md:N[-M]`
+               whose <name> is the file named by `old`, the only tracked file
+               outside .ufo/ with that basename, INTERNAL in the after scope; a
+               removal row's `new` is `—` and its `old` is "MATCHES: `<key>`".
+  M5 inrange   every repoint value's anchor lies inside the entry at --after-rev.
+  M6 mapsha    sha256 of the map file equals --map-sha256 (when given).
+  M9 labels    every map row binds the LABELS_PATH row (at --labels-rev) with the
+               same citing-file:line and key, and its edit is the edit that label
+               names: a range label -> old "`key`", new "`range`"; a
+               content-repair label whose fix replaces the tie with `—` -> a
+               removal row; a content-repair label whose fix names
+               `<name>.md:N-M` -> new "`corpus/knowledge/<name>.md:N-M`".
+  M10 complete (round-90 closure routed defect 1) the set of mapped sites equals
+...
+            hi = int(vm.group(3)) if vm.group(3) else lo
+            if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
+                m5bad.append(tag)
+        limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(m4bad) or "none")))
+        limbs.append(("M5", not m5bad and not m4bad, "out_of_range=%s" % (",".join(m5bad) or "none")))
+        # M9 label binding
+        m9bad = []
+        for f, n, old, new in rows:
+            site = "%s:%d" % (f, n)
+            lab = labels.get((site, key_of(old)))
+            if lab is None or expected_edit(key_of(old), lab[0], lab[1]) != (old, new):
+                m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+        limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+        # M10 completeness
+        mapped = {"%s:%d" % (f, n) for f, n, _, _ in rows}
+        labelled = {s for s, _ in labels}
+        unapplied = sorted(labelled - mapped)
+        unlabelled = sorted(mapped - labelled)
+        limbs.append(("M10", bool(labelled) and not unapplied and not unlabelled,
+                      "labelled=%d mapped=%d unapplied=%s unlabelled=%s" % (

@@ -1,0 +1,11 @@
+--- orig.py
++++ M4-05.py
+@@ -281,7 +281,7 @@
+             hi = int(vm.group(3)) if vm.group(3) else lo
+             if text is None or not (1 <= lo <= hi <= len(text.splitlines())):
+                 m5bad.append(tag)
+-        limbs.append(("M4", not m4bad and bool(rows), "bad=%s" % (",".join(m4bad) or "none")))
++        limbs.append(("M4", not m4bad, "bad=%s" % (",".join(m4bad) or "none")))
+         limbs.append(("M5", not m5bad and not m4bad, "out_of_range=%s" % (",".join(m5bad) or "none")))
+         # M9 label binding
+         m9bad = []

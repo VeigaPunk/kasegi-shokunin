@@ -1,0 +1,33 @@
+# ScribeEntry r91 — credential-hygiene scan of the wave files, 2026-11-07
+
+The landed scanner of `1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70`
+(sha256 `89e283c6423216917c8ae31e1f72239f56ebcb842bda72f7bad4b2f36dc526d7`) over the three
+wave files this seat wrote. The scanner never prints a matched value, so this receipt is
+safe to commit where a fixture would not be.
+
+```
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin
+$ python3 -B corpus/instruments/capture-secret-scan.py --files \
+    .ufo/waves/round-91/w1/candidate-knowledge-signed-cookies-and-user-bound-sas.md \
+    .ufo/waves/round-91/w1/ScribeEntry.md \
+    .ufo/waves/round-91/w1/ScribeEntry-receipts/fc-runs.txt
+CAPTURE-SECRET-SCAN mode=files scanned=3 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+rc=0
+```
+
+What the three files contain: placeholders only (`<signature>`, `<redacted>`, `<key-pair-id>`,
+`<object-id>`, `<tenant-id>`), the scanner's own `HIT`/summary lines, one instrument digest,
+and line citations. No fixture bytes, no scanner or counter copy, no `S<digits>.txt` snapshot.
+
+Re-run with this receipt included, after it was written:
+
+```
+$ python3 -B corpus/instruments/capture-secret-scan.py --files \
+    .ufo/waves/round-91/w1/candidate-knowledge-signed-cookies-and-user-bound-sas.md \
+    .ufo/waves/round-91/w1/ScribeEntry.md \
+    .ufo/waves/round-91/w1/ScribeEntry-receipts/fc-runs.txt \
+    .ufo/waves/round-91/w1/ScribeEntry-receipts/hygiene-scan.txt
+CAPTURE-SECRET-SCAN mode=files scanned=4 hits=0 files=0 allowed=0 unused_allow=19 rc=0
+rc=0
+```
+

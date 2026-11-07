@@ -1,0 +1,11 @@
+--- a/corpus/instruments/capture-secret-scan.py
++++ b/corpus/instruments/capture-secret-scan.py
+@@ -136,7 +136,7 @@
+     ("cloudfront-signed-url-signature", re.compile(
+         _CF_LB + rb"(?:" + _CF_SIG + _CF_PARAM + _SEP + _CF_KPI + rb"|" + _CF_KPI + _CF_PARAM + _SEP + _CF_SIG + rb")")),
+     ("cloudfront-signed-cookie-signature", re.compile(
+-        _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{40,}")),
++        _CK_LB + rb"CloudFront-Signature=[A-Za-z0-9_~-]{32,}")),
+ )
+ ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+ NEVER_ALLOWED = frozenset({"aws-sts-session-token"})

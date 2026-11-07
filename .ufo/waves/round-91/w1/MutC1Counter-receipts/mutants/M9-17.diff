@@ -1,0 +1,11 @@
+--- orig.py
++++ M9-17.py
+@@ -288,7 +288,7 @@
+         for f, n, old, new in rows:
+             site = "%s:%d" % (f, n)
+             lab = labels.get((site, key_of(old)))
+-            if lab is None or expected_edit(key_of(old), lab[0], lab[1]) != (old, new):
++            if lab is None:
+                 m9bad.append("%s:%d" % (f.rsplit("/", 1)[-1], n))
+         limbs.append(("M9", not m9bad and bool(rows), "rows=%d unbound=%s" % (len(rows), ",".join(m9bad) or "none")))
+         # M10 completeness

@@ -1,0 +1,22 @@
+=== KASEGI CALLERS AND IMPORTERS AT 1dd0723fbd0bdc01d2244322f8df8c8c6f1adb70 ===
+patterns() exported shapes:
+  - private-key
+  - op-ref
+  - bearer
+  - authorization
+  - credential
+  - session-cookie
+  - aws-sts-session-token
+  - aws-access-key-id
+  - gcs-signed-url-signature
+  - azure-sas-signature
+  - cloudfront-signed-url-signature
+  - cloudfront-signed-cookie-signature
+
+Callers / Importers analysis:
+1. corpus/instruments/capture-source.py: loads scanner dynamically via load_scanner() in intake_gate(), calls scan.patterns(). INHERITS: YES.
+2. corpus/instruments/capture-secret-scan.py: self CLI (--files, --rev, --selftest). INHERITS: YES.
+3. .ufo/waves/round-91/c2/capability-check.py: counter imports candidate, verifies K1-K8. INHERITS: YES.
+4. .ufo/waves/round-91/controls/c2-controls-r91.sh: runs scanner directly. INHERITS: YES.
+5. corpus/instruments/claim-package-check.py: defines own SECRET_PATTERNS (6 basic shapes), does NOT import capture-secret-scan.py. INHERITS: NO.
+6. Practice packages (corpus/practice/*/evidence/): covered under is_capture_path() when scanned by capture-secret-scan.py --rev/--files. INHERITS: YES (when scanned).
