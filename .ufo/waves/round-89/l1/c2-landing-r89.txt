@@ -1,0 +1,20 @@
+# C2 landing receipt r89
+$ capability-check.py --rev c61c55868e6d28653f57413bac6a6de5a398d11f
+CAPABILITY-CHECK rev=c61c55868e6d28653f57413bac6a6de5a398d11f instrument_present=True seed=1822445695
+LIMB K1 pass selftest_rc=0 instrument_sha256=95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1530,hits=0,files=0,allowed=20,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2 files_rc=1 files_hits=2 files_ok=True
+LIMB K6 pass base_rc=1 base_hits=11 new_caught_by_base=none
+LIMB K7 pass seed=1822445695 rc=1 missing=none extra=none
+LIMB K8 pass clauses=10 failing=none
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+$ P2 byte-equality at C2 landing
+capture-secret-scan.py 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec candidate 95f24a541db8b3d6693315a03de28d0b6de0fb0b6e53a68471265382114d20ec
+capture-secret-allow.tsv 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985 candidate 76245bbade2f6d0905100913384d5b11ac9ad18b4b3d19f0612f8e152bbc1985
+row_equal=True rows=1
+$ P3
+LANDING-SCOPE from=eb5f0df8 to=c61c5586 changed=3 outside=0 verdict=PASS exit=0
+rc=0
