@@ -1,0 +1,82 @@
+LANDING commit=a48fe8b9ee34cf4b38106ce0b2357bbff489cb1d freeze=4a2d34f203519a87078f21a896dc8679137ff675 base=bc722e540c93b48ff159454b65a0f9f4630db1ed utc=2026-11-07T00:49:29Z
+== P2 frozen instrument bytes
+.ufo/waves/round-85/c1/skill-meter.py OK
+.ufo/waves/round-85/c1/apply-map.py OK
+.ufo/waves/round-85/c1/repair-map.json OK
+.ufo/waves/round-85/c2/e2e-check.py OK
+corpus/instruments/resolve.py OK
+corpus/instruments/claim-package-check.py OK
+== C1 P1 counting command (clone with .git)
+SKILL-METER base=158/741 after=167/732 target=167/732 mirror_absent=True
+LIMB M1 pass after=167/732
+LIMB M2 pass removed=18 keys=18 stray_removed=0 stray_added=0 unrepaired=0
+LIMB M3 pass linecount_equal=True bad_lines=0 keys_hit=18
+LIMB M4 pass bad=none
+LIMB M5 pass sha256=b575f147835d55fcb810fe946825c0cfd36e51094341497e00f0d98db5ae1944
+SKILL-METER-RESULT pass rc=0
+rc=0
+== C1 P3 SKILL.md diff freeze..landing (changed lines)
+17	17	SKILL.md
+== C1 P4 density
+| | **mean dens** | | | | | | | | **273.2** |
+Total path-citation instances: 932 across 38 blocks.
+| | **mean dens** | | | | | | | | **273.2** |
+Total path-citation instances: 932 across 38 blocks.
+== C2 P1 counting command
+LIMB E1 pass gate_rc=0
+LIMB E2 pass bound=S119,S120
+LIMB E3 pass section=True bad=none
+LIMB E4 pass quotes=5 missing=0
+LIMB E5 pass rel=corpus/practice/curl-h1-1913733 log=True shonen=True
+E2E-RESULT pass limbs=5 rc=0
+rc=0
+== C2 P2 gate
+RULE R-FILES verdict=pass detail=files=6,missing=0,bad=0
+RULE R-MANIFEST verdict=pass detail=artifacts=3,positive=3,digest-bad=0,escape=0
+RULE R-REDACT verdict=pass detail=artifacts=3,receipts=3,missing=0,digest-mismatch=0
+RULE R-CUSTODIAN verdict=pass detail=chain=2,grant-miss=0,signal-bad=0,head=bound
+RULE R-PROVENANCE verdict=pass detail=agents=3,commands=8,pin=ok,effects=none,secrets=ok
+RULE R-STATUS verdict=pass detail=manifest=bound,reviewer=distinct,gates=6/6,claimable=false,blocker=named
+RULE R-REPORT verdict=pass detail=scope-excerpt=ok,marker=ok,url=ok,cited=3,unbound=0
+RULE R-NOSECRET verdict=pass detail=files-scanned=ok,symlinks=0,oversize=0,hits=0
+package=corpus/practice/curl-h1-1913733 rules=8 pass=8 fail=0 verdict=WELL-FORMED exit=0
+rc=0
+== C2 P3 source-recheck
+S119:sha256 OK
+S119:Q01-severity-rating OK occurrences=1 anchor=1-ok
+S119:Q02-has-bounty-flag OK occurrences=1 anchor=1-ok
+S119:Q03-cve-id OK occurrences=1 anchor=1-ok
+S119:Q04-team-handle OK occurrences=1 anchor=1-ok
+rc=0
+S120:sha256 OK
+S120:Q01-cwe OK occurrences=1 anchor=79-ok
+S120:Q02-severity OK occurrences=1 anchor=80-ok
+S120:Q03-bug-bounty OK occurrences=1 anchor=81-ok
+S120:Q04-original-report OK occurrences=1 anchor=83-ok
+S120:Q05-affected OK occurrences=1 anchor=85-ok
+rc=0
+S121:sha256 OK
+S121:Q01-no-bounty OK occurrences=1 anchor=43-ok
+S121:Q02-no-cvss OK occurrences=1 anchor=95-ok
+S121:Q03-medium-def OK occurrences=1 anchor=103-ok
+rc=0
+== C2 P4 registry diff freeze..landing
+-| S119 | Ha
+-| S120 | Pr
+-| S121 | Pr
++| S119 | Ha
++| S120 | Pr
++| S121 | Pr
+registry=121
+== C2 P6 SHONEN box 2
+7:- [~] At least one end-to-end domain task executed and logged in LOG.md
+8-      Evidence: corpus/practice/curl-h1-1913733/report.md — round 85: retrospective practice package for disclosed HackerOne report 1913733 (curl, CVE-2023-28319), priced on S119-S121 and the S052 KEV capture, gate WELL-FORMED, logged in LOG.md Round 85; documentation only, no submission, not a live or authorized bounty task; non-author verification pending.
+== C2 P5 census (run in the lane: the census reads --root)
+== P5 census (lane)
+kasegi	W04	S085 duplicate url csrc.nist.gov/schema/nvd/api/2.0/cve_api_json_2.0.schema across scopes
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0
+== R136 shonen-form (clone)
+shonen-form canonical=1 finding=SF-CLEAN exit=0
+== redaction scan (clone)
+REDACTION-SCAN artifacts=3 bad=0 rc=0
