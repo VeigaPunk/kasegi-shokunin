@@ -1,0 +1,1228 @@
+{
+ "src_sha256": "4fba0cbe98fff8524efaf9f8ccd8879a133632260820ee611b7253f3fccfead7",
+ "mutants": [
+  {
+   "id": "M01-history-widen",
+   "limb": "K2",
+   "desc": "HISTORY_EXPECTED widened by one path",
+   "sha256": "76ddf8eaa7f23f6e6e7a234c41697ab4a7f86ba66b71aab600951522077f3bc2",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "pos"
+   ],
+   "limb_only_flips": [
+    "po",
+    "sa",
+    "wt",
+    "st",
+    "na",
+    "sl",
+    "nr",
+    "pin"
+   ],
+   "flips": [
+    {
+     "scenario": "pos",
+     "frozen": "pass|0|K1PK2PK3PK4PK5P",
+     "mutant": "fail|1|K1PK2FK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2FK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2FK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2FK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "st",
+     "frozen": "fail|1|K1PK2PK3PK4FK5P",
+     "mutant": "fail|1|K1PK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "na",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "fail|1|K1PK2FK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "sl",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "fail|1|K1PK2FK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "nr",
+     "frozen": "fail|1|K1PK2PK3PK4PK5F",
+     "mutant": "fail|1|K1PK2FK3PK4PK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "pin",
+     "frozen": "fail|1|K1FK2PK3PK4PK5P",
+     "mutant": "fail|1|K1FK2FK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M02-history-empty",
+   "limb": "K2",
+   "desc": "HISTORY_EXPECTED emptied",
+   "sha256": "4565cf98018d62801c4c85e6c1e4084b1fbee70d03575d086c87e8bbb3a1b01b",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "pos"
+   ],
+   "limb_only_flips": [
+    "po",
+    "sa",
+    "wt",
+    "st",
+    "na",
+    "sl",
+    "nr",
+    "pin"
+   ],
+   "flips": [
+    {
+     "scenario": "pos",
+     "frozen": "pass|0|K1PK2PK3PK4PK5P",
+     "mutant": "fail|1|K1PK2FK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2FK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2FK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2FK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "st",
+     "frozen": "fail|1|K1PK2PK3PK4FK5P",
+     "mutant": "fail|1|K1PK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "na",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "fail|1|K1PK2FK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "sl",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "fail|1|K1PK2FK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "nr",
+     "frozen": "fail|1|K1PK2PK3PK4PK5F",
+     "mutant": "fail|1|K1PK2FK3PK4PK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    },
+    {
+     "scenario": "pin",
+     "frozen": "fail|1|K1FK2PK3PK4PK5P",
+     "mutant": "fail|1|K1FK2FK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "pass",
+       "FAIL"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M03-oracle-regex-weak",
+   "limb": "K2",
+   "desc": "oracle token-length floor 20 -> 1",
+   "sha256": "c12f917bd1266f9a4739b4a6a7588ef13eee1b576c821a48fc2dcba6c87030de",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M04-k2-subset",
+   "limb": "K2",
+   "desc": "K2 sts == oracle -> sts subset of oracle",
+   "sha256": "dc1db2e9eb8cae6d50b61ea247d7c26a67ce7a37180633cc888d03fb036120e2",
+   "verdict": "KILLED",
+   "rc_flips": [],
+   "limb_only_flips": [
+    "go"
+   ],
+   "flips": [
+    {
+     "scenario": "go",
+     "frozen": "fail|1|K1FK2FK3PK4FK5P",
+     "mutant": "fail|1|K1FK2PK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K2": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M05-k3-drop-unused",
+   "limb": "K3",
+   "desc": "K3 unused_allow==0 conjunct dropped",
+   "sha256": "a5301ee3ed840cded87ecfb06e9277c9f7d237f519dacbb55700faf3f426a07d",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "sl"
+   ],
+   "limb_only_flips": [
+    "po"
+   ],
+   "flips": [
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2PK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K3": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    },
+    {
+     "scenario": "sl",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "pass|0|K1PK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {
+      "K3": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M06-k3-drop-allowed",
+   "limb": "K3",
+   "desc": "K3 allowed>=1 conjunct dropped",
+   "sha256": "f4d56cd1bad9afcdb451eecfa2289098bc8eb659482d4229bed1d7a5bf45bffa",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M07-k4-subset",
+   "limb": "K4",
+   "desc": "K4 exact hit set -> expected subset of hits (extras allowed)",
+   "sha256": "2975763ac2c82968635e1f8d1dc55c8237b5b9636747660ad32b977858ad063c",
+   "verdict": "KILLED",
+   "rc_flips": [],
+   "limb_only_flips": [
+    "sa",
+    "wt"
+   ],
+   "flips": [
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K4": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1FK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K4": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M08-k4-drop-rc2",
+   "limb": "K4",
+   "desc": "K4 STS-allowlist refusal (rc2==2) check dropped",
+   "sha256": "54a56a2155df744a8e29150038db051bcd4252154a46a0667c8f3494ac287413",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "st"
+   ],
+   "limb_only_flips": [],
+   "flips": [
+    {
+     "scenario": "st",
+     "frozen": "fail|1|K1PK2PK3PK4FK5P",
+     "mutant": "pass|0|K1PK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {
+      "K4": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M09-k5-drop-cell",
+   "limb": "K5",
+   "desc": "K5 round-marker last-cell check dropped",
+   "sha256": "37079bcca0104d2b6dfb1972e533554c4e6d0363fc9871d1b645c2d76bd96195",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M10-k1-drop-selftest",
+   "limb": "K1",
+   "desc": "K1 selftest rc/string check dropped (sha pins kept)",
+   "sha256": "4e34fc12b99b3c7efe258717e01f10b345ddb24617a7f97ec09b2d9c41249d90",
+   "verdict": "KILLED",
+   "rc_flips": [],
+   "limb_only_flips": [
+    "go",
+    "po",
+    "sa",
+    "wt"
+   ],
+   "flips": [
+    {
+     "scenario": "go",
+     "frozen": "fail|1|K1FK2FK3PK4FK5P",
+     "mutant": "fail|1|K1PK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K1": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    },
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1PK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K1": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    },
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1PK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K1": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|1|K1PK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K1": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M11-verdict-polarity",
+   "limb": "verdict",
+   "desc": "final verdict polarity inverted",
+   "sha256": "3a8038d6b226ea12daa06982019e080465dc0e5950bd56c23f880674e8159fc4",
+   "verdict": "KILLED",
+   "rc_flips": [],
+   "limb_only_flips": [
+    "dn",
+    "pos",
+    "a0",
+    "go",
+    "po",
+    "sa",
+    "wt",
+    "st",
+    "na",
+    "sl",
+    "nr",
+    "pin"
+   ],
+   "flips": [
+    {
+     "scenario": "dn",
+     "frozen": "fail|1|K1FK2FK3FK4FK5F",
+     "mutant": "pass|1|K1FK2FK3FK4FK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "pos",
+     "frozen": "pass|0|K1PK2PK3PK4PK5P",
+     "mutant": "fail|0|K1PK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "a0",
+     "frozen": "fail|1|K1PK2FK3PK4FK5P",
+     "mutant": "pass|1|K1PK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "go",
+     "frozen": "fail|1|K1FK2FK3PK4FK5P",
+     "mutant": "pass|1|K1FK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "pass|1|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "pass|1|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "pass|1|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "st",
+     "frozen": "fail|1|K1PK2PK3PK4FK5P",
+     "mutant": "pass|1|K1PK2PK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "na",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "pass|1|K1PK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "sl",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "pass|1|K1PK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "nr",
+     "frozen": "fail|1|K1PK2PK3PK4PK5F",
+     "mutant": "pass|1|K1PK2PK3PK4PK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "pin",
+     "frozen": "fail|1|K1FK2PK3PK4PK5P",
+     "mutant": "pass|1|K1FK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M12-k2-drop-expected",
+   "limb": "K2",
+   "desc": "K2 oracle == HISTORY_EXPECTED clause dropped",
+   "sha256": "93bc36b3ed4d127169d65f8fbdfd7ace373a32acec6e4de371f64b0f92f3153e",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M13-k1-drop-pins",
+   "limb": "K1",
+   "desc": "K1 both sha256 pins dropped",
+   "sha256": "40a00159c334e9549e23abefa5f3bf93b7040a26369b807e3ce9adcb9dd1d253",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "pin"
+   ],
+   "limb_only_flips": [],
+   "flips": [
+    {
+     "scenario": "pin",
+     "frozen": "fail|1|K1FK2PK3PK4PK5P",
+     "mutant": "pass|0|K1PK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {
+      "K1": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M14-k3-drop-hits",
+   "limb": "K3",
+   "desc": "K3 `not hits` conjunct dropped",
+   "sha256": "ffa52f135efbce35486c18a5a771a35dbdece05b23c48b39bec819ae60d114bd",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M15-k4-drop-rc",
+   "limb": "K4",
+   "desc": "K4 planted-run rc==1 check dropped",
+   "sha256": "b96cf1cb76adc61d606aa2be672d0118c8aeae30712270908a7f10c603766d17",
+   "verdict": "KILLED",
+   "rc_flips": [],
+   "limb_only_flips": [
+    "a0"
+   ],
+   "flips": [
+    {
+     "scenario": "a0",
+     "frozen": "fail|1|K1PK2FK3PK4FK5P",
+     "mutant": "fail|1|K1PK2FK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {
+      "K4": [
+       "FAIL",
+       "pass"
+      ]
+     }
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M16-k5-any-rows",
+   "limb": "K5",
+   "desc": "K5 single-row requirement -> at least one row",
+   "sha256": "b9c9ddbc874e22296dde65568dc819f4dcb99252889400ba6da452d0a537ed4b",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M17-return-polarity",
+   "limb": "verdict",
+   "desc": "process exit-code polarity inverted (printed line kept)",
+   "sha256": "8d166a548dc8324349b500ac624fb78b6bad539116c34acda9c99e02c7b5bc9b",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "dn",
+    "pos",
+    "a0",
+    "go",
+    "po",
+    "sa",
+    "wt",
+    "st",
+    "na",
+    "sl",
+    "nr",
+    "pin"
+   ],
+   "limb_only_flips": [],
+   "flips": [
+    {
+     "scenario": "dn",
+     "frozen": "fail|1|K1FK2FK3FK4FK5F",
+     "mutant": "fail|0|K1FK2FK3FK4FK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "pos",
+     "frozen": "pass|0|K1PK2PK3PK4PK5P",
+     "mutant": "pass|1|K1PK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "a0",
+     "frozen": "fail|1|K1PK2FK3PK4FK5P",
+     "mutant": "fail|0|K1PK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "go",
+     "frozen": "fail|1|K1FK2FK3PK4FK5P",
+     "mutant": "fail|0|K1FK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|0|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|0|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "fail|0|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "st",
+     "frozen": "fail|1|K1PK2PK3PK4FK5P",
+     "mutant": "fail|0|K1PK2PK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "na",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "fail|0|K1PK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "sl",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "fail|0|K1PK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "nr",
+     "frozen": "fail|1|K1PK2PK3PK4PK5F",
+     "mutant": "fail|0|K1PK2PK3PK4PK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "pin",
+     "frozen": "fail|1|K1FK2PK3PK4PK5P",
+     "mutant": "fail|0|K1FK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "limb_delta": {}
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M19-oracle-header-only",
+   "limb": "K2",
+   "desc": "oracle collapsed to the bare header name (no =, no value class, no floor)",
+   "sha256": "d7d8270d610df79eee78ab753284d5225508bc48536b0f00365aff8aba07c293",
+   "verdict": "SURVIVED",
+   "rc_flips": [],
+   "limb_only_flips": [],
+   "flips": [],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  },
+  {
+   "id": "M18-aggregate-any",
+   "limb": "verdict",
+   "desc": "all-limbs-must-hold -> any-limb-suffices aggregation",
+   "sha256": "6c9b38e33b860a1d3dad5e8864988a96786056b653339a3a8829f984fe54adfe",
+   "verdict": "KILLED",
+   "rc_flips": [
+    "a0",
+    "go",
+    "po",
+    "sa",
+    "wt",
+    "st",
+    "na",
+    "sl",
+    "nr",
+    "pin"
+   ],
+   "limb_only_flips": [],
+   "flips": [
+    {
+     "scenario": "a0",
+     "frozen": "fail|1|K1PK2FK3PK4FK5P",
+     "mutant": "pass|0|K1PK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "go",
+     "frozen": "fail|1|K1FK2FK3PK4FK5P",
+     "mutant": "pass|0|K1FK2FK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "po",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "pass|0|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "sa",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "pass|0|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "wt",
+     "frozen": "fail|1|K1FK2PK3FK4FK5P",
+     "mutant": "pass|0|K1FK2PK3FK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "st",
+     "frozen": "fail|1|K1PK2PK3PK4FK5P",
+     "mutant": "pass|0|K1PK2PK3PK4FK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "na",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "pass|0|K1PK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "sl",
+     "frozen": "fail|1|K1PK2PK3FK4PK5P",
+     "mutant": "pass|0|K1PK2PK3FK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "nr",
+     "frozen": "fail|1|K1PK2PK3PK4PK5F",
+     "mutant": "pass|0|K1PK2PK3PK4PK5F",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    },
+    {
+     "scenario": "pin",
+     "frozen": "fail|1|K1FK2PK3PK4PK5P",
+     "mutant": "pass|0|K1FK2PK3PK4PK5P",
+     "printed_frozen": "CAPABILITY-CHECK-RESULT fail rc=1",
+     "printed_mutant": "CAPABILITY-CHECK-RESULT pass rc=0",
+     "limb_delta": {}
+    }
+   ],
+   "base_vector": {
+    "dn": "fail|1|K1FK2FK3FK4FK5F",
+    "pos": "pass|0|K1PK2PK3PK4PK5P",
+    "a0": "fail|1|K1PK2FK3PK4FK5P",
+    "go": "fail|1|K1FK2FK3PK4FK5P",
+    "po": "fail|1|K1FK2PK3FK4FK5P",
+    "sa": "fail|1|K1FK2PK3FK4FK5P",
+    "wt": "fail|1|K1FK2PK3FK4FK5P",
+    "st": "fail|1|K1PK2PK3PK4FK5P",
+    "na": "fail|1|K1PK2PK3FK4PK5P",
+    "sl": "fail|1|K1PK2PK3FK4PK5P",
+    "nr": "fail|1|K1PK2PK3PK4PK5F",
+    "pin": "fail|1|K1FK2PK3PK4PK5P"
+   }
+  }
+ ],
+ "scenarios": {
+  "dn": "fail|1|K1FK2FK3FK4FK5F",
+  "pos": "pass|0|K1PK2PK3PK4PK5P",
+  "a0": "fail|1|K1PK2FK3PK4FK5P",
+  "go": "fail|1|K1FK2FK3PK4FK5P",
+  "po": "fail|1|K1FK2PK3FK4FK5P",
+  "sa": "fail|1|K1FK2PK3FK4FK5P",
+  "wt": "fail|1|K1FK2PK3FK4FK5P",
+  "st": "fail|1|K1PK2PK3PK4FK5P",
+  "na": "fail|1|K1PK2PK3FK4PK5P",
+  "sl": "fail|1|K1PK2PK3FK4PK5P",
+  "nr": "fail|1|K1PK2PK3PK4PK5F",
+  "pin": "fail|1|K1FK2PK3PK4PK5P"
+ }
+}

@@ -1,0 +1,92 @@
+# MutC2Scanner — survivor behavioural probes (scratch fixtures; outputs carry HIT/summary lines only, never matched values)
+
+M02 probe pristine rc=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts.txt line=1
+HIT shape=aws-sts-session-token path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=2 files=1 allowed=0 unused_allow=17 rc=1
+
+M02 probe M02 rc=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+
+M06 probe pristine rc=2
+CAPTURE-SECRET-SCAN error reason=OSError rc=2
+
+M06 probe M06 rc=0
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=1 rc=0
+
+M12 probe pristine rc=1 hit_lines=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/two-cred.json line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+
+M12 probe M12 rc=1 hit_lines=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/two-cred.json line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+
+M11/M17 probe pristine rc=0
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=0 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+
+M11/M17 probe M11 rc=1
+HIT shape=credential path=w/x-receipts-notes/a.json line=1
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+
+M11/M17 probe M17 rc=1
+HIT shape=credential path=corpus/source-snapshots/r/S900.txt line=1
+HIT shape=aws-sts-session-token path=corpus/source-snapshots/r/S900.txt line=1
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=1 hits=2 files=1 allowed=0 unused_allow=17 rc=1
+
+M12b (pristine) rc=1 hit_lines=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/two-cred2.json line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+
+M12b (M12) rc=1 hit_lines=2
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/two-cred2.json line=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/two-cred2.json line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=2 files=1 allowed=0 unused_allow=17 rc=1
+
+M16 (pristine) rc=1
+HIT shape=credential path=corpus/source-snapshots/r/S9.txt line=1
+HIT shape=aws-sts-session-token path=corpus/source-snapshots/r/S9.txt line=1
+CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=5 hits=2 files=1 allowed=0 unused_allow=17 rc=1
+
+M16 (M16) TIMEOUT after 25s
+(instrument did not terminate)
+
+fixture tree repo
+120000 blob c253f8726fab689e0df1ca0cd838746b6b82c54e	corpus/source-snapshots/r/S900.txt
+100644 blob 3df2c7e92858809a4530a2d234d6b6be74c11469	w/x-receipts-notes/a.json
+
+fixture tree repo2
+100644 blob 90fbe3fa59750f25025c6e7ed088e57297c12bab	corpus/source-snapshots/r/S0.txt
+100644 blob 336c05eef832f804939601816c0d37caa015381d	corpus/source-snapshots/r/S1.txt
+100644 blob ccf178413444283ed7724fc20ecd1fa4798d5b2d	corpus/source-snapshots/r/S2.txt
+100644 blob 15a7536bbdb91c0e6c52d68b2b516721f33217a5	corpus/source-snapshots/r/S3.txt
+100644 blob 4ebd5a3580112ce375c0f1c56835f1f8910b587e	corpus/source-snapshots/r/S9.txt
+
+
+M02b (pristine) rc=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts-query.txt line=1
+HIT shape=aws-sts-session-token path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts-query.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=2 files=1 allowed=0 unused_allow=17 rc=1
+
+M02b (M02) rc=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts-query.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=17 rc=1
+
+
+M02c (pristine, allowlisted credential row) rc=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts-query.txt line=1
+HIT shape=aws-sts-session-token path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts-query.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=2 files=1 allowed=0 unused_allow=1 rc=1
+
+M02c (M02, allowlisted credential row) rc=1
+HIT shape=credential path=/fast/scratch/hyaku/kasegi-r87/MutC2Scanner/probe/lower-sts-query.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=1 rc=1
+
+
+M02c (pristine, relative path + allowlisted credential row) rc=1
+HIT shape=aws-sts-session-token path=lower-sts-query.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=1 unused_allow=0 rc=1
+
+M02c (M02, relative path + allowlisted credential row) rc=0
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=1 unused_allow=0 rc=0

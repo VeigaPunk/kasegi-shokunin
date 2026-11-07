@@ -1,0 +1,16 @@
+SIBLING OVERLAP SCAN RECEIPT
+Target directories:
+  /home/vgpnk/Projects/shokunin/*-shokunin/corpus/instruments/
+  /home/vgpnk/Projects/shokunin/*-shokunin/corpus/QUALITY.md
+  /home/vgpnk/Projects/shokunin/*-shokunin/tools/
+
+Scanned sibling tools with secret/retention scanning:
+1. kagi-shokunin:
+   - corpus/transcript-scan.sh (PATTERNS_HIT, PATTERNS_WARN, SQLite table scanning)
+   - corpus/QUALITY.md (QA5: no credential material, ever)
+2. mado-shokunin:
+   - tools/mado-tripwire.py (SECRET_PATTERNS: URL credentials, AKIA, 32+ char token)
+   - corpus/QUALITY.md (Rule 5 / 1065: credential-material rule, M56-17 env-dump avoidance)
+3. mori-shokunin:
+   - tools/mori-retention-gate.py & mori-retention-reconcile.py (mori-retention-policy-v1, R1-R9)
+   - corpus/QUALITY.md (Rule 51: handoff retention zero unallowlisted hits; Rule 82: host identifier linting)

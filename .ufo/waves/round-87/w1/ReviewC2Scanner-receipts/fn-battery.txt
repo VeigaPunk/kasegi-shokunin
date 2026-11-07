@@ -1,0 +1,49 @@
+Fixture harness: ReviewC2Scanner-receipts/regen-fixtures.py (regenerates every fixture under a scratch dir and
+re-runs the frozen scanner; no credential value is stored in the harness or the receipts).
+Scanner bytes: git -C <lane> show 132e16c5:corpus/instruments/capture-secret-scan.py (sha256 b2bf9d65...).
+
+Commands per row: python3 -B <inst>/capture-secret-scan.py --files <fixture> --allow <empty tsv>
+rc=1 means the scanner reported a HIT. rc=0 'clean' on a fixture that carries a real credential shape = FALSE NEGATIVE.
+
+== FN battery (--files mode; rc=1 means a hit was reported)
+percent-encoded separator                     rc=0 clean
+double-encoded url                            rc=0 clean
+json \u0026 escapes                           rc=1 HIT shape=credential path=json_u0026.txt line=1; HIT shape=aws-sts-session-token path=json_u0026.txt line=1
+json escaped slash at char 10                 rc=0 clean
+json escaped slash after 20 chars             rc=1 HIT shape=credential path=json_slash_late.txt line=1
+lowercase header name                         rc=1 HIT shape=credential path=lower_header.txt line=1; HIT shape=aws-sts-session-token path=lower_header.txt line=1
+header name, value on next line               rc=1 HIT shape=credential path=split_header.txt line=1; HIT shape=aws-sts-session-token path=split_header.txt line=1
+query name, value on next line                rc=1 HIT shape=credential path=split_eq.txt line=1
+HAR name/value pair                           rc=0 clean
+HAR pretty-printed name/value                 rc=0 clean
+UTF-16LE capture                              rc=0 clean
+gzip-compressed body                          rc=0 clean
+binary with NUL separators                    rc=1 HIT shape=aws-sts-session-token path=nul_sep.bin line=1
+base64-wrapped capture                        rc=0 clean
+33 MiB capture, value at end                  rc=1 HIT shape=credential path=big33.txt line=3844779; HIT shape=aws-sts-session-token path=big33.txt line=3844779
+plain query string (control)                  rc=1 HIT shape=credential path=js.txt line=1; HIT shape=aws-sts-session-token path=js.txt line=1
+
+== scope battery (--rev mode on a fixture repo)
+  corpus/source-snapshots/round-1/S001.txt             HIT
+  corpus/source-snapshots/round-1/sub/x.json           HIT
+  .ufo/waves/round-87/w1/Seat-receipts/a.json          HIT
+  .ufo/waves/round-87/w1/live-cap.json                 HIT
+  w/exec-receipt/x.json                                clean
+  w/receipts/x.json                                    clean
+  corpus/practice/p/evidence/capture.json              clean
+  corpus/practice/p/evidence/S122.txt                  clean
+  .ufo/waves/round-87/w1/Foo-evidence/x.json           clean
+  docs/snapshots/round-1/S1.txt                        clean
+  w/live-not-here/x.json                               clean
+  corpus/notes/capture-x.json                          clean
+  symlink corpus/source-snapshots/round-1/link.txt      skipped (mode 120000)
+  CAPTURE-SECRET-SCAN mode=rev:HEAD scanned=4 hits=8 files=4 allowed=0 unused_allow=0 rc=1
+
+== allowlist path form (--files; row keyed to the repo-relative path)
+  repo-relative from repo root rc=0 CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=1 unused_allow=0 rc=0
+  './'-prefixed                rc=1 CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=1 rc=1
+  absolute path                rc=1 CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=1 rc=1
+
+== allowlist binding (matched bytes vs value)
+  documented example line      rc=0 CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=1 unused_allow=0 rc=0
+  other key id, same scheme    rc=1 HIT shape=aws-access-key-id path=corpus/source-snapshots/round-87/S124.txt line=1 | CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=1 unused_allow=0 rc=1

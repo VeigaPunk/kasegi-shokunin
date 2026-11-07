@@ -1,0 +1,58 @@
+Capture inventory at the C2 landing commit 132e16c5 (read-only: git ls-tree / git grep / cat-file).
+
+is_capture_path() (capture-secret-scan.py:98-102) matches:
+  A) rel.startswith('corpus/source-snapshots/')
+  B) any directory segment ending in '-receipts'
+  C) basename starting with 'live-'
+
+Counts at 132e16c5: in scope 1319 blobs / out of scope 15331 blobs (blobs with mode != 120000).
+Largest in-scope blob: .ufo/waves/round-86/w1/ScoutSources-receipts/live-KEV-catalog.json 1832349 bytes (no size cap exists).
+
+Tracked files whose first line looks like a fetched HTTP body (HTTP/1.x status, <!DOCTYPE html>, <html)
+and that are NOT capture-class (hence never read by --rev):
+  .ufo/waves/round-28/wave1/ScribeLessonGate/S037.body
+  .ufo/waves/round-28/wave1/ScribeLessonGate/S068.body
+  .ufo/waves/round-29/wave1/assimilation/fetch/S037.html
+  .ufo/waves/round-29/wave1/assimilation/fetch/S048-sibling.html
+  .ufo/waves/round-29/wave1/assimilation/fetch/S069-head.txt
+  .ufo/waves/round-30/wave1/fetch/s037.html
+  .ufo/waves/round-30/wave1/fetch/s068.html
+  .ufo/waves/round-31/wave1/ScoutMSVR-scratch/raw.html
+  .ufo/waves/round-33/wave1/RevRowS050.md
+  .ufo/waves/round-59/controls/s092-issue-shell.html
+  .ufo/waves/round-59/controls/s092-savedsearch-shell.html
+  .ufo/waves/round-68/w1/ScoutS102/root.raw
+  .ufo/waves/round-73/w1/K73ScoutCapture/fetch1.html
+  .ufo/waves/round-73/w1/K73ScoutCapture/fetch2.html
+  .ufo/waves/round-74/w1/ScoutSurface-osv-api-overview-raw.html
+  .ufo/waves/round-81/w1/ScoutDistinct-receipts/data_quality.html
+  .ufo/waves/round-81/w1/ScoutDistinct-receipts/live.html
+  .ufo/waves/round-85/w1/ScoutSources-receipts/live-LEAD-daniel-2019-04-22-curl-hackerone-true.html
+  .ufo/waves/round-85/w1/ScoutSources-receipts/live-LEAD-daniel-2020-04-23-bug-bounty-one-year-in.html
+  .ufo/waves/round-85/w1/ScoutSources-receipts/live-LEAD-daniel-2026-01-26-end-of-bug-bounty.html
+  .ufo/waves/round-85/w1/ScoutSources-receipts/live-LEAD-daniel-2026-02-25-curl-security-moves-again.html
+  .ufo/waves/round-85/w1/ScoutSources-receipts/live-S120-curl-CVE-2023-28319.html
+  .ufo/waves/round-85/w1/ScoutSources-receipts/live-S121-curl-vuln-disclosure.html
+  .ufo/waves/round-86/w1/ScoutSources-receipts/IBB-program-page-2024-08-13-archived.html
+  .ufo/waves/round-86/w1/ScoutSources-receipts/live-curl-CVE-2023-28319.html
+  .ufo/waves/round-86/w1/ScoutSources-receipts/live-daniel-end-of-curl-bug-bounty.html
+
+Fetched third-party evidence dirs outside capture scope (non-exhaustive):
+  corpus/practice/curl-h1-1913733/evidence/          5 files (S119-S121.txt, manifest.json)
+  corpus/practice/curl-ibb-h1-1997312/evidence/      6 files (S120-S123.txt, manifest.json)
+    ^ S122.txt here is the redacted copy of the round-86 leaked HackerOne report
+  .ufo/waves/round-86/w1/ExecC2Package-candidate/curl-ibb-h1-1997312/  candidate package + evidence
+
+Seat-receipt dirs that do not end in '-receipts' (never scanned by --rev):
+  .ufo/waves/round-67/w1/ExecMultiHeadDriver/receipts/{base,candidate}  550 files
+  .ufo/waves/round-66/w1/CriticCat/receipts  61 | round-64/w1/ScoutCommands/receipts 53 | round-29/wave1/receipts 61
+  (+ ~20 more 'receipts' dirs under .ufo/waves, 4-36 files each)
+
+Seat reports written straight into a wave dir (e.g. .ufo/waves/round-86/w1/CriticClaims.md) are out of scope;
+only '<seat>-receipts/' beside them is scanned.
+
+Out-of-scope credential-shape census (same pattern set as the instrument), landing commit:
+  42 (path,shape) first-hits outside capture scope, e.g. .ufo/waves/round-37/wave1/SentSecrets.md private-key,
+  .ufo/waves/round-25/wave2/C2Sentinel.md op-ref, corpus/instruments/capture-secret-scan.py credential
+  (the instrument's own selftest literals), .ufo/waves/round-87/c2/capability-check.py aws-sts-session-token.
+  None is a live third-party secret; all in-scope hits (4) are allowlisted.

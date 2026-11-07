@@ -1,0 +1,40 @@
+Mutants applied to a `git clone --shared` of the lane at $S/clone; each mutant is a commit whose
+corpus/instruments/capture-secret-scan.py replaces the frozen instrument. Patches below are base64
+so no scanner-shaped literal is written here; decode with: base64 -d X.patch.b64 | git apply
+
+
+== mutant A+D commit 1ba403e779a987fc0404fda52fea1e0bbb7c176c patch=mutant-A-D.patch.b64
+ pins=False rc=0
+   CAPABILITY-CHECK rev=1ba403e779a987fc0404fda52fea1e0bbb7c176c instrument_present=True
+   LIMB K1 pass selftest_rc=0 instrument_sha256=99051100062e214f51194cd779ff324f8baccbd4c2cee0c20d9be45c0d02871d gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+   LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+   LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+   LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+   LIMB K5 pass rows=1
+   CAPABILITY-CHECK-RESULT pass rc=0
+ pins=True rc=1
+   CAPABILITY-CHECK rev=1ba403e779a987fc0404fda52fea1e0bbb7c176c instrument_present=True
+   LIMB K1 FAIL selftest_rc=0 instrument_sha256=99051100062e214f51194cd779ff324f8baccbd4c2cee0c20d9be45c0d02871d gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+   LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+   LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+   LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+   LIMB K5 pass rows=1
+   CAPABILITY-CHECK-RESULT fail rc=1
+
+== mutant B commit d04205ee4ca346b64198a3933041d752d30af8fa patch=mutant-B.patch.b64
+ pins=False rc=0
+   CAPABILITY-CHECK rev=d04205ee4ca346b64198a3933041d752d30af8fa instrument_present=True
+   LIMB K1 pass selftest_rc=0 instrument_sha256=dfc0d13b3d08004dde57dc8522a6704f067dd33766b98fee2a1ffce56e8838dd gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+   LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+   LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+   LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+   LIMB K5 pass rows=1
+   CAPABILITY-CHECK-RESULT pass rc=0
+ pins=True rc=1
+   CAPABILITY-CHECK rev=d04205ee4ca346b64198a3933041d752d30af8fa instrument_present=True
+   LIMB K1 FAIL selftest_rc=0 instrument_sha256=dfc0d13b3d08004dde57dc8522a6704f067dd33766b98fee2a1ffce56e8838dd gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+   LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+   LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+   LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+   LIMB K5 pass rows=1
+   CAPABILITY-CHECK-RESULT fail rc=1

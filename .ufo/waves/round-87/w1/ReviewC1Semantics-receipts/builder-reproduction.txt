@@ -1,0 +1,11 @@
+# Frozen builder reproducibility (build-map.py at base) on a clone --shared
+# clone HEAD: d87b1b55a51d78411438e962a9abbebdd17930cd (landing; builder reads --rev from the clone)
+# command:
+#   TMPDIR=<scratch> python3 -B .ufo/waves/round-87/c1/build-map.py --lane <clone> --rev cd1f568a6be2656b5f5dc479eb90ef99b91131b5 --out rebuilt.json --excluded rebuilt-excl.json --work <scratch>
+
+MAP keys=83 excluded=10
+
+diff of sorted JSON vs frozen repair-map.json:
+MAP IDENTICAL (83 keys)
+diff of sorted JSON vs frozen excluded.json:
+EXCLUDED IDENTICAL (10 tokens)

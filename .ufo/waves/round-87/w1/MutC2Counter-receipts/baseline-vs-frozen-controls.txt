@@ -1,0 +1,39 @@
+# baseline re-implementation vs frozen recorded controls (c2-controls-r87.txt)
+# verdict vector = per-limb pass/FAIL + printed CAPABILITY-CHECK-RESULT line
+control do-nothing                 OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:FAIL,K2:FAIL,K3:FAIL,K4:FAIL,K5:FAIL mine=K1:FAIL,K2:FAIL,K3:FAIL,K4:FAIL,K5:FAIL
+control positive                   OK   recorded=CAPABILITY-CHECK-RESULT pass rc=0
+                                        mine    =CAPABILITY-CHECK-RESULT pass rc=0
+                                        limbs recorded=K1:pass,K2:pass,K3:pass,K4:pass,K5:pass mine=K1:pass,K2:pass,K3:pass,K4:pass,K5:pass
+forgery always-clean               OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:pass,K2:FAIL,K3:pass,K4:FAIL,K5:pass mine=K1:pass,K2:FAIL,K3:pass,K4:FAIL,K5:pass
+forgery gate-only                  OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:FAIL,K2:FAIL,K3:pass,K4:FAIL,K5:pass mine=K1:FAIL,K2:FAIL,K3:pass,K4:FAIL,K5:pass
+forgery allowlist bound to path    OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:FAIL,K2:pass,K3:FAIL,K4:FAIL,K5:pass mine=K1:FAIL,K2:pass,K3:FAIL,K4:FAIL,K5:pass
+forgery scope widened              OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:FAIL,K2:pass,K3:FAIL,K4:FAIL,K5:pass mine=K1:FAIL,K2:pass,K3:FAIL,K4:FAIL,K5:pass
+forgery whole-tree scope           OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:FAIL,K2:pass,K3:FAIL,K4:FAIL,K5:pass mine=K1:FAIL,K2:pass,K3:FAIL,K4:FAIL,K5:pass
+forgery allowlist refusal disabled OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:pass,K2:pass,K3:pass,K4:FAIL,K5:pass mine=K1:pass,K2:pass,K3:pass,K4:FAIL,K5:pass
+control empty allowlist            OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:pass,K2:pass,K3:FAIL,K4:pass,K5:pass mine=K1:pass,K2:pass,K3:FAIL,K4:pass,K5:pass
+control stale allowlist row        OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:pass,K2:pass,K3:FAIL,K4:pass,K5:pass mine=K1:pass,K2:pass,K3:FAIL,K4:pass,K5:pass
+control no SCORECARD row           OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:pass,K2:pass,K3:pass,K4:pass,K5:FAIL mine=K1:pass,K2:pass,K3:pass,K4:pass,K5:FAIL
+control instrument sha pin         OK   recorded=CAPABILITY-CHECK-RESULT fail rc=1
+                                        mine    =CAPABILITY-CHECK-RESULT fail rc=1
+                                        limbs recorded=K1:FAIL,K2:pass,K3:pass,K4:pass,K5:pass mine=K1:FAIL,K2:pass,K3:pass,K4:pass,K5:pass
+MISMATCHES=0

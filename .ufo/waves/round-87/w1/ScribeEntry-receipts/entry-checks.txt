@@ -1,0 +1,180 @@
+# ScribeEntry receipts — round-87 attempt 1 (cwd: /home/vgpnk/Projects/shokunin/kasegi-shokunin)
+# every command below ran with python3 -B and TMPDIR=/fast/scratch/hyaku/kasegi-r87/ScribeEntry; no output line carries a mined value
+
+## revisions
+$ git log --oneline -3 && git status --porcelain -- corpus/SOURCES.md && git show HEAD:corpus/SOURCES.md | awk -F'|' '/^\|[[:space:]]*S12[45][[:space:]]*\|/ {print $2"|status="$9"|used-by="$12}'
+132e16c round-87: C2 landing — capability capture-secret-scan (instrument + digest-bound allowlist byte-equal to the frozen candidates; SCORECARD capabilities row)
+d87b1b5 round-87: C1 landing — frozen tranche-2 map applied (83 snapshot citations repointed in 5 knowledge files)
+afb13a8 round-87: freeze — claims C1 (knowledge tranche 2, 83 keys, 596/1720 -> 678/1719) and C2 (capability capture-secret-scan), counters, maps, candidates, executed controls; S124/S125 captured and queued
+ M corpus/SOURCES.md
+ S124 |status= queued |used-by= — 
+ S125 |status= queued |used-by= —
+
+
+## capture-digests
+$ sha256sum corpus/source-snapshots/round-86/S122.txt corpus/source-snapshots/round-87/S124.txt corpus/source-snapshots/round-87/S125.txt
+08cab370e7f153d051719bfe098cb140d0d68e9da99e27caacfa0b4228a72eb5  corpus/source-snapshots/round-86/S122.txt
+88d4f703cef1b9d1cead11053dd9f02692bd4629a7110e42caecc74a2fc2f1cb  corpus/source-snapshots/round-87/S124.txt
+65c99351e731b743f18243e93613da7e05b4030d5fe2060a6cc484a320de55fe  corpus/source-snapshots/round-87/S125.txt
+
+
+## source-recheck-S124
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-87/manifest.json --source S124; echo rc=$?
+S124:sha256 OK
+S124:Q01-session-token OK occurrences=1 anchor=84-ok
+S124:Q02-hold-session-token OK occurrences=1 anchor=85-ok
+S124:Q03-example-key-id OK occurrences=1 anchor=409-ok
+rc=0
+
+
+## source-recheck-S125
+$ python3 -B corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-87/manifest.json --source S125; echo rc=$?
+S125:sha256 OK
+S125:Q01-prefix-intro OK occurrences=1 anchor=303-ok
+S125:Q02-sts-key OK occurrences=1 anchor=331-ok
+S125:Q03-sts-session OK occurrences=1 anchor=332-ok
+rc=0
+
+
+## scan-87-captures
+$ python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-87/S124.txt corpus/source-snapshots/round-87/S125.txt; echo rc=$?
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=2 unused_allow=15 rc=0
+rc=0
+
+
+## scan-S122
+$ python3 -B corpus/instruments/capture-secret-scan.py --files corpus/source-snapshots/round-86/S122.txt; echo rc=$?
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+rc=0
+
+
+## scan-selftest
+$ python3 -B corpus/instruments/capture-secret-scan.py --selftest | tail -1; echo rc=$?
+SELFTEST-RESULT pass cases=19
+rc=0
+
+
+## scan-entry-candidate
+$ python3 -B corpus/instruments/capture-secret-scan.py --files .ufo/waves/round-87/w1/ScribeEntry-candidate/presigned-url-credentials-in-captured-evidence.md; echo rc=$?
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+rc=0
+
+
+## S122-shape-census
+$ python3 -B -c "import json;raw=open('corpus/source-snapshots/round-86/S122.txt').read();d=json.loads(raw);print('top_keys=%d summaries=%d attachments=%d/%d marker=%d ppu_key=%d xamz=%d' % (len(d),len(d['summaries']),len(d['attachments']),len(d['summaries'][0]['attachments']),raw.count('[presigned-query-redacted-r86]'),raw.count('profile_picture_urls'),raw.count('X-Amz-')))" 
+top_keys=51 summaries=2 attachments=0/0 marker=2 ppu_key=3 xamz=0
+
+
+## quote-counts
+$ for q in "Temporary (AWS STS) access key" "IDs use this prefix, but are unique only in combination with the secret" "X-Amz-Security-Token to the Authorization header or include it in the" "IAM uses the following prefixes to indicate what type of resource each unique ID applies" "Instead of using long-term credentials to sign a request, you can use temporary"; do printf '%s => %s\n' "$q" "$(grep -oF "$q" corpus/source-snapshots/round-87/S12[45].txt | wc -l)"; done
+Temporary (AWS STS) access key => 1
+IDs use this prefix, but are unique only in combination with the secret => 1
+X-Amz-Security-Token to the Authorization header or include it in the => 1
+IAM uses the following prefixes to indicate what type of resource each unique ID applies => 1
+Instead of using long-term credentials to sign a request, you can use temporary => 1
+
+
+## provider-scope-and-prefix-rows
+$ grep -ciE 'azure|shared access signature|google cloud|gcs' corpus/source-snapshots/round-87/S124.txt corpus/source-snapshots/round-87/S125.txt; grep -cE '^(AKIA|ASIA|AIDA|AROA|ABIA|ACCA|AGPA|AIPA|ANPA|ANVA|APKA|ASCA)$' corpus/source-snapshots/round-87/S125.txt; grep -n 'AKIA' corpus/source-snapshots/round-87/S124.txt | cut -c1-80
+corpus/source-snapshots/round-87/S124.txt:0
+corpus/source-snapshots/round-87/S125.txt:0
+12
+385:Credential=AKIAIOSFODNN7EXAMPLE/20220830/us-east-1/ec2/aws4_request,
+395:Credential=AKIAIOSFODNN7EXAMPLE/20220830/s3/aws4_request,
+409:X-Amz-Credential=AKIAIOSFODNN7EXAMPLE/20220830/us-east-1/ec2/aws4_request&
+422:X-Amz-Credential=AKIAIOSFODNN7EXAMPLE/20220830/s3/aws4_request&
+
+
+## window-arithmetic
+$ python3 -B -c "from datetime import datetime,timedelta;print('valid_until=%s' % (datetime.fromisoformat('2026-11-07T00:58:29')+timedelta(seconds=3600)).isoformat())" 
+valid_until=2026-11-07T01:58:29
+
+
+## entry-bare-token-check
+$ grep -coE '(^|[^/A-Za-z0-9_.-])S[0-9]{3,}\.txt' .ufo/waves/round-87/w1/ScribeEntry-candidate/presigned-url-credentials-in-captured-evidence.md; echo rc=$?
+0
+rc=1
+
+
+## entry-recheck-foreign-cwd
+$ sed -n 's/^recheck: //p' .ufo/waves/round-87/w1/ScribeEntry-candidate/presigned-url-credentials-in-captured-evidence.md > /fast/scratch/hyaku/kasegi-r87/ScribeEntry/entry-recheck.sh; bash -n /fast/scratch/hyaku/kasegi-r87/ScribeEntry/entry-recheck.sh; echo bashn_rc=$?; cd /tmp && TMPDIR=/fast/scratch/hyaku/kasegi-r87/ScribeEntry bash /fast/scratch/hyaku/kasegi-r87/ScribeEntry/entry-recheck.sh; echo foreign_cwd_rc=$?
+bashn_rc=0
+S124:sha256 OK
+S124:Q01-session-token OK occurrences=1 anchor=84-ok
+S124:Q02-hold-session-token OK occurrences=1 anchor=85-ok
+S124:Q03-example-key-id OK occurrences=1 anchor=409-ok
+S125:sha256 OK
+S125:Q01-prefix-intro OK occurrences=1 anchor=303-ok
+S125:Q02-sts-key OK occurrences=1 anchor=331-ok
+S125:Q03-sts-session OK occurrences=1 anchor=332-ok
+S122:strings=2 pre_redaction_sha256=ceb01841a5144d72fb744f733b99a3fac792bf4197038fe9ec686ef57b418ec1 captured_xamz=0
+foreign_cwd_rc=0
+
+
+## registry-census
+$ grep -cE '^\|[[:space:]]*S[0-9]{3,}[[:space:]]*\|' corpus/SOURCES.md; awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ {s=$9; gsub(/[[:space:]]/,"",s); n[s]++} END{for(k in n) printf "%s=%d ", k, n[k]; print ""}' corpus/SOURCES.md; awk -F'|' '/^\|[[:space:]]*S[0-9][0-9][0-9]+[[:space:]]*\|/ && NF==13 {s=$9; gsub(/[[:space:]]/,"",s); if (s=="mined") {n=split($12, a, /[,;]/); for (j=1;j<=n;j++) {p=a[j]; gsub(/^[[:space:]]+|[[:space:]]+$/,"",p); if (p!="" && p!="—") print p}}}' corpus/SOURCES.md | while read -r p; do [ -e "$p" ] || echo "missing: $p"; done; echo usedby_loop_done
+125
+mined=105 queued=1 rejected=19 
+usedby_loop_done
+
+## FC-2-extended-census (the block quoted in the entry prints this)
+$ python3 -B -c "...profile-picture-urls walk..."
+ppu_fields=6 signed=2 lens=[92, 211, 211, 92, 92, 92] top_keys=51 summaries=2 attachments=0/0 marker=2 ppu_key=3 xamz=0
+
+## knowledge-file-counts
+$ for r in cd1f568a6be2656b5f5dc479eb90ef99b91131b5 afb13a88e6fbc8e2f8a0c11f9cfbfde77e907e69 d87b1b55a51d78411438e962a9abbebdd17930cd 132e16c588a2424c06b5ca15ea01fce1ee9a396d; do printf '%s %s\n' "$r" "$(git ls-tree -r --name-only $r corpus/knowledge | grep -c '\.md$')"; done; printf 'treedir %s\n' "$(ls corpus/knowledge/*.md | wc -l)"
+cd1f568a6be2656b5f5dc479eb90ef99b91131b5 98
+afb13a88e6fbc8e2f8a0c11f9cfbfde77e907e69 98
+d87b1b55a51d78411438e962a9abbebdd17930cd 98
+132e16c588a2424c06b5ca15ea01fce1ee9a396d 98
+treedir 98
+
+
+## entry-cite-tokens
+$ grep -oE 'corpus/source-snapshots/[A-Za-z0-9/._-]+\.txt(:[0-9]+(-[0-9]+)?)?' .ufo/waves/round-87/w1/ScribeEntry-candidate/presigned-url-credentials-in-captured-evidence.md | sort | uniq -c | sort -rn
+      3 corpus/source-snapshots/round-87/S125.txt:332-333
+      3 corpus/source-snapshots/round-86/S122.txt
+      2 corpus/source-snapshots/round-87/S125.txt
+      2 corpus/source-snapshots/round-87/S124.txt:409
+      2 corpus/source-snapshots/round-87/S124.txt
+      2 corpus/source-snapshots/round-86/S122.txt:1
+      1 corpus/source-snapshots/round-87/S125.txt:331
+      1 corpus/source-snapshots/round-87/S125.txt:330-333
+      1 corpus/source-snapshots/round-87/S125.txt:318-319
+      1 corpus/source-snapshots/round-87/S125.txt:304-305
+      1 corpus/source-snapshots/round-87/S125.txt:303-305
+      1 corpus/source-snapshots/round-87/S124.txt:86-89
+      1 corpus/source-snapshots/round-87/S124.txt:84-85
+      1 corpus/source-snapshots/round-87/S124.txt:81-89
+      1 corpus/source-snapshots/round-87/S124.txt:81-82
+
+
+## wave-dir-scan
+$ python3 -B corpus/instruments/capture-secret-scan.py --files .ufo/waves/round-87/w1/ScribeEntry-candidate/presigned-url-credentials-in-captured-evidence.md .ufo/waves/round-87/w1/ScribeEntry-candidate/sources-used-by-draft.md; echo rc=$?
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=0 files=0 allowed=0 unused_allow=17 rc=0
+rc=0
+
+## meter-reproduction (resolve.collect/resolve.classify over a copy of corpus/knowledge; the frozen counter is the authority; this is a cross-check)
+$ cd /home/vgpnk/Projects/shokunin/kasegi-shokunin || exit 9
+> S=/fast/scratch/hyaku/kasegi-r87/ScribeEntry
+> rm -rf "$S/kmfull" "$S/kmplus"
+> mkdir -p "$S/kmfull/corpus/knowledge" "$S/kmplus/corpus/knowledge"
+> cp corpus/knowledge/*.md "$S/kmfull/corpus/knowledge/"
+> cp corpus/knowledge/*.md "$S/kmplus/corpus/knowledge/"
+> cp .ufo/waves/round-87/w1/ScribeEntry-candidate/presigned-url-credentials-in-captured-evidence.md "$S/kmplus/corpus/knowledge/"
+> TMPDIR="$S" python3 -B -c 'import sys,os,collections
+> sys.path.insert(0,"corpus/instruments")
+> import resolve as R
+> mirror=os.path.expanduser(R.MIRROR_ROOT)
+> def m(d):
+>     _,c=R.collect(d); return dict((t,R.classify(t,".",mirror)[0]) for t in sorted(c))
+> a=m(os.environ["KM_A"]); b=m(os.environ["KM_B"])
+> new=set(b)-set(a)
+> def rate(x): return (sum(1 for v in x.values() if v!="GONE"),len(x))
+> print("tree-only  %d/%d %s" % (rate(a)+(dict(collections.Counter(a.values())),)))
+> print("with-entry %d/%d %s" % (rate(b)+(dict(collections.Counter(b.values())),)))
+> print("new_tokens=%d new_GONE=%d" % (len(new),sum(1 for t in new if b[t]=="GONE")))'
+>
+tree-only  679/1719 {'GONE': 1040, 'INTERNAL': 657, 'RESOLVES': 22}
+with-entry 704/1754 {'GONE': 1050, 'INTERNAL': 682, 'RESOLVES': 22}
+new_tokens=35 new_GONE=10

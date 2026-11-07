@@ -1,0 +1,54 @@
+# S041 exclusion — per-token evidence (round-87 C1)
+
+## Capture files: the basename is held by three tracked files under corpus/source-snapshots/
+corpus/source-snapshots/round-26/S041.txt      sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 lines=2354
+corpus/source-snapshots/round-28/S041.txt      sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 lines=2354
+corpus/source-snapshots/round-30/S041.txt      sha256=e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47 lines=2354
+byte identity: round-26 == round-28 == round-30 (cmp silent; one capture stored three times)
+
+## Manifest rows (id/path/sha256)
+round-26  S041.txt   e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+round-28  S041.txt   e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+round-30  S041.txt   e18acbf99d137c262c1f08c6f0f92887236641ec8abcccfc7470247242f5ab47
+
+## Per-citing-file binding (each entry names the capture it cites)
+iso-29147-and-30111-division-of-labour.md:2: source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 付録6 §2 p.45, division paragraph L1667-1672 and 図1 L1676-1678 (capture corpus/source-snapshots/round-26/S041.txt)
+iso-29147-and-30111-division-of-labour.md:4: recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-26/manifest.json --source S041
+iso-29147-divergence-and-clause-crosswalk.md:3: source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月 (JPCERT/CC), 付録6「ソフトウエア製品の脆弱性の取扱いに関する国際標準への対応」 §2 (L1666-1678), §3 (L1679-1690), §4 (L1691-1993), 参考1 (L1996-2079), 参考2…
+iso-29147-divergence-and-clause-crosswalk.md:5: recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-26/manifest.json --source S041
+japanese-domestic-disclosure-workflow.md:3: source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 情報セキュリティ早期警戒パートナーシップガイドライン 2026年10月, 注釈4 起算日の定義 (L340), Ⅳ．3) 公表日 45日目安 (L648-653), Ⅳ．4) 公表日決定後の対応 (L658-660), Ⅳ．11) 取下げ (L430), 付録2 図３/図４ (L1157, L1281, L1…
+japanese-domestic-disclosure-workflow.md:6: recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-28/manifest.json --source S041 && python3 corpus/instruments/source-recheck.py --ma…
+japanese-severity-vocabulary-and-impact-model.md:5: source: S041 — https://www.jpcert.or.jp/vh/partnership_guideline2026.pdf — 付録4 脆弱性の影響度に関する考え方について, p.40, lines 1455–1501 of `corpus/source-snapshots/round-30/S041.txt`
+japanese-severity-vocabulary-and-impact-model.md:8: recheck: cd /home/vgpnk/Projects/shokunin/kasegi-shokunin && python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-30/manifest.json --source S046 && python3 corpus/instruments/source-recheck.py --ma…
+
+## The six excluded tokens (each in iso-29147-divergence-and-clause-crosswalk.md, which binds round-26)
+
+S041.txt  occurrence: iso-29147-divergence-and-clause-crosswalk.md:64
+  sentence: - `S041.txt` is a pdftotext capture fetched 2026-10-25T12:34:17Z (capture log in `.ufo/waves/round-26/`); sha256 `e18acbf9…` binds the bytes. Availability is proven on th
+  round-26 capture named in the same bullet: capture log .ufo/waves/round-26/, sha256 e18acbf9…
+
+S041.txt:1680-1681  occurrence: iso-29147-divergence-and-clause-crosswalk.md:13
+  sentence: JPCERT/CC's 2026-10 P-guideline (情報セキュリティ早期警戒パートナーシップガイドライン) states its own account of where its early-warning framework differs from ISO/IEC 29147:2014. The divergence i
+  round-26 L1680: これらの国際標準は、情報セキュリティ早期警戒パートナーシップの取組み
+  round-26 L1681: と比較して、大きな矛盾や不整合はありません。したがって、情報セキュリテ
+
+S041.txt:1792-1867  occurrence: iso-29147-divergence-and-clause-crosswalk.md:34
+  sentence: 付録6 §4(2) reproduces ISO/IEC 29147:2014 clause 6 in English with a Japanese rendering (`S041.txt:1792-1867`):
+  round-26 L1792: (2) 脆弱性公開ポリシー
+  round-26 L1867: （出所：ISO/IEC 29147:2014 を元に作成）
+
+S041.txt:1868  occurrence: iso-29147-divergence-and-clause-crosswalk.md:54
+  sentence: - **Rejected: "The P-guideline requires vendors to adopt a vulnerability disclosure policy."** The guideline states the opposite in its own words (`S041.txt:1868`). The g
+  round-26 L1868: P ガイドラインでは、ベンダに脆弱性公開ポリシーの策定を求めていません
+
+S041.txt:1868-1870  occurrence: iso-29147-divergence-and-clause-crosswalk.md:13
+  sentence: JPCERT/CC's 2026-10 P-guideline (情報セキュリティ早期警戒パートナーシップガイドライン) states its own account of where its early-warning framework differs from ISO/IEC 29147:2014. The divergence i
+  round-26 L1868: P ガイドラインでは、ベンダに脆弱性公開ポリシーの策定を求めていません
+  round-26 L1870: 部を公開することを求めています。
+
+S041.txt:1996-2079  occurrence: iso-29147-divergence-and-clause-crosswalk.md:43
+  sentence: 参考1 (`S041.txt:1996-2079`, print pages 53-54) maps ISO/IEC 29147:2014's whole clause structure onto the P-guideline's sections: clause 1 適用範囲 → Ⅲ (L2001-2002), clause 3 用
+  round-26 L1996: 参考 1 ISO/IEC 29147:2014 と情報セキュリティ早期警戒パートナーシップガ
+  round-26 L2079: 文献目録
+
+All six anchors lie inside the 2354-line capture (max 2079).

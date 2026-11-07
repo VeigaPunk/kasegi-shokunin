@@ -1,0 +1,17 @@
+# C2 sourced-claim registry state (question c)
+## at the C2 landing 132e16c5: status and used-by cells of S124/S125
+S124 status=queued used-by=—
+S125 status=queued used-by=—
+
+## working tree (UNCOMMITTED as of this review): git diff corpus/SOURCES.md
++- Round 87 landing: S124 status `queued` → `mined`; used-by `—` → `corpus/instruments/capture-secret-scan.py`. S125 status `queued` → `mined`; used-by `—` → `corpus/instruments/capture-secret-scan.py`. Registry 125 rows; no other row's status, recheck or used-by cell changed.
++- Round 87 correction record (r86 spot-check routed defect 2): in round 86 the S122 `scope` cell was edited in place after the row was pushed `queued` in freeze `252df0c9` (old: "not the bounty amount, which the record leaves null"; new: "not a bounty amount: the record carries no bounty-amount fie
+
+## nothing in the repo invokes the scanner before commit
+tracked references to capture-secret-scan at 132e16c5, excluding the round-87 wave dir:
+  132e16c5:SCORECARD.md
+  132e16c5:corpus/instruments/capture-secret-allow.tsv
+  132e16c5:corpus/instruments/capture-secret-scan.py
+  132e16c5:corpus/source-snapshots/round-87/manifest.json
+
+## the gate imports no scanner (SECRET_PATTERNS is duplicated, the scanner is not called)

@@ -1,0 +1,28 @@
+M01-bybase-scope-drop	        if p.startswith("corpus/source-snapshots/"):\n	        if True:\n
+M02-bybase-scope-widen-corpus	        if p.startswith("corpus/source-snapshots/"):\n	        if p.startswith("corpus/"):\n
+M03-uniqueness-weaken	bybase.get(name) == [path]	path in bybase.get(name, [])
+M04-path-prefix-drop	path.startswith("corpus/source-snapshots/")\n              and path.endswith("/" + name)	True\n              and path.endswith("/" + name)
+M05-gone-clause-drop	 and bcls.get(k) == "GONE")	)
+M06-internal-clause-drop	and R.classify(v, lane, mirror)[0] == "INTERNAL" and 	and True and 
+M07-QUOTED-empty	QUOTED = frozenset({"S020.txt", "S021.txt", "S023.txt", "S025.txt"})	QUOTED = frozenset()
+M08-q_moved-removed	    q_moved = sorted(t for t, c in bcls.items() if c == "GONE" and KEY.match(t)\n                     and KEY.match(t).group(1) in QUOTED and acls.get(t) != "GONE")\n	    q_moved = []\n
+M09-q_in_map-removed	q_in_map = sorted(k for k in rmap if KEY.match(k) and KEY.match(k).group(1) in QUOTED)	q_in_map = []
+M10-M2-subset-to-equality	removed == keys and added <= vals	removed == keys and added == vals
+M11-M2-removed-weaken	("M2", removed == keys and added <= vals	("M2", keys <= removed and added <= vals
+M12-M2-stray-added-drop	 and added <= vals	
+M13-M3-replace-first	fwd = fwd.replace("`%s`" % k, "`%s`" % v)	fwd = fwd.replace("`%s`" % k, "`%s`" % v, 1)
+M14-M3-hit-weaken	bad == 0 and hit == keys	bad == 0 and hit <= keys
+M15-M3-linecount-drop	            if len(bl) != len(al):\n                bad += 1\n                continue\n	            if False:\n                bad += 1\n                continue\n
+M16-M3-samefiles-always	same_files = set(bfiles) == set(afiles)	same_files = True
+M17-M5-bound-loose	1 <= lo_i <= hi_i <= nlines	1 <= lo_i <= hi_i <= nlines + 1
+M18-M5-bound-tighten	1 <= lo_i <= hi_i <= nlines	1 <= lo_i <= hi_i < nlines
+M19-M5-coupling-drop	not m5bad and not m4bad	not m5bad
+M20-M1-compare-relax	(an, am) == (tn, tm), "after=%d/%d"	an >= tn, "after=%d/%d"
+M21-M1-always-pass	limbs.append(("M1", (an, am) == (tn, tm), "after=%d/%d" % (an, am)))	limbs.append(("M1", True, "after=%d/%d" % (an, am)))
+M22-M6-skip	    if a.map_sha256:\n	    if False:\n
+M23-M6-invert	got == a.map_sha256.lower()	got != a.map_sha256.lower()
+M24-exit-invert	return 0 if allok else 1\n	return 1 if allok else 0\n
+M25-allok-always	allok = all(ok for _, ok, _ in limbs)	allok = True
+M26-rate-gone-to-internal	if c != "GONE"	if c == "INTERNAL"
+M27-scope-filter-widen	if p.endswith(".md") and p.count("/") == 2]	if p.endswith(".md") and p.count("/") >= 2]
+M28-M4-tracked-guard-drop	not m4bad and bool(tracked)	not m4bad

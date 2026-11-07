@@ -1,0 +1,109 @@
+counter_sha256=4fba0cbe98fff8524efaf9f8ccd8879a133632260820ee611b7253f3fccfead7 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6 allow_sha256=f9fbd7e7e56cb107081f00bf0e4c5af4e717dea801e86710b8489a932a0efc82 base=cd1f568a6be2656b5f5dc479eb90ef99b91131b5
+== control do-nothing: base, no instrument (expected fail)
+CAPABILITY-CHECK rev=cd1f568a6be2656b5f5dc479eb90ef99b91131b5 instrument_present=False
+LIMB K1 FAIL missing=capture-secret-scan.py,capture-secret-allow.tsv
+LIMB K2 FAIL instrument-absent
+LIMB K3 FAIL instrument-absent
+LIMB K4 FAIL instrument-absent
+LIMB K5 FAIL rows=0
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control positive: candidate placed (expected pass)
+CAPABILITY-CHECK rev=85959d59b2a6aebfd2001d53b72d6d2fedb91115 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT pass rc=0
+rc=0
+== forgery always-clean scanner (expected fail K2,K4)
+CAPABILITY-CHECK rev=77b57e3084aae43d7372e62452b6330fbf7b549f instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=43d9bb5eca8ac932e07bd8b3b8f5ce853d3dd3a4a5f513f0c28e464ee071c323 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=0 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=0 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery gate-only scanner, no AWS shapes (expected fail)
+CAPABILITY-CHECK rev=f510eecc3236f2c420b7c491637c664f4742adf2 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=b484795bd381cf57ebde1fa8fdfd09424ab9fa8356d65e02b2df2ea8e0f35f26 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 FAIL rc=1 sts_files=0 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=corpus/source-snapshots/round-1/S001.txt|aws-access-key-id,corpus/source-snapshots/round-1/S001.txt|aws-sts-session-token,w/x-receipts/live-a.json|aws-access-key-id extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery allowlist bound to path+shape, not value (expected fail K4)
+CAPABILITY-CHECK rev=6c0d8b6a9db767544d44061cee8caee30e676393 instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=cfbc9f1a6665134e7e3b8f83ac8f0e3c598aae6173c84110fc9a5a4428f3a51f gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=13
+LIMB K4 FAIL rc=1 missing=w/y-receipts/fp-other.json|credential extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery scope widened to all of corpus/ (expected fail K4)
+CAPABILITY-CHECK rev=d2c4180cdfea61cc455be38b8e45740c36a47f9f instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=bf2774c01cfca9b5ef2acb1d9bad6fdf7812905d18eb387b745b95b87be94d07 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=scanned=1857,hits=4,files=2,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/knowledge/k.md|aws-sts-session-token,corpus/knowledge/k.md|credential sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery whole-tree scope, >16k blobs (expected fail K3/K4; also proves read_blobs no longer deadlocks past ~1,560 oids, the defect this control found in the first candidate)
+CAPABILITY-CHECK rev=364a70140eb2d35983276dfccdaaeaf1a285a04b instrument_present=True
+LIMB K1 FAIL selftest_rc=1 instrument_sha256=27058f9b48ed6165e410da3e2ae23983cb8aeca7922ea4c484470fd5bec89611 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=scanned=16572,hits=35,files=29,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=corpus/knowledge/k.md|aws-sts-session-token,corpus/knowledge/k.md|credential sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== forgery allowlist refusal disabled (expected fail)
+CAPABILITY-CHECK rev=38c0b2e2330379f7b4c897b851089c8e90b0955b instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=369da02723846a8fc35de1b81e9b531272343f4ecbf16b36da7252b113e2eb1f gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 FAIL rc=1 missing=none extra=none sts_allow_rc=1
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control empty allowlist (expected fail K3)
+CAPABILITY-CHECK rev=f15935d21f06c8bd03a540a0dbd1e4babf949be7 instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=1 summary=scanned=1319,hits=4,files=4,allowed=0,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control stale allowlist row (expected fail K3)
+CAPABILITY-CHECK rev=0b8ed9cf9954075a7cb2117444f30a82544ac7cb instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 FAIL rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=1
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control no SCORECARD row (expected fail K5)
+CAPABILITY-CHECK rev=561681d6d4efad71156fc444926313e6cc5fa84c instrument_present=True
+LIMB K1 pass selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+LIMB K5 FAIL rows=0
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1
+== control instrument sha pin: positive tree, wrong pin (expected fail K1)
+CAPABILITY-CHECK rev=85959d59b2a6aebfd2001d53b72d6d2fedb91115 instrument_present=True
+LIMB K1 FAIL selftest_rc=0 instrument_sha256=b2bf9d65e0a2bea99003ea7fdb3aec237449abb4ccd301f45b3ce496d161c6d1 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+LIMB K2 pass rc=1 sts_files=2 oracle=2 oracle_matches_expected=True
+LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+LIMB K5 pass rows=1
+CAPABILITY-CHECK-RESULT fail rc=1
+rc=1

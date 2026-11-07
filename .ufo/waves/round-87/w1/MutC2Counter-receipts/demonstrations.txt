@@ -1,0 +1,68 @@
+# Isolating controls executed for the six semantic survivors (four K-limb controls, one oracle-drift control)
+# Each: the frozen counter's verdict vs the survivor's verdict on the same scenario clone.
+# Fixtures and forged instruments stayed in scratch; only digests and scan summary lines are recorded.
+
+## D1 kills M06-k3-drop-allowed  (scenario d06: clean capture scope + empty allowlist -> allowed=0, unused_allow=0, hits=0)
+#   build: git clone --shared <lane>; checkout cd1f568a; place candidate scanner + empty allowlist + row 87;
+#          git rm .ufo/waves/round-85/w1/ExecC1Hunt-receipts/gone.json .ufo/waves/round-85/w1/ExecC1Hunt-receipts/hunt2.json
+#                 corpus/source-snapshots/round-49/S078.txt; rm corpus/source-snapshots/round-87/S124.txt; commit
+#   clone rev 2afab6374a8df457f7cdf75a15a33e9f6348874f
+frozen  LIMB K3 FAIL rc=0 summary=scanned=1315,hits=0,files=0,allowed=0,unused_allow=0
+frozen  LIMB K5 pass rows=1
+frozen  CAPABILITY-CHECK-RESULT fail rc=1
+mutant  LIMB K3 pass rc=0 summary=scanned=1315,hits=0,files=0,allowed=0,unused_allow=0
+mutant  LIMB K5 pass rows=1
+mutant  CAPABILITY-CHECK-RESULT pass rc=0
+base-d06.txt:EXIT=1
+M06-d06.txt:EXIT=0
+
+## D2 kills M09-k5-drop-cell  (scenario d09: SCORECARD row last cell = 86)
+#   clone rev 40ec50932ed414ed2a279237e187d9dc01fc7381
+frozen  LIMB K5 FAIL rows=1
+frozen  CAPABILITY-CHECK-RESULT fail rc=1
+mutant  LIMB K5 pass rows=1
+mutant  CAPABILITY-CHECK-RESULT pass rc=0
+base-d09.txt:EXIT=1
+M09-d09.txt:EXIT=0
+
+## D3 kills M16-k5-any-rows  (scenario d16: two capture-secret-scan rows, 87 then 86)
+#   clone rev 911d8c08d4200d2b43edbc67547da02e227de5b3
+frozen  LIMB K5 FAIL rows=2
+frozen  CAPABILITY-CHECK-RESULT fail rc=1
+mutant  LIMB K5 pass rows=2
+mutant  CAPABILITY-CHECK-RESULT pass rc=0
+base-d16.txt:EXIT=1
+M16-d16.txt:EXIT=0
+
+## D4 kills M14-k3-drop-hits  (scenario d14: instrument prints one HIT line on a zero-hit scan while reporting hits=0 and exiting 0)
+#   fixture scanner sha256 405251a131beaa190a7f4ece2cf84159ede592636d70dc0927f47aeb90d225b1
+#   clone rev 74f94711e28a526d725d97ba18bd6cffdff32046
+frozen  LIMB K3 FAIL rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+frozen  CAPABILITY-CHECK-RESULT fail rc=1
+mutant  LIMB K3 pass rc=0 summary=scanned=1319,hits=0,files=0,allowed=18,unused_allow=0
+mutant  CAPABILITY-CHECK-RESULT pass rc=0
+base-d14.txt:EXIT=1
+M14-d14.txt:EXIT=0
+
+## D5 kills M12-k2-drop-expected  (scenario d12: oracle drift + under-reporting scanner)
+#   Two coordinated forgeries: (a) the scanner prints only the first aws-sts-session-token HIT when the
+#   rev is 252df0c9 (summary counts unchanged, exit 1); (b) a PATH shim answers the counter's
+#   'git -C <lane> grep -l -E <oracle-re> 252df0c9 --' with one history path and delegates every other
+#   git call to the real binary. Oracle then holds 1 path while HISTORY_EXPECTED holds 2.
+#   fixture scanner sha256 ccae10486bb42ee466e2acd6a3512f485f2cfc8a4cabcb3c029fe20b88675454
+#   clone rev 23628a73be20c25733895df4b22be7d40c35f53c
+frozen  LIMB K1 pass selftest_rc=0 instrument_sha256=ccae10486bb42ee466e2acd6a3512f485f2cfc8a4cabcb3c029fe20b88675454 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+frozen  LIMB K2 FAIL rc=1 sts_files=1 oracle=1 oracle_matches_expected=False
+frozen  LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+frozen  CAPABILITY-CHECK-RESULT fail rc=1
+mutant  LIMB K1 pass selftest_rc=0 instrument_sha256=ccae10486bb42ee466e2acd6a3512f485f2cfc8a4cabcb3c029fe20b88675454 gate_sha256=8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+mutant  LIMB K2 pass rc=1 sts_files=1 oracle=1 oracle_matches_expected=False
+mutant  LIMB K4 pass rc=1 missing=none extra=none sts_allow_rc=2
+mutant  CAPABILITY-CHECK-RESULT pass rc=0
+base-d12b.txt:EXIT=1
+M12-d12b.txt:EXIT=0
+
+## Not killable with the frozen interface: M03-oracle-regex-weak and M19-oracle-header-only
+#   The counter hardcodes HISTORY_REV and derives the oracle with git grep at that commit; every control
+#   clones the same object store, so the oracle file set is invariant. Both mutants keep that set ==
+#   HISTORY_EXPECTED (2 paths) and pass all 12 battery scenarios.
