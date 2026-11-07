@@ -1,0 +1,17 @@
+== K5 ==
+rows starting '| capture-secret-scan |': 1
+row307 cell5=[ 87 ]
+separator window `[^\n]{0,8}[:=][^\n]{0,8}`
+gitlab-session-cookie
+== K6 ==
+3:source: S140 — GitLab secret-detection rules, `rules/mit/gitlab/gitlab.toml` at commit 59ada1f4, lines 291-294, 478-481, 495-498 and 547-551 (capture `corpus/source-snapshots/round-94/S140.txt`, sha256 `f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c`, 563 lines, example values structurally redacted, line numbering preserved); S144 — GitLab Docs, Security — Tokens, https://docs.gitlab.com/security/tokens/ (capture `corpus/source-snapshots/round-96/S144.txt:356` and `:362`, the prefix table's `glcbt-` and `_gitlab_session=` rows); S150 — GitLab secret-detection-rules merge request !151, the assignment-context generator, https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/merge_requests/151 (the MR description's "Generated Regex" block, HTTP 200, 128,120 bytes, sha256 `aa60d7af465cad03b64259362dfa862a8d5c3176ebc2e6b5909a38daddea11e8`); S148 — GitLab secret-detection rule prose, `rules/mit/gitlab/gitlab_session_cookie.md` at commit 59ada1f4 (https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab_session_cookie.md/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39, 1,028 bytes / 23 lines / sha256 `b50856e4…`, line 6); S149 — the same repository's per-rule prose for the two IAM forms, `gitlab_iam_refresh_token.md` (1,190 bytes / 26 lines / sha256 `9b37df1e…`, line 5) and `gitlab_iam_authorization_code.md` (1,322 bytes / 27 lines / sha256 `52348dd6…`, line 5)
+4:verified-at: 2026-11-07 (both captures re-read at their pinned digests; the S140 live `/-/raw/` fetch answered HTTP 403 again this round — a Cloudflare challenge page, 6,078 bytes, 2026-11-07T20:54:03Z, receipt `.ufo/waves/round-98/l1/source-reopen-r98.txt` — so the committed capture is the citation base; S148/S149 were fetched live via the repository-files API, HTTP 200, at their recorded digests)
+14:  already holds, because the underscore separator is mandatory;
+21:- the assignment context is a *window*, not a separator list: the generator
+22:  expands `assignmentContext` to `<keyword>.{0,8}[:=].{0,8}<value>` (S150), so
+38:| `gitlab-session-cookie` | `_gitlab_session` context, S140's assignment-context separator `<keyword>.{0,8}[:=].{0,8}`, optional `cell-<N>-`, 64 lower-case hex | 549-551 | S144:362 (`_gitlab_session=`), S148:6 (the value's length and alphabet), S150 (the separator window) |
+52:S148:6 — `The value is a 64-character hexadecimal session ID, with an optional \`cell-<ID>-\` prefix.`
+69:corpus/instruments/capture-secret-scan.py --selftest` covers twelve separator
+== probe payload provenance ==
+receipt_lines=12 probe_payloads=12 byte_identical=True
+landing_lines_with_marker=12

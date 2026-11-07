@@ -1,0 +1,38 @@
+Fixture (scratch): git repo D with committed symlinks (mode 120000):
+  link    -> ../outside-abs        (relative; in the extract resolves to extract-<rev>/outside-abs)
+  abslink -> $S/outside-abs        (absolute)
+SKILL.md cites: `link/secret.md`, `abslink/secret.md`, `../outside/secret.md`,
+`link/../outside2/secret.md`, `corpus/real.md`.
+$ git -C "$D" rev-parse --show-toplevel   -> $D
+$ git -C "$D" ls-tree -r HEAD
+100644 SKILL.md
+120000 abslink
+100755 corpus/instruments/resolve.py
+100644 corpus/real.md
+120000 link
+
+After creating the outside targets (extract-<rev>/outside-abs/secret.md,
+extract-<rev>/outside/secret.md, extract-<rev>/outside2/secret.md) and clearing the cache:
+
+$ python3 -B census-at-rev.py --lane "$D" --rev "$REV" --work "$W"
+CENSUS rev=f5f7fa86cea3a76c1ef00a8eaa1ae6c146c110a8 skill=3/5 corpus=0/0 lane=3/5 host_owned=0 confined=2
+
+Raw TSV (resolve.py, before the instrument's reclassification):
+../outside/secret.md        INTERNAL  .../tree/../outside/secret.md
+abslink/secret.md           INTERNAL  .../tree/abslink/secret.md
+corpus/real.md              INTERNAL  .../tree/corpus/real.md
+link/../outside2/secret.md  INTERNAL  .../tree/link/../outside2/secret.md
+link/secret.md              INTERNAL  .../tree/link/secret.md
+
+realpath check over the INTERNAL rows:
+'../outside/secret.md'       realpath_inside=False -> .../extract-f5f7fa86cea3/outside/secret.md
+'abslink/secret.md'          realpath_inside=False -> .../outside-abs/secret.md
+'corpus/real.md'             realpath_inside=True
+'link/../outside2/secret.md' realpath_inside=False -> .../extract-f5f7fa86cea3/outside2/secret.md
+'link/secret.md'             realpath_inside=False -> .../extract-f5f7fa86cea3/outside-abs/secret.md
+
+The two `..` rows are reclassified (confined=2); the two symlink rows without a `..` segment stay
+INTERNAL, so the pinned numerator is 3/5 where only corpus/real.md is in-tree.
+
+Revision check at a3db47e7 (instrument extract TSV): exactly one INTERNAL row has a realpath
+outside the extract ('../', reclassified); zero INTERNAL rows have a symlink as the resolved path.

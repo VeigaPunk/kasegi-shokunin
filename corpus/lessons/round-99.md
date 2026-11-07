@@ -101,7 +101,7 @@ Spot-check result: pending the round-99 non-author closure.
   earlyoom at 3.5 GiB. The scanner's session-cookie window now matches S140's
   assignment-context form (probe 0/12 → 12/12, ten boundary negatives clean),
   selftest 170 → 192.
-- **discernment: improved** — nine mistakes mined (M99-1…M99-9), including two
+- **discernment: improved** — ten mistakes mined (M99-1…M99-10), including two
   the round's own controls caught before the landing (the confined-HOME
   propagation and the census body's scratch path) and one that recurs from
   round 98 (a new shape exposing old receipts). The round-98 spot-check's
@@ -120,6 +120,7 @@ Spot-check result: pending the round-99 non-author closure.
 | M99-7 | claim-transcription | both claims' `controls` field was hand-typed in a `CONTROL <name> rc=… want=… PASS` form the round-99 receipts do not print (they print `TAMPER-RESULT` / `PROBE-RESULT` / `SELFTEST-RESULT` lines), so the field was not a verbatim copy of the executed receipt (R148) | the round's own R148 check, run while assembling the report | an `erratum` on each claim quotes the receipts' verbatim lines and states that no predicate, target, kill rule or pin changes (`.ufo/waves/round-99/claims.json`); the receipts are the authority |
 | M99-8 | misroot | the SentinelCookie seat wrote `cli-checks.txt` into the fleet root (`/home/vgpnk/Projects/shokunin/cli-checks.txt`, 575 bytes, mtime 19:27) instead of its report dir; the file's content names `/fast/scratch/hyaku/kasegi-r99/SentinelCookie/` | the pre-report misroot sweep (`git -C /home/vgpnk/Projects/shokunin status --porcelain` listed it) | copied byte-exact to `kasegi-shokunin/cli-checks.txt` (`cmp` ok), the fleet copy deleted, the bytes committed with the wave evidence; the seat's later receipts copy differs (it rewrote the file), so the preserved root copy is a distinct sequence |
 | M99-9 | write-scope | the CriticClaimsC1 seat's D2 symlink test pointed `resolve.py`'s extract root at the lane, overwriting `corpus/instruments/citation-survival.md` and `.tsv` with the r18-format output (2560 + 5941 changed lines; the header lost `measured-at`/`home`/the digests) | `git status --porcelain` in the lane during the wave (`M corpus/instruments/citation-survival.md`, `M ...tsv`) | both files rewritten from the branch (`git show master:<path> > <path>`) and `--check` re-passes; the seat acknowledged the clobber and restored both files (sha256 equal to `git show HEAD:` per ExecC1Indep's `clobber-evidence.txt`), and the L1 re-ran the branch rewrite and `--check`; round 100's context adds the explicit "never point a fixture's extract root at the lane" line |
+| M99-10 | host-owned-body | the census body is digest-bound but embedded a host-owned row's occurrence count; `.ufo/watchdog.log` grew from 3237 to 3239 lines during the round, so `--check` printed `body-mismatch` on the unchanged census of a revision that had passed at the landing | the round's own final check before the wave evidence commit | a RESOLVES/MIRROR-EQUIVALENT row's occurrence cell is normalised to `-` before the body digest (R161); the census is regenerated at the same revision with the same pinned triple, the instrument pin becomes `c06d95cd…`, and the claim's `erratum_landing` records the re-landing |
 
 ## Routed defects from the round-98 spot-check
 

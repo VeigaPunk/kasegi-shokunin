@@ -1,0 +1,11 @@
+== P2 clean: census-at-rev.py --lane <lane> --check <committed census> --work $S/R2/clean ==
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=1
+rc=0
+== P2 dirty WORK DIR (MISSION.md + .ufo member in <work>/, the round-98 scratch parent): --work $S/R2/dirtywork ==
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=1
+rc=0
+== P2 dirty EXTRACT PARENT (same files in <work>/extract-<rev12>/): --work $S/R2/dirtyparent ==
+CENSUS-CHECK fail reason=body-mismatch rc=1
+rc=1
+== rates in the extract-parent layout (--rev, no check) ==
+CENSUS rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=3

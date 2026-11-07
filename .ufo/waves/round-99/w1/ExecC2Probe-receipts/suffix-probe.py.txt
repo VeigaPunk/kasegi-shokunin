@@ -1,0 +1,10 @@
+python3 - "$D3" "$NF" <<EOF
+import hashlib, os, sys
+D, NF = sys.argv[1], sys.argv[2]
+NONCE = open(NF).read().strip()
+def h(tag): return hashlib.sha256((NONCE + "|suf|" + tag).encode()).hexdigest()
+for slug, kw in (("suf-id", b"_gitlab_session_id="), ("suf-foo", b"_gitlab_sessionfoo="), ("suf-2", b"_gitlab_session_2=")):
+    name = hashlib.sha256((NONCE + "|" + slug).encode()).hexdigest()[:20] + "-" + slug + ".txt"
+    open(os.path.join(D, name), "wb").write(kw + h(slug).encode() + b"\n")
+    print(os.path.join(D, name))
+EOF

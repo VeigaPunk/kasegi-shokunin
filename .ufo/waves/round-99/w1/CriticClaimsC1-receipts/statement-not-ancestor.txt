@@ -1,0 +1,10 @@
+== statement: --write refuses a revision that is not an ancestor ==
+toplevel=/fast/scratch/hyaku/kasegi-r99/CriticClaimsC1/RH/clone
+fixture-root ok
+dangling=00efd6d7a42a62a56c97c462d9cb17bbea9afcc4
+master=2c2124f208c98db641842cc50dd24f431c0dfd0e
+CENSUS-WRITE error reason=rev-not-ancestor rc=2
+write rc=2
+-- check with measured-at = the non-ancestor --
+CENSUS-CHECK fail reason=measured-at-not-ancestor rc=1
+check rc=1

@@ -1,0 +1,16 @@
+== (c) --write at a3db47e, then --write at b9411a6b into the same path, same warm work dir ==
+CENSUS-WRITE ok rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 lane=2607/8026 host_owned=76 confined=1
+CENSUS-WRITE ok rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 lane=2607/8022 host_owned=76 confined=1
+measured-at: b9411a6b530e486180cf14c72fccc46668dcf5ee
+pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7620 = 33.71% | lane 2607/8022 = 32.50%
+== check the twice-written file ==
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+rc=0
+== (c') poison the cache for a3db47e, then --write at a3db47e ==
+poisoned a3db47e71fe292c03b00ba11f38cccbec45d3966-6d68d9555b9b.json
+CENSUS-WRITE ok rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=1/2 lane=1/2 host_owned=76 confined=1
+pinned rate (INTERNAL only; revision-stable): SKILL 1/2 = 50.00% | corpus 1/2 = 50.00% | lane 1/2 = 50.00%
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 1/2 = 50.00% | corpus 1/2 = 50.00% | lane 1/2 = 50.00%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7624 = 33.70% | lane 2607/8026 = 32.48%
+rc=1

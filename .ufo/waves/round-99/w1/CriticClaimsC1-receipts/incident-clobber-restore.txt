@@ -1,0 +1,19 @@
+== incident: lane census/tsv clobbered by the D2 symlink test, then restored ==
+date: Sat 07 Nov 2026 07:34:52 PM -03
+HEAD: 2c2124f208c98db641842cc50dd24f431c0dfd0e
+status: 0 dirty entries under corpus/instruments/
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.md
+0099820fc9549d6e7287f150b20dc4c7bb61051c7535693e95d10af7384edc6d  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.tsv
+HEAD blobs:
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  -
+0099820fc9549d6e7287f150b20dc4c7bb61051c7535693e95d10af7384edc6d  -
+
+Observed clobbered worktree census (recorded at 19:29, before restore):
+  Lane root: `/fast/scratch/hyaku/kasegi-r99/CriticClaimsC1/D2/w/extract-a3db47e71fe2/tree`
+  Scope: `SKILL.md` + `corpus/**/*.md` (337 files).
+  distinct path-like citations: 8041
+  git status --porcelain corpus/instruments/ -> M citation-survival.md; M citation-survival.tsv
+
+Mechanism: measure() runs resolve.py with root = d (the extract path); resolve.py writes <root>/corpus/instruments/citation-survival.md and .tsv; extract() early-returns when <work>/extract-<rev12>/tree/corpus/instruments/resolve.py exists and never checks that tree is a real directory under <work> (a symlink is followed).
+Restore: git -C <lane> show HEAD:corpus/instruments/citation-survival.md > <lane>/corpus/instruments/citation-survival.md (same for .tsv).
+Peers who flagged it: ExecC1Indep-13 (clobber-evidence.txt), CriticHarm-13.

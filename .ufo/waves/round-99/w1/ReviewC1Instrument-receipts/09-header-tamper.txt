@@ -1,0 +1,11 @@
+All four files derive from a clean --write at the fixture rev (skill=3/5).
+A: home line -> "home: real host (Projects tree globbed)", header-sha256 recomputed
+   CENSUS-CHECK pass ... skill=3/5 corpus=0/0 lane=3/5 host_owned=0 confined=2   (rc=0)
+B: title + "round 99" prose edited, digests untouched
+   CENSUS-CHECK pass ... skill=3/5 corpus=0/0 lane=3/5 host_owned=0 confined=2   (rc=0)
+C: pinned line -> "lane 4/5 = 80.00%", header-sha256 recomputed
+   CENSUS-CHECK fail reason=pinned-mismatch rc=1
+     file: pinned rate ... lane 4/5 = 80.00%
+     rev : pinned rate ... lane 3/5 = 60.00%
+D: host-owned -> "7 absolute-path citations", header-sha256 recomputed
+   CENSUS-CHECK fail reason=host-owned-mismatch rc=1

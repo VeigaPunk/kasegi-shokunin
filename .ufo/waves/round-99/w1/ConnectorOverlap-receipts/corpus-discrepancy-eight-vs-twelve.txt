@@ -1,0 +1,32 @@
+=== Empirical Evidence: 8 vs 12 Session Value Discrepancy ===
+
+In corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md lines 24-26:
+"A matcher built on a whitespace/quote/operator class refuses eight of the twelve real session values the round-98 sentinel measured (round 99)."
+
+Discrepancy with authoritative code and claims:
+1. corpus/instruments/capture-secret-scan.py:196:
+   "Round 98 used a whitespace/quote/operator class, which refused the twelve real session values the round-98 sentinel measured"
+2. .ufo/waves/round-99/claims.json line 25:
+   "the gitlab-session-cookie shape's separator model: round-98 used a whitespace/quote/operator class, which refused the twelve real 64-hex session values the round-98 sentinel measured"
+3. SCORECARD.md line 3416:
+   "the gitlab-session-cookie separator class refused the twelve real session values the round-98 sentinel measured (probe 0/12, two boundary negatives over-detected)"
+4. session-cookie-probe.py K3 result:
+   python3 -B .ufo/waves/round-99/c2/session-cookie-probe.py --instrument <round-98 instrument>
+   mustfix_hit=0/12 (0 hits out of 12 payloads; exactly 12 refused).
+
+Execution test of round-98 regex on all 12 MUSTFIX payloads:
+- ck-len-cookie-cell0: MISSED (refused)
+- ck-ruby-hash-rocket: MISSED (refused)
+- ck-pct20-eq: MISSED (refused)
+- ck-pct20-colon: MISSED (refused)
+- ck-pct20-after-eq: MISSED (refused)
+- ck-paren-eq: MISSED (refused)
+- ck-paren-gap: MISSED (refused)
+- ck-comma-eq: MISSED (refused)
+- ck-pipe-eq: MISSED (refused)
+- ck-plus-eq: MISSED (refused)
+- ck-rocket-nospace: MISSED (refused)
+- ck-geo-pct20: MISSED (refused)
+Total hits: 0 / 12. Total refused: 12 / 12.
+
+Finding: corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md line 25 contains a stale draft claim ("refuses eight of the twelve") that directly contradicts the empirical 12/12 count stated by the instrument docstring, claims.json, and the frozen counter.

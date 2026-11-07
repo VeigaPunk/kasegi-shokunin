@@ -1,0 +1,37 @@
+== cache key ==
+$ ls $W/cache/    (fixture rev f5f7fa86..., instrument sha256 6d68d955...)
+f5f7fa86cea3a76c1ef00a8eaa1ae6c146c110a8-6d68d9555b9b.json
+$ cp census-at-rev.py census-modified.py; append "# modified copy for cache-key test"
+$ sha256sum census-modified.py | cut -c1-12   -> d93686e5ff22
+$ python3 -B census-modified.py --lane "$D" --rev "$REV" --work "$W"
+CENSUS rev=f5f7fa86... skill=3/5 corpus=0/0 lane=3/5 host_owned=0 confined=2
+$ ls $W/cache/
+f5f7fa86cea3a76c1ef00a8eaa1ae6c146c110a8-6d68d9555b9b.json
+f5f7fa86cea3a76c1ef00a8eaa1ae6c146c110a8-d93686e5ff22.json
+
+== poisoned cache vs --check ==
+Poison: set rates skill/corpus/lane = 99/99 and body = "POISONED-BODY\n" in
+$W/cache/f5f7fa86...-6d68d9555b9b.json.
+$ python3 -B census-at-rev.py --lane "$D" --check "$W/census.md" --work "$W"
+CENSUS-CHECK pass rev=f5f7fa86... skill=3/5 corpus=0/0 lane=3/5 host_owned=0 confined=2   (rc=0)
+Re-poison, then --rev:
+$ python3 -B census-at-rev.py --lane "$D" --rev "$REV" --work "$W"
+CENSUS rev=f5f7fa86... skill=99/99 corpus=99/99 lane=99/99 host_owned=0 confined=2
+
+== poisoned cache vs --write ==
+After poisoning, --write (default cache_ok=True) read the cache and emitted:
+CENSUS-WRITE ok rev=f5f7fa86... skill=99/99 lane=99/99 host_owned=0 confined=2
+and the written census carried the 99/99 pinned line and the poisoned body.
+
+== exact poisoned --write output (re-run) ==
+$ python3 -B census-at-rev.py --lane "$D" --rev "$REV" --write "$W/poisoned-write.md" --work "$W"
+CENSUS-WRITE ok rev=f5f7fa86cea3a76c1ef00a8eaa1ae6c146c110a8 skill=99/99 lane=99/99 host_owned=0 confined=2
+rc=0
+$ head -9 "$W/poisoned-write.md"
+...
+pinned rate (INTERNAL only; revision-stable): SKILL 99/99 = 100.00% | corpus 99/99 = 100.00% | lane 99/99 = 100.00%
+host-inclusive rate (resolve.py's definition, confined HOME): SKILL 3/5 = 60.00% | corpus 0/0 = n/a | lane 3/5 = 60.00%
+...
+(The host-inclusive line stayed 3/5 because only the pinned rate keys were poisoned; a real
+attacker would poison skill_host/corpus_host/lane_host too. The written census is accepted by
+--write and rejected by --check with pinned-mismatch.)

@@ -1,0 +1,55 @@
+== S140 snapshot line-number drift: committed capture vs upstream raw ==
+raw lines 593 snapshot lines 564
+rule id                                            raw  snap  delta
+gitlab_personal_access_token                           2 2     0
+gitlab_personal_access_token_routable                 29 28    1
+gitlab_personal_access_token_routable_versioned       51 49    2
+gitlab_pipeline_trigger_token                         74 71    3
+gitlab_runner_registration_token                     103 99    4
+gitlab_runner_auth_token                             117 112   5
+gitlab_runner_auth_token_routable                    140 134   6
+gitlab_feed_token                                    165 158   7
+gitlab_oauth_app_secret                              180 172   8
+gitlab_feed_token_v2                                 197 188   9
+gitlab_kubernetes_agent_token                        221 211   10
+gitlab_incoming_email_token                          238 227   11
+gitlab_deploy_token                                  265 253   12
+gitlab_scim_oauth_token                              289 276   13
+gitlab_ci_build_token                                305 291   14
+gitlab_runner_auth_token_legacy_partition            321 306   15
+gitlab_deploy_token_routable                         338 322   16
+gitlab_deploy_token_in_url                           356 339   17
+gitlab_kubernetes_agent_token_routable               374 356   18
+gitlab_workspace_token                               392 373   19
+gitlab_feature_flags_client_token                    410 390   20
+gitlab_runner_controller_token                       431 410   21
+gitlab_ci_build_token_jwt                            450 428   22
+gitlab_stateless_access_token                        468 445   23
+gitlab_iam_access_token                              486 462   24
+gitlab_iam_refresh_token                             503 478   25
+gitlab_iam_authorization_code                        521 495   26
+gitlab_feed_token_path_dependent                     539 512   27
+gitlab_pipeline_trigger_token_in_url                 558 530   28
+gitlab_session_cookie                                576 547   29
+
+--- the corpus cites 'S140:547-551' for the session-cookie block ---
+snapshot 547: id = "gitlab_session_cookie"
+snapshot 548: keywords = ["_gitlab_session"]
+snapshot 549: regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+snapshot 550: assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+snapshot 551: assignmentContext.keywordGroupType = "raw"
+snapshot 552: examples = [
+--- what upstream raw 547-551 actually holds ---
+raw      547: tags = ["gitlab", "gitlab_blocking"]
+raw      548: type = "token"
+raw      549: maturity = "stable"
+raw      550: [rules.vendor]
+raw      551: name = "GitLab"
+raw      552: category = ["source_control"]
+--- upstream raw 576-580 (the true upstream session-cookie block) ---
+raw      576: id = "gitlab_session_cookie"
+raw      577: keywords = ["_gitlab_session"]
+raw      578: regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+raw      579: assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+raw      580: assignmentContext.keywordGroupType = "raw"
+raw      581: examples = [

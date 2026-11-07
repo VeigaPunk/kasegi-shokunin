@@ -1,0 +1,38 @@
+payload notation: <H64> = 64 lower-case hex (0123456789abcdef x4);
+every value is synthetic and built at runtime by the harnesses.
+LND = landed scan_bytes hit set, R98 = round-98 instrument hit set,
+S140b = byte-model S140_A, S140r = rune-model S140_A (Go semantics).
+
+id     name             LND                            R98                        S140b S140r payload
+MF-1a  left-x           -                              -                          True  True  x_gitlab_session=<H64>\n
+MF-1b  left-digit       -                              -                          True  True  2_gitlab_session=<H64>\n
+MF-1c  left-under       -                              -                          True  True  __gitlab_session=<H64>\n
+MF-1d  left-word        -                              -                          True  True  my_gitlab_session=<H64>\n
+MF-1e  left-upper       -                              -                          True  True  A_gitlab_session=<H64>\n
+MF-2a  right-73hex      -                              -                          True  True  _gitlab_session=<H64>012345678\n
+MF-2b  cell-then-65     -                              -                          True  True  _gitlab_session=cell-12-<H64>0\n
+MF-3a  cjk-paren        -                              -                          False True  _gitlab_session\xef\xbc\x88\xe4\xbc\x9a\xe8\xaf\x9d\xef\xbc\x89=<H64>\n
+MF-3b  cjk-space        -                              -                          False True  _gitlab_session\xe3\x80\x80\xe4\xbc\x9a\xe8\xaf\x9d\xe3\x80\x80=<H64>\n
+MF-3c  nbsp5            -                              -                          False True  _gitlab_session\xc2\xa0\xc2\xa0\xc2\xa0\xc2\xa0\xc2\xa0=<H64>\n
+MF-3d  arrow3           -                              -                          False True  _gitlab_session\xe2\x86\x92\xe2\x86\x92\xe2\x86\x92=<H64>\n
+MF-3e  emspace3         -                              -                          False True  _gitlab_session\xe2\x80\x83\xe2\x80\x83\xe2\x80\x83=<H64>\n
+MF-3f  nbsp-after-eq    -                              -                          False True  _gitlab_session=\xc2\xa0\xc2\xa0\xc2\xa0\xc2\xa0\xc2\xa0<H64>\n
+RG-1   jar-tab          -                              gitlab-session-cookie      False False .gitlab.com\tTRUE\t/\tTRUE\t0\t_gitlab_session\t<H64>\n
+RG-2   jar-space        -                              gitlab-session-cookie      False False .gitlab.com TRUE / TRUE 0 _gitlab_session <H64>\n
+RG-3   geo-space        -                              gitlab-session-cookie      False False _gitlab_session_geo_<H64> <H64>\n
+RG-4   geo-nl           -                              gitlab-session-cookie      False False _gitlab_session_geo_<H64>\n=<H64>\n
+RG-5   gapb-09          -                              gitlab-session-cookie      False False _gitlab_session         =<H64>\n
+RG-6   gapb-12          -                              gitlab-session-cookie      False False _gitlab_session            =<H64>\n
+RG-7   gapa-09          -                              gitlab-session-cookie      False False _gitlab_session=         <H64>\n
+RG-8   gapt-09          -                              gitlab-session-cookie      False False _gitlab_session\t\t\t\t\t\t\t\t\t=<H64>\n
+RG-9   nl-before-eq     -                              gitlab-session-cookie      False False _gitlab_session\n=<H64>\n
+RG-10  nl-after-eq      -                              gitlab-session-cookie      False False _gitlab_session=\n<H64>\n
+RG-11  nl-space-eq      -                              gitlab-session-cookie      False False _gitlab_session \n = <H64>\n
+RG-12  crlf-before-eq   -                              gitlab-session-cookie      False False _gitlab_session\r\n=<H64>\r\n
+RG-13  crlf-after-eq    -                              gitlab-session-cookie      False False _gitlab_session=\r\n<H64>\r\n
+Q-1    pct3a            -                              -                          False False _gitlab_session%3A<H64>\n
+Q-2    har-object       -                              -                          False False {"name":"_gitlab_session","value":"<H64>"}\n
+Q-3    case-upper       -                              -                          False False _GITLAB_SESSION=<H64>\n
+Q-4    val-63hex        -                              -                          False False _gitlab_session=<H63>\n
+Q-5    val-upper        -                              -                          False False _gitlab_session=<H64-UPPER>\n
+C-1    control          gitlab-session-cookie          gitlab-session-cookie      True  True  _gitlab_session=<H64>\n

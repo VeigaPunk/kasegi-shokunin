@@ -1,0 +1,28 @@
+During this review the lane worktree census was overwritten by a sibling seat's direct resolve.py
+run (not by this seat):
+
+$ git status --porcelain -- corpus/instruments/citation-survival.md
+ M corpus/instruments/citation-survival.md
+$ head -6 corpus/instruments/citation-survival.md
+# citation-survival census — kasegi lane
+
+Instrument: `corpus/instruments/resolve.py` ...
+Lane root: `/fast/scratch/hyaku/kasegi-r99/CriticClaimsC1/D2/w/extract-a3db47e71fe2/tree`
+Scope: `SKILL.md` + `corpus/**/*.md` (337 files).
+...
+- distinct path-like citations: **8041** ...
+
+$ git show HEAD:corpus/instruments/citation-survival.md | sha256sum
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  -     # unchanged
+$ git show 35e3ab60:corpus/instruments/citation-survival.md | sha256sum
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  -
+
+The committed census of record is unchanged; every number in this review comes from `git archive`,
+not from the worktree copy. The peer's change was not reverted by this seat.
+
+Final state at 19:36: the worktree file is back to the committed bytes.
+$ sha256sum corpus/instruments/citation-survival.md
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  corpus/instruments/citation-survival.md
+$ git show HEAD:corpus/instruments/citation-survival.md | sha256sum
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  -
+So the mutation was transient; the census of record was never changed.

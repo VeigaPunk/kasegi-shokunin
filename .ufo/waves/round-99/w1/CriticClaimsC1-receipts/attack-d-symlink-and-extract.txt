@@ -1,0 +1,42 @@
+== (d) symlinked extract PARENT: <work>/extract-<rev12> -> scratch target ==
+CENSUS-WRITE ok rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 lane=2607/8022 host_owned=76 confined=1
+write rc=0
+scratch paths in body: 0
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+check rc=0
+fresh check:
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7620 = 33.71% | lane 2607/8022 = 32.50%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7624 = 33.70% | lane 2607/8026 = 32.48%
+fresh rc=1
+
+== (d) symlinked extract TREE -> a scratch copy of the b9411a6b tree ==
+before: -rw-r--r-- 1 vgpnk vgpnk 253960 Nov  7 19:33 RD/target/corpus/instruments/citation-survival.md
+CENSUS-WRITE ok rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 lane=2607/8022 host_owned=76 confined=1
+write rc=0
+measured-at: a3db47e71fe292c03b00ba11f38cccbec45d3966
+pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7620 = 33.71% | lane 2607/8022 = 32.50%
+after: -rw-r--r-- 1 vgpnk vgpnk 253960 Nov  7 19:33 RD/target/corpus/instruments/citation-survival.md
+4:Lane root: `/fast/scratch/hyaku/kasegi-r99/CriticClaimsC1/RD/w/extract-a3db47e71fe2/tree`
+check with the same work dir:
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+check rc=0
+fresh check:
+CENSUS-CHECK fail reason=pinned-mismatch rc=1
+  file: pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7620 = 33.71% | lane 2607/8022 = 32.50%
+  rev : pinned rate (INTERNAL only; revision-stable): SKILL 162/732 = 22.13% | corpus 2569/7624 = 33.70% | lane 2607/8026 = 32.48%
+fresh rc=1
+== (d) TRUE symlinked extract PARENT: <work>/extract-<rev12> -> empty scratch target; tree/ is created fresh under the target ==
+  total 0
+  drwxr-xr-x 2 vgpnk vgpnk 34 Nov  7 19:34 .
+  drwxr-xr-x 4 vgpnk vgpnk 29 Nov  7 19:34 ..
+  lrwxrwxrwx 1 vgpnk vgpnk 56 Nov  7 19:34 extract-a3db47e71fe2 -> /fast/scratch/hyaku/kasegi-r99/CriticClaimsC1/RD2/target
+CENSUS-WRITE ok rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 lane=2607/8026 host_owned=76 confined=1
+write rc=0
+target tree exists: yes
+scratch paths in body: 0
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=1
+check rc=0
+fresh check:
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=1
+fresh rc=0

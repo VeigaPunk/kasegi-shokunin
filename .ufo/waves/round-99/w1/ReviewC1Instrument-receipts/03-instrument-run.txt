@@ -1,0 +1,8 @@
+$ python3 -B corpus/instruments/census-at-rev.py --lane . --rev a3db47e71fe292c03b00ba11f38cccbec45d3966 --work $S/cwork
+CENSUS rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=1
+rc=0
+
+$ env HOME=$S/home python3 -B $S/extract/corpus/instruments/resolve.py $S/extract
+distinct=8026 resolves=76 mirror=0 internal=2608 other=0 gone=5342 skill=165/732 corpus=2646/7624 all=2684/8026
+(one higher than the census host-inclusive line 165/732, 2645/7624, 2683/8026: the reclassified
+'../' row is dropped from the instrument's host_incl as well as from the pinned numerator)

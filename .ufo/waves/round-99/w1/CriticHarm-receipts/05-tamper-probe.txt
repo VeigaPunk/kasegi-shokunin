@@ -1,0 +1,23 @@
+== tamper harness, landing instrument (sha 6d68d955) ==
+TAMPER T11-host-owned-edited rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=header-sha-mismatch rc=1
+TAMPER T12-body-truncated rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=body-sha-mismatch rc=1
+TAMPER-RESULT killed=12 total=12 evaluated=12 instrument_sha256=6d68d9555b9be5a75bfefb27ee8cf531bc97dd540c954cc2da56581e6a68f041 rc=0
+
+== tamper harness, round-98 instrument (sha 66383371) ==
+TAMPER T11-host-owned-edited rc=0 want=nonzero FAIL reason=CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2570/7624 lane=2608/8026 host_owned=76
+TAMPER T12-body-truncated rc=0 want=nonzero FAIL reason=CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2570/7624 lane=2608/8026 host_owned=76
+TAMPER-RESULT killed=5 total=12 evaluated=12 instrument_sha256=66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502 rc=0
+
+== probe, landing instrument ==
+PROBE n-left-word hit=False want=False PASS got=none
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=0 negatives=10 instrument_sha256=8b338726f931ab0b3f2333d48a200017d36ae0dddac5f3b86fb2c581f2ca110a rc=0
+
+== probe, round-98 instrument e2caf4a1 (sha 45f8d226) ==
+45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e  /fast/scratch/hyaku/kasegi-r99/CriticHarm/css-e2caf4a1.py
+PROBE n-left-word hit=False want=False PASS got=none
+PROBE-RESULT mustfix_hit=0/12 negatives_extra=2 negatives=10 instrument_sha256=45f8d226b65e5bf16b9323bfc246c2748319713af5740a608838d6a6eb6f9f0e rc=0
+
+== documented --home flag ==
+                        [--write WRITE] [--check CHECK]
+census-at-rev.py: error: unrecognized arguments: --home real
+rc=2

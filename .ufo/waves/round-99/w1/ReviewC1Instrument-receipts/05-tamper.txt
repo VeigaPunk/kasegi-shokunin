@@ -1,0 +1,37 @@
+== P1 landing instrument (worktree bytes, sha256 6d68d955...) ==
+$ python3 -B .ufo/waves/round-99/c1/tamper.py --lane . --rev a3db47e71fe292c03b00ba11f38cccbec45d3966 \
+    --alt-rev b9411a6b530e486180cf14c72fccc46668dcf5ee --instrument corpus/instruments/census-at-rev.py --work $S/tamperwork
+TAMPER T01-pinned-edited rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=header-sha-mismatch rc=1
+TAMPER T02-measured-at-repointed rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=header-sha-mismatch rc=1
+TAMPER T03-measured-at-short rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=no-measured-at rc=1
+TAMPER T04-measured-at-missing rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=no-measured-at rc=1
+TAMPER T05-body-edited rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=body-sha-mismatch rc=1
+TAMPER T06-host-line-removed rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=no-host-inclusive rc=1
+TAMPER T07-host-line-edited rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=header-sha-mismatch rc=1
+TAMPER T08-body-from-other-rev rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=body-sha-mismatch rc=1
+TAMPER T09-poisoned-cache rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=pinned-mismatch rc=1
+TAMPER T10-pinned-from-host rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=header-sha-mismatch rc=1
+TAMPER T11-host-owned-edited rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=header-sha-mismatch rc=1
+TAMPER T12-body-truncated rc=1 want=nonzero PASS reason=CENSUS-CHECK fail reason=body-sha-mismatch rc=1
+TAMPER-RESULT killed=12 total=12 evaluated=12 instrument_sha256=6d68d9555b9be5a75bfefb27ee8cf531bc97dd540c954cc2da56581e6a68f041 rc=0
+real 0m29.752s
+
+== P1 round-98 instrument bytes ==
+$ git show e2d3de7b847f8e9bac72a5bc4dea455ea051cf1a:corpus/instruments/census-at-rev.py > $S/census-r98.py
+$ sha256sum $S/census-r98.py
+66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502  -
+$ python3 -B .ufo/waves/round-99/c1/tamper.py --lane . --rev a3db47e7... --alt-rev b9411a6b... \
+    --instrument $S/census-r98.py --work $S/tamperwork-r98
+TAMPER T01-pinned-edited rc=1 PASS reason=pinned-mismatch
+TAMPER T02-measured-at-repointed rc=1 PASS reason=pinned-mismatch
+TAMPER T03-measured-at-short rc=1 PASS reason=no-measured-at
+TAMPER T04-measured-at-missing rc=1 PASS reason=no-measured-at
+TAMPER T05-body-edited rc=0 FAIL reason=CENSUS-CHECK pass ... lane=2608/8026
+TAMPER T06-host-line-removed rc=0 FAIL reason=CENSUS-CHECK pass ...
+TAMPER T07-host-line-edited rc=0 FAIL reason=CENSUS-CHECK pass ...
+TAMPER T08-body-from-other-rev rc=0 FAIL reason=CENSUS-CHECK pass ...
+TAMPER T09-poisoned-cache rc=0 FAIL reason=CENSUS-CHECK pass ... host_owned=0
+TAMPER T10-pinned-from-host rc=1 PASS reason=pinned-mismatch
+TAMPER T11-host-owned-edited rc=0 FAIL reason=CENSUS-CHECK pass ...
+TAMPER T12-body-truncated rc=0 FAIL reason=CENSUS-CHECK pass ...
+TAMPER-RESULT killed=5 total=12 evaluated=12 instrument_sha256=66383371211bf4b801df608d5e20c23e2b51457717fcb1b76de471b8feb62502 rc=0

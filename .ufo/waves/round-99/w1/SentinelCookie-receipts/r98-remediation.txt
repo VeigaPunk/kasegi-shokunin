@@ -1,0 +1,28 @@
+round-98 SentinelShapes "Smallest remediation" (the trade-off the landing chose):
+## Smallest remediation (reported, not applied — read-only seat)
+
+In `capture-secret-scan.py:308-310`, replace the session-cookie separator
+`[\s\"'=:;]+` with the union
+`(?:[\s\"'=:;]+|.{0,8}[:=].{0,8})` (keeps every current detection and adds the
+S140 assignment gaps), or with `.{0,8}[:=].{0,8}` alone for strict S140 parity
+(which drops the current no-operator/newline detections and adds S140's
+over-attribution). Keep the value's `(?![0-9a-f])` right boundary (stricter
+than S140; prevents the Q2 truncation false positive). Add selftest cases for
+`_gitlab_session => H`, `_gitlab_session%20=%20H`, and
+`_gitlab_session,=H`; the current 170 cases have no assignment-gap case.
+
+## Evidence index
+
+round-98 Q1/Q2 routing:
+- **Q1 — keyword left boundary (S140_A-only, prefixed keyword).**
+  `x_gitlab_session=H` and `__gitlab_session=H` are missed by the scanner but
+  hit by S140_A, because the raw keyword group has no left boundary while the
+  scanner's `_GL_LB` requires a non-word byte. The value is real but the
+  cookie name is not GitLab's; S140 over-detects a prefixed name. Sweep:
+  63/128 preceding ASCII chars (`[0-9A-Za-z_]`) are S140_A-only
+  (`gap-map.txt`).
+- **Q2 — 65+ hex truncation (S140_A-only).** `_gitlab_session=H0` (65 hex):
+  S140 matches the first 64 hex (the value regex has no right boundary), the
+  scanner's `(?![0-9a-f])` refuses. No 64-hex token is present as a delimited
+  value; sweep: 16/128 following chars (the hex alphabet).
+- **Q3 — scanner over-detection (scanner-only).** The scanner hits where

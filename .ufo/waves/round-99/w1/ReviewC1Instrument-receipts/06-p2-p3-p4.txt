@@ -1,0 +1,25 @@
+== P2 clean ==
+$ python3 -B corpus/instruments/census-at-rev.py --lane . --check $S/p2/census-base.md --work $S/p2/clean
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+rc=0
+== P2 dirty work dir (MISSION.md + .ufo/waves/shokunin12h-20261014-p1-repair/members/KasegiGateRepair.md) ==
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+rc=0
+== P2 dirty scratch parent (same two files in the work dir's parent) ==
+CENSUS-CHECK pass rev=b9411a6b530e486180cf14c72fccc46668dcf5ee skill=162/732 corpus=2569/7620 lane=2607/8022 host_owned=76 confined=1
+rc=0
+== P2 stronger contamination: the extract's private parent carries MISSION.md ==
+CENSUS-CHECK fail reason=body-mismatch rc=1
+(the raw body flips '../MISSION.md:49-56' GONE -> INTERNAL; the pinned triple would still be
+stable because the row is reclassified, but the check fails closed)
+
+== P3 on the committed census of record ==
+$ grep -c 'fast/scratch' census-head.md      -> 0
+$ grep -c 'tree-b9411a6b530e' census-head.md -> 0
+$ grep -c 'extract-' census-head.md          -> 0
+
+== P4 ==
+$ /usr/bin/time -v python3 -B corpus/instruments/census-at-rev.py --lane . --check $S/census-of-record.md --work $S/p4work
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=162/732 corpus=2569/7624 lane=2607/8026 host_owned=76 confined=1
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:04.56
+Maximum resident set size (kbytes): 514696

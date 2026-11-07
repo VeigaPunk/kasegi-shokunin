@@ -1,0 +1,26 @@
+=== Demonstration of Live Host Log Drift Breaking --check ===
+
+Command: python3 -B /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/census-at-rev.py --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin --check /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.md --work /fast/scratch/hyaku/kasegi-r99/ConnectorOverlap/drift_demo
+Returncode: 1
+Stdout: CENSUS-CHECK fail reason=body-mismatch rc=1
+Stderr: 
+
+Root Cause: census-at-rev.py line 337 checks "if body != mbody:".
+mbody resolves /home/vgpnk/Projects/shokunin/.ufo/watchdog.log dynamically against the host filesystem.
+When the census was recorded at a3db47e7, watchdog.log had 3237 lines.
+The host watchdog.log has since grown to 3238 lines.
+Diff between stored body and dynamically measured body:
+
+--- stored
++++ measured
+@@ -174,8 +174,8 @@
+ | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-38/kasegi.md:37` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-38/kasegi.md` | 37 | 87 | in range |
+ | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-40/kasegi.md:32` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-40/kasegi.md` | 32 | 65 | in range |
+ | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-57/kasegi.md:115` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/reports/round-57/kasegi.md` | 115 | 128 | in range |
+-| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3237 | in range |
+-| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3237 | in range |
++| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1490` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1490 | 3238 | in range |
++| `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log:1537` | RESOLVES | `/home/vgpnk/Projects/shokunin/.ufo/watchdog.log` | 1537 | 3238 | in range |
+ | `/home/vgpnk/Projects/shokunin/CORPUS.md:101-104` | RESOLVES | `/home/vgpnk/Projects/shokunin/CORPUS.md` | 101-104 | 184 | in range |
+ | `/home/vgpnk/Projects/shokunin/MISSION.md:49-56` | RESOLVES | `/home/vgpnk/Projects/shokunin/MISSION.md` | 49-56 | 93 | in range |
+ | `/home/vgpnk/Projects/shokunin/PROTOCOL.md:457-461` | RESOLVES | `/home/vgpnk/Projects/shokunin/PROTOCOL.md` | 457-461 | 533 | in range |

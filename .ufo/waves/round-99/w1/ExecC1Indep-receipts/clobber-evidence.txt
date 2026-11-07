@@ -1,0 +1,42 @@
+# clobber evidence — captured 2026-11-07T19:31:15-03:00
+
+$ stat -c '%n mtime=%y size=%s' citation-survival.{md,tsv}
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.md mtime=2026-11-07 19:30:03.029527887 -0300 size=216030
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.tsv mtime=2026-11-07 19:30:03.037455756 -0300 size=433377
+
+$ git status --porcelain (lane)
+ M corpus/lessons/round-99.md
+?? .ufo/waves/round-99/w1-dispatch.err
+?? .ufo/waves/round-99/w1.ready.dispatched
+?? .ufo/waves/round-99/w1/
+?? cli-checks.txt
+
+$ sha256sum worktree copies
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.md
+0099820fc9549d6e7287f150b20dc4c7bb61051c7535693e95d10af7384edc6d  /home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments/citation-survival.tsv
+
+$ sha256 committed blobs (git show 35e3ab6 / HEAD — identical)
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  /fast/scratch/hyaku/kasegi-r99/ExecC1Indep/census-committed.md
+211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3  /fast/scratch/hyaku/kasegi-r99/ExecC1Indep/census-c1landing.md
+
+$ sed -n 1,4p of clobbered worktree md (od excerpt)
+0000000   #       c   i   t   a   t   i   o   n   -   s   u   r   v   i
+0000020   v   a   l       c   e   n   s   u   s     342 200 224       k
+0000040   a   s   e   g   i       l   a   n   e  \n  \n   C   e   n   s
+0000060   u   s       o   f       r   e   c   o   r   d     342 200 224
+0000100       r   e   g   e   n   e   r   a   t   e   d       i   n    
+0000120   r   o   u   n   d       9   9       a   t       t   h   e    
+0000140   r   e   v   i   s   i   o   n       b   e   l   o   w   .  \n
+0000160  \n
+0000161
+
+$ grep -n 'Lane root' clobbered worktree md
+15:Lane root: `/home/vgpnk/Projects/shokunin/kasegi-shokunin` (measured from the git-archive extract of `a3db47e71fe292c03b00ba11f38cccbec45d3966`)
+
+Timeline: ExecC1Indep read the intact round-99 census header from the worktree file, then git diff vs 35e3ab6 was EMPTY (batch at ~19:31). First --check attempt (~19:35) failed reason=no-measured-at; file then held a raw resolve.py output naming CriticClaimsC1/D2 scratch, distinct=8041 occ=16627 files=337. Overwrite mtimes: tsv 19:27:37.207, md 19:27:37.315.
+
+RESOLUTION (verified by ExecC1Indep): CriticClaimsC1-7 acknowledged the clobber (their D2 symlink test pointed resolve.py's extract root at the lane) and restored both tracked files at mtime 2026-11-07 19:30:03. Post-restore verification by ExecC1Indep:
+$ git status --porcelain corpus/instruments/  -> (empty)
+$ sha256 citation-survival.md = 211818db7ed71ae2eebfe7fa02890faab7302915c66fc9929be9a44e984859e3 (= git show HEAD:...)
+$ sha256 citation-survival.tsv = 0099820fc9549d6e7287f150b20dc4c7bb61051c7535693e95d10af7384edc6d (= git show HEAD:...)
+Disclosure recorded by the owner in .ufo/waves/round-99/w1/CriticClaimsC1.md. No further action.

@@ -1,0 +1,21 @@
+Method: indep-census.py (copied beside this receipt) over
+`git archive a3db47e71fe292c03b00ba11f38cccbec45d3966 | tar -x` under a private parent,
+HOME=<scratch>/home with an empty Projects/ tree. The script implements the extraction rule
+from resolve.py's module docstring; it does not import or copy the lane instrument.
+
+$ env HOME=$S/home python3 -B indep-census.py $S/extract $S/home
+distinct=8026
+SKILL pinned INTERNAL 162/732
+CORPUS pinned INTERNAL 2569/7624
+LANE pinned INTERNAL 2607/8026
+host_owned=76 confined=1
+SKILL host-incl 165/732
+CORPUS host-incl 2645/7624
+LANE host-incl 2683/8026
+
+Cross-check of the extract's TSV (resolve.py's own output):
+rows 8026; class counts GONE 5342, INTERNAL 2608, RESOLVES 76.
+
+First run (before replicating resolve.py's internal re-strip in is_pathlike) gave
+distinct=8024, corpus 2569/7622, lane 2607/8024: the two missing keys are the
+trailing-space keys 'resolve.py ' and 'census-freshness-check.py ', both GONE.

@@ -1,0 +1,95 @@
+### M01-narrow-window-s-plus  sha256=bd8868fbbb769933d131a39724538a3e1b93450373d59c746681dbed83743e00
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M01-narrow-window-s-plus/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-cookie, gl-session-cookie-cell, gl-session-cookie-geo, gl-session-ck-ruby-hash-rocket, gl-session-ck-rocket-nospace, gl-session-ck-pct20-eq, gl-session-ck-pct20-colon, gl-session-ck-pct20-after-eq, gl-session-ck-geo-pct20, gl-session-ck-comma-eq, gl-session-ck-pipe-eq, gl-session-ck-plus-eq, gl-session-ck-paren-eq, gl-session-ck-paren-gap, gl-session-ck-cell-gap
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M01-narrow-window-s-plus/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=0/12 negatives_extra=0 negatives=10 instrument_sha256=bd8868fbbb769933d131a39724538a3e1b93450373d59c746681dbed83743e00 rc=0  rc=0
+FAIL: ck-len-cookie-cell0, ck-ruby-hash-rocket, ck-pct20-eq, ck-pct20-colon, ck-pct20-after-eq, ck-paren-eq, ck-paren-gap, ck-comma-eq, ck-pipe-eq, ck-plus-eq, ck-rocket-nospace, ck-geo-pct20
+
+### M02-drop-operator  sha256=bee0903d40ff0b6173845c029eeedf5f99989bfa59bb16bdfd88281bbfb7e0d6
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M02-drop-operator/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-ck-cell-nondigit, gl-session-ck-gap-9
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M02-drop-operator/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=2 negatives=10 instrument_sha256=bee0903d40ff0b6173845c029eeedf5f99989bfa59bb16bdfd88281bbfb7e0d6 rc=0  rc=0
+FAIL: n-cell-nondigit, n-gap-9
+
+### M03-widen-gap-9  sha256=ff3632f814fb73e1e04382d20ea010e9de4c52b8f580635881bfd9156d12ac93
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M03-widen-gap-9/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-ck-gap-9
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M03-widen-gap-9/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=1 negatives=10 instrument_sha256=ff3632f814fb73e1e04382d20ea010e9de4c52b8f580635881bfd9156d12ac93 rc=0  rc=0
+FAIL: n-gap-9
+
+### M04-allow-newline  sha256=921305ffacc75ae51d1879196f6c2aabee4a7db9e4a50124e3ecc1664ad68209
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M04-allow-newline/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-ck-gap-newline
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M04-allow-newline/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=1 negatives=10 instrument_sha256=921305ffacc75ae51d1879196f6c2aabee4a7db9e4a50124e3ecc1664ad68209 rc=0  rc=0
+FAIL: n-gap-newline
+
+### M05-drop-cell-group  sha256=7060950af0b5d5941913d291707e7f16eafdaf740e9305b5aec865f2564098ba
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M05-drop-cell-group/capture-secret-scan.py --selftest
+SELFTEST-RESULT pass cases=192  rc=0
+FAIL: none
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M05-drop-cell-group/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=0 negatives=10 instrument_sha256=7060950af0b5d5941913d291707e7f16eafdaf740e9305b5aec865f2564098ba rc=0  rc=0
+FAIL: none
+
+### M06-hex-63  sha256=ed3134a1732857c43c7b8607ba4255e9b7fc132068890bde5b7de649d01f68c4
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M06-hex-63/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-ck-63-hex, gl-session-cookie-63
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M06-hex-63/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=1 negatives=10 instrument_sha256=ed3134a1732857c43c7b8607ba4255e9b7fc132068890bde5b7de649d01f68c4 rc=0  rc=0
+FAIL: n-63-hex
+
+### M07-hex-upper  sha256=5cf3b191da5a50368f9600c5060084d48594aca11528562eaaf59a63913c29f9
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M07-hex-upper/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-ck-upper-hex, gl-session-cookie-upper
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M07-hex-upper/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=1 negatives=10 instrument_sha256=5cf3b191da5a50368f9600c5060084d48594aca11528562eaaf59a63913c29f9 rc=0  rc=0
+FAIL: n-upper-hex
+
+### M08-drop-right-boundary  sha256=a63061a729e82932f6a8ffd0faafc27495f094ec09ed84266c8424fda7ae95ce
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M08-drop-right-boundary/capture-secret-scan.py --selftest
+SELFTEST-RESULT pass cases=192  rc=0
+FAIL: none
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M08-drop-right-boundary/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=0 negatives=10 instrument_sha256=a63061a729e82932f6a8ffd0faafc27495f094ec09ed84266c8424fda7ae95ce rc=0  rc=0
+FAIL: none
+
+### M09-drop-left-boundary  sha256=c0c75aa77ac7290626b445cb1e5f7d2e5ddd86908770975a5c44c3b7163e2f7a
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M09-drop-left-boundary/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-ck-left-word
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M09-drop-left-boundary/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=1 negatives=10 instrument_sha256=c0c75aa77ac7290626b445cb1e5f7d2e5ddd86908770975a5c44c3b7163e2f7a rc=0  rc=0
+FAIL: n-left-word
+
+### M10-drop-geo-group  sha256=dbd6dc1a2123a59dc02d9cc95e5fbff0cde3b7b9d8718281f67257fafec903b9
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M10-drop-geo-group/capture-secret-scan.py --selftest
+SELFTEST-RESULT fail cases=192  rc=1
+FAIL: gl-session-cookie-geo, gl-session-ck-geo-pct20
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M10-drop-geo-group/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=11/12 negatives_extra=0 negatives=10 instrument_sha256=dbd6dc1a2123a59dc02d9cc95e5fbff0cde3b7b9d8718281f67257fafec903b9 rc=0  rc=0
+FAIL: ck-geo-pct20
+
+### M11-gap1-7  sha256=2e4cf29cf5ed26e3e5bbd1f5bfeb94c5b00045ca54be443f4778c3c0f4aaf360
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M11-gap1-7/capture-secret-scan.py --selftest
+SELFTEST-RESULT pass cases=192  rc=0
+FAIL: none
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M11-gap1-7/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=0 negatives=10 instrument_sha256=2e4cf29cf5ed26e3e5bbd1f5bfeb94c5b00045ca54be443f4778c3c0f4aaf360 rc=0  rc=0
+FAIL: none
+
+### M12-gap2-7  sha256=8164c22d3baec771aaf730e69bd3c69849a2a1c36dbaea587cb7cf6dba133a33
+$ python3 -B /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M12-gap2-7/capture-secret-scan.py --selftest
+SELFTEST-RESULT pass cases=192  rc=0
+FAIL: none
+$ probe --instrument /fast/scratch/hyaku/kasegi-r99/MutC2Counter/mut/M12-gap2-7/capture-secret-scan.py
+PROBE-RESULT mustfix_hit=12/12 negatives_extra=0 negatives=10 instrument_sha256=8164c22d3baec771aaf730e69bd3c69849a2a1c36dbaea587cb7cf6dba133a33 rc=0  rc=0
+FAIL: none

@@ -1,0 +1,23 @@
+Mechanism: census-at-rev.py:79 returns a pre-existing <work>/extract-<rev12>/tree whenever
+corpus/instruments/resolve.py exists there, without comparing it to `git archive <rev>`.
+--check's "fresh measurement" therefore runs the planted resolve.py.
+
+== fixture reproduction ==
+$W2/extract-f5f7fa86cea3/tree/corpus/instruments/resolve.py  (fake: writes a one-row TSV
+  `corpus/fake.md INTERNAL ... +CORPUS` and a fixed census body "FAKE-BODY: ...")
+fake census: measured-at = f5f7fa86... (a real tip), home/pinned/host/host-owned consistent with
+the fake TSV, header-sha256 and body-sha256 recomputed over the fake content.
+$ python3 -B census-at-rev.py --lane "$D" --check "$W2/fake-census.md" --work "$W2"
+CENSUS-CHECK pass rev=f5f7fa86cea3a76c1ef00a8eaa1ae6c146c110a8 skill=0/0 corpus=1/1 lane=1/1 host_owned=0 confined=0
+rc=0
+
+== real-lane reproduction at the C2 landing ==
+$W/extract-a3db47e71fe2/tree/corpus/instruments/resolve.py  (fake, same construction)
+fake census: measured-at = a3db47e71fe292c03b00ba11f38cccbec45d3966 (a real ancestor)
+$ python3 -B corpus/instruments/census-at-rev.py --lane . --check "$W/fake-census.md" --work "$W"
+CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=0/0 corpus=1/1 lane=1/1 host_owned=0 confined=0
+rc=0
+
+The round-98 instrument has the same early return on `tree-<rev12>` (git show
+e2d3de7b847f8e9bac72a5bc4dea455ea051cf1a:corpus/instruments/census-at-rev.py:60), so the class is
+inherited, not a round-99 regression; the 12-class harness has no case for it.

@@ -1,0 +1,12 @@
+$ sed -n "547,551p" corpus/source-snapshots/round-94/S140.txt
+id = "gitlab_session_cookie"
+keywords = ["_gitlab_session"]
+regex = '''(?:cell-[0-9]+-)?[0-9a-f]{64}'''
+assignmentContext.keywordGroup = '''_gitlab_session(?:_geo_[0-9a-f]{64})?'''
+assignmentContext.keywordGroupType = "raw"
+
+$ sed -n "38p" corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md
+| `gitlab-session-cookie` | `_gitlab_session` context, S140's assignment-context separator `<keyword>.{0,8}[:=].{0,8}`, optional `cell-<N>-`, 64 lower-case hex | 549-551 | S144:362 (`_gitlab_session=`), S148:6 (the value's length and alphabet), S150 (the separator window) |
+
+$ sed -n "162p" corpus/SOURCES.md
+| S150 | GitLab secret-detection-rules merge request !151, the assignment-context generator — https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/merge_requests/151 | code | B | The `assignmentContext` generator's regex shape and the `keywordGroupType` semantics it uses for the rules file's context-bound rules | The MR description's "Generated Regex" block and its `keywordGroupType` enum sentence (HTTP 200, 128,120 bytes, sha256 `aa60d7af465cad03b64259362dfa862a8d5c3176ebc2e6b5909a38daddea11e8`, opened 2026-11-07) | `assignmentContext` expands a rule to `<keyword>.{0,8}[:=].{0,8}<value>`, and `keywordGroupType raw` injects the keyword group verbatim; a separator model narrower than that window misses real values. | mined | 2026-11-07 | 180d | corpus/instruments/capture-secret-scan.py, corpus/knowledge/gitlab-iam-ci-build-and-session-token-shapes.md |

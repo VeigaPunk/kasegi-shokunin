@@ -1,0 +1,24 @@
+=== Demonstration of Extract Cache Poisoning Vulnerability in census-at-rev.py ===
+
+Vulnerability:
+In census-at-rev.py:extract() lines 78-80:
+    d = os.path.join(work, "extract-" + rev[:12], "tree")
+    if os.path.isfile(os.path.join(d, RESOLVE)):
+        return d, None
+
+When --check is invoked with a work directory that already contains extract-<rev12>/tree/corpus/instruments/resolve.py,
+it returns that tree without running git archive or verifying its integrity.
+
+Reproduction:
+1. Planted a fake resolve.py in $WORK/extract-a3db47e71fe2/tree/corpus/instruments/resolve.py that outputs forged numbers:
+   CENSUS skill=0/0 corpus=1/1 all=1/1
+2. Built a matching census file with valid header-sha256 and body-sha256 matching the fake resolve.py.
+3. Executed:
+   python3 -B corpus/instruments/census-at-rev.py --lane . --check fake-census.md --work $WORK
+4. Observed Result:
+   CENSUS-CHECK pass rev=a3db47e71fe292c03b00ba11f38cccbec45d3966 skill=0/0 corpus=1/1 lane=1/1 host_owned=0 confined=0 rc=0
+
+Second-order impact:
+The attacker gets arbitrary code execution as the verifier via sys.executable running the unverified resolve.py child.
+Fix:
+extract() must force fresh extraction when invoked by --check (cache_ok=False -> fresh=True), or verify the extract tree against git tree sha.

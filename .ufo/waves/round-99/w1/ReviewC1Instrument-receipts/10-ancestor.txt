@@ -1,0 +1,27 @@
+Fixture A: repo with main at the measured rev and a `side` branch two commits ahead.
+Fixture B: an unrelated repo; its commit is the "foreign" sha.
+Dangling: a commit created in A with `git commit-tree` on no ref.
+Blob: `git hash-object SKILL.md` in A.
+Non-tip ancestor: the first commit on `side` (ancestor of side's tip, not a tip itself).
+
+$ python3 -B census-at-rev.py --lane "$D" --check "$W/mt-foreign.md" --work "$W"
+CENSUS-CHECK fail reason=measured-at-not-ancestor rc=1
+$ ... mt-dangling.md ...
+CENSUS-CHECK fail reason=measured-at-not-ancestor rc=1
+$ ... mt-blob.md ...
+CENSUS-CHECK fail reason=measured-at-not-ancestor rc=1
+$ ... mt-nontip.md ...
+CENSUS-CHECK fail reason=header-sha-mismatch rc=1     (ancestor gate passed; digest then failed)
+$ ... --rev <non-tip ancestor> --write "$W/nontip-census.md" --work "$W"
+CENSUS-WRITE ok rev=fa23385bd7fe47ddbebfc09277aaf9cbfb832c1d skill=2/5 lane=2/5 host_owned=0 confined=0
+rc=0
+$ ... --rev <foreign sha> --write "$W/foreign-census.md" --work "$W"
+CENSUS-WRITE error reason=rev-not-ancestor rc=2
+
+Observed merge-base exit codes:
+  foreign sha (not in the repo)  -> 128  fatal: Not a valid commit name
+  blob sha                       -> 128  error: object ... is a blob, not a commit
+  dangling commit                -> 1    (not an ancestor)
+  non-tip ancestor vs side tip   -> 0
+  measured rev vs main tip       -> 0
+ancestor_of_tip accepts only 0.

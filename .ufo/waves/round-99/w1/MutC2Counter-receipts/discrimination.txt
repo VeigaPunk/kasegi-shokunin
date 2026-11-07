@@ -1,0 +1,47 @@
+# pristine vs survivor discrimination (scan_bytes on crafted inputs)
+
+## hex-run length sweep: _gitlab_session=<n hex>\n
+n	pristine	M08-drop-right-boundary
+63	False	False
+64	True	True
+65	True	True
+66	True	True
+67	True	True
+68	True	True
+69	True	True
+70	True	True
+71	True	True
+72	True	True
+73	False	True
+74	False	True
+75	False	True
+76	False	True
+77	False	True
+
+## cell-N sweep: _gitlab_session=cell-<N>-<64 hex>\n
+N_digits	pristine	M05-drop-cell-group
+0	True	True
+1	True	True
+2	True	True
+3	True	False
+4	True	False
+5	True	False
+
+## gap width sweep
+gap1_bytes	pristine	M11-gap1-7
+6	True	True
+7	True	True
+8	True	False
+9	False	False
+
+gap2_bytes	pristine	M12-gap2-7
+6	True	True
+7	True	True
+8	True	False
+9	False	False
+
+## control: pristine on the four crafted inputs
+D1-long-cell-N	hit=True
+D2-73-hex	hit=False
+D3-gap1-8	hit=True
+D4-gap2-8	hit=True

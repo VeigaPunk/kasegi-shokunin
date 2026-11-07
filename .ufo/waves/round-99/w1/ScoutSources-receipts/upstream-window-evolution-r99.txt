@@ -1,0 +1,33 @@
+== upstream assignmentOperand evolution (secret-detection-rules) ==
+MR !151 merged 2025-09-29; sha c9c3924931732522c172d1987521749d33641e1b
+at MR sha status=200 bytes=11293
+73ffe98fe9c06dc8fafb14aedeb9db35e84db428c3793978e1d48f6a7ceac6a5  /tmp/mr151.go
+33:	assignmentOperand = `.{0,8}[:=].{0,8}`
+
+at the S140 pinned commit 59ada1f4 (2026-11-03):
+28:	assignmentOperand = `[="' :>\],\t.()\\?|]{1,10}`
+
+commit history of pkg/rules/assignment_regex.go:
+  2026-03-03T09:26:36.000+05:30 237a115a Add support for defining multiple keyword groups
+  2025-12-01T15:20:52.000+05:30 9239cf69 Include whitespace character at the terminal regex
+  2025-11-25T08:34:15.000+05:30 1eb45282 Update assignment regex pattern
+  2025-10-01T22:26:54.000+05:30 25371f29 Add support for Auth0, AWS and Azure patterns
+  2025-09-30T12:56:32.000+05:30 9dd97a9c Remove dedicated optional char from keyword group
+  2025-09-29T17:04:51.000+05:30 fb5f0ff4 Assignment Regex Implementation
+
+== gap test: upstream@59ada1f4 window vs the corpus scanner ==
+sep        corpus scanner   upstream@59ada1f4    gap
+space      False            True                 GAP
+dquote     False            True                 GAP
+apos       False            True                 GAP
+gt         False            True                 GAP
+rbracket   False            True                 GAP
+comma      False            True                 GAP
+tab        False            True                 GAP
+dot        False            True                 GAP
+lparen     False            True                 GAP
+question   False            True                 GAP
+pipe       False            True                 GAP
+colon      True             True                 
+eq         True             True                 
+GAPS: ['space', 'dquote', 'apos', 'gt', 'rbracket', 'comma', 'tab', 'dot', 'lparen', 'question', 'pipe'] (11)

@@ -1,0 +1,181 @@
+### m01
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m01.py	2026-11-07 19:27:30.635263879 -0300
+@@ -149,11 +149,6 @@
+     confined = 0
+     fixed = []
+     for cit, klass, resolved, scopes in rows:
+-        if klass == "INTERNAL" and walkout(cit):
+-            rp = os.path.realpath(resolved) if resolved else ""
+-            if not (rp == root or rp.startswith(root + os.sep)):
+-                klass = "HOST-OWNED"
+-                confined += 1
+         fixed.append((cit, klass, scopes))
+     rows = fixed
+ 
+### m02
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m02.py	2026-11-07 19:27:30.651635487 -0300
+@@ -286,7 +286,7 @@
+         return 2
+     with open(path, encoding="utf-8") as fh:
+         text = fh.read()
+-    m = re.search(r"^measured-at: ([0-9a-f]{40})$", text, re.M)
++    m = re.search(r"^measured-at: ([0-9a-f]{12,40})$", text, re.M)
+     if not m:
+         print("CENSUS-CHECK fail reason=no-measured-at rc=1")
+         return 1
+### m03
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m03.py	2026-11-07 19:27:30.660520378 -0300
+@@ -291,9 +291,6 @@
+         print("CENSUS-CHECK fail reason=no-measured-at rc=1")
+         return 1
+     rev = m.group(1)
+-    if not ancestor_of_tip(lane, rev):
+-        print("CENSUS-CHECK fail reason=measured-at-not-ancestor rc=1")
+-        return 1
+     hdr = []
+     for field in HEADER_FIELDS:
+         mm = re.search(r"^" + re.escape(field) + r"(.+)$", text, re.M)
+### m04
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m04.py	2026-11-07 19:27:30.669290758 -0300
+@@ -305,7 +305,7 @@
+     if not stored_h:
+         print("CENSUS-CHECK fail reason=no-header-sha rc=1")
+         return 1
+-    if digest("\n".join(hdr)) != stored_h.group(1):
++    if False and digest("\n".join(hdr)) != stored_h.group(1):
+         print("CENSUS-CHECK fail reason=header-sha-mismatch rc=1")
+         return 1
+     stored_b = re.search(r"^body-sha256: ([0-9a-f]{64})$", text, re.M)
+### m05
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m05.py	2026-11-07 19:27:30.678032639 -0300
+@@ -316,7 +316,7 @@
+     if body is None:
+         print("CENSUS-CHECK fail reason=no-body rc=1")
+         return 1
+-    if digest(body) != stored_b.group(1):
++    if False and digest(body) != stored_b.group(1):
+         print("CENSUS-CHECK fail reason=body-sha-mismatch rc=1")
+         return 1
+     rates, mbody, err = measure(lane, rev, work, cache_ok=False)
+### m06
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m06.py	2026-11-07 19:27:30.685935717 -0300
+@@ -319,7 +319,7 @@
+     if digest(body) != stored_b.group(1):
+         print("CENSUS-CHECK fail reason=body-sha-mismatch rc=1")
+         return 1
+-    rates, mbody, err = measure(lane, rev, work, cache_ok=False)
++    rates, mbody, err = measure(lane, rev, work, cache_ok=True)
+     if err:
+         print("CENSUS-CHECK fail reason=%s rc=2" % err)
+         return 2
+### m07
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m07.py	2026-11-07 19:27:30.695635681 -0300
+@@ -323,7 +323,7 @@
+     if err:
+         print("CENSUS-CHECK fail reason=%s rc=2" % err)
+         return 2
+-    if hdr[2] != pinned_line(rates):
++    if hdr[2].split(" | corpus")[0] != pinned_line(rates).split(" | corpus")[0]:
+         print("CENSUS-CHECK fail reason=pinned-mismatch rc=1")
+         print("  file: %s" % hdr[2])
+         print("  rev : %s" % pinned_line(rates))
+### m08
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m08.py	2026-11-07 19:27:35.574578538 -0300
+@@ -53,7 +53,7 @@
+ HOST_PREFIX = "host-inclusive rate (resolve.py's definition, confined HOME):"
+ HOSTOWNED_PREFIX = "host-owned inputs:"
+ HEADER_FIELDS = ("measured-at:", HOME_LINE.split(":")[0] + ":", PINNED_PREFIX,
+-                 HOST_PREFIX, HOSTOWNED_PREFIX)
++                 HOST_PREFIX)
+ SEPARATOR = "\n---\n\n"
+ 
+ 
+@@ -232,8 +232,7 @@
+     return ["measured-at: %s" % rev,
+             HOME_LINE,
+             pinned_line(rates),
+-            host_line(rates),
+-            host_owned_line(rates)]
++            host_line(rates)]
+ 
+ 
+ def ancestor_of_tip(lane, rev):
+@@ -330,9 +329,6 @@
+         return 1
+     if hdr[3] != host_line(rates):
+         print("CENSUS-CHECK fail reason=host-mismatch rc=1")
+-        return 1
+-    if hdr[4] != host_owned_line(rates):
+-        print("CENSUS-CHECK fail reason=host-owned-mismatch rc=1")
+         return 1
+     if body != mbody:
+         print("CENSUS-CHECK fail reason=body-mismatch rc=1")
+### m09
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m09.py	2026-11-07 19:27:33.117528189 -0300
+@@ -298,6 +298,9 @@
+     for field in HEADER_FIELDS:
+         mm = re.search(r"^" + re.escape(field) + r"(.+)$", text, re.M)
+         if not mm:
++            if field == PINNED_PREFIX:
++                hdr.append(field + " (absent)")
++                continue
+             print("CENSUS-CHECK fail reason=no-%s rc=1" % field.rstrip(":").split(" ")[0])
+             return 1
+         hdr.append(field + mm.group(1))
+@@ -323,7 +326,7 @@
+     if err:
+         print("CENSUS-CHECK fail reason=%s rc=2" % err)
+         return 2
+-    if hdr[2] != pinned_line(rates):
++    if not hdr[2].endswith("(absent)") and hdr[2] != pinned_line(rates):
+         print("CENSUS-CHECK fail reason=pinned-mismatch rc=1")
+         print("  file: %s" % hdr[2])
+         print("  rev : %s" % pinned_line(rates))
+### m10
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m10.py	2026-11-07 19:27:30.725932033 -0300
+@@ -112,7 +112,7 @@
+ 
+ def measure(lane, rev, work, cache_ok=True):
+     """Return (rates, body, error). Cached per revision + instrument under work/cache."""
+-    cache = os.path.join(work, "cache", rev + "-" + instrument_digest() + ".json")
++    cache = os.path.join(work, "cache", "lane-" + hashlib.sha256(lane.encode("utf-8")).hexdigest()[:12] + ".json")
+     if cache_ok and os.path.isfile(cache):
+         with open(cache, encoding="utf-8") as fh:
+             c = json.load(fh)
+### m11
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m11.py	2026-11-07 19:27:30.734978034 -0300
+@@ -122,9 +122,7 @@
+         return None, None, err
+     env = dict(os.environ)
+     env["HOME"] = home_dir(work)
+-    r = sh([sys.executable, "-B", os.path.join(d, RESOLVE), d], env=env)
+-    if r.returncode != 0:
+-        return None, None, "resolve-rc%d" % r.returncode
++    sh([sys.executable, "-B", os.path.join(d, RESOLVE), d], env=env)
+     tsv = os.path.join(d, TSV)
+     if not os.path.isfile(tsv):
+         return None, None, "no-tsv"
+### m12
+--- /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/instrument-landing.py	2026-11-07 19:26:37.635357749 -0300
++++ /fast/scratch/hyaku/kasegi-r99/MutC1Tamper/mutants/m12.py	2026-11-07 19:27:30.749601041 -0300
+@@ -250,9 +250,6 @@
+ 
+ 
+ def write_census(lane, rev, work, out):
+-    if not ancestor_of_tip(lane, rev):
+-        print("CENSUS-WRITE error reason=rev-not-ancestor rc=2")
+-        return 2
+     rates, body, err = measure(lane, rev, work)
+     if err:
+         print("CENSUS-WRITE error reason=%s rc=2" % err)
