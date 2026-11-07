@@ -1,0 +1,16 @@
+# counter expected_edit: a range row's edit is key -> label
+$ sed -n '242,254p' .ufo/waves/round-96/c1/knowledge-meter.py
+def expected_edit(key, label, fix, line):
+    """Return (kind, old, new) the label names for its base line; None for no edit."""
+    if fix.startswith("Replace part: "):
+        rest = fix[len("Replace part: "):]
+        if " => " not in rest:
+            return "unknown", None, None
+        old, new = rest.split(" => ", 1)
+        return "part", old, new
+    if label.startswith("corpus/source-snapshots/"):
+        return "range", "`%s`" % key, "`%s`" % label
+    if label.startswith("corpus/knowledge/") or LANE_LABEL.match(label):
+        return "range", "`%s`" % key, "`%s`" % label
+    if label == "CORRECT":
+rc=0

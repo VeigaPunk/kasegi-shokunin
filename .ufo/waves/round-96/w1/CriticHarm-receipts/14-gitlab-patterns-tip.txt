@@ -1,0 +1,17 @@
+GITLAB_PATTERNS = (
+    # round 96: the routable and versioned-routable forms (S140 lines 30, 51,
+    # 136, 324, 358, 375) and the pipeline trigger token (S140 line 73).
+    ("gitlab-pat-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-" + _GJ_VER)),
+    ("gitlab-pat-routable", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-" + _GJ_ROUTABLE)),
+    ("gitlab-runner-auth-token-versioned", re.compile(_GL_LB + rb"glrtr?-" + _GJ_VER)),
+    ("gitlab-deploy-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-" + _GJ_VER)),
+    ("gitlab-agent-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glagent-" + _GJ_VER)),
+    ("gitlab-workspace-token-versioned", re.compile(_GL_LB + _GL_PREFIX + rb"glwt-" + _GJ_VER)),
+    ("gitlab-pipeline-trigger-token", re.compile(
+        _GL_LB + _GL_PREFIX + rb"glptt-(?:[A-Za-z0-9_-]{20}|[A-Za-z0-9_-]{40})(?![A-Za-z0-9_-])")),
+    ("gitlab-pat", re.compile(_GL_LB + _GL_PREFIX + rb"glpat-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-runner-auth-token", re.compile(_GL_LB + _GL_PREFIX + rb"glrtr?-(?:t[1-3]_)?[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
+    ("gitlab-jwt-token", re.compile(
+        _GJ_HEAD + rb"\.eyJ" + _GJ_SEG + rb"\." + _GJ_TAIL + rb"(?![A-Za-z0-9_-])")),
+)

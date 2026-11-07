@@ -1,0 +1,9 @@
+# S140 line 213 = gitlab_kubernetes_agent_token (plain glagent- exactly 50)
+# regex: \b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)
+# synthetic payload: glagent- + 50 x X (never a real value)
+case                               scanner    s140:213
+plain glagent-50 + space           MISS       HIT
+plain glagent-50 + dot+upper       MISS       HIT
+plain glagent-50 + dot at EOF      MISS       HIT
+plain glagent-49                   MISS       MISS
+plain glagent-51                   MISS       MISS

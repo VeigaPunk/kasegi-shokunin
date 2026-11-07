@@ -1,0 +1,11 @@
+mutant	verdict	kill_kind	killing_control	observed	survives_because
+m06_cell_multi_value_forbidden	SURVIVED	-	-	no control verdict differs from baseline	no fixture or label uses a cell-repair row (kinds=part=4,range=1 on every control); the round-95 routed cell-two-values control was not shipped
+s01_old_absent_accepted	SURVIVED	-	-	no control verdict differs from baseline	row-old-absent-only's old (L1819) occurs once on base line 36, so the fixture fails via M3 bad_lines (unapplied edit), not old_not_once; no fixture has an absent old
+s02_m9_ignores_new	KILLED	rc-flip	map-not-label	rc=0 want=1 fails=none declared=M9	-
+s03_missing_label_no_edit	SURVIVED	-	-	no control verdict differs from baseline	equivalent: exp = expected_edit(...) if lab else None, so lab is None implies exp is None and the deleted disjunct is redundant; zero limb deltas on all 12 controls
+s04_snapshot_existence_dropped	KILLED	rc-flip	snapshot-missing-only	rc=0 want=1 fails=none declared=M4,M5	-
+s05_unknown_kind_allowed	SURVIVED	-	-	no control verdict differs from baseline	unknown-kind-row's unknown pair is also unapplied (want includes it, mapped does not), so M10 still FAILs via unapplied; the unknown clause is shadowed
+s06_unlabelled_ignored	KILLED	attribution-only	unlabelled-only	rc=1 want=1 fails=M9 declared=M10,M9	-
+s07_unapplied_ignored	KILLED	rc-flip	unapplied-only	rc=0 want=1 fails=none declared=M10	-
+s08_part_any_old	KILLED	rc-flip	map-not-label	rc=0 want=1 fails=none declared=M9	-
+s09_skip_absent_label	KILLED	attribution-only	unlabelled-only	rc=1 want=1 fails=M10 declared=M10,M9	-

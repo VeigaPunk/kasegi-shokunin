@@ -1,0 +1,52 @@
+# R6 — IMPORTANT SCOPE NOTE: the page the seat names for JOB 2 is ALREADY HELD
+# date: 2026-11-07T18:3x UTC, seat ScoutSources
+
+The seat spec suggests "the GitLab docs token-overview page" as the JOB 2
+candidate.  That page is https://docs.gitlab.com/security/tokens/ — and the
+round-96 L1 ALREADY admitted it, as S144, with a committed capture.
+
+$ grep -n '^| S144 ' corpus/SOURCES.md
+| S144 | GitLab Docs, Security — Tokens — https://docs.gitlab.com/security/tokens/ | docs | A | GitLab's own statement of the standard token prefix set and which prefixes may be configured | capture corpus/source-snapshots/round-96/S144.txt: the "Token prefixes" section, lines 344-347 (the sentence "With the exception of Personal Access tokens, these prefixes cannot be configured, as they are designed to be standard identifications.") and the prefix table at lines 348-395; opened 2026-11-07 | A prefix is a standard identification for every token family except personal access tokens, so a shape keyed on the prefix is stable; the page states prefixes, never lengths or tails. | mined | 2026-11-07 | 180d | corpus/instruments/capture-…
+
+$ cat corpus/source-snapshots/round-96/manifest.json  (the S144 record)
+  "id": "S144",
+  "url": "https://docs.gitlab.com/security/tokens/",
+  "http": { "status": 200, "final_url": "https://docs.gitlab.com/security/tokens/" },
+  "kind": "text",
+  "fetch_method": "capture-source.py --id S144 --url <docs URL> --out corpus/source-snapshots/round-96/S144.txt --kind html, default instrument UA; HTML converted to text, 17591 bytes / 419 lines",
+  "fetched_utc": "2026-11-07T18:20:55Z",
+  "sha256": "d6e529275deb3ecf4ea2c3edaff2caa882760680cf23c1a134424e6acffdb83d",
+  "bytes": 17591, "lines": 419,
+  quotes: Q01-prefix-standard anchor 346; Q02-prefix-table anchor 348
+
+$ sed -n '344,350p' corpus/source-snapshots/round-96/S144.txt
+Token prefixes
+The following table shows the prefixes for each type of token.
+With the exception of Personal Access tokens, these prefixes cannot be configured,
+as they are designed to be standard identifications.
+Token namePrefix
+Personal access tokenglpat-
+OAuth Application Secretgloas-
+
+I re-fetched the same URL myself and confirmed it is byte-stable at the same
+bytes and that my own fetch agrees with the committed capture's content:
+  HTTP=200 FINAL=https://docs.gitlab.com/security/tokens/   (67805 bytes raw HTML)
+  -> my converted text contains the same "Token prefixes" section and the same
+     prefix table (glpat-, gloas-, glpat-, glpat-, glpat-, gldt-, glrt-/glrtr-,
+     glcbt-, glptt-, glft-, glimt-, glagent-, glwt-, _gitlab_session=, glsoat-,
+     glffct-) at my converted lines 608-648 (my conversion differs from the
+     committed capture in line count because the committed capture went through
+     the lane's capture-source.py --kind html conversion, which is what the
+     manifest records; I did NOT write a second capture).
+
+CONSEQUENCE FOR JOB 2
+  S144 IS the token-overview page, and the lane's own S144 row already records the
+  decisive fact for the scope "GitLab token prefix and length":  "the page states
+  prefixes, never lengths or tails."  A JOB 2 candidate must therefore be a
+  DIFFERENT page that states a prefix TOGETHER WITH a length.  I searched 22
+  GitLab pages (R2) and found none: no GitLab prose page states a length for any
+  token family other than the personal access token (whose 20-character length is
+  already held on S139 and on the personal_access_tokens page).  Every length for
+  glrtr-/gldt-/glagent-/glwt-/glptt- exists ONLY in GitLab's own rules file
+  (S140, code, tier A) — which is precisely why the round's new knowledge file
+  cites S140 for the lengths and S144 only for the prefix set.

@@ -1,0 +1,48 @@
+=== survivor behaviour probes (landed vs mutant, --files) ===
+--- m4-trailing-char ---
+landed:
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=25 rc=0
+mutant:
+HIT shape=gitlab-pat-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m4-trailing-char.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+--- m9-versioned-head-26 ---
+landed:
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=25 rc=0
+mutant:
+HIT shape=gitlab-pat-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m9-versioned-head-26.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+--- m10-letter-before ---
+landed:
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=25 rc=0
+mutant:
+HIT shape=gitlab-pat-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m10-letter-before.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+--- m2b-routable-1plus7 ---
+landed:
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=25 rc=0
+mutant:
+HIT shape=gitlab-pat-routable path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m2b-routable-1plus7.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+--- m13-routable-trailing-char ---
+landed:
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=25 rc=0
+mutant:
+HIT shape=gitlab-pat-routable path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m13-routable-trailing-char.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+--- m4-control-clean ---
+landed:
+HIT shape=gitlab-pat-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m4-control-clean.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+mutant:
+HIT shape=gitlab-pat-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m4-control-clean.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+--- m6-prefixed-span ---
+landed:
+HIT shape=gitlab-deploy-token-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m6-prefixed-span.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+mutant:
+HIT shape=gitlab-deploy-token-versioned path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-m6-prefixed-span.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+=== M6 matched-span comparison (allowlist addressability) ===
+landed match= b'acme-gldt-DDDDDDDDDD' ... len= 53
+M6 match= b'gldt-DDDDDDDDDDDDDDD' ... len= 48

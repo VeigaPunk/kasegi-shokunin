@@ -1,0 +1,22 @@
+# harness record(): the declared=None path (M96-3)
+$ sed -n '117,126p' .ufo/waves/round-96/controls/c1-controls-r96.py
+    def record(name, rc, want, out, limbs=None, declared=None):
+        got = sorted(set(LIMB.findall(out)))
+        fails = {m for m, v in got if v == "FAIL"}
+        ok = rc == want
+        att = ""
+        if declared is None:
+            declared = []
+        else:
+            ok = ok and fails == set(declared)
+            att = " attribution=%s" % ("PASS" if fails == set(declared) else "FAIL")
+
+# the unlabelled-only fixture (M96-2): line 89, a no-op pair
+$ sed -n '215,220p' .ufo/waves/round-96/controls/c1-controls-r96.py
+    # 10. unlabelled-only: a map row with no label (M9 unbound + M10 unlabelled;
+    #     M3/M4/M5 stay green because the pair composes to the candidate line)
+    mp = (TRIAGE + ":89\tSKILL.md:182-184\t`SKILL.md:182-184`\t`SKILL.md:182-184`\n")
+    d, rev, sha = fixture(cand, os.path.join(work, "fx-unlabelled"), map_append=mp)
+    rc, out = run(meter, d, rev, rev, os.path.join(d, MAP_REL), TARGET, sha)
+    record("unlabelled-only", rc, 1, out, declared=["M9", "M10"])
+rc=0

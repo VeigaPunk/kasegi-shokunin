@@ -1,0 +1,71 @@
+# R5 — ROUTED DEFECT (does NOT re-score either frozen claim; routed to L1)
+# date: 2026-11-07T18:3x UTC, seat ScoutSources
+# lane: kasegi   wave: round-96 w1   seat: ScoutSources
+
+FINDING (R96-SS-1): the landed capture-secret-scan.py docstring's "Known limits"
+list DROPPED the `glagent-` prefix from the "remaining GitLab prefixes" list, but
+the shape it dropped is NOT the shape the round added.  S140 publishes TWO
+`glagent-` rules and the round detected only one of them.
+
+EVIDENCE 1 — S140 publishes two distinct glagent- rules:
+$ grep -n 'glagent-' corpus/source-snapshots/round-94/S140.txt | grep regex
+213:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{50})(?:[^0-9a-zA-Z_\-.]|\.[^0-9a-z]|\.$|$)'''
+358:regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+  L213 = the plain 50-character kubernetes-agent token (id gitlab_kubernetes_agent_token, L211)
+  L358 = the routable/versioned-routable form (id gitlab_kubernetes_agent_token_routable, L356)
+
+EVIDENCE 2 — the round-95 tip's known-limits list named glagent- with the L213
+citation (i.e. L213 was a KNOWN LIMIT before the round):
+$ git show d8a2bb0...:corpus/instruments/capture-secret-scan.py | sed -n '/Known limits/,/allowed\./p'
+... the remaining GitLab
+prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
+`glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
+174, 412), ...
+  -> the list is positional: glptt-=73, glft-=190, glimt-=229, glagent-=213,
+     glwt-=375, glsoat-=278, glffct-=392, gloas-=174, glrct-=412.
+
+EVIDENCE 3 — the LANDED known-limits list no longer mentions glagent- at all:
+$ grep -n -i 'glagent' corpus/instruments/capture-secret-scan.py
+140:  gitlab-agent-token-versioned   (round 96) `glagent-` + 27-300 + `.`+2+`.`+2+7
+251:    ("gitlab-agent-token-versioned", re.compile(...glagent-...)),
+446:        ("glagent-versioned", b"glagent-" + b"D" * 30 + b".ab.cd1234567", {...}),
+  -> all three remaining hits are the NEW L358 shape.  The L213 50-character form
+     is named nowhere in the instrument: not detected, and no longer a known limit.
+
+EVIDENCE 4 — the L213 form is still undetected in the landed instrument:
+$ python3 (load base d8a2bb0 and landed instrument; probe glagent- + exactly 50 chars)
+  probe body_len 50
+  base:   GITLAB hits=[]   all named-pattern hits=[]
+  landed: GITLAB hits=[]   all named-pattern hits=[]
+  (S140 L213 requires EXACTLY 50 chars of [0-9a-zA-Z_-]; the landed matcher requires
+   27-300 chars followed by the `.`+2+`.`+2+7 tail, so the two are disjoint.)
+
+EVIDENCE 5 — the landed known-limits list ADDED five entries that the round-95 tip
+did not have, i.e. the rewrite was deliberate, not a wholesale carry-over:
+$ git show 4ee3455:...capture-secret-scan.py | grep -c 'GR1348941'   -> 0
+$ git show 7ef1d36:...capture-secret-scan.py | grep -c 'GR1348941'   -> 1
+  New in the landed list: the runner registration token (GR1348941 + 20, L101),
+  the feed_token= query form (L160), the gitlab+deploy-token-N: URL form (L341),
+  the t1_-prefixed runner token without glrt- (L308), and the
+  /trigger/pipeline?...token= URL form (L532).  I verified all five are genuinely
+  undetected (probes: L101/L160/L341/L308/L532 -> hits=[] on the landed scanner).
+
+WHY THIS IS NOT A VERDICT CHANGE
+  C2's frozen predicate is K1-K6 (capability-check.py).  All six limbs PASS at the
+  landing (re-verified by me, rc=0, see R4).  No predicate limb asserts anything
+  about the known-limits list's membership, so this finding does not re-score C2.
+  Per the seat rules this is a ROUTED DEFECT, not a verdict change.
+
+WHAT IT IS
+  The docstring's known-limits list is the instrument's own statement of what it
+  does NOT detect.  After this round it no longer says that the S140 L213
+  `glagent-` 50-character form is undetected, while the instrument still does not
+  detect it.  A reader of the landed docstring would conclude the glagent- family
+  is fully covered; it is not.  The fix is one clause: keep `glagent-` in the
+  known-limits list, citing S140 line 213 (the 50-character form), as the
+  round-95 tip did, and drop only the L358-shaped entry that this round detected.
+
+SUGGESTED PHRASING FOR THE L1 (not applied by me — I am a read-only scout):
+  "the remaining GitLab prefixes (`glft-`, `glimt-`, `glsoat-`, `glffct-`,
+   `gloas-`, `glrct-`; S140 lines 190, 229, 278, 392, 174, 412), the
+   50-character `glagent-` kubernetes-agent token (S140 line 213), ..."

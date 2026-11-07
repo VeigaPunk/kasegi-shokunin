@@ -1,0 +1,107 @@
+CriticClaimsC1 — round 96 C1 attack — commands and observed results
+Lane: /home/vgpnk/Projects/shokunin/kasegi-shokunin
+Scratch: /fast/scratch/hyaku/kasegi-r96/CriticClaimsC1 (removed at seat exit)
+Landing: 3c0581e2616df7a10af494a785b479d5e5293749
+Base: d8a2bb0a2bdc2f6337ea2f849a1a557297067ad6
+Freeze: 804e7bc344df0808c880815dde077c28be5db18a
+
+1. clone + checkout
+   git clone -q --shared <lane> $S/landing
+   git -C $S/landing rev-parse --show-toplevel   -> $S/landing
+   git -C $S/landing checkout -q --detach 3c0581e...
+   git -C $S/landing rev-parse HEAD              -> 3c0581e2616df7a10af494a785b479d5e5293749
+
+2. frozen counter at the landing (receipt 01-meter-landing.txt)
+   python3 -B .ufo/waves/round-96/c1/knowledge-meter.py --lane $S/landing \
+     --base-rev d8a2bb0... --after-rev 3c0581e... \
+     --map .ufo/waves/round-96/c1/repair-map.tsv --labels-rev 804e7bc... \
+     --base-target 1030/2027 --target 1032/2028 \
+     --map-sha256 7d9bb49f... --work $S/work
+   rc=0
+   KNOWLEDGE-METER base=1030/2027 after=1032/2028 ... after_rev=3c0581e...
+   LIMB M0 pass base=1030/2027
+   LIMB M1 pass after=1032/2028
+   LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+   LIMB M4 pass bad=none
+   LIMB M5 pass out_of_range=none
+   LIMB M9 pass rows=5 unbound=none
+   LIMB M10 pass labelled=5 want=5 mapped=5 kinds=part=4,range=1 unknown=none unapplied=none unlabelled=none
+   LIMB M6 pass sha256=7d9bb49f366a594df3cd13e5651a6db4aabef1ab4b5a7081d89fd5f8c68b1d0f
+   KNOWLEDGE-METER-RESULT pass rc=0
+
+3. control harness at the landing (receipt 02-controls-landing.txt)
+   python3 -B .ufo/waves/round-96/controls/c1-controls-r96.py $S/landing 804e7bc... \
+     .ufo/waves/round-95/c1/knowledge-meter.py $S/work $S/out
+   rc=0
+   candidate rc=0; do-nothing rc=1 M1,M3; missing-labels rc=2; wrong-map-sha rc=1 M6;
+   extra-unlisted-edit rc=1 M3; r95-no-prose-branch rc=1 M4,M5; row-old-absent-only rc=1 M3
+   (bad_lines=1 old_not_once=0); map-not-label rc=1 M9; snapshot-missing-only rc=1 M4,M5;
+   unknown-kind-row rc=1 M10; unlabelled-only rc=1 M10,M9; unapplied-only rc=1 M10
+   ATTRIBUTION pass fixtures=11
+   C1-CONTROLS-RESULT pass controls=12
+
+4. independent census (receipts 03-census-base.txt, 04-census-after.txt)
+   python3 -B $S/census.py $S/landing d8a2bb0... $S/work  -> rate=1030/2027 mirror_absent=True
+   python3 -B $S/census.py $S/landing 3c0581e... $S/work  -> rate=1032/2028 mirror_absent=True
+   token-set diff (inline): base distinct=2027 after distinct=2028
+     only-base: 'S041.txt:1680-1681' class=GONE (iso:13)
+     only-after: 'SKILL.md:182-185' class=INTERNAL (triage:88)
+                 'corpus/source-snapshots/round-30/S041.txt:1680-1681' class=INTERNAL (iso:13)
+
+5. independent M3/M9/M10 (receipt 05-indep-m3-m9-m10.txt)
+   python3 -B $S/indep-m3.py $S/landing d8a2bb0... 3c0581e... 804e7bc... \
+     .ufo/waves/round-96/c1/repair-map.tsv $S/labels-freeze.tsv
+   rc=0
+   M3 same_files=True n=104/104
+   M3 bad=0
+   M9 rows=5 unbound=0
+   M10 labelled=5 want=5 mapped=5 kinds=part=4,range=1 unapplied=none unlabelled=none
+
+6. measure-rev cross-check (receipt 07-measure-crosscheck.txt)
+   knowledge-meter.py --measure-rev d8a2bb0... -> rate=1030/2027 pct=50.81
+   knowledge-meter.py --measure-rev 3c0581e... -> rate=1032/2028 pct=50.89
+
+7. P3 landing diff
+   git diff --name-only 804e7bc... 3c0581e... ->
+     corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+     corpus/knowledge/triage-thresholds.md
+   git show --stat 3c0581e... -> 2 files changed, 4 insertions(+), 4 deletions(-)
+
+8. artifact pins at the landing (git show 3c0581e:<path> | sha256sum)
+   knowledge-meter.py fadd0ede47392ce0f15596377728415d8e5cc7906874debe1229ee17c8ad36db
+   repair-map.tsv    7d9bb49f366a594df3cd13e5651a6db4aabef1ab4b5a7081d89fd5f8c68b1d0f
+   labels.tsv        757894d1daac0eefe4b35c9ff607fcdab265d9cca3afe7dd457151e17e7cd089
+   c1-controls-r96.py d47328ae4384f07a92e11c7ad925f21d459ad8db298a230ca08b2454b9f7e7d2
+   (identical at 804e7bc)
+
+9. content anchors
+   SKILL.md 182-185: five-term expression + "(round-13 correction: earlier / text omitted `is_live(1)`)" completes on 185
+   SKILL.md 255-257: "curated(1e12) > ... (round-13 correction: five / terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV / magnitude)"
+   S041 1832 "d) Information that would be useful when submitting a"
+   S041 1833 "possible vulnerability report"
+   S041 1834 "e) Out-of-scope services"
+   S041 1835 "f) How submitted reports are tracked"
+   S041 1680-1681 "これらの国際標準は、…大きな矛盾や不整合はありません"; file 2354 lines; tracked at landing
+   occurrence counts on the base lines: all five keys occur exactly 1 time
+
+10. provenance
+    diff <(git show 804e7bc:.ufo/waves/round-96/c1/labels.tsv) \
+         .ufo/waves/round-95/w1/ReviewC1Sites-receipts/round96-labels.tsv -> IDENTICAL
+    git grep '`S041\.txt' 3c0581e -- corpus/knowledge -> empty (no bare S041 token left)
+
+11. prose-branch attacks (receipt 06-prose-attacks.txt)
+    python3 -B $S/attack-prose.py $S/landing d8a2bb0... \
+      .ufo/waves/round-96/c1/knowledge-meter.py $S/attack
+    A-out-of-range            rc=0 (want 0) limbs=none   -> (L99999) accepted
+    B-duplicate-pointer       rc=0 (want 0) limbs=none   -> (L1835)->(L1834) edits the f) pointer too
+    C-nonbackticked-citation  rc=1 (want 1) limbs=M4,M5  -> blocked
+    D-backticked-citation     rc=1 (want 1) limbs=M1,M4,M5 -> blocked
+    E-pointer-insertion       rc=0 (want 0) limbs=none   -> inserted (L99999) accepted
+
+12. true old_not_once fixture (receipt 08b-old-not-once-fixture.txt)
+    key (L9999) absent from iso:36, new (L9998), no file edit
+    rc=1; M3 FAIL same_files=True bad_lines=0 old_not_once=1 dup_rows=0;
+    M4 pass, M5 pass, M9 pass, M10 pass
+    (the shipped row-old-absent-only fixture reports bad_lines=1 old_not_once=0)
+
+Tooling: none installed or upgraded.

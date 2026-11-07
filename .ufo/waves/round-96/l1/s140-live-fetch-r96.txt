@@ -5,3 +5,10 @@ $ curl -sS -m 40 -o gitlab-rules-live.toml -w '%{http_code} %{size_download}\n' 
 # body: Cloudflare challenge page ("Just a moment..."), not the rule file.
 # The seven rules this round implements were read from the committed capture
 # corpus/source-snapshots/round-94/S140.txt at lines 30, 51, 73, 136, 324, 358, 375.
+#
+# CORRECTION (same round): the wave's ScoutSources re-fetched the same pinned URL
+# and got HTTP 200, 20,228 bytes, sha256
+# 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5, equal to the
+# round-94 manifest's raw digest (receipt
+# .ufo/waves/round-96/w1/ScoutSources-receipts/R1-s140-live.txt). The 403 above was
+# this fetch's Cloudflare challenge, not an unreachable source.

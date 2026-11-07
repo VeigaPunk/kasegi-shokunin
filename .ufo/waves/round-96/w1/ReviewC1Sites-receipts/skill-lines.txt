@@ -1,0 +1,24 @@
+=== SKILL.md at 3c0581e, lines 180-190 ===
+180: board datasets 358 h stale at round 11, 359.4 h at the round-13 live re-run
+181: (the counter grows between runs; 26 h threshold, AR4 alarm standing).
+182: Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+183: `priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+184: ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+185: text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+186: 1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+187: `priority.json` (14) is a strict subset of the 50 continue programs, so the
+188: 9e12 tier only breaks ties inside the continue cohort. Canonical derivation:
+189: `corpus/knowledge/triage-thresholds.md`. Real state is
+190: `ledger/missions.jsonl` + `fleets/run/`, real termination is
+=== SKILL.md lines 252-260 ===
+252: `ufo_sighting:fleet-grid`, 2 h leases in `fleets/leases.json`, slot
+253: rotation on terminal status, `reconcile()` rebuilds from leases + pane
+254: titles on restart. Queue score = priority(9e12) > continue(2e12) >
+255: curated(1e12) > reward.min×1000 > is_live(1) (round-13 correction: five
+256: terms; `curated` is a boolean on non-empty `ev_inputs`, never an EV
+257: magnitude) — EV orders, never gates (AR12). Dispatcher
+258: is the sole committer to `claims/` (P21) gated on fresh `claim-check.mjs`
+259: (P20), tags `claim-ready/<id>/<slug>` and pushes atomically after proving
+260: the tagged commit's bytes match (`claim_tag_rejected` telemetry on
+=== SKILL.md line count ===
+1251

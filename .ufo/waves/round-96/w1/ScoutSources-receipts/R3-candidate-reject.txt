@@ -1,0 +1,74 @@
+# R3 — JOB 3: candidate expected to REJECT (a blog / marketing page about token scanning)
+# date: 2026-11-07T18:31Z (UTC), seat ScoutSources
+
+CHOSEN REJECT CANDIDATE (one, as the seat asks):
+  URL        : https://about.gitlab.com/blog/how-to-detecting-secrets-in-video/
+  HTTP status: 200
+  final URL  : https://about.gitlab.com/blog/how-to-detecting-secrets-in-video/
+  bytes      : 188711
+  accessed   : 2026-11-07 (18:2x-18:3x UTC)
+  section heading (H1, exact): "How-to: Detecting secrets in video content"
+  located quote (<=25 words, from the page's own text):
+      "Our general approach to secret detection in videos is quite simple: Split the
+       video into frames, run optical character recognition (OCR) over each frame,
+       and match the text ..."
+    (page body lines 111 of the converted text; the full sentence continues
+     "...extracted text is checked against our known secret patterns.")
+
+REASONS IT FAILS THE LANE'S BAR (each one independently sufficient):
+
+ (1) WRONG KIND FOR THE SCOPE.  It is a corporate engineering blog post about
+     OCR-based scanning of VIDEO FRAMES.  The scope asked for is "GitLab token
+     prefix and length".  The post states no prefix-and-length rule for any
+     token family; its token content is a single OCR-error anecdote about one
+     glpat- value whose last character was misread as a backslash.
+
+ (2) NOT A PREFIX/LENGTH STATEMENT.  Grep over the converted text for
+     'glpat|glptt|glrt|gldt|glagent|glwt' returns exactly three lines, all
+     belonging to that one anecdote (the value itself, the OCR-misread value,
+     and the sentence about the last character).  The post never states a
+     length, never states a tail, and never presents a prefix table.
+
+ (3) THE LANE'S OWN INTAKE GATE REFUSES IT.  I ran the lane's own instrument:
+     $ python3 -B corpus/instruments/capture-source.py --id SXXX \
+         --url https://about.gitlab.com/blog/how-to-detecting-secrets-in-video/ \
+         --out <scratch>/probe-blog/SXXX.txt --kind html
+     INTAKE-REFUSED SXXX shape=gitlab-pat line=93 out=<scratch>/probe-blog/SXXX.txt written=no
+     rc=3
+     => the lane's capture-source.py intake (capture-secret-scan.py, the same
+        scanner C2 extends) REFUSES this page: it carries a published example
+        value that the scanner matches as a live gitlab-pat.  A page the lane
+        cannot capture cannot become a registry row (binding rule B3: a row's
+        anchor must be pinned to a lane capture).
+
+ (4) IT IS NOT FIRST-PARTY FOR THIS SCOPE ANYWAY.  Even without the intake
+     refusal, the page is a vendor's own blog, not a normative statement of
+     GitLab's token formats; the registry's own precedent rejects vendor blog
+     posts that "describe a program but supply no protocol" (S026, tier C,
+     rejected) for the same reason.
+
+TWO OTHER REJECT-SHAPED CANDIDATES I ALSO OPENED AND DISCARDED (recorded for
+completeness; neither is better than the above):
+  HTTP=200 https://www.aikido.dev/blog/secret-detection-application-security
+      H1 "Secret Detection Guide: Find & Prevent Leaks"
+      grep for glpat|glptt|glrt|gldt|glagent|glwt -> 0 hits (no GitLab token
+      shape at all); the page is a third-party marketing guide whose only
+      prefix talk is generic ("Some services (Stripe, AWS, Twilio) use
+      identifiable prefixes or formats").
+  HTTP=200 https://semgrep.dev/blog/2025/secrets-story-and-prefixed-secrets/
+      grep -i gitlab -> 0 hits (no GitLab content whatsoever).
+  HTTP=404 https://about.gitlab.com/blog/2022/05/26/secret-detection/  (redirect
+      target /blog/secret-detection/ does not exist).
+  HTTP=404 https://blog.gitguardian.com/how-to-detect-and-prevent-secret-leakage/
+
+  The lane's own scanner on the two 200-status third-party guides and the two
+  GitLab docs pages I fetched:
+  $ python3 -B corpus/instruments/capture-secret-scan.py --files <5 files>
+  HIT shape=gitlab-pat path=.../gitlab-video-blog.txt line=136
+  HIT shape=gitlab-pat path=.../gitlab-video-blog.html line=155
+  HIT shape=credential path=.../a98af222.txt line=323
+  HIT shape=credential path=.../02d4dd2d.txt line=598
+  CAPTURE-SECRET-SCAN mode=files scanned=5 hits=4 files=4 allowed=0 unused_allow=25 rc=1
+  (the two "credential" hits are the docs pages' own example values; the two
+   "gitlab-pat" hits are the blog's published example value.  No credential
+   value is reproduced in this receipt.)

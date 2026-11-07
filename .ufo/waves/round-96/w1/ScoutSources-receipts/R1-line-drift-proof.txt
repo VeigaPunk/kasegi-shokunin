@@ -1,0 +1,51 @@
+# R1b — WHY the committed capture's line numbers differ from the live upstream file
+# date: 2026-11-07T18:31Z (UTC), seat ScoutSources
+# Live upstream raw = 592 lines; committed capture S140.txt = 563 lines. 29 lines fewer.
+
+$ wc -l S140.live.toml corpus/source-snapshots/round-94/S140.txt
+  592 S140.live.toml
+  563 corpus/source-snapshots/round-94/S140.txt
+
+$ grep -c '^$' S140.live.toml   # blank lines in live
+29
+$ grep -c '^$' corpus/source-snapshots/round-94/S140.txt   # blank lines in capture
+0
+
+MECHANISM (re-derived, not assumed):
+  corpus/instruments/capture-source.py `collapse()` drops every blank line
+  ("if line: lines.append(line)") and trims each line; then the round-94
+  capture replaced each of the 82 example/negativeExamples element lines with
+  one fixed redaction marker.  592 - 29 blank lines = 563 = capture line count.
+
+$ python3 (reproduce capture-source.py collapse() over the live raw)
+collapsed bytes 20035 sha256 04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921
+manifest says: collapsed 20035 bytes sha256 04fc5cfa200c92f54e7d104bb56e479aeccf45746234f0965c3c8e637d921
+  -> MATCH (byte count and digest both reproduce)
+
+$ python3 (collapse + redaction, compare to the committed capture)
+reconstructed lines 563 committed snapshot lines 563
+mismatched lines: 0
+byte-identical: True
+
+LINE MAP (committed-capture line -> live upstream line; offset == blank lines dropped before it):
+  snap  30 (glpat routable)          -> live  31   offset  1
+  snap  51 (glpat routable versioned)-> live  53   offset  2
+  snap  73 (glptt)                    -> live  76   offset  3
+  snap 136 (glrtr)                    -> live 142   offset  6
+  snap 324 (gldt)                    -> live 340   offset 16
+  snap 358 (glagent)                  -> live 376   offset 18
+  snap 375 (glwt)                     -> live 394   offset 19
+
+CONSEQUENCE: every "S140 line N" citation in the lane (base instrument docstring,
+round-96 candidate docstring, the new knowledge file, the S140 registry row)
+resolves against the COMMITTED CAPTURE corpus/source-snapshots/round-94/S140.txt,
+not against the upstream file at commit 59ada1f4.  The upstream file carries the
+same seven regexes at lines 31/53/76/142/340/376/394.
+
+$ for anchor in 4 114 255; do # the three anchors the round-94 manifest already pinned
+  ...
+manifest anchor 4 (Q01-pat-regex)         -> live line(s) [4]   (offset 0)
+manifest anchor 114 (Q02-runner-regex)    -> live line(s) [119] (offset 5)
+manifest anchor 255 (Q03-deploy-regex)    -> live line(s) [267] (offset 12)
+=> The round-94 manifest's own anchors were already capture-relative, i.e. this
+   offset is pre-existing lane behaviour, NOT a round-96 regression.

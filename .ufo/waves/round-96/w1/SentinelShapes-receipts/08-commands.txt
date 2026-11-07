@@ -1,0 +1,26 @@
+# Commands run by SentinelShapes (round 96, attempt 1, w1)
+
+Working dir for every command: /home/vgpnk/Projects/shokunin/kasegi-shokunin.
+Scratch S=/fast/scratch/hyaku/kasegi-r96/SentinelShapes (created, TMPDIR=$S, removed on exit).
+Lane git/jj state was read only; no lane file was edited by this seat except the two
+paths this seat owns (the report and this receipts directory).
+
+All synthetic probe values are built from repeated letters (`A`..`H`), never a real
+credential. The probe payloads themselves are not stored in this directory; receipt 07
+stores their sha256 and the report stores their exact composition.
+
+| # | command | observed |
+|---|---|---|
+| 1 | `git show 7ef1d36:corpus/instruments/capture-secret-scan.py \| sha256sum` | `71876619a62875049a5526a03806aa740e3ead122aacdc1499fe153be3048ac9` = claims.json `instrument_sha256` = `c2/candidate-scanner.py` |
+| 2 | `git show 7ef1d36:corpus/instruments/claim-package-check.py \| sha256sum` | `8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6` = claims.json `gate_sha256` |
+| 3 | `sha256sum .ufo/waves/round-96/c2/capability-check.py` | `989a443fa8bab83705bca670a0a5b396a5a5c87e33607dcb6a9679d17e84247c` = claims.json `counter_sha256` |
+| 4 | `python3 -B $S/scanner-7ef1d36.py --selftest` | rc 0; `SELFTEST-RESULT pass cases=128` (receipt 04) |
+| 5 | `python3 -B $S/baseenv/capture-secret-scan.py --selftest` (base = `d8a2bb0`) | rc 0; `SELFTEST-RESULT pass cases=115` (receipt 05) |
+| 6 | `python3 -B .ufo/waves/round-96/c2/capability-check.py --lane . --rev 7ef1d365eb523a83b2567342a6c0f585ab028ab0 --work $S/cap --instrument-sha256 71876619… --gate-sha256 8b6f8493… --seed 20261107` | rc 0; `CAPABILITY-CHECK-RESULT pass`; K1 `inst_sha=pin-ok gate_sha=pin-ok selftest=pass cases=128`; K2 `rc=0 scanned=2744 hits=0 allowed=27 unused_allow=0`; K3 `rc=1 hits=7 missing=none extra=none`; K4 `base_new_shape_hits=0 old_shapes_missing=none`; K5 `rows=1 last=87 named=True`; K6 `rc=1 shapes=aws-access-key-id,aws-sts-session-token,credential` (receipt 03) |
+| 7 | `python3 -B $S/attack.py` (214 probes: 8 token variants × 23-28 classes) | 86 HIT / 128 MISS; `PARITY_DIFFS=8` (all scanner-HIT/S140-MISS, i.e. scanner wider); `CLI_DISAGREEMENTS=0`; `CLI_RC=1` (receipts 01, 13) |
+| 8 | `python3 -B $S/supp.py` (31 boundary probes) | spans and HIT/MISS as receipt 02 |
+| 9 | `sed -n '156,172p' corpus/instruments/capture-secret-scan.py \| grep -nE 'glpat\|glrt\|glrtr\|gldt\|glagent\|glwt\|glptt'` | only `glrt-` in the `t1_` legacy-partition limit and `glpat%2D` in the encoded-prefix limit; none of the six detected families remains in `Known limits` |
+| 10 | `awk -F'\|' 'NR==307{print $3}' SCORECARD.md` | one `capture-secret-scan` row; names all seven round-96 shapes and S140 lines 30/51/136/324/358/375; last cell `87` |
+| 11 | `python3 -B $S/scanner-7ef1d36.py --files <receipts dir>/* .ufo/waves/round-96/w1/SentinelShapes.md` | hygiene re-scan of this directory plus the report: `scanned=15 hits=0 files=0 allowed=0 unused_allow=25 rc=0` (receipt 09; `unused_allow=25` is the scratch allowlist's distinct-key count, `allowed=0` means no row matched) |
+| 12 | `python3 -B $S/scanner-7ef1d36.py --files .ufo/waves/round-96/w1/SentinelShapes.md` | report alone: `scanned=1 hits=0 files=0 allowed=0 rc=0` |
+| 13 | `python3 -B` inline probe: S140 line 213 regex vs the landed scanner on `glagent-` + 50×`X` + space / `.Z` / `.` at EOF / 49 / 51 | scanner `MISS` on all five; S140:213 `HIT` on the 50-character forms and `MISS` on 49/51 (receipt 14) |

@@ -1,0 +1,77 @@
+# S140 published shape lines (corpus/source-snapshots/round-94/S140.txt; example values structurally redacted in-repo)
+id = "gitlab_personal_access_token_routable"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+id = "gitlab_personal_access_token_routable_versioned"
+keywords = ["glpat-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+id = "gitlab_pipeline_trigger_token"
+keywords = ["glptt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+id = "gitlab_runner_auth_token_routable"
+keywords = ["glrt"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+validationRegex = "(?i)gitlab"
+tags = ["gitlab", "gitlab_blocking", "client_side_sd"]
+id = "gitlab_deploy_token_routable"
+keywords = ["gldt-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+id = "gitlab_kubernetes_agent_token_routable"
+keywords = ["glagent-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+id = "gitlab_workspace_token"
+keywords = ["glwt-"]
+regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+examples = [
+[line redacted: a published rule example value from GitLab's secret-detection rules file; raw snapshot digest and the redacted line list are in this receipt]
+
+# manifest.json
+{
+  "schema_version": 1,
+  "note": "Round-94 C2 manifest: S140, GitLab's own secret-detection rules file (rules/mit/gitlab/gitlab.toml) at commit 59ada1f4ca53d5a69fafb9cb0f10bb893720ce39, which publishes the exact regexes round 94 lands: the personal-access-token custom instance prefix and alphabet (line 4), the runner authentication token with its optional t1_/t2_/t3_ partition (line 114) and the deploy token (line 255). Fetched 2026-11-07 with capture-source.py --kind text from the GitLab API raw URL pinned to that commit: raw 20228 bytes, sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5; collapsed snapshot 20035 bytes, sha256 04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921. The file is a ruleset whose example arrays are full of published example token values, and GitHub push protection refuses those bytes as secrets (GH013; the round-93 lane constraint). The committed snapshot therefore replaces every element line inside an `examples = [` or `negativeExamples = [` array with one fixed marker: 82 lines, listed by rule id in .ufo/waves/round-94/controls/redaction-r94.txt. The array delimiters, rule ids, keywords, regex lines and every other byte are unchanged, so line numbering is preserved and the three quoted regex lines keep their anchors and recheck. The intake gate refused the unredacted bytes (receipt .ufo/waves/round-94/controls/capture-intake-r94.txt) and the committed bytes scan clean with no allowlist row.",
+  "sources": [
+    {
+      "id": "S140",
+      "url": "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/59ada1f4ca53d5a69fafb9cb0f10bb893720ce39/rules/mit/gitlab/gitlab.toml",
+      "capture_url": "https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39",
+      "http": {
+        "status": 200,
+        "final_url": "https://gitlab.com/api/v4/projects/gitlab-org%2Fsecurity-products%2Fsecret-detection%2Fsecret-detection-rules/repository/files/rules%2Fmit%2Fgitlab%2Fgitlab.toml/raw?ref=59ada1f4ca53d5a69fafb9cb0f10bb893720ce39"
+      },
+      "kind": "text",
+      "fetch_method": "capture-source.py --kind text, default instrument UA; raw 20228 bytes (sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5), collapsed snapshot 20035 bytes (sha256 04fc5cfa200c92f54e14a7d104bb56e479aeccf45746234f0965c3c8e637d921), then the 82 example/negativeExamples array element lines replaced by one fixed marker (line numbering preserved); the main-branch raw URL and the commit-pinned API URL served identical bytes",
+      "fetched_utc": "2026-11-07T15:22:31Z",
+      "path": "S140.txt",
+      "sha256": "f3fd09e46db3b2447f237318fd2dbb8979f204c9242f19cddef98986039a158c",
+      "bytes": 25537,
+      "lines": 563,
+      "quotes": [
+        {
+          "id": "Q01-pat-regex",
+          "quote": "regex = '''\\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\\-]{20})(?:[^0-9a-zA-Z_\\-]|$)'''",
+          "anchor": 4
+        },
+        {
+          "id": "Q02-runner-regex",
+          "quote": "regex = '''\\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-9a-zA-Z_\\-]{20})(?:[^0-9a-zA-Z_\\-]|$)'''",
+          "anchor": 114
+        },
+        {
+          "id": "Q03-deploy-regex",
+          "quote": "regex = '''\\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\\-]{20})(?:[^0-9a-zA-Z_\\-]|$)'''",
+          "anchor": 255
+        }
+      ]
+    }
+  ]
+}

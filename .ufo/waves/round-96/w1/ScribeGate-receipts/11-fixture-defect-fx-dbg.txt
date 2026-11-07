@@ -1,0 +1,22 @@
+# M96-1 evidence: the pre-freeze snapshot fixture's label column held a kind word
+$ git -C /fast/scratch/hyaku/kasegi-r96/l1/fx-dbg show 7dc5d52 -- .ufo/waves/round-96/c1/labels.tsv | grep '^+[^+]'
++corpus/knowledge/doj-vdp-framework-scope-and-authorization.md:136	S020.txt	range	corpus/source-snapshots/round-31/S020.txt	evidence
+$ git -C /fast/scratch/hyaku/kasegi-r96/l1/fx-dbg log -1 --format='%H %ci %s' 7dc5d52
+7dc5d52facbfacbc0e862bfc89129334a951c02b 2026-11-07 15:14:42 -0300 fixture
+
+# the post-fix fixture as the frozen harness builds it (ctl run at 15:15)
+$ git -C /fast/scratch/hyaku/kasegi-r96/l1/ctl/fx-snap show HEAD -- .ufo/waves/round-96/c1/labels.tsv | grep '^+[^+]'
++corpus/knowledge/doj-vdp-framework-scope-and-authorization.md:136	S020.txt	corpus/source-snapshots/round-31/S020.txt	corpus/source-snapshots/round-31/S020.txt	evidence
+
+# the frozen harness writes the path in BOTH columns
+$ sed -n '199,207p' .ufo/waves/round-96/controls/c1-controls-r96.py
+    # 8. snapshot-missing-only: a bare GONE capture token repointed to a missing
+    #    snapshot directory (both GONE, so M1 holds); M4 fails, M5 is implied.
+    lab = (DOJ + ":136\tS020.txt\tcorpus/source-snapshots/round-31/S020.txt\t"
+           "corpus/source-snapshots/round-31/S020.txt\tevidence\n")
+    mp = DOJ + ":136\tS020.txt\t`S020.txt`\t`corpus/source-snapshots/round-31/S020.txt`\n"
+    d, rev, sha = fixture(cand, os.path.join(work, "fx-snap"), label_append=lab, map_append=mp,
+                          edits=[(DOJ, 136, "`S020.txt`", "`corpus/source-snapshots/round-31/S020.txt`")])
+    rc, out = run(meter, d, rev, rev, os.path.join(d, MAP_REL), TARGET, sha)
+    record("snapshot-missing-only", rc, 1, out, declared=["M4", "M5"])
+rc=0

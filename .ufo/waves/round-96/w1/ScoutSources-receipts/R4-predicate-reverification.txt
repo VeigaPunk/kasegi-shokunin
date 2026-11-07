@@ -1,0 +1,127 @@
+# R4 — Frozen-predicate re-verification I ran myself (both claims)
+# date: 2026-11-07T18:2x-18:3x UTC, seat ScoutSources
+# Read-only on the lane: only `git show`/`git log`/`git archive` reads plus the
+# frozen counters, which write into my own scratch.
+
+=== C2 counter (the frozen claim's own counter, at the C2 landing) ===
+$ python3 -B .ufo/waves/round-96/c2/capability-check.py \
+    --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+    --rev 7ef1d365eb523a83b2567342a6c0f585ab028ab0 --work <scratch>/c2work \
+    --instrument-sha256 71876619a62875049a5526a03806aa740e3ead122aacdc1499fe153be3048ac9 \
+    --gate-sha256 8b6f849349157a91dd7a2a3998c1f3956e8fed2dbd565c40815660cbd71cc8e6
+CAPABILITY-CHECK-REV rev=7ef1d365eb523a83b2567342a6c0f585ab028ab0 seed=1178642068
+LIMB K1 ok inst_sha=pin-ok gate_sha=pin-ok selftest=pass cases=128
+LIMB K2 ok rc=0 scanned=2744 hits=0 allowed=27 unused_allow=0
+LIMB K3 ok rc=1 hits=7 missing=none extra=none
+LIMB K4 ok base_new_shape_hits=0 old_shapes_missing=none
+LIMB K5 ok rows=1 last=87 named=True
+LIMB K6 ok rc=1 shapes=aws-access-key-id,aws-sts-session-token,credential
+CAPABILITY-CHECK-RESULT pass rc=0
+(rc=0; wall 52.70s)   => C2's frozen predicate K1-K6 all hold at the landing.
+
+=== C1 counter (the frozen claim's own counter, at the C1 landing) ===
+$ python3 -B .ufo/waves/round-96/c1/knowledge-meter.py \
+    --lane /home/vgpnk/Projects/shokunin/kasegi-shokunin \
+    --base-rev d8a2bb0a2bdc2f6337ea2f849a1a557297067ad6 \
+    --after-rev 3c0581e2616df7a10af494a785b479d5e5293749 \
+    --map .ufo/waves/round-96/c1/repair-map.tsv \
+    --labels-rev 804e7bc344df0808c880815dde077c28be5db18a \
+    --base-target 1030/2027 --target 1032/2028 \
+    --map-sha256 7d9bb49f366a594df3cd13e5651a6db4aabef1ab4b5a7081d89fd5f8c68b1d0f \
+    --work <scratch>/c1work
+KNOWLEDGE-METER base=1030/2027 after=1032/2028 base_target=1030/2027 target=1032/2028 sites=5 labels=5 after_rev=3c0581e2616df7a10af494a785b479d5e5293749 mirror_absent=True pinned=archive
+HOST base abs_tokens=127 abs_nongone=23
+HOST after abs_tokens=127 abs_nongone=23
+LIMB M0 pass base=1030/2027
+LIMB M1 pass after=1032/2028
+LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+LIMB M4 pass bad=none
+LIMB M5 pass out_of_range=none
+LIMB M9 pass rows=5 unbound=none
+LIMB M10 pass labelled=5 want=5 mapped=5 kinds=part=4,range=1 unknown=none unapplied=none unlabelled=none
+LIMB M6 pass sha256=7d9bb49f366a594df3cd13e5651a6db4aabef1ab4b5a7081d89fd5f8c68b1d0f
+KNOWLEDGE-METER-RESULT pass rc=0
+(rc=0; wall 24.50s)   => C1's frozen predicate limbs all hold at the landing,
+   including M4 bad=none with the prose-pointer `part` binding.
+
+=== C1: the five edits, read out of the landing commit itself ===
+$ git show 3c0581e2616df7a10af494a785b479d5e5293749:corpus/knowledge/triage-thresholds.md | sed -n '88p;90p'
+| curated | `rec.ev_inputs && Object.keys(rec.ev_inputs).length > 0` (boolean, not EV magnitude) | `1e12` = 1,000,000,000,000 | 107, 110 | SUPERSEDES: `SKILL.md:182-185` (round-13 correction: earlier text omitted `is_live(1)`) and `SKILL.md:255-257` (`curated` is a boolean on non-empty `ev_inputs`, never an EV magnitude); see §2.2 |
+| freshness | `rec.freshness?.label === 'live' ? 1 : 0` | `1` | 110 | MATCHES: `corpus/knowledge/intake-surface.md:83-85`, `corpus/knowledge/mission-control.md:20-21`; SUPERSEDES: `SKILL.md:182-185,255-257` (round-13 correction: earlier text omitted `is_live(1)` and called `curated` an EV magnitude) |
+  -> L88 carries `SKILL.md:182-185`; L90 carries `SKILL.md:182-185,255-257`.  Both as labelled.
+
+$ git show 3c0581e...:corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md | sed -n '13p;36p'
+L13 now carries `corpus/source-snapshots/round-30/S041.txt:1868-1870` and (was the bare
+   `S041.txt:1680-1681`) now `corpus/source-snapshots/round-30/S041.txt:1680-1681`.
+L36 now reads:
+   "... d) information useful when submitting a possible vulnerability report (L1832-1833),
+    e) out-of-scope services (L1834), f) how submitted reports are tracked (L1835). ..."
+
+$ git show d8a2bb0...:corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md | sed -n '13p' | grep -o '[^ ]*S041[^ ]*'
+(`corpus/source-snapshots/round-30/S041.txt:1868-1870`).
+`S041.txt:1680-1681`),                      <- the last bare capture token, now repointed
+$ git show d8a2bb0...:...iso-29147...md | sed -n '36p' | grep -oE '\(L[0-9-]+\)'
+(L1813) (L1838) (L1819) (L1830) (L1831) (L1832-1834) (L1835) (L1835)
+  -> the base had (L1832-1834) for d) and TWO (L1835) (one for e), one for f).
+     The landing narrows d) to (L1832-1833) and e) to (L1834); f) keeps (L1835).
+     The map's `old` for the e) row is the full "e) out-of-scope services (L1835)",
+     which is why the f) pointer was not disturbed (M3 old_not_once=0).
+
+=== S041 line-content check (the labels' own evidence, re-read from the capture) ===
+$ sed -n '1830,1836p' corpus/source-snapshots/round-30/S041.txt
+b) Secure communication options
+c) Setting communication expectations
+d) Information that would be useful when submitting a
+possible vulnerability report
+e) Out-of-scope services
+f) How submitted reports are tracked
+  -> 1832 = "d) Information ... submitting a", 1833 = "possible vulnerability report",
+     1834 = "e) Out-of-scope services", 1835 = "f) How submitted reports are tracked".
+     The landing's (L1832-1833) / (L1834) / (L1835) all resolve correctly.
+$ sed -n '1680,1681p' corpus/source-snapshots/round-30/S041.txt
+これらの国際標準は、情報セキュリティ早期警戒パートナーシップの取組み
+と比較して、大きな矛盾や不整合はありません。したがって、情報セキュリテ
+  -> the repointed 1680-1681 is the "no major contradiction" sentence, as the label says.
+
+=== C2: base-vs-landed shape discrimination, re-derived by me ===
+$ python3 (load base d8a2bb0 instrument and the landed instrument, run both over probes)
+  gitlab-pat-routable                   base=[] landed=['gitlab-pat-routable']
+  gitlab-pat-versioned                  base=[] landed=['gitlab-pat-versioned']
+  gitlab-runner-auth-token-versioned    base=[] landed=['gitlab-runner-auth-token-versioned']
+  gitlab-deploy-token-versioned         base=[] landed=['gitlab-deploy-token-versioned']
+  gitlab-agent-token-versioned          base=[] landed=['gitlab-agent-token-versioned']
+  gitlab-workspace-token-versioned      base=[] landed=['gitlab-workspace-token-versioned']
+  gitlab-pipeline-trigger-token         base=[] landed=['gitlab-pipeline-trigger-token']
+  earlier shapes (gitlab-pat, gitlab-runner-auth-token, gitlab-deploy-token,
+  gitlab-jwt-token): base == landed on every probe (no regression).
+  landed-only shapes (7) = exactly the seven new ones; base-only shapes = [] .
+
+$ sha256sum corpus/instruments/capture-secret-scan.py
+71876619a62875049a5526a03806aa740e3ead122aacdc1499fe153be3048ac9   (worktree)
+$ git show 7ef1d36...:corpus/instruments/capture-secret-scan.py | sha256sum
+71876619a62875049a5526a03806aa740e3ead122aacdc1499fe153be3048ac9   (landing commit)  -> pin MATCH
+
+$ python3 -B corpus/instruments/capture-secret-scan.py --selftest
+SELFTEST-RESULT pass cases=128   (rc=0)
+
+=== C1 P3 and P4 limbs (verified separately by me) ===
+$ git diff-tree --no-commit-id --name-only -r 3c0581e2616df7a10af494a785b479d5e5293749
+corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md
+corpus/knowledge/triage-thresholds.md
+  -> exactly the two paths P3 requires.  (P3: "the C1 landing commit's changed
+     paths are exactly corpus/knowledge/triage-thresholds.md and
+     corpus/knowledge/iso-29147-divergence-and-clause-crosswalk.md".)
+
+P4 (from the control harness re-run, R7):
+  CONTROL do-nothing          rc=1 want=1 PASS limbs=M1,M3 declared=M1,M3 attribution=PASS
+  CONTROL r95-no-prose-branch rc=1 want=1 PASS limbs=M4,M5 declared=M4,M5 attribution=PASS
+  -> P4 holds: the do-nothing control is rc 1 with limbs M1,M3, and the round-95
+     counter with only LABELS_PATH repointed is rc 1 with limbs M4,M5 on the same
+     candidate (M4 FAIL bad=iso-29147-divergence-and-clause-crosswalk.md:36).
+
+=== the frozen committed controls receipt agrees with my re-run ===
+$ tail -3 .ufo/waves/round-96/controls/c1-controls-r96.txt
+  KNOWLEDGE-METER-RESULT fail rc=1
+ATTRIBUTION pass fixtures=11
+C1-CONTROLS-RESULT pass controls=12
+  (my independent re-run: identical, see R7-c1-controls-rerun.txt)

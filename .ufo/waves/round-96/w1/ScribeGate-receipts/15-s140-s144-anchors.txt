@@ -1,0 +1,20 @@
+# S140 rule lines (capture, redacted, line numbering preserved)
+$ for n in 30 51 73 136 324 358 375; do printf '%s: ' $n; sed -n "${n}p" corpus/source-snapshots/round-94/S140.txt; done
+30: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+51: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+73: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)'''
+136: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+324: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+358: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+375: regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+
+# S144 quote and capture identity
+$ sed -n '346,347p' corpus/source-snapshots/round-96/S144.txt
+With the exception of Personal Access tokens, these prefixes cannot be configured,
+as they are designed to be standard identifications.
+$ sed -n '346,347p' corpus/source-snapshots/round-96/S144.txt | tr '\n' ' ' | wc -w
+20
+$ sha256sum corpus/source-snapshots/round-96/S144.txt && wc -lc corpus/source-snapshots/round-96/S144.txt
+d6e529275deb3ecf4ea2c3edaff2caa882760680cf23c1a134424e6acffdb83d  corpus/source-snapshots/round-96/S144.txt
+  418 17591 corpus/source-snapshots/round-96/S144.txt
+rc=0

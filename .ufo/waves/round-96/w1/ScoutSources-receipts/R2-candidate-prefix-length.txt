@@ -1,0 +1,74 @@
+# R2 — JOB 2: candidate NEW source stating GitLab token prefixes WITH lengths in prose
+# date: 2026-11-07T18:31Z (UTC), seat ScoutSources
+
+SEARCH SPACE OPENED (HTTP status of every page I opened):
+  HTTP=200 https://docs.gitlab.com/security/tokens/                        <- ALREADY ADMITTED as S144 (round-96)
+  HTTP=200 https://docs.gitlab.com/api/rest/authentication/
+  HTTP=200 https://docs.gitlab.com/user/profile/personal_access_tokens/
+  HTTP=200 https://docs.gitlab.com/user/project/settings/project_access_tokens/
+  HTTP=200 https://docs.gitlab.com/ci/jobs/ci_job_token/
+  HTTP=200 https://docs.gitlab.com/ci/triggers/
+  HTTP=200 https://docs.gitlab.com/ci/runners/
+  HTTP=200 https://docs.gitlab.com/api/personal_access_tokens/
+  HTTP=200 https://docs.gitlab.com/api/user_tokens/
+  HTTP=200 https://docs.gitlab.com/api/deploy_tokens/
+  HTTP=200 https://docs.gitlab.com/api/admin/token/
+  HTTP=200 https://docs.gitlab.com/api/project_access_tokens/
+  HTTP=200 https://docs.gitlab.com/api/group_access_tokens/
+  HTTP=200 https://docs.gitlab.com/development/authentication/
+  HTTP=200 https://docs.gitlab.com/runner/register/
+  HTTP=200 https://docs.gitlab.com/cli/token/
+  HTTP=404 https://docs.gitlab.com/api/tokens/
+  HTTP=404 https://docs.gitlab.com/ci/runners/registration/
+  HTTP=404 https://docs.gitlab.com/api/project_trigger_tokens/
+  HTTP=404 https://docs.gitlab.com/user/project/settings/deploy_tokens/
+  HTTP=404 https://docs.gitlab.com/ci/runners/configure/
+  HTTP=404 https://docs.gitlab.com/user/project/settings/ci_cd/
+
+GREP RESULT — "does any GitLab docs page state prefix AND length together?"
+  tokens-overview (docs.gitlab.com/security/tokens/):
+    $ grep -o -iE '.{80}length.{80}' tokens-overview.html   -> 1 hit, and it is inside a
+      minified <script> bundle, not prose.
+    $ python3 (search converted text) for r'.{0,120}\d{2}\s*character.{0,120}' -> 0 hits
+    $ python3 (search converted text) for r'.{0,120}character.{0,120}'       -> 0 hits
+    $ python3 (search converted text) for r'.{0,100}token length.{0,100}'    -> 0 hits
+    $ python3 (search converted text) for r'.{0,100}\d{2,3}-character.{0,100}'-> 0 hits
+    => the page states PREFIXES ONLY.  It has no length column: the two table
+       headers on the page are literally "Token name" and "Prefix".
+    $ python3 (parse <th> of every table)
+      TH: Token name / TH: Purpose / TH: Token name / TH: API access /
+      TH: Registry access / TH: Repository access / TH: Token name / TH: Prefix
+  personal_access_tokens (docs.gitlab.com/user/profile/personal_access_tokens/):
+    line 146 "default prefix setting"
+    line 523 "The token must be 20 characters long. The scopes must be valid and are visible"
+      -> a length, but for the ADMIN-CONSOLE create path, and NO prefix string is
+         stated anywhere on the page (grep for 'glpat|glptt' over the converted
+         text: 0 hits).
+  development/authentication (docs.gitlab.com/development/authentication/):
+    "Token prefixes" heading (line 156), a 3-row prefix table (glpat- L161,
+    gldt- L164, glcbt- L167) with a "Storage" column (SHA-256 digest, AES-256-GCM
+    encrypted, AES-256-GCM encrypted) -> prefixes and storage, NO lengths.
+  runner/register (docs.gitlab.com/runner/register/):
+    "Runner authentication tokens have the prefix, glrt-." (L69-70, L617-618)
+    -> prefix only, no length.
+  api/user_tokens, api/admin/token, api/deploy_tokens, api/personal_access_tokens,
+  api/project_access_tokens, api/group_access_tokens, ci/jobs/ci_job_token,
+  ci/triggers, ci/runners, cli/token:
+    -> no prose statement of any GitLab token prefix+length pair.
+    api/admin/token only shows a placeholder example '{"token": "glpat-<example-token>"}'.
+
+CONCLUSION: NO GitLab first-party prose page states a token prefix TOGETHER WITH
+its length.  GitLab's docs publish the prefix set (docs.gitlab.com/security/tokens/,
+now S144) and publish lengths only for the personal access token, separately
+(docs.gitlab.com/user/profile/personal_access_tokens/, and the S139
+detected_secrets page).  Every length for glrtr-/gldt-/glagent-/glwt-/glptt-
+comes from GitLab's own RULES FILE (S140), not from prose.  This is exactly what
+the round-96 S144 registry row already says: "the page states prefixes, never
+lengths or tails."
+
+=> JOB 2 HAS NO ADMISSIBLE NEW CANDIDATE for scope "GitLab token prefix and length".
+   The scope is already covered by held rows S139 (docs: PAT prefix + 20-char
+   length) and S144 (docs: the prefix set), with the lengths/tails sourced from
+   S140 (code, tier A).  A further prose candidate for this scope would have to
+   be a page that states a length for a NON-PAT family; none exists among the 22
+   pages opened.

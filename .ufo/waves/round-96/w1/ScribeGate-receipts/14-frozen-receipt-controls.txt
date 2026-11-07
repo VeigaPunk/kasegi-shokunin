@@ -1,0 +1,16 @@
+# frozen control receipt: the three controls this seat cites
+$ grep -E 'CONTROL (snapshot-missing-only|unlabelled-only|missing-labels)|^ATTRIBUTION|^C1-CONTROLS-RESULT' .ufo/waves/round-96/controls/c1-controls-r96.txt
+CONTROL missing-labels rc=2 want=2 PASS limbs=none declared=-
+CONTROL snapshot-missing-only rc=1 want=1 PASS limbs=M4,M5 declared=M4,M5 attribution=PASS
+CONTROL unlabelled-only rc=1 want=1 PASS limbs=M10,M9 declared=M10,M9 attribution=PASS
+ATTRIBUTION pass fixtures=11
+C1-CONTROLS-RESULT pass controls=12
+
+$ grep -E 'LIMB M3 ' .ufo/waves/round-96/controls/c1-controls-r96.txt | head -3
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+  LIMB M3 FAIL same_files=True bad_lines=4 old_not_once=0 dup_rows=0
+  LIMB M3 pass same_files=True bad_lines=0 old_not_once=0 dup_rows=0
+
+$ wc -l .ufo/waves/round-96/controls/c1-controls-r96.txt
+126 .ufo/waves/round-96/controls/c1-controls-r96.txt
+rc=0

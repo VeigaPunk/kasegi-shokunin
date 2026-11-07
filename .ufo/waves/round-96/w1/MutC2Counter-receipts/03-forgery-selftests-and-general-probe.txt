@@ -1,0 +1,24 @@
+=== F1 selftest ===
+SELFTEST allow-other-path ok got=credential allowed=0
+SELFTEST-RESULT pass cases=128
+rc=0
+=== F2 selftest ===
+SELFTEST allow-other-path ok got=credential allowed=0
+SELFTEST-RESULT pass cases=128
+rc=0
+=== F1 on a fresh routable PAT (general capability probe) ===
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=0 files=0 allowed=0 unused_allow=25 rc=0
+rc=0
+=== landed scanner on the same probe ===
+HIT shape=gitlab-pat-routable path=/fast/scratch/hyaku/kasegi-r96/MutC2Counter/probe-general.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=1 hits=1 files=1 allowed=0 unused_allow=25 rc=1
+rc=1
+=== landed scanner on PROBE commit (live- + receipts) ===
+HIT shape=gitlab-pat-routable path=.ufo/waves/round-96/w1/Probe-receipts/probe.txt line=1
+HIT shape=gitlab-pat-routable path=.ufo/waves/round-96/w1/live-probe.txt line=1
+CAPTURE-SECRET-SCAN mode=rev:3a6782bfc4770b06221f58420683d8d7e727c89b scanned=2746 hits=2 files=2 allowed=27 unused_allow=0 rc=1
+rc=1
+=== F2 scanner on PROBE commit (live- + receipts) ===
+HIT shape=gitlab-pat-routable path=.ufo/waves/round-96/w1/Probe-receipts/probe.txt line=1
+CAPTURE-SECRET-SCAN mode=rev:3a6782bfc4770b06221f58420683d8d7e727c89b scanned=2709 hits=1 files=1 allowed=27 unused_allow=0 rc=1
+rc=1

@@ -1,0 +1,13 @@
+     1	`reward.min` on only 14 (round-13 correction) — `ev-report.mjs` prints
+     2	UNKNOWN for 1087 programs. `check-freshness.mjs` live exit 1: all three
+     3	board datasets 358 h stale at round 11, 359.4 h at the round-13 live re-run
+     4	(the counter grows between runs; 26 h threshold, AR4 alarm standing).
+     5	Dispatch ordering (`buildQueue`, fleet-dispatch.mjs:88,110) is five-termed:
+     6	`priority(9e12) > continue(2e12) > curated(1e12, boolean on non-empty
+     7	ev_inputs) > reward.min×1000 > is_live(1)` (round-13 correction: earlier
+     8	text omitted `is_live(1)`) — exactly 1024 of 1088 records score 0 (796) or
+     9	1 (228), so for 94.1% of the map ordering degenerates to readdir order;
+    10	`priority.json` (14) is a strict subset of the 50 continue programs, so the
+    11	9e12 tier only breaks ties inside the continue cohort. Canonical derivation:
+    12	`corpus/knowledge/triage-thresholds.md`. Real state is
+    13	`ledger/missions.jsonl` + `fleets/run/`, real termination is

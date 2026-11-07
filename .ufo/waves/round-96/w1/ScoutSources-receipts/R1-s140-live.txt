@@ -1,0 +1,28 @@
+# R1 — S140 live source re-open and line-number audit
+# date: 2026-11-07T18:31Z (UTC), seat ScoutSources
+
+$ curl -sS -o S140.live.toml -w 'HTTP=%{http_code} BYTES=%{size_download}' '<capture_url pinned to 59ada1f4>'
+HTTP=200 BYTES=20228
+
+$ sha256sum S140.live.toml
+14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5  S140.live.toml
+manifest round-94 records: raw 20228 bytes, sha256 14854f71f81f2400ac33a950cd70850cbdc80c319e4bdb0445bff6dbc36a11b5  -> MATCH
+
+$ for L in 30 51 73 136 324 358 375; do sed -n "${L}p" corpus/source-snapshots/round-94/S140.txt; done
+-- COMMITTED CAPTURE corpus/source-snapshots/round-94/S140.txt (563 lines) --
+L30   regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L51   regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L73   regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)'''
+L136  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L324  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L358  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L375  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+
+-- LIVE UPSTREAM RAW (same commit, 592 lines) --
+L31   regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L53   regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glpat-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L76   regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glptt-(?:[0-9a-zA-Z_\-]{20}|[0-9a-zA-Z_\-]{40}))(?:[^0-9a-zA-Z_\-]|$)'''
+L142  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L340  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L376  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glagent-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''
+L394  regex = '''\b((?:[a-zA-Z0-9]{1,20}-)?glwt-[0-9a-zA-Z_\-]{27,300}\.[0-9a-z]{2}\.[0-9a-z]{2}[0-9a-z]{7})\b'''

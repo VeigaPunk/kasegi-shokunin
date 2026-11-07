@@ -1,0 +1,82 @@
+[
+ {
+  "name": "m06_cell_multi_value_forbidden",
+  "desc": "M4 applies the one-value rule to cell rows too (drops the round-93 is_cell allowance)",
+  "sha256": "751a8b20e7a7edb5d9571108afdcd348deb09d88900923964090d03d813d8ccc",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ m06_cell_multi_value_forbidden.py\n@@ -404,7 +404,7 @@\n                     m4bad.append(tag)\n                 continue\n             if lane is None or (not vals and not lane and not snaps) or (\n-                    len(vals) + (1 if lane else 0) + len(snaps) > 1 and not is_cell and not snaps):\n+                    len(vals) + (1 if lane else 0) + len(snaps) > 1 and not snaps):\n                 m4bad.append(tag)\n                 continue\n             snap_bad = False\n"
+ },
+ {
+  "name": "s01_old_absent_accepted",
+  "desc": "M3 accepts a map row whose old string does not occur on the base line",
+  "sha256": "9bb9bb92eaeda0d7dd4ca657d3aa38772c588ab4e4c5f9eea0664e7f68792186",
+  "hunks": 1,
+  "changed_lines": 5,
+  "diff": "--- pristine-r96.py\n+++ s01_old_absent_accepted.py\n@@ -363,10 +363,7 @@\n                 for i, (b, x) in enumerate(zip(bl, al), 1):\n                     fwd = b\n                     for old, new in sites.get((rel, i), []):\n-                        if b.count(old) < 1:\n-                            missing += 1\n-                        else:\n-                            fwd = fwd.replace(old, new)\n+                        fwd = fwd.replace(old, new)\n                     if fwd != x:\n                         bad += 1\n         limbs.append((\"M3\", same_files and bad == 0 and missing == 0 and dup == 0 and bool(rows),\n"
+ },
+ {
+  "name": "s02_m9_ignores_new",
+  "desc": "M9 binds a row to its label by (site,key) but never compares the map's new value",
+  "sha256": "57146753a1dc4325a50de49109088211e73ed2ca6ef9d73d9871c18ba089bfba",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s02_m9_ignores_new.py\n@@ -447,7 +447,7 @@\n             bl = bfiles.get(f, \"\").split(\"\\n\")\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if lab is None or (site, key) in EXCLUDED or exp is None:\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n         # M10 completeness on (site, key) pairs\n"
+ },
+ {
+  "name": "s03_missing_label_no_edit",
+  "desc": "M9 treats an absent label row as no-edit rather than unbound (equivalent: exp is None when lab is None)",
+  "sha256": "f5fe5ba990588d741bc88d4a460a008872b6b8bc3c3724d21c47a2b4218000a2",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s03_missing_label_no_edit.py\n@@ -447,7 +447,7 @@\n             bl = bfiles.get(f, \"\").split(\"\\n\")\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n         # M10 completeness on (site, key) pairs\n"
+ },
+ {
+  "name": "s04_snapshot_existence_dropped",
+  "desc": "M4 no longer checks that a written snapshot path exists (and the snapshot range check goes with it)",
+  "sha256": "9581686e3413be9ab63ac217100ca73e07e49108122f9fd0c62ede1f2ec572a4",
+  "hunks": 1,
+  "changed_lines": 8,
+  "diff": "--- pristine-r96.py\n+++ s04_snapshot_existence_dropped.py\n@@ -408,14 +408,6 @@\n                 m4bad.append(tag)\n                 continue\n             snap_bad = False\n-            for sp, lo, hi in snaps:\n-                text = file_at(A[\"tree\"], sp)\n-                if text is None:\n-                    snap_bad = True\n-                    break\n-                nlines = len(text.splitlines())\n-                if lo and not (1 <= int(lo) <= (int(hi) if hi else int(lo)) <= nlines):\n-                    m5bad.append(tag)\n             if snap_bad:\n                 m4bad.append(tag)\n                 continue\n"
+ },
+ {
+  "name": "s05_unknown_kind_allowed",
+  "desc": "M10 stops rejecting a label kind the counter cannot derive (unknown)",
+  "sha256": "c06bdaeb7f19202173452cf22b61d7eabec370919567d743977c6aca46b1dd53",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s05_unknown_kind_allowed.py\n@@ -465,7 +465,7 @@\n         unlabelled = sorted(mapped - want)\n         tally = \",\".join(\"%s=%d\" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))\n         short = lambda ps: \",\".join(\"%s/%s\" % (s.rsplit(\"/\", 1)[-1], k) for s, k in ps) or \"none\"\n-        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n+        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and set(EXCLUDED) <= set(kinds),\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n         if a.map_sha256:\n"
+ },
+ {
+  "name": "s06_unlabelled_ignored",
+  "desc": "M10 stops rejecting a map row whose (site,key) has no label",
+  "sha256": "66e6abf53689276f7e3172ad4db3fd53d122d51f7078590439e7d27f85d3e6c7",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s06_unlabelled_ignored.py\n@@ -465,7 +465,7 @@\n         unlabelled = sorted(mapped - want)\n         tally = \",\".join(\"%s=%d\" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))\n         short = lambda ps: \",\".join(\"%s/%s\" % (s.rsplit(\"/\", 1)[-1], k) for s, k in ps) or \"none\"\n-        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n+        limbs.append((\"M10\", bool(want) and not unapplied and not unknown and set(EXCLUDED) <= set(kinds),\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n         if a.map_sha256:\n"
+ },
+ {
+  "name": "s07_unapplied_ignored",
+  "desc": "M10 stops rejecting a labelled pair the map leaves unapplied",
+  "sha256": "bea2d33161d9f7aa23a9f6acc6aef4574fa1b62f6d9f83252f225f08f0d97ab6",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s07_unapplied_ignored.py\n@@ -465,7 +465,7 @@\n         unlabelled = sorted(mapped - want)\n         tally = \",\".join(\"%s=%d\" % (k, sum(1 for v in kinds.values() if v == k)) for k in sorted(set(kinds.values())))\n         short = lambda ps: \",\".join(\"%s/%s\" % (s.rsplit(\"/\", 1)[-1], k) for s, k in ps) or \"none\"\n-        limbs.append((\"M10\", bool(want) and not unapplied and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n+        limbs.append((\"M10\", bool(want) and not unlabelled and not unknown and set(EXCLUDED) <= set(kinds),\n                       \"labelled=%d want=%d mapped=%d kinds=%s unknown=%s unapplied=%s unlabelled=%s\" % (\n                           len(labels), len(want), len(mapped), tally, short(unknown), short(unapplied), short(unlabelled))))\n         if a.map_sha256:\n"
+ },
+ {
+  "name": "s08_part_any_old",
+  "desc": "M9 skips the (old,new) comparison for the part kind (any old accepted)",
+  "sha256": "68a5fca5c66bad74d7d30d4e522c48206117223f0a984c87c69738681f247c6a",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s08_part_any_old.py\n@@ -447,7 +447,7 @@\n             bl = bfiles.get(f, \"\").split(\"\\n\")\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if lab is None or (site, key) in EXCLUDED or exp is None or (exp[0] != \"part\" and exp[1:] != (old, new)):\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n         # M10 completeness on (site, key) pairs\n"
+ },
+ {
+  "name": "s09_skip_absent_label",
+  "desc": "M9 skips any map row whose (site,key) has no label row (absent label treated as no-edit)",
+  "sha256": "834f3b26e9aa2078d335e17ebcb60796b8f3ce8d14a7df3ffbb0252925a52870",
+  "hunks": 1,
+  "changed_lines": 2,
+  "diff": "--- pristine-r96.py\n+++ s09_skip_absent_label.py\n@@ -447,7 +447,7 @@\n             bl = bfiles.get(f, \"\").split(\"\\n\")\n             line = bl[n - 1] if 1 <= n <= len(bl) else \"\"\n             exp = expected_edit(key, lab[0], lab[1], line) if lab else None\n-            if lab is None or (site, key) in EXCLUDED or exp is None or exp[1:] != (old, new):\n+            if lab is not None and ((site, key) in EXCLUDED or exp is None or exp[1:] != (old, new)):\n                 m9bad.append(\"%s:%d\" % (f.rsplit(\"/\", 1)[-1], n))\n         limbs.append((\"M9\", not m9bad and bool(rows), \"rows=%d unbound=%s\" % (len(rows), \",\".join(m9bad) or \"none\")))\n         # M10 completeness on (site, key) pairs\n"
+ }
+]

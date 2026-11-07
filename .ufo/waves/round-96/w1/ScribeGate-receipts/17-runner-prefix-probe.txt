@@ -1,0 +1,11 @@
+# probe: does the missing instance prefix on the runner versioned shape cause a MISS?
+# fixture bytes are NOT reproduced here (synthetic, scanner-shaped): each file holds one
+# line with a custom instance prefix, a 30-character head and the versioned tail.
+$ python3 -B corpus/instruments/capture-secret-scan.py --files $S/probe-runner-prefixed.txt $S/probe-pat-prefixed.txt
+HIT shape=gitlab-runner-auth-token-versioned path=/fast/scratch/hyaku/kasegi-r96/ScribeGate/probe-runner-prefixed.txt line=1
+HIT shape=gitlab-pat-versioned path=/fast/scratch/hyaku/kasegi-r96/ScribeGate/probe-pat-prefixed.txt line=1
+CAPTURE-SECRET-SCAN mode=files scanned=2 hits=2 files=2 allowed=0 unused_allow=25 rc=1
+rc=1
+
+# reading: both hit; the runner match starts at 'glrtr-' because the left boundary
+# (?<![A-Za-z0-9_]) accepts the '-' that precedes it (capture-secret-scan.py:237).

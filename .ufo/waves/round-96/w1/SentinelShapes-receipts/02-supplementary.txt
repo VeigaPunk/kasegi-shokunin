@@ -1,0 +1,32 @@
+case                                     hit   span  shapes
+runner glrt- (no r)                      HIT   0-48  gitlab-runner-auth-token-versioned
+runner glrtr-t2_ partition               HIT   0-49  gitlab-runner-auth-token-versioned
+prefixed ACME-glpat- versioned           HIT   0-52  gitlab-pat-versioned
+prefixed 21-char glpat- versioned        HIT   22-69 gitlab-pat-versioned
+head min 27                              HIT   0-46  gitlab-pat-versioned
+head max 300                             HIT   0-319 gitlab-pat-versioned
+head 301                                 MISS  -     -
+routable head min 27                     HIT   0-43  gitlab-pat-routable
+routable head 26 (n1 control)            MISS  -     -
+versioned at EOF                         HIT   0-47  gitlab-pat-versioned
+routable at EOF                          HIT   0-44  gitlab-pat-routable
+glptt-20 at EOF                          HIT   0-26  gitlab-pipeline-trigger-token
+glptt-40 at EOF                          HIT   0-46  gitlab-pipeline-trigger-token
+glptt-20 then &                          HIT   0-26  gitlab-pipeline-trigger-token
+glptt-40 then %26                        HIT   0-46  gitlab-pipeline-trigger-token
+versioned trailing dot                   HIT   0-47  gitlab-pat-versioned
+versioned trailing hyphen                HIT   0-47  gitlab-pat-versioned
+versioned trailing underscore            MISS  -     -
+glptt-40 trailing hyphen                 MISS  -     -
+versioned after \u0026                   HIT   9-56  gitlab-pat-versioned
+versioned after %26                      HIT   6-53  gitlab-pat-versioned
+versioned after %3D                      HIT   6-53  gitlab-pat-versioned
+versioned after &#x26;                   HIT   9-56  gitlab-pat-versioned
+versioned after &#x26 (no semi)          MISS  -     -
+versioned after &#38 (no semi)           MISS  -     -
+versioned after \x26                     MISS  -     -
+URL query %2E both dots                  MISS  -     -
+URL query %2e lower                      MISS  -     -
+JSON value \u002e                        MISS  -     -
+HTML &#46;                               MISS  -     -
+uppercase GLPAT-                         MISS  -     -

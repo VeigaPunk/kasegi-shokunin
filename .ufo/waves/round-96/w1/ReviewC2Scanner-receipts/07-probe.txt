@@ -1,0 +1,38 @@
+glpat routable head=27                         ok    got=gitlab-pat-routable
+glpat routable head=26                         ok    got=none
+glpat routable head=300                        ok    got=gitlab-pat-routable
+glpat routable head=301                        ok    got=none
+glpat versioned head=27                        ok    got=gitlab-pat-versioned
+glpat versioned head=26                        ok    got=none
+glpat versioned head=301                       ok    got=none
+routable token: no versioned hit               ok    got=gitlab-pat-routable
+versioned token: no routable hit               ok    got=gitlab-pat-versioned
+routable tail 2+6 (short)                      ok    got=none
+routable tail 2+8 (long)                       ok    got=none
+routable tail upper                            ok    got=none
+versioned tail 2+.+2+6                         ok    got=none
+versioned tail 2+.+1+7                         ok    got=none
+plain glpat-20                                 ok    got=gitlab-pat
+plain gldt-20                                  ok    got=gitlab-deploy-token
+plain glrtr-20                                 ok    got=gitlab-runner-auth-token
+glptt-19                                       ok    got=none
+glptt-20                                       ok    got=gitlab-pipeline-trigger-token
+glptt-21                                       ok    got=none
+glptt-39                                       ok    got=none
+glptt-40                                       ok    got=gitlab-pipeline-trigger-token
+glptt-41                                       ok    got=none
+prefixed glpat routable                        ok    got=gitlab-pat-routable
+prefixed glpat versioned                       ok    got=gitlab-pat-versioned
+prefixed glrt versioned                        ok    got=gitlab-runner-auth-token-versioned
+prefixed glrtr versioned                       ok    got=gitlab-runner-auth-token-versioned
+prefixed gldt versioned                        ok    got=gitlab-deploy-token-versioned
+prefixed glagent versioned                     ok    got=gitlab-agent-token-versioned
+prefixed glwt versioned                        ok    got=gitlab-workspace-token-versioned
+prefixed glptt-20                              ok    got=gitlab-pipeline-trigger-token
+glpat routable after word char                 ok    got=none
+glpat routable at start                        ok    got=gitlab-pat-routable
+glpat routable after \n escape                 ok    got=gitlab-pat-routable
+glpat routable after %2D                       ok    got=gitlab-pat-routable
+glpat routable after slash                     ok    got=gitlab-pat-routable
+glagent-50 (S140:213)                          ok    got=none
+PROBE pass

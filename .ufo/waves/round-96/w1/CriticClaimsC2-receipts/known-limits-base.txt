@@ -1,0 +1,32 @@
+Known limits: fine-grained `github_pat_` tokens (S136 line 163; neither opened
+source states their length or alphabet), the routable and versioned-routable
+token forms (`glpat-`, `gldt-`, `glrt-`/`glrtr-` with a `.`-suffixed routable
+tail; S140 lines 30, 51, 136, 324), the remaining GitLab
+prefixes (`glptt-`, `glft-`, `glimt-`, `glagent-`, `glwt-`, `glsoat-`,
+`glffct-`, `gloas-`, `glrct-`; S140 lines 73, 190, 229, 213, 375, 278, 392,
+174, 412), an encoded prefix
+separator (`gh%5Fp_`, `glpat%2D`; undocumented by either source), GCS V2 `GoogleAccessId=`/`Signature=` URLs, CloudFront signed
+cookies held as HAR/JSON name/value objects (`"name":"CloudFront-Signature"`),
+percent-encoded parameter names or `=` (a whole URL percent-encoded inside
+another URL's query), Azure SAS parameter names of 8+ letters between `sv` and
+`sig`, more than 20 other parameters between the two matched ones, values
+soft-wrapped across lines, and gzip/UTF-16/base64-wrapped captures are not
+detected.
+The documented example key id AKIAIOSFODNN7EXAMPLE (S124 line 409) is allowed.
+
+Allowlist. The gate's generic shapes also match non-secrets in captures (a
+file name as a JSON "token" value, a spec's example "secret"). Each such match
+is allowed only by a row of the allowlist (default capture-secret-allow.tsv
+beside this file): `path<TAB>shape<TAB>sha256-of-matched-bytes<TAB>reason`.
+A row binds one exact matched value at one path, so a different value at the
+same path and shape is still a hit. Rows for aws-sts-session-token are refused
+(a session token is never a false positive); a refused or malformed row is a
+read error (exit 2).
+
+Output never prints a matched value: `HIT shape=<s> path=<p> line=<n>` per
+file and shape (first non-allowed match), then
+`CAPTURE-SECRET-SCAN mode=<m> scanned=<n> hits=<h> files=<f> allowed=<a> unused_allow=<u> rc=<rc>`
+(`allowed` counts allowlisted matches; `unused_allow` counts allowlist rows no
+scanned match consumed — reported, not an error).
+Exit 0 when nothing matched, 1 when anything matched, 2 on usage or read error.
+"""
