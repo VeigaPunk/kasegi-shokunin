@@ -1,0 +1,114 @@
+[
+ {
+  "id": "M01",
+  "rc": 0,
+  "desc": "apply_row primary uniqueness !=1 -> ==0 (duplicate primary anchor allowed)",
+  "sha": "7b5f6e8e120bb9ba5d766a5bff126b6468d23db5412e0bea847a9c2bb22aac18",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M02",
+  "rc": 1,
+  "desc": "apply_row primary site never applied (identity primary)",
+  "sha": "7a117566478f861de592ac7524597a9762fc34d802c39de40c93e12830632784",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'SURVIVED', 'T-MIS': 'SURVIVED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'SURVIVED', 'T-EXCA': 'SURVIVED', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-OK'} counted={'T-KILL': 'no', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'no', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'yes'} all_killed_exit=False location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (False, False), 'hashwl': (False, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M03",
+  "rc": 1,
+  "desc": "apply_row extra uniqueness !=1 -> ==0",
+  "sha": "b84ea907a308e7afa44fad8c14ee32c4b26a86ac8eaf679bc92920feb738e6d0",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': False, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M04",
+  "rc": 1,
+  "desc": "apply_row extra loop never runs (extra sites ignored)",
+  "sha": "5d14004ebc42da764d62891eccbd28093a89951fe7b02c814cbce0e26bb38014",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': False, 'dup': False, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M05",
+  "rc": 1,
+  "desc": "battery: EXCEPTION-KILL on an exception-class row no longer counts",
+  "sha": "ceeb553190d2b360cb499baf4e9a872bf132e77310bf683536366be51ca29fe8",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'no', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=False location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M06",
+  "rc": 1,
+  "desc": "battery tally: killed counter increments survived",
+  "sha": "bcefec8bf03b82c40e416b257926ad8f462ac0e04fdc6ff31e8460f5bfa3c5c3",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=False location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (False, False), 'hashwl': (False, False), 'path': (False, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M07",
+  "rc": 1,
+  "desc": "MUTBAT summary line prints survived where killed is expected",
+  "sha": "7532c6cbf4b0809e3d829bdf8b246b83ff26ac469c9d1139c39f3c6a82544e17",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M08",
+  "rc": 0,
+  "desc": "battery hidden count includes the D3 decoy (slice [:2] -> all)",
+  "sha": "d92ba8cfe0dc50c60b17267da751a11e703acaf37112285142fa2dc5d9e94eec",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M09",
+  "rc": 0,
+  "desc": "battery ok: decoy_hidden>=1 -> >=0",
+  "sha": "2b4e3ec93de398ea21f72c8c815d1cbd17b36f2be22b9e4db1828b144d35e0f5",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M10",
+  "rc": 0,
+  "desc": "DECOY line nonce field always '-'",
+  "sha": "e78b7089eadcaa0814791ae23c8f63a060b55496b3fb7ace38b41e6ce8432d8d",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M11",
+  "rc": 1,
+  "desc": "run_decoy: D3 single-decoy never appended",
+  "sha": "ed0cb059ba79b9bd4797f1e365474dc893cab88aef498156157141a72f09467c",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, True), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M12",
+  "rc": 0,
+  "desc": "DECOY line keyed label always 'yes' (legacy misreported)",
+  "sha": "16465cda683d6e7e9cd6048b43c0815bc49b1dea23c2c6360a100c9bcf339612",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M13",
+  "rc": 0,
+  "desc": "r84_limbs assertions replaced by constant True",
+  "sha": "fbaf9057b0584694bf09ef33860b7e7f0a990de58614ac21c469896183cc0cf0",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M14",
+  "rc": 1,
+  "desc": "selftest exit code forced to 1 (verdict line unchanged)",
+  "sha": "eb059d4939177fb8fac44cc8f3072acce8e5d1e1dc957e92494c3476d8b8a750",
+  "line": "mutbat selftest ok got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, False)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M15",
+  "rc": 1,
+  "desc": "battery ok: killed==n_kill -> killed>=0",
+  "sha": "aef1bc3e0f3e6bc5609c41605f5bf2d0fea22829ddc9363ef480bd437f8396cd",
+  "line": "mutbat selftest FAIL got={'T-KILL': 'KILLED', 'T-MIS': 'MISKILLED', 'T-SURV': 'SURVIVED', 'T-ABSENT': 'NOT-DERIVED', 'T-EXC': 'EXCEPTION-KILL', 'T-EXCA': 'EXCEPTION-KILL', 'T-NEU': 'NEUTRAL-OK', 'T-NEUBAD': 'NEUTRAL-BROKEN'} counted={'T-KILL': 'yes', 'T-MIS': 'no', 'T-SURV': 'no', 'T-ABSENT': 'no', 'T-EXC': 'yes', 'T-EXCA': 'no', 'T-NEU': 'yes', 'T-NEUBAD': 'no'} all_killed_exit=True location_forgery_exit=False baseline_forgery_exit=False selfdiff_forgery_exit=False r83_forgeries={'count': (True, False), 'hashwl': (True, False), 'path': (True, True)} r84_limbs={'extra': True, 'dup': True, 'decoy_line': True} bad_tables=[True, True, True, True]"
+ },
+ {
+  "id": "M16",
+  "rc": 0,
+  "desc": "keyed-decoy nonce os.urandom(8).hex() -> \"0\" (constant nonce)",
+  "sha": "0ffb3db029394ab06e7a41a3c97ddc4be2867f05546c671c35e2065c19d2ac66",
+  "line": "mutbat selftest ok (survives P3 rc0 killed=76 and P5 as-expected)"
+ }
+]

@@ -1,0 +1,37 @@
+# ScribeLesson r84 gate-row receipts 2026-11-06T23:48:01Z
+$ sha256sum corpus/source-snapshots/round-84/S118.txt corpus/source-snapshots/round-84/manifest.json .ufo/waves/round-84/claims.json
+e824a73545bedd0abae5f84cd120a5c73e482d7e935bc1534a08a1e1adfa5359  corpus/source-snapshots/round-84/S118.txt
+80129310e4880f857a0c2225f028ac8e5985ceff21ad5d5496c1867a7de0a65a  corpus/source-snapshots/round-84/manifest.json
+30f9355c079677f0a3f8f0555d396bda51c380d45f169ddb2caddf694ae47906  .ufo/waves/round-84/claims.json
+$ git show 7f76b7eb:.ufo/waves/round-84/claims.json | sha256sum
+30f9355c079677f0a3f8f0555d396bda51c380d45f169ddb2caddf694ae47906  -
+$ git show 7f76b7eb:corpus/source-snapshots/round-84/S118.txt | sha256sum
+e824a73545bedd0abae5f84cd120a5c73e482d7e935bc1534a08a1e1adfa5359  -
+$ wc -l corpus/source-snapshots/round-84/S118.txt
+129 corpus/source-snapshots/round-84/S118.txt
+$ grep -n -F "<Q01 quote>" corpus/source-snapshots/round-84/S118.txt
+102:This bucket contains a zip file with all vulnerabilities across all ecosystems (including withdrawn records) at gs://osv-vulnerabilities/all.zip. This is the easiest way to download the entire OSV database.
+$ grep -F "<Q01 quote>" corpus/source-snapshots/round-84/S118.txt | wc -w
+28
+$ sed -n 5p corpus/SOURCES.md   # column header
+| id | source | kind | tier | scope | anchor | teaches | status | opened | recheck | used-by |
+$ sed -n 130p corpus/SOURCES.md | tr "|" "\\n" | cat -n   # S118 cells: 9=status 10=opened 11=recheck 12=used-by
+     1	
+     2	 S118 
+     3	 OSV.dev, Data sources (OSV project) — https://google.github.io/osv.dev/data/ 
+     4	 docs 
+     5	 A 
+     6	 the OSV.dev project's own statement of its GCS data-dump layout: the full-database zip that includes withdrawn records, the per-record JSON path under each ecosystem directory, the [EMPTY]/ directory for records without an ecosystem, the per-ecosystem modified_id.csv rows that omit the ecosystem directory prefix, colon-suffixed ecosystems folded into their base directory, and the stopped export of prefixed ecosystem entries; not the post-import record handling or the top-level modified_id.csv format and order (S117 F59), not the import bar (S116 F58), not the source list or licences 
+     7	 Data sources page, lines 99-123; capture corpus/source-snapshots/round-84/S118.txt (sha256 e824a73545bedd0abae5f84cd120a5c73e482d7e935bc1534a08a1e1adfa5359, 129 lines, 5820 snapshot bytes, fetched 2026-11-06T23:34:49Z; 6 pinned quotes in corpus/source-snapshots/round-84/manifest.json) 
+     8	 which OSV records the bulk GCS export holds and where, so a researcher counting or diffing advisories offline drops withdrawn records, reads the [EMPTY]/ directory and parses per-ecosystem change lists without the prefix 
+     9	 queued 
+    10	 2026-11-06 
+    11	 90d 
+    12	 — 
+    13	
+$ git show 7f76b7eb:corpus/SOURCES.md | grep -n "^| S118 |" | cut -c1-60   # status at freeze
+130:| S118 | OSV.dev, Data sources (OSV project) — https:/
+$ git show 7f76b7eb:corpus/SOURCES.md | sed -n 130p | tr "|" "\\n" | sed -n "9p;12p"   # status, used-by at freeze
+ queued 
+ — 
+$ grep -n "| S118 |" .ufo/waves/round-84/controls/c2-prefreeze-r84.txt

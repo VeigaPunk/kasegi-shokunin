@@ -1,0 +1,91 @@
+# ReviewC2 independent verification receipt — 2026-11-06
+
+All commands run from /home/vgpnk/Projects/shokunin/kasegi-shokunin over frozen/committed bytes
+plus the uncommitted draft. Read-only; no lane file modified. No tools installed
+(operator 2026-10-19 authorization unused).
+
+## 1. Snapshot integrity
+
+- sha256(corpus/source-snapshots/round-84/S118.txt) =
+  e824a73545bedd0abae5f84cd120a5c73e482d7e935bc1534a08a1e1adfa5359 — matches manifest.json
+  (`sha256`), the entry's Gate section, and the SOURCES.md:130 capture cell.
+- bytes=5820, newline-count=129 (129 lines + terminal newline) — matches manifest `bytes`/`lines`.
+
+## 2. Quote-by-quote (python check over the bytes)
+
+| pin | anchor | verbatim in anchor line | occurrences in file | len(quote.split()) |
+|---|---|---|---|---|
+| Q01-allzip-withdrawn | 102 | True | 1 | 17 |
+| Q02-record-path | 104 | True | 1 | 8 |
+| Q03-empty-dir | 104 | True | 1 | 13 |
+| Q04-per-ecosystem-csv-prefix | 114 | True | 1 | 7 |
+| Q05-colon-prefix-dir | 121 | True | 1 | 15 |
+| Q06-stopped-prefixed | 123 | True | 1 | 12 |
+
+Word counts equal the entry's Gate table and manifest pins.
+
+## 3. Structural line anchors cited by the entry (observed snapshot line numbers)
+
+1 = "Data sources | OSV …"; nav 2-17 = "Introduction to OSV" … "OSV-Linter" (incl.
+"Properties of a High Quality OSV Record" at 14); 31 "Current data sources"; 34
+"GitHub Advisory Database"; 60 "V8 / Chromium"; 61 "Converted data"; 63 "Debian Security
+Advisories"; 66 "Covered Ecosystems"; 67 intro; 68 "AlmaLinux" … 96 "Ubuntu OS"; 97
+"Data Quality"; 98 quality-bar sentence; 99 "Data dumps"; 100 "For convenience"; 101
+"Full database download"; 102 Q01 line; 103 "Per-ecosystem downloads"; 104 Q02/Q03 line;
+108 "Downloading recent changes"; 111 top-level file; 112 per-ecosystem files; 113
+"Format and Usage"; 114 Q04 line; 119 reverse-chronological sentence; 120 "Ecosystem
+naming"; 121 Q05 line; 122 ecosystems.txt; 123 Q06 line; 124 "Contributing Data"; 126 last
+body line of that section. Every range the entry cites (:1, :2-17, :31-60, :61-65, :66-96,
+:97-98, :102, :104, :109-119, :112, :114, :121, :122, :123, :124-126) lands on the intended text.
+
+## 4. Entry recheck (the entry's own `recheck:` line, exit 0)
+
+S118:sha256 OK
+S118:Q01-allzip-withdrawn OK occurrences=1 anchor=102-ok
+S118:Q02-record-path OK occurrences=1 anchor=104-ok
+S118:Q03-empty-dir OK occurrences=1 anchor=104-ok
+S118:Q04-per-ecosystem-csv-prefix OK occurrences=1 anchor=114-ok
+S118:Q05-colon-prefix-dir OK occurrences=1 anchor=121-ok
+S118:Q06-stopped-prefixed OK occurrences=1 anchor=123-ok
+exit=0
+
+Byte-identical to `.ufo/waves/round-84/controls/c2-prefreeze-r84.txt` (copied beside this
+receipt as c2-prefreeze-r84.txt).
+
+## 5. source-recheck.py selftest (fail-closed, Q7)
+
+selftest cases=10 failures=0, exit 0; includes quote-absent and broken/missing-source
+controls with expected-exit=1 observed-exit=1.
+
+## 6. Entry gate (r83 bytes) on the draft
+
+python3 .ufo/waves/round-83/c2/entry-gate.py --entry corpus/knowledge/osv-gcs-data-dump-layout.md
+  --manifest corpus/source-snapshots/round-84/manifest.json --source S118 --lane <lane>
+ENTRY-GATE sid=S118 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0
+ruleless=0 untied=0 header=ok
+ENTRY-GATE-RESULT pass, exit 0 (spans=7 = six claim quotes + the Attribution title span
+"Data sources | OSV" (S118.txt:1), which G2 verified verbatim at line 1).
+
+Gate bytes unchanged: sha256(.ufo/waves/round-83/c2/entry-gate.py) =
+42f4b2accf704455325f8d1eb8ca4ec21401e35397af7a36861c33a27ace6302; committed at 0cd499d
+(round-83 freeze); `git diff --stat a089ff3d601b4d53a5515e52720ba27e5ec72c3d -- <gate>` empty;
+`git status --porcelain <gate>` empty.
+
+## 7. Literal sweep (independent rerun of the control's sweep)
+
+Each of the six manifest quotes grepped over corpus/knowledge/*.md minus the draft (98 total
+entries, 97 others): 0 files for each of Q01-Q06 — matches the control receipt's
+`literal_sweep_total 0 files 97` and the entry's "over the other 97 entries".
+
+## 8. Registry row
+
+SOURCES.md:130 (S118): 11 cells; tier A; status `queued`; scope and teaches cells true of the
+page and the entry; capture cell matches the manifest.
+
+## 9. F59 overlap evidence (Distinctness finding M2)
+
+S117.txt (round-83 capture) line 99: "Additionally, each ecosystem directory (e.g.,
+gs://osv-vulnerabilities/PyPI/) contains a modified_id.csv file with the same format, but only
+for vulnerabilities in that ecosystem and without the <ecosystem_dir> prefix in the second
+column." — i.e. the FAQ already states the per-ecosystem prefix omission inside F59 Claim 5's
+cited range (S117.txt:94-100), the same fact F60 Claim 4 pins from S118.txt:114.

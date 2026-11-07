@@ -1,0 +1,22 @@
+[
+ {
+  "id": "H09",
+  "anchor": "    counts = census(os.path.abspath(root), lane, verbose)\n",
+  "replacement": "    counts = census(root, lane, verbose)\n",
+  "class": "assertion",
+  "kill_cases": [
+   "argv-values"
+  ],
+  "expect": "r83 MutC1Hunt MUT-AP-root-no-abspath -> argv-values FAIL"
+ },
+ {
+  "id": "H12",
+  "anchor": "            print(\"ENTRY %s noprefix=%d foreign_exit=%d\" % (name, int(noprefix), code))\n",
+  "replacement": "            print(\"ENTRY %s noprefix=%d foreign_exit=%s\" % (name, int(noprefix), \"timeout\" if code < 0 else code))\n",
+  "class": "assertion",
+  "kill_cases": [
+   "entry-set"
+  ],
+  "expect": "r83 MutC1Hunt MUT-MV-timeout-label -> entry-set FAIL"
+ }
+]

@@ -1,0 +1,34 @@
+selftest case=prefix-census ok got=entries=6,exit0_foreign=3,exit1_foreign=1,exit2_foreign=1,exit_other=1,noprefix=5,norecheck=0 want=entries=6,exit0_foreign=3,exit1_foreign=1,exit2_foreign=1,exit_other=1,noprefix=5,norecheck=0
+selftest case=result-main ok nonconformant ret=1 conformant ret=0
+selftest case=tmpdir-parent ok calls=6 dirs='/fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1','/fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1','/fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1','/fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1','/fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1','/fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1'
+selftest case=scratch-cleanup ok calls=6 leftover=0
+selftest case=first-line ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=1,exit_other=0,noprefix=1,norecheck=0
+selftest case=restoration-only ok got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 marker_present=False
+selftest case=both-headers ok got=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 want=entries=2,exit0_foreign=2,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=0 first_ran=True restoration_ran=False
+selftest case=relabel-detection ok unpatched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=1,restoration_only=0; patched got=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1 want=entries=2,exit0_foreign=1,exit2_foreign=0,noprefix=0,norecheck=0,restoration_only=1
+selftest case=tmpdir-refusal ok ret=2 stdout='' stderr='recheck-cwd: TMPDIR /fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1/recheck-cwd-selftest-d21cxr55/no-such-tmpdir is not a directory\n'
+selftest case=prefix-literal ok got=entries=3,exit0_foreign=2,exit1_foreign=1,exit2_foreign=0,exit_other=0,noprefix=2,norecheck=0 want=entries=3,exit0_foreign=2,exit1_foreign=1,exit2_foreign=0,exit_other=0,noprefix=2,norecheck=0
+selftest case=conform-limbs ok exit2_only ret=1 norecheck_only ret=1
+selftest case=tmpdir-file ok ret=2 stdout='' stderr='recheck-cwd: TMPDIR /fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1/recheck-cwd-selftest-d21cxr55/tmpdir-is-a-file is not a directory\n'
+selftest case=timeout-bucket ok got=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=0,exit_other=1,noprefix=0,norecheck=0 want=entries=1,exit0_foreign=0,exit1_foreign=0,exit2_foreign=0,exit_other=1,noprefix=0,norecheck=0
+selftest case=tmpdir-unset ok refused=False raised=None
+selftest case=usage-guards ok usage_ret=2 missing_corpus='recheck-cwd: no corpus/knowledge under /fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1/recheck-cwd-selftest-d21cxr55/case19-empty' lane_ret=0
+selftest case=output-lines ok lines6=2 lines8=2 lines1=6 lines15=3
+selftest case=bucket-sum ok entries=3 buckets=3 main_ret=0 short_ret=1
+selftest case=main-default ok lines=7 ret=1
+selftest case=bucket-other ok exit_other=1 main_ret=0
+selftest case=bucket-over ok over=False
+selftest case=main-verbose ok verbose_entries=6 default_entries=5 ret=1
+selftest case=noprefix-only ok one_ret=1 two_ret=1
+selftest case=summary-fields ok summary=['RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0'] ret=0
+selftest case=entry-bare-pass ok lines1=6
+selftest case=argv-values ok root=(2, None) lane=(2, None) rel='recheck-cwd: no corpus/knowledge under /fast/scratch/hyaku/kasegi-r84/ExecC1RealTree/selfTmp1/recheck-cwd-selftest-d21cxr55/case29-nosuch' pos=[77, 77]
+selftest case=verbose-order ok ret=1
+selftest case=entry-set ok default_entries=0 timeout_other=2
+selftest case=gate-predicates ok rows=40 expect=40 bad=[]
+selftest case=gate-wiring ok findings=[]
+selftest case=gate-regs ok registered=['restoration-only-result']
+selftest case=gate-consume ok clean_ok=True limb_log=[True]
+selftest case=gate-negpolarity ok neg_ok=False neg_ret_ok=False
+selftest case=gate-checkids ok missing=[] extra=[] side_logs=[[True], [True], [True]]
+selftest cases=33 failures=0

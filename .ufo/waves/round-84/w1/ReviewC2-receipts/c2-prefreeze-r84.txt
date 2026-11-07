@@ -1,0 +1,30 @@
+# C2 prefreeze receipt 2026-11-06T23:41:57Z (entry draft present in the worktree, not committed in the freeze; S118 row queued)
+$ python3 corpus/instruments/source-recheck.py --manifest corpus/source-snapshots/round-84/manifest.json --source S118
+S118:sha256 OK
+S118:Q01-allzip-withdrawn OK occurrences=1 anchor=102-ok
+S118:Q02-record-path OK occurrences=1 anchor=104-ok
+S118:Q03-empty-dir OK occurrences=1 anchor=104-ok
+S118:Q04-per-ecosystem-csv-prefix OK occurrences=1 anchor=114-ok
+S118:Q05-colon-prefix-dir OK occurrences=1 anchor=121-ok
+S118:Q06-stopped-prefixed OK occurrences=1 anchor=123-ok
+rc=0
+$ literal sweep of the six S118 quotes over corpus/knowledge/*.md minus the draft
+Q01-allzip-withdrawn files 0
+Q02-record-path files 0
+Q03-empty-dir files 0
+Q04-per-ecosystem-csv-prefix files 0
+Q05-colon-prefix-dir files 0
+Q06-stopped-prefixed files 0
+literal_sweep_total 0 files 97
+$ do-nothing state (no F60 README row): frontier-recheck-count | grep FRONTIER-CENSUS; tracked knowledge count; registry rows; S118 status
+FRONTIER-CENSUS rows=59 admitted=59 closed=59 problem-rows=0 registry=118
+97
+118
+| queued |
+$ entry gate (r83 bytes, unchanged) on the draft
+ENTRY-GATE sid=S118 claims=6 want=6 spans=7 mislocated=0 overlong=0 claimless=0 unpinned=0 ruleless=0 untied=0 header=ok
+ENTRY-GATE-RESULT pass
+rc=0
+$ census validate
+kasegi	ok	/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/SOURCES.md
+rc=0

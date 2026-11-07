@@ -1,0 +1,10 @@
+# round-84 assimilation id check (prompt section 6 item 10), read-only on shokuknow
+# output dir: .ufo/waves/round-84/w1/ConnectorOverlap-receipts/assimilation/
+S=/home/vgpnk/Projects/shokuknow
+A=<lane>/.ufo/waves/round-84/w1/ConnectorOverlap-receipts/assimilation
+grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' <lane>/corpus/SOURCES.md | grep -oE 'S[0-9]+' | sort > "$A/reg-ids"
+grep -oE '^ {0,3}\|[[:space:]]*S[0-9]{3,}' "$S/merge/kasegi/SOURCES.append.md" | grep -oE 'S[0-9]+' | sort > "$A/staged-ids"
+comm -12 "$A/reg-ids" "$A/staged-ids" > "$A/collisions"
+# counts: reg-ids=118 staged-ids=94 collisions=88 (S031..S118); invariant collisions = registry max - 30 = 118-30
+# doc split: doc-collisions.txt (same_url=1 S042; diff_or_urlless=87)
+# guard proof: indented-row registry fixture -> collisions=S118 ; column-zero-only control -> 0

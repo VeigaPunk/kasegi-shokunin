@@ -1,0 +1,249 @@
+[
+  {
+    "id": "X01-LK-runforeign",
+    "anchor": "            globals()[\"run_foreign\"] = real_run\n",
+    "replacement": "            pass\n",
+    "class": "assertion",
+    "expect": "state leak: the case-31 finally no longer restores run_foreign; a no-op mutation of the restoration line leaves the -1 stub installed for every later in-process census, yet the 33-case suite still prints cases=33 failures=0. Fix: add `globals()[\"run_foreign\"] is real_run` to the entry-set check.",
+    "kill_cases": [
+      "entry-set"
+    ]
+  },
+  {
+    "id": "X02-LK-selftest",
+    "anchor": "            globals()[\"selftest\"] = real_selftest\n",
+    "replacement": "            pass\n",
+    "class": "assertion",
+    "expect": "state leak: the case-29 finally no longer restores the selftest global; after selftest() returns, main([..., '--selftest']) returns the 77 stub instead of running. Suite still green. Fix: add `globals()[\"selftest\"] is real_selftest` to argv-values.",
+    "kill_cases": [
+      "argv-values"
+    ]
+  },
+  {
+    "id": "X03-LK-chdir",
+    "anchor": "            os.chdir(here29)\n",
+    "replacement": "            pass\n",
+    "class": "assertion",
+    "expect": "state leak: the case-29 finally no longer restores the process cwd; selftest() leaves the caller in the (deleted) case-29 fixture. Every later case uses absolute roots, so the suite stays green. Fix: add `os.getcwd() == here29` to argv-values.",
+    "kill_cases": [
+      "argv-values"
+    ]
+  },
+  {
+    "id": "X04-LK-timeout",
+    "anchor": "            globals()[\"TIMEOUT\"] = saved_timeout17\n",
+    "replacement": "            pass\n",
+    "class": "assertion",
+    "expect": "state leak: the case-17 finally no longer restores TIMEOUT; after selftest() the module runs with TIMEOUT=1 for the rest of the process. Fast fixtures keep the suite green. Fix: add `TIMEOUT == saved_timeout17` to timeout-bucket.",
+    "kill_cases": [
+      "timeout-bucket"
+    ]
+  },
+  {
+    "id": "X05-LK-mkdtemp",
+    "anchor": "            tempfile.mkdtemp = real_mkdtemp\n",
+    "replacement": "            pass\n",
+    "class": "assertion",
+    "expect": "state leak: the cases-3/4 finally no longer restores tempfile.mkdtemp; every later mkdtemp in the process is the recording wrapper holding a growing list. The wrapper delegates, so the suite stays green. Fix: add `tempfile.mkdtemp is real_mkdtemp` to scratch-cleanup.",
+    "kill_cases": [
+      "scratch-cleanup"
+    ]
+  },
+  {
+    "id": "X06-ENV-tmp-unset",
+    "anchor": "    env_tmp = os.environ.get(\"TMPDIR\") or None\n",
+    "replacement": "    env_tmp = os.environ[\"TMPDIR\"]\n",
+    "class": "assertion",
+    "expect": "census() now requires TMPDIR; with TMPDIR unset (cron/CI) the census raises KeyError instead of using the tempfile default. tmpdir-unset only calls tmpdir_refused(), never census(). Fix: run census(root1, lane1) inside the TMPDIR-unset block and assert got18 == got1.",
+    "kill_cases": [
+      "tmpdir-unset"
+    ]
+  },
+  {
+    "id": "X07-REST-substr",
+    "anchor": "            if line.startswith(\"restoration-recheck:\"):\n",
+    "replacement": "            if \"restoration-recheck:\" in line:\n",
+    "class": "assertion",
+    "expect": "has_restoration_recheck() matches the header anywhere in a line; a doc that documents the convention (`- write \\`restoration-recheck:\\` ...`) becomes restoration_only and is never executed. Latent (no current corpus line triggers it); no fixture has a mid-line mention. Fix: add a mid-line mention to case-8 n-neither.md and keep norecheck=1.",
+    "kill_cases": [
+      "relabel-detection"
+    ]
+  },
+  {
+    "id": "X08-NOPREFIX-in",
+    "anchor": "        noprefix = not value.startswith(prefix)\n",
+    "replacement": "        noprefix = prefix not in value\n",
+    "class": "assertion",
+    "expect": "the prefix may now appear anywhere; `recheck: true && cd <LANE> && true` is reported prefixed although it does not carry its own cd prefix (contract: 'does not start with'). Latent on the current corpus; no fixture has a mid-value prefix. Fix: add a d-mid.md fixture to case 14 and bump noprefix=3/exit0=3.",
+    "kill_cases": [
+      "prefix-literal"
+    ]
+  },
+  {
+    "id": "X09-SUM-noprefix-slot",
+    "anchor": "          % (counts[\"entries\"], counts[\"noprefix\"], counts[\"exit2_foreign\"],\n",
+    "replacement": "          % (counts[\"entries\"], counts[\"norecheck\"], counts[\"exit2_foreign\"],\n",
+    "class": "assertion",
+    "expect": "the printed summary reports norecheck in the noprefix slot; case 27's fixture has both values 0, so the six new checks never see a nonzero noprefix. Fix: assert case-1's exact summary line (entries=6 noprefix=5 exit2_foreign=1 ...) in prefix-census.",
+    "kill_cases": [
+      "prefix-census"
+    ]
+  },
+  {
+    "id": "X10-SUM-exit2-zero",
+    "anchor": "          % (counts[\"entries\"], counts[\"noprefix\"], counts[\"exit2_foreign\"],\n",
+    "replacement": "          % (counts[\"entries\"], counts[\"noprefix\"], 0,\n",
+    "class": "assertion",
+    "expect": "the summary always prints exit2_foreign=0; case 27's fixture has exit2_foreign=0, so no six-check fixture pins a nonzero gating bucket. Fix: same case-1 summary assertion (its fixture has exit2_foreign=1).",
+    "kill_cases": [
+      "prefix-census"
+    ]
+  },
+  {
+    "id": "X11-ENTRY-exit1",
+    "anchor": "        if verbose or noprefix or code == 2:\n",
+    "replacement": "        if verbose or noprefix or code in (1, 2):\n",
+    "class": "assertion",
+    "expect": "default mode also prints ENTRY for prefixed exit-1 entries; entry-set pins exit-0/exit-7 only, and case-1's d-exit1 is prefix-less (it prints anyway), so no case asserts the exit-1 arm. Case 21's default out21 has the prefixed exit-1 entry osv-b and no ENTRY line. Fix: add `\"ENTRY osv-b.md\" not in out21` to bucket-sum.",
+    "kill_cases": [
+      "bucket-sum"
+    ]
+  },
+  {
+    "id": "X12-TIMEOUT-sentinel",
+    "anchor": "            return -1\n",
+    "replacement": "            return -2\n",
+    "class": "assertion",
+    "expect": "a timed-out recheck now renders foreign_exit=-2 (docstring: counted as -1); timeout-bucket asserts only the exit_other bucket, and entry-set forces -1 by patching run_foreign, so the real timeout path's sentinel is never pinned. Fix: capture case 17 verbosely and assert `ENTRY h-hang.md noprefix=0 foreign_exit=-1` (no extra run).",
+    "kill_cases": [
+      "timeout-bucket"
+    ]
+  },
+  {
+    "id": "X13-MAIN-argv-slice",
+    "anchor": "    sys.exit(main(sys.argv))\n",
+    "replacement": "    sys.exit(main(sys.argv[1:]))\n",
+    "class": "assertion",
+    "expect": "the __main__ guard drops argv[0]; --selftest still works (membership test), but every documented CLI run (`--root D --lane D`) starts parsing at the root value and exits 2 with usage. No check ever executes the script as a subprocess. Fix: run the candidate e2e via subprocess in usage-guards and assert RESULT conformant + rc 0.",
+    "kill_cases": [
+      "usage-guards"
+    ]
+  },
+  {
+    "id": "X14-MAIN-defroot",
+    "anchor": "    root, lane, verbose = \".\", DEFAULT_LANE, False\n",
+    "replacement": "    root, lane, verbose = \"..\", DEFAULT_LANE, False\n",
+    "class": "assertion",
+    "expect": "the default root moves off cwd; the documented bare invocation now censuses the parent. No case calls main() with zero flags (every call passes --root). Fix: chdir into a fixture with an empty corpus/knowledge and assert main([prog]) prints entries=0 and exits 0.",
+    "kill_cases": [
+      "usage-guards"
+    ]
+  },
+  {
+    "id": "X15-TIMEOUT-default",
+    "anchor": "TIMEOUT = 120\n",
+    "replacement": "TIMEOUT = 1\n",
+    "class": "assertion",
+    "expect": "the default timeout drops to 1 s; any legitimate recheck that takes 1-120 s moves into the non-gating exit_other bucket, so a tree with unverifiable rechecks stays conformant. The suite only exercises the patched TIMEOUT=1 path. Fix: pin TIMEOUT == 120 (a behaviour test needs a sleep fixture and adds ~2 s per run).",
+    "kill_cases": [
+      "timeout-bucket"
+    ]
+  },
+  {
+    "id": "X16-FIRST-errors",
+    "anchor": "def first_recheck(path):\n    with open(path, encoding=\"utf-8\", errors=\"replace\") as fh:\n",
+    "replacement": "def first_recheck(path):\n    with open(path, encoding=\"utf-8\") as fh:\n",
+    "class": "assertion",
+    "expect": "a knowledge doc with one non-UTF-8 byte now raises UnicodeDecodeError out of census() (traceback, exit 1) instead of being scanned with replacement chars. Every fixture is UTF-8. Fix: add a bytes fixture (b'# caf\\xe9\\nrecheck: cd ...') to first-line and assert entries=1/exit0_foreign=1 with no exception.",
+    "kill_cases": [
+      "first-line"
+    ]
+  },
+  {
+    "id": "X17-STRIP-space",
+    "anchor": "                return line[len(\"recheck:\"):].strip()\n",
+    "replacement": "                return line[len(\"recheck:\"):].strip(\" \")\n",
+    "class": "assertion",
+    "expect": "equivalent: strip(' ') keeps the trailing newline, which is inert -- the prefix test only uses startswith on the same leading bytes and bash -c ignores trailing whitespace, so every output is byte-identical. Not a gap.",
+    "kill_cases": [
+      "prefix-census"
+    ]
+  },
+  {
+    "id": "X18-SUM-restoration-adds-noprefix",
+    "anchor": "             counts[\"norecheck\"], counts[\"restoration_only\"]))\n",
+    "replacement": "             counts[\"norecheck\"], counts[\"restoration_only\"] + counts[\"noprefix\"]))\n",
+    "class": "assertion",
+    "expect": "the summary's restoration_only slot prints restoration_only + noprefix; case 27 has both values 0, so the six new checks never see a nonzero restoration_only (case 6 does not assert its summary). Fix: extend summary-fields with an all-slots-nonzero fixture (entries=8 noprefix=1 exit2=1 exit0=2 exit1=2 other=1 norecheck=1 restoration=1).",
+    "kill_cases": [
+      "prefix-census"
+    ]
+  },
+  {
+    "id": "X24-CONFORM-sum-add-noprefix",
+    "anchor": "               + counts[\"exit_other\"] + counts[\"norecheck\"] + counts[\"restoration_only\"])\n",
+    "replacement": "               + counts[\"exit_other\"] + counts[\"norecheck\"] + counts[\"restoration_only\"] + counts[\"noprefix\"])\n",
+    "class": "assertion",
+    "expect": "equivalent on every reachable census output: noprefix>0 already fails the noprefix limb, so conform_ok is False either way, and noprefix=0 adds zero. A negative-noprefix hand-built dict is the only divergence. Not a gap.",
+    "kill_cases": [
+      "bucket-sum"
+    ]
+  },
+  {
+    "id": "X25-USAGE-except-breadth",
+    "anchor": "            except Exception as exc_:  # a crash is a finding, not a harness error\n",
+    "replacement": "            except SystemExit as exc_:  # a crash is a finding, not a harness error\n",
+    "class": "assertion",
+    "expect": "equivalent on the frozen bytes: main() returns ints and never raises on the usage_run inputs, so the guard's breadth is unobservable. Latent harness weakness (a future main() raising would crash the suite instead of a FAIL line, the r80 F4 shape), not a defect now.",
+    "kill_cases": [
+      "argv-values"
+    ]
+  },
+  {
+    "id": "X19-SUM-entries-slot",
+    "anchor": "          % (counts[\"entries\"], counts[\"noprefix\"], counts[\"exit2_foreign\"],\n",
+    "replacement": "          % (counts[\"noprefix\"], counts[\"noprefix\"], counts[\"exit2_foreign\"],\n",
+    "class": "assertion",
+    "expect": "control: the entries slot prints noprefix; case 27 wants entries=4 on a noprefix=0 tree, so the six-check summary-fields fixture kills it. Shows the battery does catch summary slot defects -- X09/X10 survive only because that fixture's nonzero slots are all zero.",
+    "kill_cases": [
+      "summary-fields"
+    ]
+  },
+  {
+    "id": "X20-ENTRY-drop-exit2",
+    "anchor": "        if verbose or noprefix or code == 2:\n",
+    "replacement": "        if verbose or noprefix:\n",
+    "class": "assertion",
+    "expect": "control: exit-2 entries no longer print by default; output-lines expects 'ENTRY x-exit2.md noprefix=0 foreign_exit=2' in out15e, so it is killed. Shows the exit-2 arm is pinned while X11's exit-1 arm is not.",
+    "kill_cases": [
+      "output-lines"
+    ]
+  },
+  {
+    "id": "X21-CONFORM-couple-norecheck-restoration",
+    "anchor": "            and counts[\"norecheck\"] == 0 and counts[\"restoration_only\"] == 0\n",
+    "replacement": "            and counts[\"norecheck\"] == counts[\"restoration_only\"]\n",
+    "class": "assertion",
+    "expect": "conform_ok couples two independent limbs: a tree with one no-header entry AND one restoration-only entry (both nonzero, equal) is declared conformant. No fixture has both defects at once, so no case fails. Fix: add a hand-built dict with norecheck=1/restoration_only=1 to conform-limbs and assert False.",
+    "kill_cases": [
+      "conform-limbs"
+    ]
+  },
+  {
+    "id": "X22-CONFORM-exit2-le-noprefix",
+    "anchor": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] == 0\n",
+    "replacement": "    return (counts[\"noprefix\"] == 0 and counts[\"exit2_foreign\"] <= counts[\"noprefix\"]\n",
+    "class": "assertion",
+    "expect": "equivalent: the same predicate pins noprefix == 0, so exit2 <= noprefix forces exit2 == 0 for non-negative counts. No reachable tree changes verdict. Not a gap.",
+    "kill_cases": [
+      "conform-limbs"
+    ]
+  },
+  {
+    "id": "X23-NEUTRAL-comment",
+    "anchor": "def conform_ok(counts):\n",
+    "replacement": "def conform_ok(counts):  # conformance predicate\n",
+    "class": "neutral",
+    "expect": "neutral control: a trailing comment on the predicate's def line; must pass exactly like the baseline (NEUTRAL-OK)."
+  }
+]

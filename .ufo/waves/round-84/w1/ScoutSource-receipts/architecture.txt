@@ -1,0 +1,50 @@
+Architecture | OSV Skip to main content Link Menu Expand (external link) Document Search Copy Copied
+Introduction to OSV
+APIAPI Quickstart
+POST /v1/query
+POST /v1/querybatch
+GET /v1/vulns/{id}
+GET /v1experimental/importfindings
+POST /v1experimental/ determineversion
+POST /v1experimental/ubuntu/binary-to-source
+Data sources New Data Sourcevia REST API
+FAQ
+Third Party Tools
+ContributingArchitecture
+Properties of a High Quality OSV Record
+OSV Schema
+OSV-Scanner
+OSV-Linter
+This site uses Just the Docs, a documentation theme for Jekyll.
+Search OSV
+OSV.dev on GitHub
+Contributing
+Architecture
+Architecture
+Data source
+Our data is sourced from a variety of sources, which we are looking to expand on over time.
+OSV runs on Google Cloud Platform, with the following main components:
+Cloud Datastore
+All vulnerability data is stored in Cloud Datastore and the models are primarily defined in Go (go/internal/database/datastore/models.go).
+Google Cloud Storage (GCS)
+Full vulnerability records (conforming to the OSV schema) are stored as protobufs and JSON files in public Google Cloud Storage buckets. GCS acts as the primary source of truth for the vulnerability data, while Cloud Datastore is used as an index for fast querying and API lookups.
+Google Kubernetes Engine (GKE)
+GKE is used for running the core vulnerability processing pipeline, auxiliary background services, and legacy/OSS-Fuzz workloads. The worker node pools are spread across 1 region and 3 zones (us-central1-a, us-central1-b, and us-central1-f).
+Core Vulnerability Pipeline (Go-based)
+These services run as native Go workloads inside the GKE cluster:
+importer: A scheduled CronJob that polls and pulls vulnerability source repositories, detects additions/deletions, and dispatches processing tasks via Cloud Pub/Sub. It also manages periodic data cleanup (importer-deleter) and full database reconciliation (importer-reconciler).
+worker: A daemon Deployment that consumes Pub/Sub tasks to ingest and enrich vulnerability records, compute affected commit/version ranges, and write them to GCS and Cloud Datastore. It is scaled dynamically using a HorizontalPodAutoscaler based on the Pub/Sub backlog.
+exporter: A scheduled CronJob that packages the entire OSV database (as zip files and individual JSON files) and exports them to public GCS buckets.
+gitter: A caching service Deployment that caches and precomputes heavy Git repository operations (cloning, commit graphs, patch IDs) for the importers and workers. It is backed by a large SSD Persistent Volume.
+relations: A scheduled CronJob that calculates and populates transitive and reflective relationships (aliases, related, and upstream fields) between vulnerability records.
+recoverer: A daemon Deployment that processes failed tasks (e.g., failed GCS writes, git push failures) sent to a recovery queue, attempting to heal/repair their state.
+indexer: A Deployment that manages git index mapping and version determination.
+vanir_signatures: A scheduled CronJob that generates Vanir signatures for modified vulnerabilities.
+vulnfeeds: Scheduled CronJobs that mirror and convert external vulnerability advisory feeds (e.g. NVD, Debian, Alpine) into OSV schema format.
+OSS-Fuzz Integration
+OSS-Fuzz workers: Legacy Python-based workers that perform bisection and impact analysis for ClusterFuzz/OSS-Fuzz bugs. Because these compile and run code from arbitrary open source projects, they run in Docker containers sandboxed with gVisor.
+Cloud Run / Cloud Endpoints
+The API server (hosted at api.osv.dev, source code in go/cmd/api) runs on Cloud Run, and is served by Cloud Endpoints (transcoding HTTP/JSON REST to gRPC using ESPv2).
+Website
+The main web UI (server source code in go/cmd/website and frontend assets in website) also runs on Cloud Run, and is served through Cloud Load Balancing.
+This site uses Just the Docs, a documentation theme for Jekyll.

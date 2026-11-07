@@ -1,0 +1,28 @@
+# why diff -r reports the round-31 fixture paths: they are symlinked views of the lane's own instruments dir 2026-11-06T23:54:01Z
+
+$ readlink .ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments
+../../../../../../../corpus/instruments
+$ readlink -f .../validate/corpus/instruments
+/home/vgpnk/Projects/shokunin/kasegi-shokunin/corpus/instruments
+
+$ git ls-tree HEAD -- .ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments
+120000 blob 26ea9212b71982b621913aef35296a49f452d2b8	.ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments
+
+$ every instruments symlink under .ufo/waves/round-31 (lane)
+.ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments -> ../../../../../../../corpus/instruments
+.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dangling-usedby/corpus/instruments -> ../../corpus/instruments
+.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dup-id/corpus/instruments -> ../../corpus/instruments
+.ufo/waves/round-31/wave1/ExecCensusDry/validate/ctl-dup-url/corpus/instruments -> ../../corpus/instruments
+.ufo/waves/round-31/wave1/ExecCensusDry/validate/pre/corpus/instruments -> ../../corpus/instruments
+
+$ stat of the one file reached directly and through the symlink (lane)
+56 251352428 1 5124 corpus/instruments/knowledge-expected.txt
+56 251352428 1 5124 .ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments/knowledge-expected.txt
+
+$ mirror: the tracked symlink is preserved and resolves inside the mirror
+../../../../../../../corpus/instruments
+/fast/scratch/hyaku/kasegi-r84/ExecC2Gate/m/corpus/instruments
+66306 1230506157 1 5169 /fast/scratch/hyaku/kasegi-r84/ExecC2Gate/m/corpus/instruments/knowledge-expected.txt
+66306 1230506157 1 5169 /fast/scratch/hyaku/kasegi-r84/ExecC2Gate/m/.ufo/waves/round-31/wave1/ExecCensusDry/validate/corpus/instruments/knowledge-expected.txt
+
+conclusion: one file reached by two paths (nlink=1); the extra diff -r hits are the same inode, not copies

@@ -30,14 +30,15 @@ Usage:
   recheck-cwd-census.py [--root DIR] [--lane DIR] [--verbose]
   recheck-cwd-census.py --selftest
 
---selftest runs twenty-seven checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
+--selftest runs thirty-three checks under TMPDIR (prefix-census, result-main, tmpdir-parent,
 scratch-cleanup, first-line, restoration-only, both-headers, relabel-detection,
 tmpdir-refusal, the round-81 prefix-literal, conform-limbs, tmpdir-file, timeout-bucket,
 tmpdir-unset, usage-guards and output-lines, the round-82 bucket-sum and main-default, the
-round-83 bucket-other, bucket-over and main-verbose, gate-predicates, gate-wiring, and the
-gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions that consume the
-restoration-only RESULT limb) and prints 'selftest cases=27 failures=0' on success. A TMPDIR
-that is not an existing directory exits 2 before any tempfile call.
+round-83 bucket-other, bucket-over and main-verbose, the round-84 noprefix-only,
+summary-fields, entry-bare-pass, argv-values, verbose-order and entry-set, gate-predicates,
+gate-wiring, and the gate-regs/gate-consume/gate-negpolarity/gate-checkids assertions that
+consume the restoration-only RESULT limb) and prints 'selftest cases=33 failures=0' on
+success. A TMPDIR that is not an existing directory exits 2 before any tempfile call.
 
 Round 79: every gate verdict is a module-level predicate tested in both polarities
 (gate-predicates), and gate-wiring parses this file's own selftest and refuses a check()
@@ -82,6 +83,16 @@ exit_other on a conformant tree. bucket-over (G2): buckets above entries are ref
 main-verbose (G3, G4): main() --verbose prints the prefixed passing entry's ENTRY line, and
 the verbose run prints strictly more ENTRY lines than the default run, so a verbose default
 fails even when the main-default negative limb is weakened.
+
+Round 84: the twelve round-83 MutC1Hunt survivors are closed by six new checks.
+noprefix-only (G-1): a tree whose only defect is one, or two, prefix-less passing entries is
+nonconformant. summary-fields (G-2): the printed RECHECK-CWD line is asserted field by field
+on a tree with exit1_foreign=2 and exit_other=1. entry-bare-pass (G-3): default mode prints the
+ENTRY line of a prefix-less passing entry. argv-values (G-4, G-6, G-7): a trailing --root or
+--lane exits 2 with the usage line and no exception, a relative --root is reported absolute,
+and --selftest is honoured in any position. verbose-order (G-5): --verbose before --root is
+the verbose flag. entry-set (G-8): default mode prints no ENTRY line for prefixed exit-0 and
+exit-7 entries, and a timed-out value renders foreign_exit=-1 in exit_other.
 """
 import ast
 import glob
@@ -272,7 +283,9 @@ def conform_ok(counts):
 
 
 def selftest():
-    """Twenty-seven checks: the round-83 three (bucket-other, bucket-over, main-verbose), the
+    """Thirty-three checks: the round-84 six (noprefix-only, summary-fields, entry-bare-pass,
+    argv-values, verbose-order, entry-set), the round-83 three (bucket-other, bucket-over,
+    main-verbose), the
     round-82 two (bucket-sum, main-default), the round-81 seven
     (prefix-literal, conform-limbs, tmpdir-file,
     timeout-bucket, tmpdir-unset, usage-guards, output-lines) plus fifteen in eight
@@ -289,7 +302,7 @@ def selftest():
     removing any check fails gate-checkids. Every gate verdict is a module-level predicate
     that gate-predicates tests in both polarities, and gate-wiring refuses a check() whose
     ok argument is a constant True or does not call its gate predicate. Expected on success:
-    'selftest cases=27 failures=0' and exit 0."""
+    'selftest cases=33 failures=0' and exit 0."""
     if tmpdir_refused():
         return 2
     failures = []
@@ -304,7 +317,8 @@ def selftest():
         "gate-regs", "gate-consume", "gate-negpolarity", "gate-checkids", "tmpdir-refusal",
         "gate-predicates", "gate-wiring", "prefix-literal", "conform-limbs", "tmpdir-file",
         "timeout-bucket", "tmpdir-unset", "usage-guards", "output-lines", "bucket-sum",
-        "main-default", "bucket-other", "bucket-over", "main-verbose"))
+        "main-default", "bucket-other", "bucket-over", "main-verbose", "noprefix-only",
+        "summary-fields", "entry-bare-pass", "argv-values", "verbose-order", "entry-set"))
     scratch = tempfile.mkdtemp(prefix="recheck-cwd-selftest-", dir=os.environ.get("TMPDIR") or None)
 
     def write_entry(kdir, name, body):
@@ -711,6 +725,120 @@ def selftest():
               and "ENTRY a-prefixed.md noprefix=0 foreign_exit=0" in _t25
               and n25v > n25d and ret25 == ret22,
               "verbose_entries=%d default_entries=%d ret=%d" % (n25v, n25d, ret25))
+
+        # Case 26 (round 84, r83 MutC1Hunt G-1): noprefix-only — a tree whose only defect
+        # is prefix-less entries is nonconformant: one prefix-less passing entry, and two
+        # (so a `!= 1` boundary does not pass), each fail in main() and in conform_ok.
+        root26a, kdir26a = fixture("case26-noprefix-one")
+        write_entry(kdir26a, "c-bare.md", "recheck: true\n")
+        out26a, ret26a = capture(main, ["recheck-cwd-census.py", "--root", root26a,
+                                        "--lane", root26a])
+        root26b, kdir26b = fixture("case26-noprefix-two")
+        write_entry(kdir26b, "c-bare-1.md", "recheck: true\n")
+        write_entry(kdir26b, "c-bare-2.md", "recheck: true\n")
+        out26b, ret26b = capture(main, ["recheck-cwd-census.py", "--root", root26b,
+                                        "--lane", root26b])
+        np0 = {"entries": 2, "noprefix": 0, "exit2_foreign": 0, "exit0_foreign": 2,
+               "exit1_foreign": 0, "exit_other": 0, "norecheck": 0, "restoration_only": 0}
+        check("noprefix-only",
+              ret26a == 1 and "RECHECK-CWD-RESULT nonconformant" in out26a
+              and ret26b == 1 and "RECHECK-CWD-RESULT nonconformant" in out26b
+              and conform_ok(np0) is True and conform_ok(dict(np0, noprefix=1)) is False
+              and conform_ok(dict(np0, noprefix=2)) is False,
+              "one_ret=%d two_ret=%d" % (ret26a, ret26b))
+
+        # Case 27 (round 84, r83 MutC1Hunt G-2): summary-fields — the printed RECHECK-CWD
+        # line itself is asserted field by field on a tree whose exit1_foreign (2) and
+        # exit_other (1) differ, so a summary that swaps or mislabels a slot fails even
+        # when the returned dict is right.
+        root27, kdir27 = fixture("case27-summary")
+        write_entry(kdir27, "p-pass.md", "recheck: cd %s && true\n" % root27)
+        write_entry(kdir27, "q-one-a.md", "recheck: cd %s && exit 1\n" % root27)
+        write_entry(kdir27, "q-one-b.md", "recheck: cd %s && exit 1\n" % root27)
+        write_entry(kdir27, "r-seven.md", "recheck: cd %s && exit 7\n" % root27)
+        out27, ret27 = capture(main, ["recheck-cwd-census.py", "--root", root27, "--lane", root27])
+        want27 = ("RECHECK-CWD entries=4 noprefix=0 exit2_foreign=0 exit0_foreign=1 "
+                  "exit1_foreign=2 exit_other=1 norecheck=0 restoration_only=0")
+        sum27 = [ln for ln in out27.splitlines() if ln.startswith("RECHECK-CWD entries=")]
+        check("summary-fields", sum27 == [want27] and ret27 == 0,
+              "summary=%r ret=%d" % (sum27, ret27))
+
+        # Case 28 (round 84, r83 MutC1Hunt G-3): entry-bare-pass — default mode prints the
+        # ENTRY line of a prefix-less entry that passes (exit 0), not only of the prefix-less
+        # exit-2 one (case-1 fixture, default census output).
+        check("entry-bare-pass",
+              "ENTRY c-bare-pass.md noprefix=1 foreign_exit=0" in _t1
+              and "ENTRY f-fresh-cwd.md noprefix=1 foreign_exit=0" in _t1,
+              "lines1=%d" % len(_t1.splitlines()))
+
+        # Case 29 (round 84, r83 MutC1Hunt G-4/G-6/G-7): argv-values — a trailing --root or
+        # --lane with no value exits 2 with the usage line and no exception; a relative
+        # --root is reported as its absolute path; --selftest is honoured in any position.
+        def usage_run(argv29):
+            err = io.StringIO()
+            real_err = sys.stderr
+            sys.stderr = err
+            try:
+                out, ret = capture(main, argv29)
+                exc = None
+            except Exception as exc_:  # a crash is a finding, not a harness error
+                out, ret, exc = "", None, repr(exc_)
+            finally:
+                sys.stderr = real_err
+            return out, ret, exc, err.getvalue()
+        r29r = usage_run(["recheck-cwd-census.py", "--root"])
+        r29l = usage_run(["recheck-cwd-census.py", "--lane"])
+        here29 = os.getcwd()
+        os.chdir(scratch)
+        try:
+            want29 = "recheck-cwd: no corpus/knowledge under %s" % os.path.abspath("case29-nosuch")
+            try:
+                capture(main, ["recheck-cwd-census.py", "--root", "case29-nosuch",
+                               "--lane", "case29-nosuch"])
+                rel29 = None
+            except SystemExit as exc29:
+                rel29 = str(exc29)
+        finally:
+            os.chdir(here29)
+        real_selftest = globals()["selftest"]
+        globals()["selftest"] = lambda: 77
+        try:
+            pos29 = [main(["recheck-cwd-census.py", "--selftest", "--verbose"]),
+                     main(["recheck-cwd-census.py", "--verbose", "--selftest"])]
+        finally:
+            globals()["selftest"] = real_selftest
+        check("argv-values",
+              all(r[1] == 2 and r[0] == "" and r[2] is None and "usage:" in r[3]
+                  for r in (r29r, r29l))
+              and rel29 == want29 and pos29 == [77, 77],
+              "root=%r lane=%r rel=%r pos=%r" % (r29r[1:3], r29l[1:3], rel29, pos29))
+
+        # Case 30 (round 84, r83 MutC1Hunt G-5): verbose-order — --verbose before --root and
+        # --lane is still the verbose flag (the prefixed passing ENTRY line is printed) and the
+        # exit code equals the trailing-flag run's (case 25).
+        out30, ret30 = capture(main, ["recheck-cwd-census.py", "--verbose", "--root", root1,
+                                      "--lane", lane1])
+        check("verbose-order",
+              "ENTRY a-prefixed.md noprefix=0 foreign_exit=0" in out30 and ret30 == ret25,
+              "ret=%d" % ret30)
+
+        # Case 31 (round 84, r83 MutC1Hunt G-8): entry-set — the output contract is exact:
+        # default mode prints no ENTRY line for prefixed entries that exit 0 or 7 (case-23
+        # fixture), and a timed-out value (code -1, forced through run_foreign) renders as
+        # foreign_exit=-1 and counts in exit_other.
+        real_run = globals()["run_foreign"]
+        globals()["run_foreign"] = lambda _v, _t: -1
+        try:
+            _t31, got31 = capture(census, root23, root23, True)
+        finally:
+            globals()["run_foreign"] = real_run
+        check("entry-set",
+              not any(ln.startswith("ENTRY ") for ln in _t23.splitlines())
+              and "ENTRY q-seven.md noprefix=0 foreign_exit=-1" in _t31
+              and got31["exit_other"] == 2,
+              "default_entries=%d timeout_other=%d"
+              % (sum(1 for ln in _t23.splitlines() if ln.startswith("ENTRY ")),
+                 got31["exit_other"]))
 
         # Gate predicates (rounds 79-81): every gate verdict function in both polarities,
         # and the wiring scanner on a known-bad, a known-good, a wrong-predicate-in-

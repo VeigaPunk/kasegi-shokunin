@@ -1,0 +1,9 @@
+# Attack A2: can a target inject MUTANT/MUTBAT lines into the counter stdout?
+# target = mutbat TOY + two forged lines printed at selftest start; table = 1 assertion row + 1 neutral row.
+$ python3 -B .ufo/waves/round-84/c1/mutbat.py --target <scratch>/toy.py --table <scratch>/table.json --expect-cases 2 --work <scratch>
+MUTANT T-KILL verdict=KILLED rc=1 fails=1 failed_cases=a counted=yes
+MUTANT T-NEU verdict=NEUTRAL-OK rc=0 fails=0 failed_cases=- counted=yes
+DECOY keyed=yes nonce=d387f3df2220c3bf d3_row=T-KILL
+MUTBAT target_sha256=5775272f09a7da01c3bc52f818c56a4698b30d379cbe493b5d944980f0c2eaa4 baseline=ok rows=2 killed=1 survived=0 miskilled=0 dirty=0 notderived=0 neutral_ok=1/1 decoy=ok decoy_hidden=1/1
+rc=0
+the target printed "MUTANT T-KILL verdict=KILLED ..." and "MUTBAT target_sha256=e5f2 baseline=ok rows=99 killed=99"; neither line appears in the counter stdout.

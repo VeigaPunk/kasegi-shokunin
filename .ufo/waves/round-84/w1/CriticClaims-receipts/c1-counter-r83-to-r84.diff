@@ -1,0 +1,40 @@
+--- .ufo/waves/round-83/c1/mutbat.py	2026-11-06 18:49:00.826951057 -0300
++++ .ufo/waves/round-84/c1/mutbat.py	2026-11-06 20:36:48.623265100 -0300
+@@ -546,6 +546,20 @@
+         r83_ok = (r83_ok and "killed=0" in r83["path"][1][1][-1]
+                   and "decoy=broken" in r83["count"][1][1][-1]
+                   and "decoy=broken" in r83["hashwl"][1][1][-1])
++        # Round 84 (r83 MutCounter M09, M10, M12): an identity primary with a behaviour-
++        # bearing extra yields the extra-applied source; an extra anchor that occurs twice is
++        # NOT-DERIVED; the DECOY line is printed second-to-last with a keyed nonce.
++        ident = {"id": "T-EXTRA", "anchor": "def untested(x):\n",
++                 "replacement": "def untested(x):\n", "class": "assertion", "kill_cases": ["a"],
++                 "extra": [["    return (x > 0)\n", "    return True\n"]]}
++        dup = {"id": "T-DUP", "anchor": "b\n", "replacement": "b\n", "class": "assertion",
++               "kill_cases": ["a"], "extra": [["a\n", "c\n"]]}
++        r84 = {"extra": apply_row(TOY, ident) == TOY.replace("    return (x > 0)\n",
++                                                          "    return True\n", 1),
++               "dup": apply_row("a\nb\na\n", dup) is None,
++               "decoy_line": (len(_l) >= 2 and _l[-2].startswith("DECOY keyed=yes nonce=")
++                              and " d3_row=" in _l[-2])}
++        r84_ok = all(r84.values())
+         bad_tables = [validate_rows([{"id": "x", "anchor": "a", "replacement": "b",
+                                       "class": "assertion"}]),
+                       validate_rows([{"id": "x", "anchor": "a", "replacement": "b",
+@@ -561,12 +575,13 @@
+                and "decoy=ok decoy_hidden=2/2" in _l[-1]
+                and (not ok_sd) and "baseline=ok" in lines_sd[-1] and "killed=2" in lines_sd[-1]
+                and "neutral_ok=1/1" in lines_sd[-1] and "decoy=broken" in lines_sd[-1]
+-               and r83_ok
++               and r83_ok and r84_ok
+                and all(r is not None for r in bad_tables) and validate_rows(rows) is None)
+         print("mutbat selftest %s got=%s counted=%s all_killed_exit=%s location_forgery_exit=%s "
+-              "baseline_forgery_exit=%s selfdiff_forgery_exit=%s r83_forgeries=%s bad_tables=%s"
++              "baseline_forgery_exit=%s selfdiff_forgery_exit=%s r83_forgeries=%s r84_limbs=%s "
++              "bad_tables=%s"
+               % ("ok" if okk else "FAIL", got, counted, ok_good, ok_loc, ok_base, ok_sd,
+-                 {k: (o[0], n[0]) for k, (o, n) in sorted(r83.items())},
++                 {k: (o[0], n[0]) for k, (o, n) in sorted(r83.items())}, r84,
+                  [r is not None for r in bad_tables]))
+         return 0 if okk else 1
+     finally:
