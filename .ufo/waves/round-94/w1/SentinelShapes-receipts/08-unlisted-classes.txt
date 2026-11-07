@@ -67,10 +67,10 @@ $ grep -n '("gitlab-' pkg/capture-secret-scan.py   (landed shapes)
 $ python3 - -> capture-secret-scan.py --files <fixture>   (one file per fixture, synthetic values)
 reg-json-runner_token        input='{"runner_token": "GR1348941abcDEF123456789xyz"}' rc=0 shapes=none
 reg-eq-registration_token    input='registration_token = GR1348941abcDEF123456789xyz' rc=0 shapes=none
-reg-json-token               input='{"token": "GR1348941abcDEF123456789xyz"}'     rc=1 shapes=credential
+reg-json-token               input='{"[redacted:credential]"}'     rc=1 shapes=credential
 reg-bare-line                input='GR1348941abcDEF123456789xyz'                  rc=0 shapes=none
 legacy-json-runner_token     input='{"runner_token": "t1_ABC123456789abcdefgh"}'  rc=0 shapes=none
-legacy-eq-token              input='token=t1_ABC123456789abcdefgh'                rc=1 shapes=credential
+legacy-eq-token              input='[redacted:credential]'                rc=1 shapes=credential
 legacy-bare                  input='t1_ABC123456789abcdefgh'                      rc=0 shapes=none
 ci-build-underscore          input='glcbt-abc12_0123456789abcdefghij'             rc=0 shapes=none
 deploy-url-conn              input='https://u:gitlab+deploy-token-7:0123456789abcdefghij@gitlab.example.com/x.git' rc=0 shapes=none

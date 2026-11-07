@@ -4,29 +4,29 @@ VENDOR gitlab-runner-auth-token \b((?:[a-zA-Z0-9]{1,20}-)?glrtr?-(?:t[1-3]_)?[0-
 VENDOR gitlab-deploy-token      \b((?:[a-zA-Z0-9]{1,20}-)?gldt-[0-9a-zA-Z_\-]{20})(?:[^0-9a-zA-Z_\-]|$)
 random_cases=12000  vendor_hits_lost_by_landed=0
 // gains (landed hits where the vendor regex does not), grouped by the preceding escape; expected: the round-93 escape-terminator extension only
-GAIN	gitlab-pat	lead=...'q=%26'	q=%26glpat-YDPODhVDIro3pfkdhO_d'
-GAIN	gitlab-pat	lead=...'a\\u0020'	a\u0020glpat-D53aWgcb9n6gSQbX7m-E/
-GAIN	gitlab-pat	lead=...'a%2D'	a%2Dglpat-Pyry-iF0BVEToFVnDBBX}
-GAIN	gitlab-pat	lead=...'a\\t'	a\tglpat-owoAA8Be4Ed4i_ypaSMz/
-GAIN	gitlab-pat	lead=...'q=%20'	q=%20glpat-m_0_RgB3rcyxcS-0eJr6}
-GAIN	gitlab-pat	lead=...'a\\u0026'	a\u0026glpat-1LFEsEbwfzNluMZ2Gxcv 
-GAIN	gitlab-runner-auth-token	lead=...'a\\u0026'	a\u0026glrt-CVu4es81TvYLC6fxXiL9"
-GAIN	gitlab-runner-auth-token	lead=...'q=%26'	q=%26glrt-l-UxABFg4iyu8UPNUDjg
-GAIN	gitlab-runner-auth-token	lead=...'a\\t'	a\tglrt-dt2WXLW4b5T_kYK-N_k6 
-GAIN	gitlab-runner-auth-token	lead=...'a%2D'	a%2Dglrt-Iv-139aZWTDyzPoKrnNa
-GAIN	gitlab-runner-auth-token	lead=...'a\\u0020'	a\u0020glrt-AnPLUlGZQi5Whpw2jMP1'
-GAIN	gitlab-runner-auth-token	lead=...'q=%20'	q=%20glrt-xaHlDy3_wGW770tguxMg 
-GAIN	gitlab-deploy-token	lead=...'q=%20'	q=%20gldt-gbYxCtpipC4r6Uz11xKT.
-GAIN	gitlab-deploy-token	lead=...'a\\t'	a\tgldt-cwS-n3Iv6qKgJlnGIUwM}
-GAIN	gitlab-deploy-token	lead=...'q=%26'	q=%26gldt-9E4mD1K6FGsSUdCTTeye
-GAIN	gitlab-deploy-token	lead=...'a%2D'	a%2Dgldt-ZGjEFPPg4DzumUzi6IVd 
-GAIN	gitlab-deploy-token	lead=...'a\\u0026'	a\u0026gldt--33ZNbD9kPV_LjzCUWn9.
-GAIN	gitlab-deploy-token	lead=...'a\\u0020'	a\u0020gldt-hChqbTtJq3pOO4T7qJIF"
+GAIN	gitlab-pat	lead=...'q=%26'	q=%26[redacted:gitlab-pat]'
+GAIN	gitlab-pat	lead=...'a\\u0020'	a\u0020[redacted:gitlab-pat]/
+GAIN	gitlab-pat	lead=...'a%2D'	a%2D[redacted:gitlab-pat]}
+GAIN	gitlab-pat	lead=...'a\\t'	a\t[redacted:gitlab-pat]/
+GAIN	gitlab-pat	lead=...'q=%20'	q=%20[redacted:gitlab-pat]}
+GAIN	gitlab-pat	lead=...'a\\u0026'	a\u0026[redacted:gitlab-pat] 
+GAIN	gitlab-runner-auth-token	lead=...'a\\u0026'	a\u0026[redacted:gitlab-runner-auth-token]"
+GAIN	gitlab-runner-auth-token	lead=...'q=%26'	q=%26[redacted:gitlab-runner-auth-token]
+GAIN	gitlab-runner-auth-token	lead=...'a\\t'	a\t[redacted:gitlab-runner-auth-token] 
+GAIN	gitlab-runner-auth-token	lead=...'a%2D'	a%2D[redacted:gitlab-runner-auth-token]
+GAIN	gitlab-runner-auth-token	lead=...'a\\u0020'	a\u0020[redacted:gitlab-runner-auth-token]'
+GAIN	gitlab-runner-auth-token	lead=...'q=%20'	q=%20[redacted:gitlab-runner-auth-token] 
+GAIN	gitlab-deploy-token	lead=...'q=%20'	q=%20[redacted:gitlab-deploy-token].
+GAIN	gitlab-deploy-token	lead=...'a\\t'	a\t[redacted:gitlab-deploy-token]}
+GAIN	gitlab-deploy-token	lead=...'q=%26'	q=%26[redacted:gitlab-deploy-token]
+GAIN	gitlab-deploy-token	lead=...'a%2D'	a%2D[redacted:gitlab-deploy-token] 
+GAIN	gitlab-deploy-token	lead=...'a\\u0026'	a\u0026[redacted:gitlab-deploy-token].
+GAIN	gitlab-deploy-token	lead=...'a\\u0020'	a\u0020[redacted:gitlab-deploy-token]"
 // span classes where both hit but the landed match starts earlier (prefix absorbed)
-SPAN	gitlab-pat	hyphen_before=False	a\taaaaaaaaaaaaaaaaaaaa-glpat-tZpmtKT4Wcb6Dv2qw8b1}
-SPAN	gitlab-runner-auth-token	hyphen_before=False	a%2Daaaaaaaaaaaaaaaaaaaa-glrt-WbpmzF1jiXESFXZihkGv
+SPAN	gitlab-pat	hyphen_before=False	a\t[redacted:gitlab-pat]}
+SPAN	gitlab-runner-auth-token	hyphen_before=False	a%2D[redacted:gitlab-runner-auth-token]
 
-SPAN	gitlab-deploy-token	hyphen_before=False	a%2Daaaaaaaaaaaaaaaaaaaa-gldt-sMiyVznhLU4ZuU_XLKxE"
+SPAN	gitlab-deploy-token	hyphen_before=False	a%2D[redacted:gitlab-deploy-token]"
 // escape+prefix combos (all True = detected)
 COMBO	gitlab-pat:u0026+prefix	True
 COMBO	gitlab-pat:pct26+prefix	True
@@ -47,4 +47,4 @@ COMBO	gitlab-deploy-token:u0020+prefix20	True
 $ python3 - -> capture-secret-scan.py --files <fixture>   (escape forms outside the documented set)
 js-hex-escape    input='a\\x26glpat-0123456789abcdefghij'             rc=0 shapes=none
 octal-escape     input='a\\012glpat-0123456789abcdefghij'             rc=0 shapes=none
-covered-u0026    input='a\\u0026glpat-0123456789abcdefghij'           rc=1 shapes=gitlab-pat
+covered-u0026    input='a\\u0026[redacted:gitlab-pat]'           rc=1 shapes=gitlab-pat

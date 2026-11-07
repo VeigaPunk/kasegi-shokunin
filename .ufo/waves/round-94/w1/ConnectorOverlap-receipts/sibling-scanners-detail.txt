@@ -135,7 +135,7 @@ File SHA256: 3bc403440d67e2e8a096f52e3953cfb32a5a415c8e032d91d386c95f792fafb5
   543: secret_arg='--token=fixture-secret ghp_FAKE_TOKEN_PART sk-fakevalue password=fakepass https://user:pass@example.test/path'
   546: bearer_value='split-bearer-secret'
   550: split_token_secret='split-token-secret'
-  551: redaction_probe='-H Authorization: Bearer b AKIA1234567890123456 xoxb-test --token=t --TOKEN=c ghp_FAKE_TOKEN_PART sk-fake password=x https://u:p@h'
+  551: redaction_probe='-H Authorization: Bearer b [redacted:aws-access-key-id] xoxb-test --token=t --TOKEN=c ghp_FAKE_TOKEN_PART sk-fake password=x https://u:p@h'
   557: $REDACTED_CMD != *'--TOKEN=c'* && $REDACTED_CMD != *ghp_FAKE_TOKEN_PART* &&
   574: "$SELFTEST_CONTROL_TMP" "$argv_fifo" "$secret_arg" \
   575: -H "$auth_arg" "$bearer_arg" "$bearer_value" "$aws_arg" "$slack_arg" "$split_token_arg" "$split_token_secret" "$argv_arg" \

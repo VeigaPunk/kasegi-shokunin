@@ -9,7 +9,7 @@ index 0f4653e..4f043d6 100755
 -    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]{20}(?![A-Za-z0-9_-])")),
 +    ("gitlab-deploy-token", re.compile(_GL_LB + _GL_PREFIX + rb"gldt-[A-Za-z0-9_-]+(?![A-Za-z0-9_-])")),
  )
- ALLOWED_VALUES = frozenset({b"AKIAIOSFODNN7EXAMPLE"})
+ ALLOWED_VALUES = frozenset({b"[redacted:aws-access-key-id]"})
  NEVER_ALLOWED = frozenset({"aws-sts-session-token"})
 @@ -425,8 +425,6 @@ def selftest(pats):
          ("gl-runner-21-chars", b"glrt-" + b"0123456789abcdefghijk", set()),
