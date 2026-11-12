@@ -3145,3 +3145,13 @@ shokuknow unreachable`). SCORECARD round-56 result section + move log + capabili
 ## 2026-11-12 — Publish reviewed curation note
 
 Published original, source-linked reading candidate `considerthese/2026-11-12-extra-name-collisions.md` (SHA-256 `7bbd9f28c6d9959b0f450ab65b3110a4e0a2867cebe2d889f7af690acf0ee1bd`). Independent review covered exact note bytes, source/provenance, rights and public safety. The cited primary sources motivate this addition. Preparation-stage statements inside the preserved note describe its original save; this entry records subsequent publication. This is curation only, not training, assimilation, a tested implementation or a new admitted capability. No source snapshots or private review records are included.
+
+## 2026-11-12 — Publish reviewed curation batch
+
+Published 3 original, source-linked reading candidates. Independent review covered exact note bytes, source/provenance, rights and public safety. The primary sources linked in each note motivate these additions:
+
+- `considerthese/2026-11-09-zero-size-realloc-ownership.md` — SHA-256 `5b67b20760a85b7e7df855e2050939cee2fb1afda51564cb92426d30fde967f6`.
+- `considerthese/2026-11-11-representation-overflow-boundary.md` — SHA-256 `45f341aafaea619090ebc06517971df4f8c5a31b02dfd2ff0583e6f6a75c17cb`.
+- `considerthese/2026-11-11-dynamic-metadata-preservation.md` — SHA-256 `efe234841d88dadbfbeb32038fbeac60a9670837a739185c460eeb4ad64d36d8`.
+
+Preparation-stage statements (including held/candidate or no-repository-change wording) in the preserved notes describe their original saves; this entry records subsequent publication. These remain reading candidates, not admitted knowledge. This batch performs no training, assimilation, implementation experiment or capability promotion. It includes no third-party source snapshots, private-held notes or private review records.
